@@ -1,0 +1,9 @@
+<p>Select your working portal</p>
+<ul class="list-group">
+  <li class="list-group-item"
+    *ngFor="let portal of portals"
+    [ngClass]="{active: portal.id === activeInstance}"
+    (click)="switchPortal(portal)">
+    {{portal.title}} <i class="fa fa-check-circle" *ngIf="portal.id === activeInstance"></i>
+  </li>
+</ul>

@@ -1,0 +1,19 @@
+<div class="dropdown" [ngClass]="{'show': show}" (clickOutside)="_onClickOutside()">
+  <div>
+    <input id="country" type="text" class="form-control" autocomplete="off" placeholder="{{placeholder}}"
+    [(ngModel)]="query"
+    (focus)="_onFocus()"
+    (keyup)="_onKeyUp($event)">
+  </div>
+  <div class="dropdown-menu">
+    <div class="dropdown-item" [ngClass]="{'active': i === active}" [hidden]="!items.length || loading" *ngFor="let item of items; let i = index" (click)="_onSelect(item)">
+      <a>{{item[displayField]}}</a>
+    </div>
+    <div class="dropdown-item" [hidden]="loading" (click)="_addNew()" style="cursor: pointer; border-top: 1px solid #ccc;">
+      <a>Add new <i class="fa fa-plus-circle" aria-hidden="true"></i></a>
+    </div>
+    <div class="dropdown-item" [hidden]="!loading">
+      <a>Loading...</a>
+    </div>
+  </div>
+</div>

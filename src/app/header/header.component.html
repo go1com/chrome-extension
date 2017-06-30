@@ -1,0 +1,11 @@
+<div class="navbar navbar-default">
+  <div class="go1-logo" routerLink="/"></div>
+  <div *ngIf="user && user.id" style="margin-top:1em;font-size: 12px;">
+    Hello, {{user.first_name}}. <a href="javascript:void(0)" (click)="logout()">Logout</a>
+    <span *ngIf="user.accounts.length > 1">or <a routerLink="/portals">Switch Portal</a></span>
+  </div>
+
+  <div *ngIf="!user.id" style="margin-top:1em">
+    <a routerLink="/">Login</a>
+  </div>
+</div>

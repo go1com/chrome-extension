@@ -1,0 +1,32 @@
+<p><strong>Create learnings</strong></p>
+<small *ngIf="activeInstance">{{activeInstance.title}}</small>
+<form name="addLiForm" (ngSubmit)="submit()" *ngIf="user && user.id">
+  <div class="form-group">
+    <autocomplete [query]="courseSetting.query"
+                  [loading]="courseSetting.loading"
+                  [items]="courseSetting.items"
+                  [displayField]="courseSetting.displayField"
+                  [placeholder]="courseSetting.placeholder"
+                  (onSelect)="courseSetting.onSelect($event)"
+                  (onKeyUp)="courseSetting.onKeyUp($event)"
+                  (onAddNew)="courseSetting.onAddNew($event)"></autocomplete>
+  </div>
+
+  <div class="form-group">
+    <autocomplete [query]="moduleSetting.query"
+                  [loading]="moduleSetting.loading"
+                  [items]="moduleSetting.items"
+                  [displayField]="moduleSetting.displayField"
+                  [placeholder]="moduleSetting.placeholder"
+                  (onSelect)="moduleSetting.onSelect($event)"
+                  (onKeyUp)="moduleSetting.onKeyUp($event)"
+                  (onAddNew)="moduleSetting.onAddNew($event)"></autocomplete>
+  </div>
+
+  <div class="form-group">
+    <input type="text" class="form-control" id="title" placeholder="Name you learning item" name="liTitle" [(ngModel)]="liTitle" autocomplete="off">
+  </div>
+  <div class="form-group">
+    <button type="submit" class="btn btn-primary btn-block">Save</button>
+  </div>
+</form>

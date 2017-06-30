@@ -1,0 +1,48 @@
+/* You can add global styles to this file, and also import other style files */
+@import "~bootstrap/dist/css/bootstrap.min.css";
+* {
+  outline: none;
+}
+.dropdown-menu {
+  max-width: 100%;
+}
+
+.dropdown-item {
+  text-overflow: ellipsis;
+  overflow: hidden;
+  cursor: pointer;
+}
+
+[routerlink],
+.list-group-item {
+  cursor: pointer;
+}
+
+.btn-primary,
+.list-group-item.active,
+.list-group-item.active:focus,
+.list-group-item.active:hover {
+  background-color: #31b8da;
+  border-color: #31b8da;
+}
+.text-primary,
+.text-success {
+  color: #31b8da;
+}
+
+body {
+  width: 260px;
+  min-height: 300px;
+  font-size: 14px;
+  padding-bottom: 10px;
+}
+
+.form-control,
+.btn,
+.navbar-default {
+  border-radius: 0;
+}
+
+.form-group {
+  padding: 5px 20px;
+}
