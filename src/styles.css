@@ -31,10 +31,14 @@
 }
 
 body {
-  width: 260px;
-  min-height: 300px;
+  width: 320px;
+  min-height: 580px;
   font-size: 14px;
   padding-bottom: 10px;
+  position: absolute;
+  left: 500px;
+  top: 100px;
+  border: solid 1px #f1f1f5;
 }
 
 .form-control,
