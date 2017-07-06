@@ -46,7 +46,13 @@ export class UserLoginComponent implements OnInit {
       );
   }
 
-  redirect(user) :void {
+  register() {
+    this.router.navigate(["/"]).then(result=> {
+      window.location.href = 'https://dev.mygo1.com/p';
+    });
+  }
+
+  redirect(user): void {
     if (user.id) {
       const activeInstanceId = localStorage.getItem('activeInstance');
       const activeAccount = user.accounts.find( account => account.instance.id === activeInstanceId );
@@ -54,7 +60,7 @@ export class UserLoginComponent implements OnInit {
       if (activeAccount.roles.indexOf('administrator') >= 0) {
         this.router.navigate(['/admin-dashboard']);
       } else {
-        this.router.navigate(['/learner-dashboard']);
+        this.router.navigate(['/setting']);
       }
     } else {
       this.router.navigate(['']);

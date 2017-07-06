@@ -1,0 +1,30 @@
+<div class="setting-page">
+    <div class="nav-header">
+        <img src="../assets/chat_off.png" id="discussion" class="nav-icon">
+        <img src="../assets/bell_off.png" id="notification" class="nav-icon">
+        <img src="../assets/setting_on.png" id="setting" class="nav-icon">
+    </div>
+    <div class="photo-area">
+        <img src="../assets/avatar.png" class="avator">
+        <p class="name">{{user.first_name}}</p>
+    </div>
+    <div>
+        <div class="action-area">
+            <span class="action-name">Notification</span>
+            <div class="switch">
+                <input id="cmn-toggle-1" class="cmn-toggle cmn-toggle-round" type="checkbox">
+                <label for="cmn-toggle-1" class="label-switch"></label>
+            </div>
+        </div>
+        <div class="action-area">
+            <span class="action-name">Allow quick butoon</span>
+            <div class="switch">
+                <input id="cmn-toggle-2" class="cmn-toggle cmn-toggle-round" type="checkbox">
+                <label for="cmn-toggle-2" class="label-switch"></label>
+            </div>
+        </div>
+        <div class="action-area">
+            <span class="action-name"><a href="javascript:void(0)" (click)="signout()">Sign Out</a></span>
+        </div>
+    </div>
+</div>

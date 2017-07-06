@@ -32,12 +32,9 @@
 
 body {
   width: 320px;
-  min-height: 580px;
+  max-height: 580px;
   font-size: 14px;
   padding-bottom: 10px;
-  position: absolute;
-  left: 500px;
-  top: 100px;
   border: solid 1px #f1f1f5;
 }
 

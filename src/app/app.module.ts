@@ -19,6 +19,7 @@ import { AdminDashboardComponent } from './admin-dashboard/admin-dashboard.compo
 import { AutocompleteComponent } from "app/core/components/autocomplete/autocomplete.component";
 import { ClickOutsideDirective } from './core/components/click-outside.directive';
 import { CompleteComponent } from "app/complete/complete.component";
+import { SettingComponent } from './setting/setting.component';
 
 @NgModule({
   declarations: [
@@ -30,7 +31,8 @@ import { CompleteComponent } from "app/complete/complete.component";
     AdminDashboardComponent,
     CompleteComponent,
     ClickOutsideDirective,
-    AutocompleteComponent
+    AutocompleteComponent,
+    SettingComponent
   ],
   imports: [
     BrowserModule,
@@ -59,6 +61,10 @@ import { CompleteComponent } from "app/complete/complete.component";
       {
         path: 'complete',
         component: CompleteComponent,
+      },
+      {
+        path: 'setting',
+        component: SettingComponent
       }
     ])
   ],
