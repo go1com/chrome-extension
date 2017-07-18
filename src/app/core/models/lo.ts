@@ -1,4 +1,4 @@
-import { Module } from "app/core/models/module";
+import { Module } from "./module";
 
 export class Lo {
   //Fields
@@ -37,5 +37,5 @@ export class Lo {
 	public set $description(value: string) {
 		this.description = value;
 	}
-  
+
 }

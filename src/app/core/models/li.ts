@@ -1,5 +1,5 @@
-import { Module } from "app/core/models/module";
-import { Lo } from "app/core/models/lo";
+import { Module } from "./module";
+import { Lo } from "./lo";
 
 export class Li extends Lo {
   //Fields

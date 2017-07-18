@@ -1,5 +1,7 @@
-import { Module } from "app/core/models/module";
-import { Lo } from "app/core/models/lo";
+
+
+import {Lo} from "./lo";
+import {Module} from "./module";
 
 export class Course extends Lo {
   //Fields
@@ -17,7 +19,7 @@ export class Course extends Lo {
 	public set $modules(value: Array<Module>) {
 		this.modules = value;
 	}
-  
+
   public static buildCourses(data: Array<any>): Array<Lo> {
     return data.map(d => {
       let modules = Module.buildModules(d.items);

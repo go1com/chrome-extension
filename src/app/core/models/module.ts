@@ -1,6 +1,6 @@
 
-import { Lo } from "app/core/models/lo";
-import { Li } from "app/core/models/li";
+import { Lo } from "./lo";
+import { Li } from "./li";
 
 export class Module extends Lo {
   //Fields
@@ -17,7 +17,7 @@ export class Module extends Lo {
 	public set $lis(value: Array<Li>) {
 		this.lis = value;
 	}
-  
+
   public static buildModules(data: Array<any>): Array<Module> {
     try {
       return data.map(d => {

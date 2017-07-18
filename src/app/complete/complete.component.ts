@@ -1,10 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
+import {LoService} from "../core/services/lo.service";
 
-import { LoService } from "app/core/services/lo.service";
-import { Course } from "app/core/models/course";
-import { Module } from "app/core/models/module";
-import { Li } from "app/core/models/li";
 
 @Component({
   selector: 'complete',

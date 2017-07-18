@@ -1,25 +1,25 @@
-import { BrowserModule } from '@angular/platform-browser';
-import { NgModule } from '@angular/core';
-import { FormsModule } from '@angular/forms';
-import { HttpModule }    from '@angular/http';
-import { RouterModule } from '@angular/router';
+import {BrowserModule} from '@angular/platform-browser';
+import {NgModule} from '@angular/core';
+import {FormsModule} from '@angular/forms';
+import {HttpModule} from '@angular/http';
+import {RouterModule} from '@angular/router';
 
-import { AppComponent } from './app.component';
-import { UserLoginComponent } from './user/user-login.component';
+import {AppComponent} from './app.component';
+import {UserLoginComponent} from './user/user-login.component';
 
-import { UserService } from './user/user.service';
-import { UserResolve } from './user/user.resolve';
+import {UserService} from './user/user.service';
+import {UserResolve} from './user/user.resolve';
 
 import * as bootstrap from 'bootstrap';
-import { HeaderComponent } from './header/header.component';
-import { LearnerDashboardComponent } from './learner-dashboard/learner-dashboard.component';
-import { LearnerService } from './learner-dashboard/learner.service';
-import { PortalsComponent } from './portals/portals.component';
-import { AdminDashboardComponent } from './admin-dashboard/admin-dashboard.component';
-import { AutocompleteComponent } from "app/core/components/autocomplete/autocomplete.component";
-import { ClickOutsideDirective } from './core/components/click-outside.directive';
-import { CompleteComponent } from "app/complete/complete.component";
-import { SettingComponent } from './setting/setting.component';
+import {HeaderComponent} from './header/header.component';
+import {LearnerDashboardComponent} from './learner-dashboard/learner-dashboard.component';
+import {LearnerService} from './learner-dashboard/learner.service';
+import {PortalsComponent} from './portals/portals.component';
+import {AdminDashboardComponent} from './admin-dashboard/admin-dashboard.component';
+import {ClickOutsideDirective} from './core/components/click-outside.directive';
+import {SettingComponent} from './setting/setting.component';
+import {CompleteComponent} from "./complete/complete.component";
+import {AutocompleteComponent} from "./core/components/autocomplete/autocomplete.component";
 
 @NgModule({
   declarations: [
@@ -76,4 +76,5 @@ import { SettingComponent } from './setting/setting.component';
   bootstrap: [AppComponent]
 })
 
-export class AppModule { }
+export class AppModule {
+}

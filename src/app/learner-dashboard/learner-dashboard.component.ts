@@ -1,10 +1,10 @@
 /// <reference types="chrome" />
 
-import { Component, OnInit } from '@angular/core';
-import { Router } from '@angular/router';
+import {Component, OnInit} from '@angular/core';
+import {Router} from '@angular/router';
 
-import { LearnerService } from './learner.service';
-import { UserService } from 'app/user/user.service';
+import {LearnerService} from './learner.service';
+import {UserService} from "../user/user.service";
 
 @Component({
   selector: 'app-learner-dashboard',
@@ -16,17 +16,16 @@ export class LearnerDashboardComponent implements OnInit {
   private awards: Array<any>;
   private user;
   private activeInstance;
-  private loading: boolean = true;
-  private submitting: boolean = false;
+  private loading = true;
+  private submitting = false;
   private currentUrl: string;
   private selectedAward;
   private learning: any = {};
 
-  constructor(
-    private learnerService: LearnerService,
-    private userService: UserService,
-    private router: Router,
-  ) { }
+  constructor(private learnerService: LearnerService,
+              private userService: UserService,
+              private router: Router, ) {
+  }
 
   ngOnInit() {
     this.learnerService.getLearnerAwards()
@@ -38,7 +37,7 @@ export class LearnerDashboardComponent implements OnInit {
         this.loading = false;
       });
 
-    this.userService.currentUser.subscribe( (user) => {
+    this.userService.currentUser.subscribe((user) => {
       this.user = user;
 
       if (user.id) {
@@ -68,13 +67,14 @@ export class LearnerDashboardComponent implements OnInit {
       () => {
         this.submitting = false;
 
-        this.router.navigate(['/complete'], {queryParams:
+        this.router.navigate(['/complete'], {
+          queryParams:
             {
               title: 'Learning recorded',
-              redirectMask:'View your learning history',
+              redirectMask: 'View your learning history',
               redirect: `http://dev.mygo1.com/p/#/token?token=${ this.user.uuid }&destination=app/award/${this.selectedAward.id}`
             }
-          });
+        });
       }
     );
   }

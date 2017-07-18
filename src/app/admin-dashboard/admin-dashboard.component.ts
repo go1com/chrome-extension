@@ -1,11 +1,11 @@
-import { Component, OnInit } from '@angular/core';
-import { ActivatedRoute, Router } from '@angular/router';
+import {Component, OnInit} from '@angular/core';
+import {ActivatedRoute, Router} from '@angular/router';
+import {LoService} from "../core/services/lo.service";
+import {Course} from "../core/models/course";
+import {Module} from "../core/models/module";
+import {UserService} from "../user/user.service";
+import {Li} from "../core/models/li";
 
-import { UserService } from "app/user/user.service";
-import { LoService } from "app/core/services/lo.service";
-import { Course } from "app/core/models/course";
-import { Module } from "app/core/models/module";
-import { Li } from "app/core/models/li";
 
 @Component({
   selector: 'app-admin-dashboard',
@@ -26,21 +26,20 @@ export class AdminDashboardComponent implements OnInit {
   private user;
   private activeInstance;
 
-  constructor(
-    private loService: LoService,
-    private route: ActivatedRoute,
-    private router: Router,
-    private userService: UserService
-  ) { }
+  constructor(private loService: LoService,
+              private route: ActivatedRoute,
+              private router: Router,
+              private userService: UserService) {
+  }
 
   ngOnInit() {
-    let self = this;
-    this.userService.currentUser.subscribe( (user) => {
+    const self = this;
+    this.userService.currentUser.subscribe((user) => {
       if (user.id) {
         this.user = user;
         if (this.user.accounts.length > 1) {
           this.activeInstance = this.user.accounts.find(account => {
-            return account.instance.id == localStorage.getItem('activeInstance');
+            return account.instance.id === localStorage.getItem('activeInstance');
           }).instance;
         }
 
@@ -50,14 +49,14 @@ export class AdminDashboardComponent implements OnInit {
           items: [],
           displayField: '$title',
           placeholder: 'Search for an existing course',
-          onSelect: function(item) {
+          onSelect: function (item) {
             this.query = item.$title;
             this.items = [item];
             self.moduleSetting.items = item.$modules;
             self.moduleSetting.query = '';
             self.course = item;
           },
-          onKeyUp: function(query){
+          onKeyUp: function (query) {
             this.loading = true;
             self.loService.fetchCourses(query)
               .subscribe((courses: Array<Course>) => {
@@ -65,7 +64,7 @@ export class AdminDashboardComponent implements OnInit {
                 this.loading = false;
               });
           },
-          onAddNew: function(query) {
+          onAddNew: function (query) {
             if (query) {
               self.loService.createCourse(query, user)
                 .subscribe((res) => {
@@ -81,27 +80,27 @@ export class AdminDashboardComponent implements OnInit {
           items: [],
           displayField: '$title',
           placeholder: 'Search for an existing module',
-          onSelect: function(item) {
+          onSelect: function (item) {
             this.query = item.$title;
             this.items = [item];
             self.module = item;
           },
-          onKeyUp: function(query) {
+          onKeyUp: function (query) {
             try {
               this.items = self.course.$modules.filter((m) => {
                 return m.$title.toLowerCase().indexOf(query.toLowerCase()) > -1;
               });
-            } catch(e) {
+            } catch (e) {
               this.items = [];
             }
           },
           onAddNew: function (query) {
             if (query) {
               self.loService.createModule(self.course, query, user)
-              .subscribe((res) => {
-                self.module = new Module(res.id, query, '', []);
-                this.items.push(self.module);
-              });
+                .subscribe((res) => {
+                  self.module = new Module(res.id, query, '', []);
+                  this.items.push(self.module);
+                });
             }
           }
         }
@@ -121,12 +120,13 @@ export class AdminDashboardComponent implements OnInit {
           this.userService.currentUser.subscribe(u => {
             user = u;
           });
-          this.router.navigate(['/complete'], {queryParams:
-            {
-              title: 'Learning item created',
-              redirectMask:'View your learning item',
-              redirect: `http://dev.mygo1.com/p/#/token?token=${user.uuid}&destination=app/course/${this.course.$id}`
-            }
+          this.router.navigate(['/complete'], {
+            queryParams:
+              {
+                title: 'Learning item created',
+                redirectMask: 'View your learning item',
+                redirect: `http://dev.mygo1.com/p/#/token?token=${user.uuid}&destination=app/course/${this.course.$id}`
+              }
           });
         })
     }
