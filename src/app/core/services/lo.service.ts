@@ -2,7 +2,7 @@ import {Http, Headers} from '@angular/http';
 import {Injectable} from '@angular/core';
 import {Observable} from 'rxjs/Observable';
 import 'rxjs/add/operator/take';
-import {UserService} from "../../user/user.service";
+import {UserService} from "../../../modules/membership/services/user.service";
 import {Course} from "../models/course";
 import {Module} from "../models/module";
 import {Li} from "../models/li";

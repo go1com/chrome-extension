@@ -1,14 +1,10 @@
 <div class="setting-page">
-    <div class="nav-header">
-        <img src="../assets/chat_off.png" id="discussion" class="nav-icon">
-        <img src="../assets/bell_off.png" id="notification" class="nav-icon">
-        <img src="../assets/setting_on.png" id="setting" class="nav-icon">
-    </div>
+    <go-header activePage="settings"></go-header>
     <div class="photo-area">
         <img src="../assets/avatar.png" class="avator">
         <p class="name">{{  user.first_name}}</p>
     </div>
-    <div>
+    <div class="actions-area">
         <div class="action-area">
             <span class="action-name">Notification</span>
             <div class="switch">
@@ -24,7 +20,7 @@
             </div>
         </div>
         <div class="action-area">
-            <span class="action-name"><a href="javascript:void(0)" (click)="signout()">Sign Out</a></span>
+            <span class="action-name"><a class="signout" (click)="signout()">Sign Out</a></span>
         </div>
     </div>
 </div>

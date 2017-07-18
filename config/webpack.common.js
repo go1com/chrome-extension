@@ -62,8 +62,7 @@ module.exports = function (options) {
     entry: {
 
       'polyfills': './src/polyfills.ts',
-      'main': AOT ? './src/main.aot.ts' : './src/main.ts',
-      'injects/main': './src/injects/main.js'
+      'main': AOT ? './src/main.aot.ts' : './src/main.ts'
     },
 
     /**
@@ -290,6 +289,7 @@ module.exports = function (options) {
           {from: 'src/assets', to: 'assets'},
           {from: 'src/manifest.json'},
           {from: 'src/logo.png'},
+          {from: 'src/styles.css'},
           {from: 'src/favicon.ico'}
         ],
         isProd ? {ignore: ['mock-data/**/*']} : undefined

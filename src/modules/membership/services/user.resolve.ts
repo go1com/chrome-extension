@@ -1,5 +1,5 @@
-import {Injectable,} from '@angular/core';
-import {ActivatedRouteSnapshot, Resolve, Router, RouterStateSnapshot} from '@angular/router';
+import {Injectable} from '@angular/core';
+import {Resolve} from '@angular/router';
 
 import {Observable} from 'rxjs/Rx';
 import 'rxjs/add/operator/last';
@@ -15,7 +15,6 @@ export class UserResolve implements Resolve<any> {
 
   resolve(): Observable<any> {
     return this.userService.currentUser.last(user => {
-      console.log(user);
       return !!user.id;
     });
   }

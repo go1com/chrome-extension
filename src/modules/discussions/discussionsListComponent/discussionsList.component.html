@@ -1,0 +1,14 @@
+<div class="discussions-list-page">
+  <go-header></go-header>
+  <div [hidden]="discussionsList.length" class="no-content">
+    <img src="assets/notes.png" />
+    <h4>There's No Notes on this Page</h4>
+    <h6>Be the first one to add a note on this page by clicking on the below button or drag to choose a favourite quote
+      on the page</h6>
+  </div>
+
+  <div class="action-area">
+    <button class="rounded-button" (click)="addDiscussion()">+</button>
+  </div>
+  <div [hidden]="!discussionsList.length"></div>
+</div>

@@ -3,7 +3,7 @@ import {ActivatedRoute, Router} from '@angular/router';
 import {LoService} from "../core/services/lo.service";
 import {Course} from "../core/models/course";
 import {Module} from "../core/models/module";
-import {UserService} from "../user/user.service";
+import {UserService} from "../../modules/membership/services/user.service";
 import {Li} from "../core/models/li";
 
 

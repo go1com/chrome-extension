@@ -1,6 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
-import { UserService } from '../user/user.service';
+import { UserService } from '../../modules/membership/services/user.service';
 
 @Component({
   selector: 'app-portals',

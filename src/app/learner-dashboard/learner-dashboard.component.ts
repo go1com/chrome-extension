@@ -4,7 +4,7 @@ import {Component, OnInit} from '@angular/core';
 import {Router} from '@angular/router';
 
 import {LearnerService} from './learner.service';
-import {UserService} from "../user/user.service";
+import {UserService} from "../../modules/membership/services/user.service";
 
 @Component({
   selector: 'app-learner-dashboard',

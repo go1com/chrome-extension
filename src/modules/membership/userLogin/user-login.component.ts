@@ -1,20 +1,21 @@
-import { Component, OnInit } from '@angular/core';
-import { Router } from '@angular/router';
+import {Component, OnInit} from '@angular/core';
+import {Router} from '@angular/router';
 
-import { UserService } from './user.service'
+import {UserService} from '../services/user.service'
 
-@Component( {
+@Component({
   selector: 'user-login',
   templateUrl: './user-login.component.html',
-  styleUrls: [ './user-login.component.css' ]
+  styleUrls: ['./user-login.component.css']
 })
 
 export class UserLoginComponent implements OnInit {
   user: any;
   errorMessage: string;
-  loading: boolean = true;
+  loading = true;
 
-  constructor(private userService: UserService, private router:Router) { }
+  constructor(private userService: UserService, private router: Router) {
+  }
 
   ngOnInit() {
     this.user = {};
@@ -47,7 +48,7 @@ export class UserLoginComponent implements OnInit {
   }
 
   register() {
-    this.router.navigate(["/"]).then(result=> {
+    this.router.navigate(["/"]).then(result => {
       window.location.href = 'https://dev.mygo1.com/p';
     });
   }
@@ -55,7 +56,7 @@ export class UserLoginComponent implements OnInit {
   redirect(user): void {
     if (user.id) {
       const activeInstanceId = localStorage.getItem('activeInstance');
-      const activeAccount = user.accounts.find( account => account.instance.id === activeInstanceId );
+      const activeAccount = user.accounts.find(account => account.instance.id === activeInstanceId);
 
       if (activeAccount.roles.indexOf('administrator') >= 0) {
         this.router.navigate(['/admin-dashboard']);
