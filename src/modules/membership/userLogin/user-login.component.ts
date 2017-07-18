@@ -30,21 +30,19 @@ export class UserLoginComponent implements OnInit {
     );
   }
 
-  login(): void {
-    this.userService.login(this.user)
-      .subscribe(
-        user => {
-          console.log(user);
-          if (user.accounts.length > 1) {
-            this.router.navigate(['/portals']);
-          }
+  async login() {
+    try {
+      const user = await this.userService.login(this.user);
+      if (user.accounts.length > 1) {
+        this.router.navigate(['/portals']);
+      }
 
-          if (user.accounts.length === 1) {
-            this.redirect(user);
-          }
-        },
-        error => this.errorMessage = error.message
-      );
+      if (user.accounts.length === 1) {
+        this.redirect(user);
+      }
+    } catch (error) {
+      this.errorMessage = error.message;
+    }
   }
 
   register() {
@@ -61,7 +59,7 @@ export class UserLoginComponent implements OnInit {
       if (activeAccount.roles.indexOf('administrator') >= 0) {
         this.router.navigate(['/admin-dashboard']);
       } else {
-        this.router.navigate(['/setting']);
+        this.router.navigate(['/discussions-list']);
       }
     } else {
       this.router.navigate(['']);

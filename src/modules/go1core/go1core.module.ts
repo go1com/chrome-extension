@@ -4,6 +4,7 @@ import {HttpModule} from "@angular/http";
 import {FormsModule} from "@angular/forms";
 import {BrowserModule} from "@angular/platform-browser";
 import {RouterModule} from "@angular/router";
+import {RestClientService} from "./services/RestClientService";
 
 @NgModule({
   declarations: [
@@ -15,6 +16,9 @@ import {RouterModule} from "@angular/router";
     HttpModule,
     RouterModule
   ],
+  providers: [
+    RestClientService
+  ],
   exports: [
     Go1HeaderComponent
   ]
@@ -23,7 +27,9 @@ export class Go1CoreModule {
   static forRoot(): ModuleWithProviders {
     return {
       ngModule: Go1CoreModule,
-      providers: []
+      providers: [
+        RestClientService
+      ]
     }
   }
 }

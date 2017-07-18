@@ -8,6 +8,7 @@ import 'rxjs/add/operator/map';
 import 'rxjs/add/operator/catch';
 import 'rxjs/add/observable/throw';
 import go1Config from "../../go1core/go1core.config";
+import {RestClientService} from "../../go1core/services/RestClientService";
 
 @Injectable()
 export class UserService {
@@ -16,39 +17,36 @@ export class UserService {
   public currentUserSubject = new BehaviorSubject<any>({});
   public currentUser = this.currentUserSubject.asObservable();
 
-  constructor(private http: Http) {
+  constructor(private http: Http, private restClientService: RestClientService) {
   }
 
-  login(user: { username: string, password: string }): Observable<any> {
+  async login(user: { username: string, password: string }) {
     const postData = {instance: 'accounts-dev.gocatalyze.com', username: user.username, password: user.password};
 
-    return this.http.post(`${ this.apiUrl }/user-service/account/login`,
-      postData,
-      {
-        headers: this.headers
-      })
-    // .toPromise()
-      .map((response: Response) => {
-        const responseUser = response.json();
+    return await this.restClientService.postAsync(
+      `${ this.apiUrl }/user-service/account/login`,
+      postData)
+      .then((response) => {
+        this.setAuth(response);
+        this.currentUserSubject.next(response);
 
-        this.setAuth(responseUser);
-        this.currentUserSubject.next(responseUser);
-
-        return responseUser;
+        return response;
       })
-      .catch((error: Response) => {
-        return Observable.throw(error.json());
+      .catch((error) => {
+        throw error;
       });
   }
 
-  refresh() {
+  async refresh() {
     const currentUuid = localStorage.getItem('uuid');
 
     if (currentUuid) {
-      this.http.get(`${ this.apiUrl }/user-service/account/current/${ currentUuid }`).subscribe(
-        (response: Response) => this.currentUserSubject.next(response.json()),
-        () => this.cleanAuth()
-      );
+      try {
+        const response = await this.restClientService.getAsync(`${ this.apiUrl }/user-service/account/current/${ currentUuid }`);
+        this.currentUserSubject.next(response);
+      } catch (e) {
+        this.cleanAuth();
+      }
     } else {
       this.cleanAuth();
     }

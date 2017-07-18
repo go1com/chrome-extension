@@ -13,8 +13,8 @@ export class AppComponent implements OnInit {
 
   constructor(private userService: UserService) {}
 
-  ngOnInit() {
-    this.userService.refresh();
+  async ngOnInit() {
+    await this.userService.refresh();
     this.user = this.userService.currentUser;
   }
 }

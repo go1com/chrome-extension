@@ -1,4 +1,6 @@
 import {Component, OnDestroy, OnInit} from "@angular/core";
+import {DiscussionService} from "../services/discussion.service";
+import {Router} from "@angular/router";
 
 @Component({
   selector: 'app-discussions-list',
@@ -8,18 +10,19 @@ import {Component, OnDestroy, OnInit} from "@angular/core";
 export class DiscussionsListComponent implements OnInit, OnDestroy {
   discussionsList: any[];
 
-  constructor() {
+  constructor(private discussionService: DiscussionService,
+              private router: Router) {
     this.discussionsList = [];
   }
 
-  ngOnInit(): void {
-
+  async ngOnInit() {
+    this.discussionsList = await this.discussionService.getUserNotes();
   }
 
   ngOnDestroy(): void {
   }
 
   addDiscussion(): void {
-    alert('add discussion clicked');
+
   }
 }
