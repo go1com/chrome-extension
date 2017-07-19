@@ -1,4 +1,3 @@
-
 import {CompleteComponent} from "./complete/complete.component";
 import {AdminDashboardComponent} from "./admin-dashboard/admin-dashboard.component";
 import {LearnerDashboardComponent} from "./learner-dashboard/learner-dashboard.component";
@@ -7,16 +6,16 @@ import {PortalsComponent} from "./portals/portals.component";
 import {UserLoginComponent} from "../modules/membership/userLogin/user-login.component";
 
 import {SettingComponent} from "../modules/settings/setting/setting.component";
-import {DiscussionsListComponent} from "../modules/discussions/discussionsListComponent/discussionsList.component";
+import {Routes} from "@angular/router";
 
-let routes = [
+let routes: Routes = [
   {
     path: '',
     component: UserLoginComponent
   },
   {
     path: 'discussions-list',
-    component: DiscussionsListComponent
+    loadChildren: '../modules/discussions#DiscussionsModule'
   },
   {
     path: 'portals',

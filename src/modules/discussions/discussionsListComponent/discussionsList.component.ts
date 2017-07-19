@@ -1,6 +1,6 @@
 import {Component, OnDestroy, OnInit} from "@angular/core";
 import {DiscussionService} from "../services/discussion.service";
-import {Router} from "@angular/router";
+import {ActivatedRoute, Router} from "@angular/router";
 
 @Component({
   selector: 'app-discussions-list',
@@ -11,7 +11,7 @@ export class DiscussionsListComponent implements OnInit, OnDestroy {
   discussionsList: any[];
 
   constructor(private discussionService: DiscussionService,
-              private router: Router) {
+              private router: Router, private currentActivatedRoute: ActivatedRoute) {
     this.discussionsList = [];
   }
 
@@ -22,7 +22,7 @@ export class DiscussionsListComponent implements OnInit, OnDestroy {
   ngOnDestroy(): void {
   }
 
-  addDiscussion(): void {
-
+  async addDiscussion() {
+    await this.router.navigate(['./newDiscussion'], { relativeTo: this.currentActivatedRoute});
   }
 }

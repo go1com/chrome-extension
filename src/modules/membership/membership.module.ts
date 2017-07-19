@@ -5,7 +5,6 @@ import {UserResolve} from "./services/user.resolve";
 import {UserService} from "./services/user.service";
 import {HttpModule} from "@angular/http";
 import {FormsModule} from "@angular/forms";
-import {BrowserModule} from "@angular/platform-browser";
 import {RouterModule} from "@angular/router";
 
 @NgModule({
@@ -13,7 +12,6 @@ import {RouterModule} from "@angular/router";
     UserLoginComponent
   ],
   imports: [
-    BrowserModule,
     FormsModule,
     HttpModule,
     RouterModule,

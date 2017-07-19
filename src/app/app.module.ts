@@ -21,6 +21,7 @@ import {Go1CoreModule} from "../modules/go1core/go1core.module";
 import {SettingsModule} from "../modules/settings/settings.module";
 import {MembershipModule} from "../modules/membership/membership.module";
 import {DiscussionsModule} from "../modules/discussions/discussions.module";
+import {CommonModule} from "@angular/common";
 
 @NgModule({
   declarations: [
@@ -35,14 +36,14 @@ import {DiscussionsModule} from "../modules/discussions/discussions.module";
   ],
   imports: [
     BrowserModule,
+    CommonModule,
     FormsModule,
     HttpModule,
     RouterModule.forRoot(routes),
 
     Go1CoreModule,
     SettingsModule,
-    MembershipModule,
-    DiscussionsModule
+    MembershipModule
   ],
   providers: [
     LearnerService

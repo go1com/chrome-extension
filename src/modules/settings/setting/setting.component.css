@@ -47,6 +47,7 @@
 a.signout {
   text-decoration: none !important;
   color: #ed5b5f;
+  cursor: pointer;
 }
 
 a:hover {

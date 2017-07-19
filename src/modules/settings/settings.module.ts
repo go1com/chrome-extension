@@ -12,7 +12,6 @@ import {RouterModule} from "@angular/router";
     SettingComponent
   ],
   imports: [
-    BrowserModule,
     FormsModule,
     HttpModule,
     RouterModule,
