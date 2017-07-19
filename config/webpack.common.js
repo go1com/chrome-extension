@@ -289,7 +289,6 @@ module.exports = function (options) {
           {from: 'src/assets', to: 'assets'},
           {from: 'src/manifest.json'},
           {from: 'src/logo.png'},
-          {from: 'src/styles.css'},
           {from: 'src/favicon.ico'}
         ],
         isProd ? {ignore: ['mock-data/**/*']} : undefined

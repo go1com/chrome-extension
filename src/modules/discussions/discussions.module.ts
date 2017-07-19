@@ -8,25 +8,34 @@ import {NewDiscussionComponent} from "./newDiscussionComponent/newDiscussion.com
 import {RouterModule} from "@angular/router";
 import {discussionModuleRoutes} from "./discussion.routes";
 import {CommonModule} from "@angular/common";
+import {AngularFireDatabaseModule} from "angularfire2/database";
+import {DiscussionItemComponent} from "./discussionItemComponent/discussionItem.component";
+import {MomentModule} from "angular2-moment";
 
 @NgModule({
   declarations: [
     DiscussionsListComponent,
-    NewDiscussionComponent
+    NewDiscussionComponent,
+    DiscussionItemComponent
   ],
   imports: [
     CommonModule,
     FormsModule,
     HttpModule,
     RouterModule.forChild(discussionModuleRoutes),
-    Go1CoreModule
+    Go1CoreModule,
+
+    MomentModule,
+
+    AngularFireDatabaseModule
   ],
   providers: [
     DiscussionService
   ],
   exports: [
     DiscussionsListComponent,
-    NewDiscussionComponent
+    NewDiscussionComponent,
+    DiscussionItemComponent
   ]
 })
 export class DiscussionsModule {

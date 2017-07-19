@@ -1,5 +1,3 @@
-import * as bootstrap from 'bootstrap';
-
 import {BrowserModule} from '@angular/platform-browser';
 import {NgModule} from '@angular/core';
 import {FormsModule} from '@angular/forms';
@@ -20,8 +18,9 @@ import routes from "./app.routes";
 import {Go1CoreModule} from "../modules/go1core/go1core.module";
 import {SettingsModule} from "../modules/settings/settings.module";
 import {MembershipModule} from "../modules/membership/membership.module";
-import {DiscussionsModule} from "../modules/discussions/discussions.module";
 import {CommonModule} from "@angular/common";
+import {environment} from "../environments/environment";
+import {AngularFireModule} from "angularfire2";
 
 @NgModule({
   declarations: [
@@ -40,6 +39,7 @@ import {CommonModule} from "@angular/common";
     FormsModule,
     HttpModule,
     RouterModule.forRoot(routes),
+    AngularFireModule.initializeApp(environment.firebase),
 
     Go1CoreModule,
     SettingsModule,

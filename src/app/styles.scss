@@ -1,5 +1,4 @@
 /* You can add global styles to this file, and also import other style files */
-@import "~bootstrap/dist/css/bootstrap.min.css";
 @import url('https://fonts.googleapis.com/css?family=Open+Sans|Ubuntu');
 
 * {
@@ -8,8 +7,12 @@
   font-family: 'Open Sans', sans-serif;
 }
 
-button {
+button, [role='button'] {
   cursor: pointer;
+}
+
+.btn-no-padding {
+  padding: 0;
 }
 
 .dropdown-menu {
@@ -41,11 +44,11 @@ button {
 }
 
 body {
-  width: 320px;
-  max-height: 580px;
+  width: 415px;
+  height: 600px;
+  max-height: 600px;
   font-size: 14px;
   padding-bottom: 10px;
-  border: solid 1px #f1f1f5;
 }
 
 .form-control,

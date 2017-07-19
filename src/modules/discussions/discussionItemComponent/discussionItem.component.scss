@@ -1,0 +1,24 @@
+.discussion-item {
+  background: #fff;
+  border-bottom: 1px solid #cdcdcd;
+
+  .avatar-container {
+    padding: 15px;
+    width: 100%;
+  }
+
+  .description {
+    padding: 15px;
+    position: relative;
+    .menu {
+      position: absolute;
+      top: 15px;
+      right: 15px;
+
+      .more-btn {
+        background: none;
+        border: none;
+      }
+    }
+  }
+}

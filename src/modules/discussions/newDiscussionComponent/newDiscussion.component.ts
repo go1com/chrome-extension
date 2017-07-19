@@ -1,20 +1,34 @@
 import {Component, OnInit} from "@angular/core";
-import {Router} from "@angular/router";
-import {RestClientService} from "../../go1core/services/RestClientService";
+import {ActivatedRoute, Router} from "@angular/router";
+import {DiscussionService} from "../services/discussion.service";
 
 @Component({
   selector: 'app-new-discussion',
-  templateUrl: './newDiscussion.component.html'
+  templateUrl: './newDiscussion.component.html',
+  styleUrls: ['./newDiscussion.component.scss']
 })
 export class NewDiscussionComponent implements OnInit {
-  constructor(private router: Router,
-              private restClientService: RestClientService) {
+  data: any;
 
+  constructor(private router: Router,
+              private discussionService: DiscussionService,
+              private currentActivatedRoute: ActivatedRoute) {
+    this.data = {
+      discussionTopic: '',
+      link: '',
+      description: ''
+    };
   }
 
   async ngOnInit() {
 
   }
 
+  async goBack() {
+    this.router.navigate(['../'], {relativeTo: this.currentActivatedRoute});
+  }
 
+  async addNote() {
+
+  }
 }

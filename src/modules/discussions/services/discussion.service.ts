@@ -1,6 +1,7 @@
 import {Injectable} from "@angular/core";
 import go1Config from "../../go1core/go1core.config";
 import {RestClientService} from "../../go1core/services/RestClientService";
+import {AngularFireDatabase} from "angularfire2/database";
 
 @Injectable()
 export class DiscussionService {
@@ -9,11 +10,20 @@ export class DiscussionService {
     'Authorization': `Bearer ${ localStorage.getItem('jwt') }`
   };
 
-  constructor(private restClientService: RestClientService) {
+  constructor(private restClientService: RestClientService,
+              private fireBaseDb: AngularFireDatabase) {
 
   }
 
-  getUserNotes() {
-    return this.restClientService.getAsync(`${this.baseUrl}/note-service/notes`, this.customHeaders);
+  getUserNotesFromService() {
+    return this.restClientService.getAsync(`${this.baseUrl}/${go1Config.noteServicePath}notes`, this.customHeaders);
+  }
+
+  getUserNotesFromFB() {
+    return this.fireBaseDb.list(go1Config.fireBaseNotePath);
+  }
+
+  getUserNote(uuid: string) {
+    return this.fireBaseDb.object(go1Config.fireBaseNotePath + uuid);
   }
 }

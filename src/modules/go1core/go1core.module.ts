@@ -5,6 +5,7 @@ import {FormsModule} from "@angular/forms";
 import {RouterModule} from "@angular/router";
 import {RestClientService} from "./services/RestClientService";
 import {CommonModule} from "@angular/common";
+import {MomentModule} from "angular2-moment";
 
 @NgModule({
   declarations: [
@@ -14,7 +15,8 @@ import {CommonModule} from "@angular/common";
     CommonModule,
     FormsModule,
     HttpModule,
-    RouterModule
+    RouterModule,
+    MomentModule
   ],
   providers: [
     RestClientService
