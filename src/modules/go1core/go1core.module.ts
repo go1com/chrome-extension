@@ -6,6 +6,8 @@ import {RouterModule} from "@angular/router";
 import {RestClientService} from "./services/RestClientService";
 import {CommonModule} from "@angular/common";
 import {MomentModule} from "angular2-moment";
+import {ChromeCmdHandleService} from "./chromeExtensionsCommandHandler/ChromeCmdHandleService";
+import {AddToPortalChromeCommandHandler} from "./chromeExtensionsCommandHandler/IChromeCommandHandler";
 
 @NgModule({
   declarations: [
@@ -19,7 +21,9 @@ import {MomentModule} from "angular2-moment";
     MomentModule
   ],
   providers: [
-    RestClientService
+    RestClientService,
+    ChromeCmdHandleService,
+    AddToPortalChromeCommandHandler
   ],
   exports: [
     Go1HeaderComponent
@@ -30,7 +34,9 @@ export class Go1CoreModule {
     return {
       ngModule: Go1CoreModule,
       providers: [
-        RestClientService
+        RestClientService,
+        ChromeCmdHandleService,
+        AddToPortalChromeCommandHandler
       ]
     }
   }

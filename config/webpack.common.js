@@ -60,7 +60,6 @@ module.exports = function (options) {
      * See: http://webpack.github.io/docs/configuration.html#entry
      */
     entry: {
-
       'polyfills': './src/polyfills.ts',
       'main': AOT ? './src/main.aot.ts' : './src/main.ts'
     },
@@ -287,6 +286,7 @@ module.exports = function (options) {
        */
       new CopyWebpackPlugin([
           {from: 'src/assets', to: 'assets'},
+          {from: 'src/injects', to: 'injects'},
           {from: 'src/manifest.json'},
           {from: 'src/logo.png'},
           {from: 'src/favicon.ico'}

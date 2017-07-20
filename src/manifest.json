@@ -10,5 +10,23 @@
   "content_security_policy": "script-src 'self' 'unsafe-eval' https://cdn.firebase.com https://*.firebaseio.com; object-src 'self'",
   "permissions": [
     "activeTab"
+  ],
+  "content_scripts": [
+    {
+      "all_frames": false,
+      "js": [
+        "injects/content-script.js"
+      ],
+      "css": [
+        "injects/go1ext.css"
+      ],
+      "run_at": "document_end",
+      "matches": [
+        "<all_urls>"
+      ]
+    }
+  ],
+  "web_accessible_resources": [
+    "injects/*"
   ]
 }

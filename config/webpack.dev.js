@@ -61,14 +61,14 @@ module.exports = function (options) {
        * See: http://webpack.github.io/docs/configuration.html#output-path
        */
       path: helpers.root('dist'),
-
       /**
        * Specifies the name of each output file on disk.
        * IMPORTANT: You must not specify an absolute path here!
        *
        * See: http://webpack.github.io/docs/configuration.html#output-filename
        */
-      filename: '[name].bundle.js',
+      // filename: '[name].[chunkhash].bundle.js',
+      filename: '[name].js',
 
       /**
        * The filename of the SourceMaps for the JavaScript files.
@@ -78,12 +78,14 @@ module.exports = function (options) {
        */
       sourceMapFilename: '[file].map',
 
-      /** The filename of non-entry chunks as relative path
+      /**
+       * The filename of non-entry chunks as relative path
        * inside the output.path directory.
        *
        * See: http://webpack.github.io/docs/configuration.html#output-chunkfilename
        */
-      chunkFilename: '[id].chunk.js',
+      //chunkFilename: '[name].[chunkhash].chunk.js'
+      chunkFilename: 'chunk-[name].js',
 
       library: 'ac_[name]',
       libraryTarget: 'var',
