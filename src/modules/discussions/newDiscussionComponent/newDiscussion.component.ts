@@ -1,6 +1,7 @@
 import {Component, OnInit} from "@angular/core";
 import {ActivatedRoute, Router} from "@angular/router";
 import {DiscussionService} from "../services/discussion.service";
+import {UserService} from "../../membership/services/user.service";
 
 @Component({
   selector: 'app-new-discussion',
@@ -9,19 +10,24 @@ import {DiscussionService} from "../services/discussion.service";
 })
 export class NewDiscussionComponent implements OnInit {
   data: any;
+  private user: any;
 
   constructor(private router: Router,
               private discussionService: DiscussionService,
-              private currentActivatedRoute: ActivatedRoute) {
+              private currentActivatedRoute: ActivatedRoute,
+              private userService: UserService) {
     this.data = {
-      discussionTopic: '',
+      title: '',
       link: '',
-      description: ''
+      body: '',
+      entityType: 'portal',
+      entityId: localStorage.getItem('activeInstance')
     };
   }
 
   async ngOnInit() {
-
+    this.data.user = this.userService.getUser();
+    console.log(this.data);
   }
 
   async goBack() {
@@ -29,6 +35,7 @@ export class NewDiscussionComponent implements OnInit {
   }
 
   async addNote() {
-
+    await this.discussionService.createNote(this.data);
+    await this.goBack();
   }
 }

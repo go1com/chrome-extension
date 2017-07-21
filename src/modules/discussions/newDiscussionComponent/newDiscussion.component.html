@@ -13,7 +13,7 @@
 
   <div class="sub-header">
     <div class="form-group row">
-      <input [(ngModel)]="data.discussionTopic" placeholder="Discussion topic" class="form-control"/>
+      <input [(ngModel)]="data.title" placeholder="Discussion topic" class="form-control"/>
     </div>
   </div>
 
@@ -22,7 +22,7 @@
     <div class="link-review-component"></div>
   </div>
   <div class="description">
-    <textarea class="form-control" placeholder="Says something about this page" rows="5">
+    <textarea class="form-control" placeholder="Says something about this page" [(ngModel)]="data.body" rows="5">
 
     </textarea>
   </div>

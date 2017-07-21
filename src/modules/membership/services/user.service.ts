@@ -16,6 +16,7 @@ export class UserService {
   private apiUrl = go1Config.baseApiUrl;
   public currentUserSubject = new BehaviorSubject<any>({});
   public currentUser = this.currentUserSubject.asObservable();
+  private currentUserObject: any = null;
 
   constructor(private http: Http, private restClientService: RestClientService) {
   }
@@ -67,8 +68,22 @@ export class UserService {
     this.currentUserSubject.next({});
   }
 
+  getUser() {
+    if (this.currentUserObject)
+      return this.currentUserObject;
+
+    const userStorage = localStorage.getItem('user');
+    if (userStorage) {
+      this.currentUserObject = JSON.parse(userStorage);
+      return this.currentUserObject;
+    }
+
+    return null;
+  }
+
   private setAuth(user) {
     localStorage.setItem('jwt', user.jwt);
+    localStorage.setItem('user', JSON.stringify(user));
     localStorage.setItem('uuid', user.uuid);
     localStorage.setItem('activeInstance', user.accounts[0].instance.id);
   }

@@ -31,5 +31,9 @@ export class AppComponent implements OnInit {
         this.chromeCmdHandleService.handleCommand(request.command, request, sender, sendResponse);
       }
     });
+
+    chrome.runtime.sendMessage({command: "POPUP_INITIALIZED"}, function (response) {
+
+    });
   }
 }

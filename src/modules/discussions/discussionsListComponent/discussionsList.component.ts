@@ -36,8 +36,16 @@ export class DiscussionsListComponent implements OnInit, OnDestroy {
 
     response.forEach(item => {
       this.discussionService.getUserNote(item.uuid).subscribe(note => {
-        let keys = Object.keys(note.data);
-        let discussionTopic = note.data[keys[0]];
+        if (!note || !note.data) {
+          return;
+        }
+
+        const keys = Object.keys(note.data);
+        const discussionTopic = note.data[keys[0]];
+
+        if (!discussionTopic) {
+          return;
+        }
 
         discussionTopic.messages = [];
 

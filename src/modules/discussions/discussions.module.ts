@@ -11,6 +11,7 @@ import {CommonModule} from "@angular/common";
 import {AngularFireDatabaseModule} from "angularfire2/database";
 import {DiscussionItemComponent} from "./discussionItemComponent/discussionItem.component";
 import {MomentModule} from "angular2-moment";
+import {MembershipModule} from "../membership/membership.module";
 
 @NgModule({
   declarations: [
@@ -23,11 +24,11 @@ import {MomentModule} from "angular2-moment";
     FormsModule,
     HttpModule,
     RouterModule.forChild(discussionModuleRoutes),
-    Go1CoreModule,
-
     MomentModule,
+    AngularFireDatabaseModule,
 
-    AngularFireDatabaseModule
+    Go1CoreModule,
+    MembershipModule
   ],
   providers: [
     DiscussionService

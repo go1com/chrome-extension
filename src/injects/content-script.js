@@ -1,5 +1,9 @@
 const scriptInjection = [];
 
+const chromeExtId = chrome.runtime.id;
+console.log(chrome);
+
+
 const inject = (fn) => {
   const script = document.createElement('script');
   fn(script);
@@ -19,25 +23,39 @@ const injectScript = (path) => {
   scriptInjection.push(path);
 };
 
-injectScript('injects/go1button.js');
-
 const go1buttonContainer = document.createElement('div');
 const go1Button = document.createElement('button');
 go1Button.innerHTML = "+";
 go1Button.classList.add('go1-add-to-portal-button');
 go1buttonContainer.appendChild(go1Button);
 
+let addToPortalClicked = false;
 go1Button.addEventListener('click', function onGo1ButtonClicked() {
-  chrome.runtime.sendMessage({command: "ADD_TO_PORTAL"}, function (response) {
-    console.log(response.farewell);
+  addToPortalClicked = true;
+  chrome.runtime.sendMessage({
+    from: 'content',
+    action: 'showPopup'
   });
 });
 
+function onPopupInitialized() {
+  if (addToPortalClicked) {
+    chrome.runtime.sendMessage({command: "ADD_TO_PORTAL"}, function (response) {
+      addToPortalClicked = false;
+    });
+  }
+}
+
+console.log(chromeExtId);
+
 document.body.appendChild(go1buttonContainer);
-//
-// chrome.extension.onMessage.addListener(function (request, sender, sendResponse) {
-//   if (request.method == "getSelection")
-//     sendResponse({data: window.getSelection().toString()});
-//   else
-//     sendResponse({}); // snub them.
-// });
+
+chrome.runtime.onMessage.addListener(function (request, sender, sendResponse) {
+  debugger;
+  if (request.command == "POPUP_INITIALIZED") {
+    onPopupInitialized();
+  }
+  //   sendResponse({data: window.getSelection().toString()});
+  // else
+  //   sendResponse({}); // snub them.
+});

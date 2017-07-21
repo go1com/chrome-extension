@@ -19,14 +19,19 @@
   </div>
 
   <div [hidden]="!discussionsList.length" class="actions-area row">
-    <div class="col-6">
+    <div class="col-4">
       <button class="btn btn-block" (click)="addDiscussion()">
-        <img src="assets/chat_black.png"/> Start Discussion
+        <img src="assets/chat_black.png"/> Add Note
       </button>
     </div>
-    <div class="col-6">
+    <div class="col-4">
       <button class="btn btn-block" (click)="addToPortal()">
         <img src="assets/add_portal.png"/> Add to Portal
+      </button>
+    </div>
+    <div class="col-4">
+      <button class="btn btn-block" (click)="share()">
+        Share
       </button>
     </div>
   </div>
