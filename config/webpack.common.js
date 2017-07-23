@@ -35,6 +35,20 @@ const METADATA = {
   HMR: HMR
 };
 
+const orderByList = function (list) {
+  return function (chunk1, chunk2) {
+    let index1 = list.indexOf(chunk1.names[0]);
+    let index2 = list.indexOf(chunk2.names[0]);
+    if (index2 === -1 || index1 < index2) {
+      return -1;
+    }
+    if (index1 === -1 || index1 > index2) {
+      return 1;
+    }
+    return 0;
+  };
+};
+
 /**
  * Webpack configuration
  *
@@ -141,6 +155,11 @@ module.exports = function (options) {
           exclude: [/\.(spec|e2e)\.ts$/]
         },
 
+        {
+          test: /\.js$/,
+          exclude: ['/node_modules/'],
+          loader: 'babel-loader'
+        },
         /**
          * Json loader support for *.json files.
          *
@@ -286,7 +305,9 @@ module.exports = function (options) {
        */
       new CopyWebpackPlugin([
           {from: 'src/assets', to: 'assets'},
+          {from: 'src/styles', to: 'styles'},
           {from: 'src/injects', to: 'injects'},
+          {from: 'src/background', to: 'background'},
           {from: 'src/manifest.json'},
           {from: 'src/logo.png'},
           {from: 'src/favicon.ico'}
@@ -306,9 +327,10 @@ module.exports = function (options) {
       new HtmlWebpackPlugin({
         template: 'src/index.html',
         title: METADATA.title,
-        chunksSortMode: 'dependency',
+        chunks: ['manifest', 'polyfills', 'vendor', 'main'],
+        chunksSortMode: orderByList(['manifest', 'polyfills', 'vendor', 'main']),
         metadata: METADATA,
-        inject: 'head'
+        inject: 'body'
       }),
 
       /**

@@ -9,9 +9,7 @@
   },
   "background": {
     "persistent": true,
-    "scripts": [
-      "injects/background.js"
-    ]
+    "page": "background/background.html"
   },
   "content_security_policy": "script-src 'self' 'unsafe-eval' https://cdn.firebase.com https://*.firebaseio.com; object-src 'self'",
   "permissions": [
@@ -21,10 +19,15 @@
     {
       "all_frames": false,
       "js": [
+        "polyfills.dll.js",
+        "vendor.dll.js",
+        "manifest.js",
+        "polyfills.js",
+        "injects/helpers.js",
         "injects/content-script.js"
       ],
       "css": [
-        "injects/go1ext.css"
+        "styles/style.css"
       ],
       "run_at": "document_end",
       "matches": [

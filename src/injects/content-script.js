@@ -1,27 +1,13 @@
-const scriptInjection = [];
+(async function (root) {
+  if (!root.jQuery) {
+    await Helpers.injectScript('https://code.jquery.com/jquery-3.2.1.min.js');
+    console.log(root.jQuery);
+  }
+})(window);
 
 const chromeExtId = chrome.runtime.id;
 console.log(chrome);
 
-
-const inject = (fn) => {
-  const script = document.createElement('script');
-  fn(script);
-  document.documentElement.appendChild(script);
-  script.parentNode.removeChild(script);
-};
-
-const injectScript = (path) => {
-  if (scriptInjection.indexOf(path) > -1) {
-    return;
-  }
-
-  inject(script => {
-    script.src = chrome.extension.getURL(path);
-  });
-
-  scriptInjection.push(path);
-};
 
 const go1buttonContainer = document.createElement('div');
 const go1Button = document.createElement('button');
