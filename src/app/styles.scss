@@ -1,5 +1,6 @@
 /* You can add global styles to this file, and also import other style files */
 @import url('https://fonts.googleapis.com/css?family=Open+Sans|Ubuntu');
+@import "../styles/variables";
 
 * {
   outline: none;
@@ -34,13 +35,13 @@ button, [role='button'] {
 .list-group-item.active,
 .list-group-item.active:focus,
 .list-group-item.active:hover {
-  background-color: #31b8da;
-  border-color: #31b8da;
+  background-color: $go1brandColor;
+  border-color: $go1brandColor;
 }
 
 .text-primary,
 .text-success {
-  color: #31b8da;
+  color: $go1brandColor;
 }
 
 body {

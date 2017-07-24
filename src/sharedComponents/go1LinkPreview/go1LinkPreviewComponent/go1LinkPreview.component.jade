@@ -1,0 +1,13 @@
+.link-preview-frame
+  .row([hidden]="!isLoading")
+    .col Loading Preview...
+  .row([hidden]="isLoading")
+    .col-3
+      img.link-preview-img([src]="linkPreview.image", *ngIf="linkPreview.image")
+      img.link-preview-img(src="assets/no-image-icon-15.png", *ngIf="!linkPreview.image")
+    .col-9
+      h5
+        | {{linkPreview.title}}
+        button.close-btn((click)="closePreview()") &times;
+      div.description {{ linkPreview.description }}
+

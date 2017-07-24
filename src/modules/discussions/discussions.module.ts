@@ -12,6 +12,7 @@ import {AngularFireDatabaseModule} from "angularfire2/database";
 import {DiscussionItemComponent} from "./discussionItemComponent/discussionItem.component";
 import {MomentModule} from "angular2-moment";
 import {MembershipModule} from "../membership/membership.module";
+import {Go1LinkPreviewModule} from "../../sharedComponents/go1LinkPreview/go1LinkPreview.module";
 
 @NgModule({
   declarations: [
@@ -28,7 +29,8 @@ import {MembershipModule} from "../membership/membership.module";
     AngularFireDatabaseModule,
 
     Go1CoreModule,
-    MembershipModule
+    MembershipModule,
+    Go1LinkPreviewModule
   ],
   providers: [
     DiscussionService

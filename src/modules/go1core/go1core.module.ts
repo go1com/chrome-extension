@@ -8,6 +8,7 @@ import {CommonModule} from "@angular/common";
 import {MomentModule} from "angular2-moment";
 import {ChromeCmdHandleService} from "./chromeExtensionsCommandHandler/ChromeCmdHandleService";
 import {AddToPortalChromeCommandHandler} from "./chromeExtensionsCommandHandler/IChromeCommandHandler";
+import {Go1RuntimeContainer} from "./services/go1RuntimeContainer";
 
 @NgModule({
   declarations: [

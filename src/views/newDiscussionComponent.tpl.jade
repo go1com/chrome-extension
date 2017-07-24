@@ -1,0 +1,22 @@
+.new-discussion-page
+  header.row
+    .col
+      a.btn.btn-no-border.btn-no-padding((click)="goBack()" role="button")
+        i.fa.fa-arrow-left
+    .col-8
+      h5 START DISCUSSION
+    .col
+  .sub-header
+      input.form-control([(ngModel)]="data.title" placeholder="Discussion Topic")
+  .link-preview
+    label Related to:
+    .link-preview-component(*ngIf="!!data.item")
+      go1-link-preview(*ngIf="!!data.item", [linkUrl]="data.item")
+  .description
+    textarea.form-control([(ngModel)]="data.body" placeholder="Say something about this page" rows=5)
+
+  .actions-area
+    .row
+      .col-7
+      .col.text-align-right
+        button.btn.btn-primary((click)="addNote()") Add Note

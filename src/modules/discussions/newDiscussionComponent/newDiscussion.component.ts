@@ -2,10 +2,11 @@ import {Component, OnInit} from "@angular/core";
 import {ActivatedRoute, Router} from "@angular/router";
 import {DiscussionService} from "../services/discussion.service";
 import {UserService} from "../../membership/services/user.service";
+import {Go1RuntimeContainer} from "../../go1core/services/go1RuntimeContainer";
 
 @Component({
   selector: 'app-new-discussion',
-  templateUrl: './newDiscussion.component.html',
+  templateUrl: '../../../views/newDiscussionComponent.tpl.jade',
   styleUrls: ['./newDiscussion.component.scss']
 })
 export class NewDiscussionComponent implements OnInit {
@@ -16,18 +17,18 @@ export class NewDiscussionComponent implements OnInit {
               private discussionService: DiscussionService,
               private currentActivatedRoute: ActivatedRoute,
               private userService: UserService) {
+    console.log(Go1RuntimeContainer.currentChromeTab);
     this.data = {
       title: '',
-      link: '',
       body: '',
       entityType: 'portal',
+      item: Go1RuntimeContainer.currentChromeTab.url,
       entityId: localStorage.getItem('activeInstance')
     };
   }
 
   async ngOnInit() {
     this.data.user = this.userService.getUser();
-    console.log(this.data);
   }
 
   async goBack() {

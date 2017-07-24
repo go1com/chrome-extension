@@ -1,0 +1,23 @@
+@import "../../../styles/variables";
+
+.link-preview-frame {
+  border: 1px solid $go1grey3;
+  padding: 10px;
+
+  .link-preview-img {
+    width: 100%;
+  }
+
+  .close-btn {
+    position: absolute;
+    right: 10px;
+    top: 0px;
+    border: none;
+    background: none;
+    color: $go1grey5;
+
+    &:hover {
+      color: $go1grey7;
+    }
+  }
+}

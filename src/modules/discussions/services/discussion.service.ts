@@ -38,6 +38,7 @@ export class DiscussionService {
       let childData = {};
       childData[randomKey] = {
         message: newNote.body,
+        item: newNote.item,
         user_id: newNote.user.id,
         created: new Date().getTime()
       };

@@ -22,6 +22,7 @@ const InlineManifestWebpackPlugin = require('inline-manifest-webpack-plugin');
 const LoaderOptionsPlugin = require('webpack/lib/LoaderOptionsPlugin');
 const ScriptExtHtmlWebpackPlugin = require('script-ext-html-webpack-plugin');
 const ngcWebpack = require('ngc-webpack');
+const pathsConfig = require('./pathsConfig');
 
 /**
  * Webpack Constants
@@ -154,11 +155,10 @@ module.exports = function (options) {
           ],
           exclude: [/\.(spec|e2e)\.ts$/]
         },
-
         {
-          test: /\.js$/,
+          test: /\.(pug|jade)$/,
           exclude: ['/node_modules/'],
-          loader: 'babel-loader'
+          use: ['raw-loader', 'pug-html-loader']
         },
         /**
          * Json loader support for *.json files.
@@ -230,7 +230,7 @@ module.exports = function (options) {
      */
     plugins: [
       new AssetsPlugin({
-        path: helpers.root('dist'),
+        path: helpers.root(pathsConfig.dist),
         filename: 'webpack-assets.json',
         prettyPrint: true
       }),
@@ -305,7 +305,6 @@ module.exports = function (options) {
        */
       new CopyWebpackPlugin([
           {from: 'src/assets', to: 'assets'},
-          {from: 'src/styles', to: 'styles'},
           {from: 'src/injects', to: 'injects'},
           {from: 'src/background', to: 'background'},
           {from: 'src/manifest.json'},
