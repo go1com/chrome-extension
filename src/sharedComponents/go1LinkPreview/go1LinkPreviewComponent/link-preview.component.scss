@@ -3,6 +3,7 @@
 .link-preview-frame {
   border: 1px solid $go1grey3;
   padding: 10px;
+  max-height: 140px;
 
   .link-preview-img {
     width: 100%;
@@ -19,5 +20,11 @@
     &:hover {
       color: $go1grey7;
     }
+  }
+
+  .description {
+    text-overflow: ellipsis;
+    overflow: hidden;
+    height: 53px;
   }
 }

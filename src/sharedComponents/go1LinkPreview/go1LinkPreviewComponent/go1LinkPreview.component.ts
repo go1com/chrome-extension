@@ -20,13 +20,11 @@ export class Go1LinkPreviewComponent {
   }
 
   async ngAfterViewInit() {
-    debugger;
     this.isLoading = true;
 
     this.linkPreview = await fetch(`http://api.linkpreview.net/?key=${linkPreviewApiKey}&q=${this.linkUrl}`)
       .then(response => response.json());
 
-    console.log(this.linkPreview);
     this.isLoading = false;
   }
 }

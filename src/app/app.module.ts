@@ -21,6 +21,7 @@ import {MembershipModule} from "../modules/membership/membership.module";
 import {CommonModule} from "@angular/common";
 import {environment} from "../environments/environment";
 import {AngularFireModule} from "angularfire2";
+import extraProviders from "./extraProviders";
 
 @NgModule({
   declarations: [
@@ -46,7 +47,9 @@ import {AngularFireModule} from "angularfire2";
     MembershipModule
   ],
   providers: [
-    LearnerService
+    LearnerService,
+
+    ...extraProviders
   ],
   bootstrap: [AppComponent]
 })

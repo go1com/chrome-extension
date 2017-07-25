@@ -1,21 +1,15 @@
-(async function (root) {
-  if (!root.jQuery) {
-    await Helpers.injectScript('https://code.jquery.com/jquery-3.2.1.min.js');
-    console.log(root.jQuery);
-  }
-})(window);
-
 const chromeExtId = chrome.runtime.id;
-console.log(chrome);
 
+let addToPortalClicked = false;
 
 const go1buttonContainer = document.createElement('div');
 const go1Button = document.createElement('button');
 go1Button.innerHTML = "+";
 go1Button.classList.add('go1-add-to-portal-button');
 go1buttonContainer.appendChild(go1Button);
+document.body.appendChild(go1buttonContainer);
 
-let addToPortalClicked = false;
+
 go1Button.addEventListener('click', function onGo1ButtonClicked() {
   addToPortalClicked = true;
   chrome.runtime.sendMessage({
@@ -32,12 +26,7 @@ function onPopupInitialized() {
   }
 }
 
-console.log(chromeExtId);
-
-document.body.appendChild(go1buttonContainer);
-
 chrome.runtime.onMessage.addListener(function (request, sender, sendResponse) {
-  debugger;
   if (request.command == "POPUP_INITIALIZED") {
     onPopupInitialized();
   }

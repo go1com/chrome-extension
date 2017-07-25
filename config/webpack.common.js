@@ -76,7 +76,8 @@ module.exports = function (options) {
      */
     entry: {
       'polyfills': './src/polyfills.ts',
-      'main': AOT ? './src/main.aot.ts' : './src/main.ts'
+      'main': AOT ? './src/main.aot.ts' : './src/main.ts',
+      'contentScript': './src/contentScript.ts'
     },
 
     /**

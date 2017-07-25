@@ -15,9 +15,9 @@ const Helpers = {
     return new Promise((resolve, reject) => {
       this.inject(script => {
         script.src = path.startsWith('http') ? path : chrome.extension.getURL(path);
-        script.onload = function () {
+        script.addEventListener('load', function () {
           resolve();
-        }
+        });
       });
       this.scriptInjection.push(path);
 

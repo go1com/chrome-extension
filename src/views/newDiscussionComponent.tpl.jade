@@ -1,11 +1,11 @@
 .new-discussion-page
   header.row
-    .col
-      a.btn.btn-no-border.btn-no-padding((click)="goBack()" role="button")
-        i.fa.fa-arrow-left
-    .col-8
+    .col-2
+      a.btn.btn-no-border.btn-no-padding.go-back-btn((click)="goBack()" role="button")
+        i.icon.icon-left-arrow
+    .col-8.text-center
       h5 START DISCUSSION
-    .col
+    .col-2
   .sub-header
       input.form-control([(ngModel)]="data.title" placeholder="Discussion Topic")
   .link-preview
@@ -13,7 +13,7 @@
     .link-preview-component(*ngIf="!!data.item")
       go1-link-preview(*ngIf="!!data.item", [linkUrl]="data.item")
   .description
-    textarea.form-control([(ngModel)]="data.body" placeholder="Say something about this page" rows=5)
+    textarea.form-control([(ngModel)]="data.body" placeholder="Say something about this page" rows=10)
 
   .actions-area
     .row

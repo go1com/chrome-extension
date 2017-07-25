@@ -6,8 +6,7 @@ import {Go1RuntimeContainer} from "../../go1core/services/go1RuntimeContainer";
 
 @Component({
   selector: 'app-new-discussion',
-  templateUrl: '../../../views/newDiscussionComponent.tpl.jade',
-  styleUrls: ['./newDiscussion.component.scss']
+  templateUrl: '../../../views/newDiscussionComponent.tpl.jade'
 })
 export class NewDiscussionComponent implements OnInit {
   data: any;

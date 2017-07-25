@@ -1,5 +1,5 @@
 import gulp from 'gulp';
 
 gulp.task(`watch`, () => {
-	gulp.watch(`./src/styles/**/*.{css,scss,less}`, ['styles']);
+	gulp.watch(`./src/styles/**/*.scss`, ['styles']);
 });

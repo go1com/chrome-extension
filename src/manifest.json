@@ -23,11 +23,11 @@
         "vendor.dll.js",
         "manifest.js",
         "polyfills.js",
-        "injects/helpers.js",
-        "injects/content-script.js"
+        "vendor.js",
+        "contentScript.js"
       ],
       "css": [
-        "styles/style.css"
+        "styles/go1ext_inject.css"
       ],
       "run_at": "document_end",
       "matches": [

@@ -1,0 +1,36 @@
+@import url('https://fonts.googleapis.com/css?family=Open+Sans|Ubuntu');
+@import "variables";
+
+*, input, textarea, select, label {
+  outline: none;
+  font-family: 'Open Sans', sans-serif;
+  color: $go1black;
+}
+
+.text-align-right {
+  text-align: right;
+}
+
+.text-center {
+  text-align: center;
+}
+
+label {
+  font-size: 16px;
+  font-weight: bold;
+  color: $go1black;
+}
+
+h4 {
+  font-weight: normal;
+  font-size: 24px;
+  line-height: 32px;
+  letter-spacing: -25%;
+}
+
+h5 {
+  font-weight: bold;
+  font-size: 18px;
+  line-height: 28px;
+  letter-spacing: -25%;
+}
