@@ -1,0 +1,19 @@
+.setting-page
+  go-header(activePage="settings")
+  .photo-area
+    img.avator(src="../assets/avatar.png")
+    p.name {{ user.first_name}}
+  .actions-area
+    .action-area
+      span.action-name Notification
+      .switch
+        input#cmn-toggle-1.cmn-toggle.cmn-toggle-round(type="checkbox")
+        label.label-switch(for="cmn-toggle-1")
+    .action-area
+      span.action-name Allow quick button
+      .switch
+        input#cmn-toggle-2.cmn-toggle.cmn-toggle-round(type="checkbox", [(ngModel)]="quickButtonEnabled", (click)="toggleQuickButton()")
+        label.label-switch(for="cmn-toggle-2")
+    .action-area
+      span.action-name
+        a.signout((click)="signout()") Sign Out

@@ -3,26 +3,27 @@ import {ActivatedRoute, Router} from "@angular/router";
 import {DiscussionService} from "../services/discussion.service";
 import {UserService} from "../../membership/services/user.service";
 import {Go1RuntimeContainer} from "../../go1core/services/go1RuntimeContainer";
+import {StorageService} from "../../go1core/services/StorageService";
 
 @Component({
   selector: 'app-new-discussion',
-  templateUrl: '../../../views/newDiscussionComponent.tpl.jade'
+  templateUrl: '../../../views/newDiscussionComponent.tpl.pug'
 })
 export class NewDiscussionComponent implements OnInit {
   data: any;
-  private user: any;
 
   constructor(private router: Router,
               private discussionService: DiscussionService,
               private currentActivatedRoute: ActivatedRoute,
-              private userService: UserService) {
+              private userService: UserService,
+              private storageService: StorageService) {
     console.log(Go1RuntimeContainer.currentChromeTab);
     this.data = {
       title: '',
       body: '',
       entityType: 'portal',
       item: Go1RuntimeContainer.currentChromeTab.url,
-      entityId: localStorage.getItem('activeInstance')
+      entityId: storageService.retrieve('activeInstance')
     };
   }
 

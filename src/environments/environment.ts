@@ -9,5 +9,10 @@ export const environment = {
     apiKey: 'AIzaSyD1ZxCmbiqgizgZOefDAn56YMb99A8CspM',
     authDomain: 'notes-c4d57.firebaseapp.com',
     databaseURL: 'https://notes-c4d57.firebaseio.com'
+  },
+  constants: {
+    localStorageKeys: {
+      quickButtonSetting: 'Go1.settings.quickButtonEnabled'
+    }
   }
 };

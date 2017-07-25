@@ -3,21 +3,23 @@ import go1Config from "../../go1core/go1core.config";
 import {RestClientService} from "../../go1core/services/RestClientService";
 import {AngularFireDatabase} from "angularfire2/database";
 import * as firebase from 'firebase';
+import {StorageService} from "../../go1core/services/StorageService";
 
 @Injectable()
 export class DiscussionService {
   private baseUrl = go1Config.baseApiUrl;
-  private customHeaders = {
-    'Authorization': `Bearer ${ localStorage.getItem('jwt') }`
-  };
+  private customHeaders: any;
 
   constructor(private restClientService: RestClientService,
-              private fireBaseDb: AngularFireDatabase) {
-
+              private fireBaseDb: AngularFireDatabase,
+              private storageService: StorageService) {
+    this.customHeaders = {
+      'Authorization': `Bearer ${ storageService.retrieve('jwt') }`
+    };
   }
 
   getUserNotesFromService() {
-    return this.restClientService.getAsync(`${this.baseUrl}/${go1Config.noteServicePath}notes`, this.customHeaders);
+    return this.restClientService.get(`${this.baseUrl}/${go1Config.noteServicePath}notes`, this.customHeaders);
   }
 
   getUserNotesFromFB() {
@@ -30,7 +32,7 @@ export class DiscussionService {
 
   createNote(newNote: any) {
     return new Promise(async (resolve, reject) => {
-      const response = await this.restClientService.postAsync(this.makeNoteRequestUrl(newNote), null, this.customHeaders);
+      const response = await this.restClientService.post(this.makeNoteRequestUrl(newNote), null, this.customHeaders);
 
       let newNoteFireObject = this.fireBaseDb.object(go1Config.fireBaseNotePath + response.uuid);
 

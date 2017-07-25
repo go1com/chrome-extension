@@ -2,7 +2,7 @@ import {Component, Input} from "@angular/core";
 
 @Component({
   selector: 'discussion-item',
-  templateUrl: './discussionItem.component.html',
+  templateUrl: './discussionItem.component.pug',
   styleUrls: ['./discussionItem.component.scss']
 })
 export class DiscussionItemComponent {

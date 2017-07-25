@@ -7,7 +7,7 @@ import {Go1RuntimeContainer} from "../modules/go1core/services/go1RuntimeContain
 
 @Component({
   selector: 'app-root',
-  templateUrl: './app.component.html',
+  templateUrl: './app.component.pug',
   styleUrls: ['./app.component.scss'],
   encapsulation: ViewEncapsulation.None,
 })

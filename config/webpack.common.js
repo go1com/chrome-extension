@@ -77,7 +77,8 @@ module.exports = function (options) {
     entry: {
       'polyfills': './src/polyfills.ts',
       'main': AOT ? './src/main.aot.ts' : './src/main.ts',
-      'contentScript': './src/contentScript.ts'
+      'contentScript': './src/contentScript/contentScript.ts',
+      'background': './src/background/background.ts'
     },
 
     /**
@@ -265,6 +266,20 @@ module.exports = function (options) {
           return /node_modules/.test(module.resource)
         }
       }),
+      new CommonsChunkPlugin({
+        name: 'vendor-background',
+        chunks: ['background'],
+        minChunks: function (module) {
+          return /node_modules/.test(module.resource)
+        }
+      }),
+      new CommonsChunkPlugin({
+        name: 'vendor-contentScript',
+        chunks: ['contentScript'],
+        minChunks: function (module) {
+          return /node_modules/.test(module.resource)
+        }
+      }),
       /**
        * Specify the correct order the scripts will be injected in
        */
@@ -306,8 +321,6 @@ module.exports = function (options) {
        */
       new CopyWebpackPlugin([
           {from: 'src/assets', to: 'assets'},
-          {from: 'src/injects', to: 'injects'},
-          {from: 'src/background', to: 'background'},
           {from: 'src/manifest.json'},
           {from: 'src/logo.png'},
           {from: 'src/favicon.ico'}
@@ -329,6 +342,16 @@ module.exports = function (options) {
         title: METADATA.title,
         chunks: ['manifest', 'polyfills', 'vendor', 'main'],
         chunksSortMode: orderByList(['manifest', 'polyfills', 'vendor', 'main']),
+        metadata: METADATA,
+        inject: 'body'
+      }),
+
+      new HtmlWebpackPlugin({
+        template: 'src/background.html',
+        filename: 'background.html',
+        title: METADATA.title,
+        chunks: ['manifest', 'polyfills', 'vendor', 'vendor-background', 'background'],
+        chunksSortMode: orderByList(['manifest', 'polyfills', 'vendor', 'vendor-background', 'background']),
         metadata: METADATA,
         inject: 'body'
       }),

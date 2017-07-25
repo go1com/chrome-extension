@@ -1,13 +1,14 @@
 import "rxjs";
 import {Injectable} from "@angular/core";
-import {Http} from "@angular/http";
-import {Response} from "@angular/http";
-import {RequestMethod} from "@angular/http";
-import {Observable} from "rxjs/Observable";
-import {Headers} from "@angular/http";
-import {RequestOptionsArgs} from "@angular/http";
 import * as _ from 'lodash';
 
+const RequestMethod = {
+  HEAD: 'HEAD',
+  GET: 'GET',
+  POST: 'POST',
+  PUT: 'PUT',
+  DELETE: 'DELETE',
+};
 
 /**
  * Represent Centralize Ajax Service
@@ -17,28 +18,7 @@ const applicationJsonType = 'application/json';
 
 @Injectable()
 export class RestClientService {
-  connectionType = {
-    connected: 2,
-    notConnected: 3,
-  };
-
-  constructor(private httpService: Http) {
-  }
-
-  rawRequest<T>(url: string, type: RequestMethod, optionCallback?: Function): Observable<Response> {
-    const options = <RequestOptionsArgs>{
-      method: type,
-      headers: new Headers({})
-    };
-
-    if (optionCallback) {
-      optionCallback(options);
-    }
-
-    return this.httpService.request(url, options);
-  }
-
-  request<T>(url: string, type: RequestMethod, data?: any, customHeaders?: any) {
+  request<T>(url: string, type: string, data?: any, customHeaders?: any) {
     let headers = {
       'Content-Type': applicationJsonType,
       'Accept': applicationJsonType
@@ -48,7 +28,7 @@ export class RestClientService {
       headers = _.merge(headers, customHeaders);
     }
 
-    const options = <RequestOptionsArgs>{
+    const options = <any>{
       method: type,
       headers: new Headers(headers)
     };
@@ -57,10 +37,10 @@ export class RestClientService {
       options.body = JSON.stringify(data);
     }
 
-    return this.httpService.request(url, options).map(this.mapResponse);
+    return fetch(url, options).then((response) => this.mapResponse(response));
   }
 
-  private mapResponse<T>(response: Response): T | any {
+  private mapResponse<T>(response: any): T | any {
     try {
       return <T>response.json();
     } catch (e) {
@@ -69,39 +49,23 @@ export class RestClientService {
     }
   }
 
-  head<T>(url: string): Observable<T> {
-    return this.request<T>(url, RequestMethod.Head);
+  head<T>(url: string) {
+    return this.request<T>(url, RequestMethod.HEAD);
   }
 
-  get<T>(url: string, customHeaders?: any): Observable<T> {
-    return this.request<T>(url, RequestMethod.Get, null, customHeaders);
+  get<T>(url: string, customHeaders?: any) {
+    return this.request<T>(url, RequestMethod.GET, null, customHeaders);
   }
 
-  getAsync(url: string, customHeaders?: any) {
-    return this.request(url, RequestMethod.Get, null, customHeaders).toPromise();
+  post<T>(url: string, data?: any, customHeaders?: any) {
+    return this.request<T>(url, RequestMethod.POST, data, customHeaders);
   }
 
-  post<T>(url: string, data?: any, customHeaders?: any): Observable<T> {
-    return this.request<T>(url, RequestMethod.Post, data, customHeaders);
+  put<T>(url: string, data?: any, customHeaders?: any)  {
+    return this.request<T>(url, RequestMethod.PUT, data, customHeaders);
   }
 
-  postAsync(url: string, data?: any, customHeaders?: any) {
-    return this.request(url, RequestMethod.Post, data, customHeaders).toPromise();
-  }
-
-  put<T>(url: string, data?: any, customHeaders?: any): Observable<T> {
-    return this.request<T>(url, RequestMethod.Put, data, customHeaders);
-  }
-
-  putAsync(url: string, data?: any, customHeaders?: any) {
-    return this.request(url, RequestMethod.Put, data, customHeaders).toPromise();
-  }
-
-  delete<T>(url: string, customHeaders?: any): Observable<T> {
-    return this.request<T>(url, RequestMethod.Delete, null, customHeaders);
-  }
-
-  deleteAsync(url: string, customHeaders?: any) {
-    return this.request(url, RequestMethod.Delete, null, customHeaders).toPromise();
+  delete<T>(url: string, customHeaders?: any) {
+    return this.request<T>(url, RequestMethod.DELETE, null, customHeaders);
   }
 }

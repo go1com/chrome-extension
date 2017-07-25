@@ -4,7 +4,6 @@ import {Go1CoreModule} from "../go1core/go1core.module";
 import {MembershipModule} from "../membership/membership.module";
 import {HttpModule} from "@angular/http";
 import {FormsModule} from "@angular/forms";
-import {BrowserModule} from "@angular/platform-browser";
 import {RouterModule} from "@angular/router";
 
 @NgModule({

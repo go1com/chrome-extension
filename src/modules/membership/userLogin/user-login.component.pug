@@ -1,0 +1,16 @@
+div([hidden]="!loading") Loading...
+form((submit)="login()", [hidden]="loading")
+  .imgcontainer
+    img#logo(src="../assets/logo_big.png")
+    img#signin-text(src="../assets/signin_text.png")
+
+  .container
+    input#email.form-control(type="email", name="email", [(ngModel)]="user.username", placeholder="E-mail")
+    input#password.form-control(type="password", name="password", [(ngModel)]="user.password", placeholder="Password")
+    button#login-btn Log In
+    img#login-or.or(src="../assets/login_or.png")
+    button#register-btn.register-btn(type="button", (click)="register()") Register
+    .link-text#forgot #[a(href="/") Forgot password? ]
+
+
+

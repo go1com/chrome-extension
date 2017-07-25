@@ -9,7 +9,7 @@
   },
   "background": {
     "persistent": true,
-    "page": "background/background.html"
+    "page": "background.html"
   },
   "content_security_policy": "script-src 'self' 'unsafe-eval' https://cdn.firebase.com https://*.firebaseio.com; object-src 'self'",
   "permissions": [
@@ -24,6 +24,7 @@
         "manifest.js",
         "polyfills.js",
         "vendor.js",
+        "vendor-contentScript.js",
         "contentScript.js"
       ],
       "css": [

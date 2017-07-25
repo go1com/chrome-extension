@@ -1,0 +1,13 @@
+.discussion-item.row
+  .col-3
+    .avatar-container
+      img(src="assets/avatar.png" alt="")
+
+
+  .col.description
+    h5([innerHtml]="discussionItem.message")
+    .menu
+      button.more-btn
+        img(src="assets/icon_more.png")
+    .created
+      small {{ discussionItem.created | amTimeAgo }}
