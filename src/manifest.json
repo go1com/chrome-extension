@@ -24,7 +24,6 @@
         "manifest.js",
         "polyfills.js",
         "vendor.js",
-        "vendor-contentScript.js",
         "contentScript.js"
       ],
       "css": [
