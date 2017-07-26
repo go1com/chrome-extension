@@ -17,7 +17,6 @@ export class NewDiscussionComponent implements OnInit {
               private currentActivatedRoute: ActivatedRoute,
               private userService: UserService,
               private storageService: StorageService) {
-    console.log(Go1RuntimeContainer.currentChromeTab);
     this.data = {
       title: '',
       body: '',

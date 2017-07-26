@@ -20,8 +20,10 @@ import {SettingsModule} from "../modules/settings/settings.module";
 import {MembershipModule} from "../modules/membership/membership.module";
 import {CommonModule} from "@angular/common";
 import {environment} from "../environments/environment";
-import {AngularFireModule} from "angularfire2";
 import extraProviders from "./extraProviders";
+import firebase from 'firebase';
+
+firebase.initializeApp(environment.firebase);
 
 @NgModule({
   declarations: [
@@ -40,7 +42,6 @@ import extraProviders from "./extraProviders";
     FormsModule,
     HttpModule,
     RouterModule.forRoot(routes),
-    AngularFireModule.initializeApp(environment.firebase),
 
     Go1CoreModule,
     SettingsModule,
@@ -53,6 +54,5 @@ import extraProviders from "./extraProviders";
   ],
   bootstrap: [AppComponent]
 })
-
 export class AppModule {
 }

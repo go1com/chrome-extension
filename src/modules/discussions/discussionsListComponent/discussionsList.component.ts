@@ -34,27 +34,26 @@ export class DiscussionsListComponent implements OnInit, OnDestroy {
   private async loadDiscussions() {
     const response = await this.discussionService.getUserNotesFromService();
 
-    response.forEach(item => {
-      this.discussionService.getUserNote(item.uuid).subscribe(note => {
-        if (!note || !note.data) {
-          return;
-        }
+    response.forEach(async item => {
+      const note: any = await this.discussionService.getUserNote(item.uuid);
+      if (!note || !note.data) {
+        return;
+      }
 
-        const keys = Object.keys(note.data);
-        const discussionTopic = note.data[keys[0]];
+      const keys = Object.keys(note.data);
+      const discussionTopic = note.data[keys[0]];
 
-        if (!discussionTopic) {
-          return;
-        }
+      if (!discussionTopic) {
+        return;
+      }
 
-        discussionTopic.messages = [];
+      discussionTopic.messages = [];
 
-        for (let index = 1; index < keys.length; index++) {
-          discussionTopic.messages.push(note.data[keys[index]]);
-        }
+      for (let index = 1; index < keys.length; index++) {
+        discussionTopic.messages.push(note.data[keys[index]]);
+      }
 
-        this.discussionsList.push(discussionTopic);
-      });
+      this.discussionsList.push(discussionTopic);
     });
   }
 }

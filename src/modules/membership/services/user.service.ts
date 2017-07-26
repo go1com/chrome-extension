@@ -71,24 +71,20 @@ export class UserService {
     if (this.currentUserObject)
       return this.currentUserObject;
 
-    const userStorage = this.storageService.retrieve('user');
-    if (userStorage) {
-      this.currentUserObject = JSON.parse(userStorage);
-      return this.currentUserObject;
-    }
-
-    return null;
+    this.currentUserObject = this.storageService.retrieve('user') || null;
+    return this.currentUserObject;
   }
 
   private setAuth(user) {
     this.storageService.store('jwt', user.jwt);
-    this.storageService.store('user', JSON.stringify(user));
+    this.storageService.store('user', user);
     this.storageService.store('uuid', user.uuid);
     this.storageService.store('activeInstance', user.accounts[0].instance.id);
   }
 
   private cleanAuth() {
     this.storageService.remove('activeInstance');
+    this.storageService.remove('user');
     this.storageService.remove('jwt');
     this.storageService.remove('uuid');
   }

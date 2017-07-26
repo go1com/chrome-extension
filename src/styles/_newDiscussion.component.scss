@@ -2,9 +2,13 @@
 
 .new-discussion-page {
   padding: 10px;
+  width: 415px;
+  height: 600px;
+  max-height: 600px;
 
   header {
     padding: 0;
+    background: none;
 
     .go-back-btn {
       padding: 0;
@@ -29,6 +33,7 @@
     > .form-control {
       border: none;
       padding: 15px 10px;
+      height: auto;
     }
   }
 

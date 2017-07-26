@@ -1,4 +1,4 @@
-.new-discussion-page
+.new-discussion-page.animated
   header.row
     .col-2
       a.btn.btn-no-border.btn-no-padding.go-back-btn((click)="goBack()" role="button")
@@ -7,16 +7,16 @@
       h5 START DISCUSSION
     .col-2
   .sub-header
-      input.form-control([(ngModel)]="data.title" placeholder="Discussion Topic")
+      input.form-control([(ngModel)]="data.title" name="noteTitle" placeholder="Discussion Topic")
   .link-preview
     label Related to:
     .link-preview-component(*ngIf="!!data.item")
       go1-link-preview(*ngIf="!!data.item", [linkUrl]="data.item")
   .description
-    textarea.form-control([(ngModel)]="data.body" placeholder="Say something about this page" rows=10)
+    textarea.form-control([(ngModel)]="data.body" name="noteBody" placeholder="Say something about this page" rows=10)
 
   .actions-area
     .row
       .col-7
       .col.text-align-right
-        button.btn.btn-primary((click)="addNote()") Add Note
+        button.btn.btn-primary.add-note-btn((click)="addNote()") Add Note

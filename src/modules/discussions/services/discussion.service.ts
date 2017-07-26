@@ -1,18 +1,19 @@
 import {Injectable} from "@angular/core";
 import go1Config from "../../go1core/go1core.config";
 import {RestClientService} from "../../go1core/services/RestClientService";
-import {AngularFireDatabase} from "angularfire2/database";
-import * as firebase from 'firebase';
 import {StorageService} from "../../go1core/services/StorageService";
+import firebase from 'firebase';
 
 @Injectable()
 export class DiscussionService {
   private baseUrl = go1Config.baseApiUrl;
   private customHeaders: any;
+  private fireBaseDb: firebase.database.Database;
 
   constructor(private restClientService: RestClientService,
-              private fireBaseDb: AngularFireDatabase,
               private storageService: StorageService) {
+    this.fireBaseDb = firebase.database();
+
     this.customHeaders = {
       'Authorization': `Bearer ${ storageService.retrieve('jwt') }`
     };
@@ -22,35 +23,33 @@ export class DiscussionService {
     return this.restClientService.get(`${this.baseUrl}/${go1Config.noteServicePath}notes`, this.customHeaders);
   }
 
-  getUserNotesFromFB() {
-    return this.fireBaseDb.list(go1Config.fireBaseNotePath);
-  }
+  async getUserNote(uuid: string) {
+    return new Promise((resolve, reject) => {
+      let ref = this.fireBaseDb.ref(go1Config.fireBaseNotePath + uuid);
 
-  getUserNote(uuid: string) {
-    return this.fireBaseDb.object(go1Config.fireBaseNotePath + uuid);
-  }
-
-  createNote(newNote: any) {
-    return new Promise(async (resolve, reject) => {
-      const response = await this.restClientService.post(this.makeNoteRequestUrl(newNote), null, this.customHeaders);
-
-      let newNoteFireObject = this.fireBaseDb.object(go1Config.fireBaseNotePath + response.uuid);
-
-      const randomKey = '-' + this.randomString(19);
-      let childData = {};
-      childData[randomKey] = {
-        message: newNote.body,
-        item: newNote.item,
-        user_id: newNote.user.id,
-        created: new Date().getTime()
-      };
-      newNoteFireObject.set({
-        user_id: newNote.user.id,
-        name: newNote.title,
-        data: childData
+      ref.on('value', (snapshot) => {
+        resolve(snapshot.val());
       });
+    });
+  }
 
-      resolve();
+  async createNote(newNote: any) {
+    const response = await this.restClientService.post(this.makeNoteRequestUrl(newNote), null, this.customHeaders);
+
+    let newNoteFireObject = this.fireBaseDb.ref(go1Config.fireBaseNotePath + response.uuid);
+
+    const randomKey = '-' + this.randomString(19);
+    let childData = {};
+    childData[randomKey] = {
+      message: newNote.body,
+      item: newNote.item,
+      user_id: newNote.user.id,
+      created: new Date().getTime()
+    };
+    newNoteFireObject.set({
+      user_id: newNote.user.id,
+      name: newNote.title,
+      data: childData
     });
   }
 

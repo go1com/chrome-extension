@@ -1,7 +1,7 @@
 .link-preview-frame
-  .row([hidden]="!isLoading")
+  .row.is-loading([hidden]="!isLoading")
     .col Loading Preview...
-  .row([hidden]="isLoading")
+  .row.loading-completed([hidden]="isLoading")
     .col-3
       img.link-preview-img([src]="linkPreview.image", *ngIf="linkPreview.image")
       img.link-preview-img(src="assets/no-image-icon-15.png", *ngIf="!linkPreview.image")

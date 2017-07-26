@@ -1,13 +1,10 @@
-@import "../../node_modules/bootstrap/scss/bootstrap-reboot";
+@import "bootstrap-reboot";
 
 .go1-extension {
-  @import "../../node_modules/bootstrap/scss/variables";
   @import "variables";
-  @import "../../node_modules/bootstrap/scss/bootstrap";
-  @import "../../node_modules/bootstrap/scss/bootstrap-grid";
+  @import "bootstrap";
+  @import "bootstrap-grid";
   @import "common";
-
-  @import "newDiscussion.component";
 
   body {
     width: 415px;
@@ -18,6 +15,9 @@
     font-family: 'Open Sans', sans-serif;
     color: $go1black;
   }
+
+  @import "newDiscussion.component";
+  @import "link-preview.component";
 
   button, [role='button'] {
     cursor: pointer;

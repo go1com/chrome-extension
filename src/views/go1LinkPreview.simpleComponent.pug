@@ -1,0 +1,12 @@
+.link-preview-frame
+  .row.is-loading
+    .col Loading Preview...
+  .row.loading-completed
+    .col-3
+      img.link-preview-img
+    .col-9
+      h5
+        span.title {{ linkPreview.title }}
+        button.close-btn &times;
+      div.description {{ linkPreview.description }}
+
