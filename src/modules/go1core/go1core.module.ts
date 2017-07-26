@@ -9,10 +9,12 @@ import {MomentModule} from "angular2-moment";
 import {ChromeCmdHandleService} from "./chromeExtensionsCommandHandler/ChromeCmdHandleService";
 import {AddToPortalChromeCommandHandler} from "./chromeExtensionsCommandHandler/IChromeCommandHandler";
 import {StorageService} from "./services/StorageService";
+import {LoadingIndicatorComponent} from "./loadingIndicatorComponent/loadingIndicatorComponent";
 
 @NgModule({
   declarations: [
-    Go1HeaderComponent
+    Go1HeaderComponent,
+    LoadingIndicatorComponent
   ],
   imports: [
     CommonModule,
@@ -28,7 +30,8 @@ import {StorageService} from "./services/StorageService";
     AddToPortalChromeCommandHandler
   ],
   exports: [
-    Go1HeaderComponent
+    Go1HeaderComponent,
+    LoadingIndicatorComponent
   ]
 })
 export class Go1CoreModule {

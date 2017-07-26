@@ -1,4 +1,4 @@
-import {Component, OnDestroy, OnInit} from "@angular/core";
+import {Component, NgZone, OnDestroy, OnInit} from "@angular/core";
 import {DiscussionService} from "../services/discussion.service";
 import {ActivatedRoute, Router} from "@angular/router";
 
@@ -9,9 +9,11 @@ import {ActivatedRoute, Router} from "@angular/router";
 })
 export class DiscussionsListComponent implements OnInit, OnDestroy {
   discussionsList: any[];
+  loading: boolean = false;
 
   constructor(private discussionService: DiscussionService,
               private router: Router,
+              private zone: NgZone,
               private currentActivatedRoute: ActivatedRoute) {
     this.discussionsList = [];
   }
@@ -32,9 +34,11 @@ export class DiscussionsListComponent implements OnInit, OnDestroy {
   }
 
   private async loadDiscussions() {
+    this.loading = true;
     const response = await this.discussionService.getUserNotesFromService();
 
-    response.forEach(async item => {
+    for (let i = 0; i < response.length; i++) {
+      const item = response[i];
       const note: any = await this.discussionService.getUserNote(item.uuid);
       if (!note || !note.data) {
         return;
@@ -54,6 +58,10 @@ export class DiscussionsListComponent implements OnInit, OnDestroy {
       }
 
       this.discussionsList.push(discussionTopic);
+    }
+
+    this.zone.run(() => {
+      this.loading = false;
     });
   }
 }
