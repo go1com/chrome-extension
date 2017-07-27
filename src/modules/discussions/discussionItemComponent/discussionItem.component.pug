@@ -5,7 +5,8 @@
 
 
   .col.description
-    h5([innerHtml]="discussionItem.message")
+    h5(*ngIf="discussionItem.name", [innerHtml]="discussionItem.name")
+    h5(*ngIf="!discussionItem.name", [innerHtml]="discussionItem.message")
     .menu
       button.more-btn
         img(src="assets/icon_more.png")

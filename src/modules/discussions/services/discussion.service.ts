@@ -41,6 +41,7 @@ export class DiscussionService {
     const randomKey = '-' + this.randomString(19);
     let childData = {};
     childData[randomKey] = {
+      name: newNote.title,
       message: newNote.body,
       item: newNote.item || '',
       quote: newNote.quote || '',
