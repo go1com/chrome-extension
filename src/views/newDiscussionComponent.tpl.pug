@@ -8,6 +8,8 @@
     .col-2
   .sub-header
       input.form-control([(ngModel)]="data.title" name="noteTitle" placeholder="Discussion Topic")
+  .quotation(*ngIf="data.quote")
+      blockquote {{ data.quote }}
   .link-preview
     label Related to:
     .link-preview-component(*ngIf="!!data.item")
@@ -16,7 +18,6 @@
     textarea.form-control([(ngModel)]="data.body" name="noteBody" placeholder="Say something about this page" rows=10)
 
   .actions-area
-    .row
       .col-7
-      .col.text-align-right
+      .col-5.text-align-right.p-r-0
         button.btn.btn-primary.add-note-btn((click)="addNote()") Add Note

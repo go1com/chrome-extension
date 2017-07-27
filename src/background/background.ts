@@ -11,13 +11,12 @@ const storageService = new StorageService();
 const discussionService = new DiscussionService(restClientService, storageService);
 
 chrome.runtime.onMessage.addListener(function (msg, sender, sendResponse) {
-  if ((msg.from === 'content') && (msg.action === 'checkQuickButtonSetting')) {
+  if (msg.from === 'content' && msg.action === 'checkQuickButtonSetting') {
     checkQuickButtonSetting(sendResponse);
   }
 
-  if ((msg.from === 'content') && (msg.action === 'addNewNote')) {
-    let currentUser = storageService.retrieve('user');
-    msg.data.user = currentUser;
+  if (msg.from === 'content' && msg.action === 'addNewNote') {
+    msg.data.user = storageService.retrieve('user');
     msg.data.entityType = 'portal';
     msg.data.entityId = storageService.retrieve('activeInstance');
 

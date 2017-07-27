@@ -1,5 +1,3 @@
-@import "../../node_modules/bootstrap/scss/variables";
-
 $go1gray: #b9c8cf;
 $green: #51c133;
 $go1brandColor: #31b8da;
@@ -13,6 +11,12 @@ $go1grey5: #8c9fa4;
 $go1grey6: #6c7b7f;
 $go1grey7: #35464b;
 
-$brand-primary: #31b8da;
+$brand-primary: $go1brandColor;
 $font-size-base: 16px;
+$btn-primary-bg: $go1brandColor;
+$btn-primary-border: $go1brandColor;
 
+$input-padding-x: 15px;
+$input-padding-y: 8px;
+
+$fa-font-path: "../assets/fontawesome";

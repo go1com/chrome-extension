@@ -21,6 +21,7 @@ export class NewDiscussionComponent implements OnInit {
       title: '',
       body: '',
       entityType: 'portal',
+      quote: '',
       item: Go1RuntimeContainer.currentChromeTab.url,
       entityId: storageService.retrieve('activeInstance')
     };

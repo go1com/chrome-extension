@@ -1,1 +1,68 @@
-@import "main";
+@import "bootstrap-reboot";
+
+.go1-extension {
+  @import "variables";
+  @import "bootstrap";
+  @import "bootstrap-grid";
+  @import "common";
+  @import "loadingIndicator";
+
+  body {
+    width: 415px;
+    height: 600px;
+    max-height: 600px;
+    font-size: 16px;
+    padding-bottom: 10px;
+    font-family: 'Open Sans', sans-serif;
+    color: $go1black;
+  }
+
+  @import "newDiscussion.component";
+  @import "link-preview.component";
+
+  button, [role='button'] {
+    cursor: pointer;
+  }
+
+  .btn-no-padding {
+    padding: 0;
+  }
+
+  .dropdown-menu {
+    max-width: 100%;
+  }
+
+  .dropdown-item {
+    text-overflow: ellipsis;
+    overflow: hidden;
+    cursor: pointer;
+  }
+
+  [routerlink],
+  .list-group-item {
+    cursor: pointer;
+  }
+
+  .btn-primary,
+  .list-group-item.active,
+  .list-group-item.active:focus,
+  .list-group-item.active:hover {
+    background-color: $go1brandColor;
+    border-color: $go1brandColor;
+  }
+
+  .text-primary,
+  .text-success {
+    color: $go1brandColor;
+  }
+
+  .form-control,
+  .btn,
+  .navbar-default {
+    border-radius: 0;
+  }
+
+  .form-group {
+    padding: 5px 20px;
+  }
+}

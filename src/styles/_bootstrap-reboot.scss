@@ -2,9 +2,10 @@
 //
 // Includes only Normalize and our custom Reboot reset.
 
-@import "variables";
+@import "../../node_modules/bootstrap/scss/variables";
 @import "../../node_modules/bootstrap/scss/mixins";
 @import "../../node_modules/bootstrap/scss/custom";
+@import "variables";
 
 @import "../../node_modules/bootstrap/scss/normalize";
 @import "../../node_modules/bootstrap/scss/reboot";

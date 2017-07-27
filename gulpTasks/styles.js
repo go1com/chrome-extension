@@ -8,5 +8,9 @@ gulp.task('styles', () => {
     '!**/_*.scss'
   ])
     .pipe(sass())
+    .on('error', function(error) {
+      console.log(error.toString());
+      this.emit('end');
+    })
     .pipe(gulp.dest(pathsConfig.dist + '/styles'))
 });

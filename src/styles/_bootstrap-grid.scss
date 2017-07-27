@@ -26,8 +26,7 @@ html {
 //
 // Variables
 //
-
-@import "variables";
+@import "../../node_modules/bootstrap/scss/variables";
 
 //
 // Grid mixins
@@ -41,3 +40,4 @@ html {
 @import "../../node_modules/bootstrap/scss/custom";
 
 @import "../../node_modules/bootstrap/scss/grid";
+@import "variables";

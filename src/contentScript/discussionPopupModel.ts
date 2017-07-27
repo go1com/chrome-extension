@@ -5,6 +5,15 @@ export class NewDiscussionPopup {
   popupDOM: any;
   linkPreview: Go1LinkPreviewComponent;
   private onDismissCallback: Function;
+  static currentOpeningPopup: NewDiscussionPopup;
+  private quoteText: string;
+
+  static openPopup(containerDOM, quote?: string) {
+    NewDiscussionPopup.currentOpeningPopup = new NewDiscussionPopup(containerDOM, () => {
+      NewDiscussionPopup.currentOpeningPopup = null;
+    });
+    NewDiscussionPopup.currentOpeningPopup.showPopup(quote);
+  }
 
   constructor(parentNode, onDismissCallback: Function) {
     this.containerDOM = parentNode;
@@ -13,7 +22,7 @@ export class NewDiscussionPopup {
     this.onDismissCallback = onDismissCallback;
   }
 
-  async showPopup() {
+  async showPopup(quote?: string) {
     if (this.popupDOM) {
       return;
     }
@@ -24,13 +33,26 @@ export class NewDiscussionPopup {
     this.bindEventListeners();
     this.popupDOM.classList.add('bounceIn');
     this.popupDOM.classList.add('bounceInRight');
-    await this.showLinkPreview();
+
+    if (quote) {
+      await this.showQuoteText(quote);
+    } else {
+      await this.showLinkPreview();
+    }
+  }
+
+  private showQuoteText(quote: string) {
+    this.quoteText = quote;
+    this.popupDOM.querySelector('input[name="noteTitle"]').value = quote;
+    this.popupDOM.querySelector('.quotation').querySelector('blockquote').innerText = this.quoteText;
+    this.popupDOM.querySelector('.quotation').style.removeProperty('display');
   }
 
   async showLinkPreview() {
     const linkPreviewHtml = require('../views/go1LinkPreview.simpleComponent.pug');
-    const linkPreviewContainer = this.popupDOM.querySelector('go1-link-preview');
+    const linkPreviewContainer = this.popupDOM.querySelector('.link-preview');
 
+    linkPreviewContainer.style.removeProperty('display');
     linkPreviewContainer.innerHTML = linkPreviewHtml;
     let isLoadingBlock = linkPreviewContainer.querySelector('.is-loading');
     let loadingCompleteBlock = linkPreviewContainer.querySelector('.loading-completed');
@@ -49,6 +71,8 @@ export class NewDiscussionPopup {
   }
 
   bindEventListeners() {
+    this.popupDOM.querySelector('.quotation').style.display = 'none';
+    this.popupDOM.querySelector('.link-preview').style.display = 'none';
     this.popupDOM.querySelector('.go-back-btn').addEventListener('click', (event) => this.hidePopup());
     this.popupDOM.querySelector('.actions-area .add-note-btn').addEventListener('click', (event) => this.addNote());
   }
@@ -57,7 +81,8 @@ export class NewDiscussionPopup {
     let newNoteData = {
       title: this.popupDOM.querySelector('input[name="noteTitle"]').value,
       body: this.popupDOM.querySelector('textarea[name="noteBody"]').value,
-      item: this.linkPreview.linkUrl
+      item: this.linkPreview.linkUrl,
+      quote: this.quoteText || ''
     };
 
     chrome.runtime.sendMessage({
@@ -67,6 +92,7 @@ export class NewDiscussionPopup {
     }, (response) => {
       if (response.success) {
         this.hidePopup();
+        this.showSuccessPopup();
       }
     });
   }
@@ -85,8 +111,8 @@ export class NewDiscussionPopup {
       notificationDOM.classList.add('bounceOutRight');
       setTimeout(() => {
         this.containerDOM.removeChild(notificationDOM);
-      }, 2000);
-    }, 4000);
+      }, 1500);
+    }, 1500);
   }
 
   hidePopup() {
@@ -94,11 +120,10 @@ export class NewDiscussionPopup {
     this.popupDOM.classList.remove('bounceInRight');
     this.popupDOM.classList.add('bounceOut');
     this.popupDOM.classList.add('bounceOutRight');
-    this.showSuccessPopup();
 
     setTimeout(() => {
       this.containerDOM.removeChild(this.popupDOM);
       this.onDismissCallback();
-    }, 300);
+    }, 1500);
   }
 }

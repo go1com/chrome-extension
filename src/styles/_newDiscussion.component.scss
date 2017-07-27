@@ -5,6 +5,7 @@
   width: 415px;
   height: 600px;
   max-height: 600px;
+  font-size: 16px;
 
   header {
     padding: 0;
@@ -37,6 +38,20 @@
     }
   }
 
+  .quotation {
+    margin: 16px 0;
+
+    blockquote {
+      background-image: url(data:image/svg+xml;base64,PD94bWwgdmVyc2lvbj0iMS4wIiBlbmNvZGluZz0idXRmLTgiPz48c3ZnIHZlcnNpb249IjEuMSIgaWQ9IkxheWVyXzEiIHhtbG5zPSJodHRwOi8vd3d3LnczLm9yZy8yMDAwL3N2ZyIgeG1sbnM6eGxpbms9Imh0dHA6Ly93d3cudzMub3JnLzE5OTkveGxpbmsiIHg9IjBweCIgeT0iMHB4IiB2aWV3Qm94PSIwIDAgMTI4IDEyOCIgc3R5bGU9ImVuYWJsZS1iYWNrZ3JvdW5kOm5ldyAwIDAgMTI4IDEyODsiIHhtbDpzcGFjZT0icHJlc2VydmUiPjxnPjxwYXRoIGQ9Ik01OS4xLDc3djI5LjVjMCw0LjEtMS40LDcuNi00LjMsMTAuNWMtMi45LDIuOS02LjQsNC4zLTEwLjUsNC4zSDE0LjhjLTQuMSwwLTcuNi0xLjQtMTAuNS00LjNjLTIuOS0yLjktNC4zLTYuNC00LjMtMTAuNVY1Mi40QzAsNDcsMSw0MS45LDMuMSwzNy4xYzIuMS00LjgsNC45LTksOC40LTEyLjZzNy43LTYuMywxMi42LTguNEMyOSwxNCwzNC4xLDEzLDM5LjQsMTNoNC45YzEuMywwLDIuNSwwLjUsMy41LDEuNWMxLDEsMS41LDIuMSwxLjUsMy41djkuOGMwLDEuMy0wLjUsMi41LTEuNSwzLjVjLTEsMS0yLjEsMS41LTMuNSwxLjVoLTQuOWMtNS40LDAtMTAuMSwxLjktMTMuOSw1LjhzLTUuOCw4LjUtNS44LDEzLjl2Mi41YzAsMi4xLDAuNywzLjgsMi4yLDUuMmMxLjQsMS40LDMuMiwyLjIsNS4yLDIuMmgxNy4yYzQuMSwwLDcuNiwxLjQsMTAuNSw0LjNDNTcuNiw2OS40LDU5LjEsNzIuOSw1OS4xLDc3eiBNMTI4LDc3djI5LjVjMCw0LjEtMS40LDcuNi00LjMsMTAuNWMtMi45LDIuOS02LjQsNC4zLTEwLjUsNC4zSDgzLjdjLTQuMSwwLTcuNi0xLjQtMTAuNS00LjNjLTIuOS0yLjktNC4zLTYuNC00LjMtMTAuNVY1Mi40YzAtNS4zLDEtMTAuNCwzLjEtMTUuM2MyLjEtNC44LDQuOS05LDguNC0xMi42czcuNy02LjMsMTIuNi04LjRDOTcuOSwxNCwxMDMsMTMsMTA4LjMsMTNoNC45YzEuMywwLDIuNSwwLjUsMy41LDEuNWMxLDEsMS41LDIuMSwxLjUsMy41djkuOGMwLDEuMy0wLjUsMi41LTEuNSwzLjVjLTEsMS0yLjEsMS41LTMuNSwxLjVoLTQuOWMtNS40LDAtMTAuMSwxLjktMTMuOSw1LjhjLTMuOCwzLjgtNS44LDguNS01LjgsMTMuOXYyLjVjMCwyLjEsMC43LDMuOCwyLjIsNS4yYzEuNCwxLjQsMy4yLDIuMiw1LjIsMi4yaDE3LjJjNC4xLDAsNy42LDEuNCwxMC41LDQuM0MxMjYuNiw2OS40LDEyOCw3Mi45LDEyOCw3N3oiLz48L2c+PC9zdmc+);
+      background-repeat: no-repeat;
+      background-size: 32px 32px;
+      background-position: 10px 5px;
+      padding: 24px 10px 24px 56px;
+      background-color: #FFF8DC;
+      border-left: 2px solid #ffeb8e;
+    }
+  }
+
   .link-preview {
     margin: 15px 0 20px;
   }
@@ -53,5 +68,7 @@
 
   .actions-area {
     padding: 15px 0 0;
+    display: flex;
+    flex-wrap: wrap;
   }
 }
