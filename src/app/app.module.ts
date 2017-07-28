@@ -2,7 +2,7 @@ import {BrowserModule} from '@angular/platform-browser';
 import {NgModule} from '@angular/core';
 import {FormsModule} from '@angular/forms';
 import {HttpModule} from '@angular/http';
-import {RouterModule} from '@angular/router';
+import {PreloadAllModules, RouterModule} from '@angular/router';
 
 import {AppComponent} from './app.component';
 
@@ -41,7 +41,7 @@ firebase.initializeApp(environment.firebase);
     CommonModule,
     FormsModule,
     HttpModule,
-    RouterModule.forRoot(routes),
+    RouterModule.forRoot(routes, {useHash: true, preloadingStrategy: PreloadAllModules}),
 
     Go1CoreModule,
     SettingsModule,

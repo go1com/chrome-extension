@@ -2,11 +2,16 @@ import {Environment} from "./environment";
 
 export const environment: Environment = {
   production: true,
-
+  authBackend: 'accounts.gocatalyze.com',
   baseApiUrl: 'https://api.mygo1.com/v3',
-
-  fireBaseNotePath: 'apiom_notes/',
-  noteServicePath: 'note-service/',
+  serviceUrls: {
+    user: 'user-service/',
+    enrollment: 'enrolment-service/',
+    lo: 'lo-service/',
+    portal: 'portal-service/',
+    noteService: 'note-service/',
+    fireBaseNotePath: 'apiom_notes/'
+  },
 
   firebase: {
     apiKey: 'AIzaSyD1ZxCmbiqgizgZOefDAn56YMb99A8CspM',
@@ -15,6 +20,10 @@ export const environment: Environment = {
   },
   constants: {
     localStorageKeys: {
+      authentication: 'jwt',
+      portalInstance: 'activeInstance',
+      user: 'user',
+      uuid: 'uuid',
       quickButtonSetting: 'Go1.settings.quickButtonEnabled'
     }
   }

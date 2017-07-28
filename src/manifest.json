@@ -16,6 +16,7 @@
     "activeTab",
     "tabs"
   ],
+  "options_page": "index.html",
   "content_scripts": [
     {
       "all_frames": false,

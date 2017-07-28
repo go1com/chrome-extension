@@ -7,7 +7,6 @@ const helpers = require('./helpers');
  * Used to merge webpack configs
 */
 const webpackMerge = require('webpack-merge');
-const webpackMergeDll = webpackMerge.strategy({plugins: 'replace'});
 /**
  * The settings that are common to prod and dev
 */
@@ -24,10 +23,6 @@ const NormalModuleReplacementPlugin = require('webpack/lib/NormalModuleReplaceme
 const ProvidePlugin = require('webpack/lib/ProvidePlugin');
 const UglifyJsPlugin = require('webpack/lib/optimize/UglifyJsPlugin');
 const OptimizeJsPlugin = require('optimize-js-plugin');
-const DllBundlesPlugin = require('webpack-dll-bundles-plugin').DllBundlesPlugin;
-
-const AddAssetHtmlPlugin = require('add-asset-html-webpack-plugin');
-const NamedModulesPlugin = require('webpack/lib/NamedModulesPlugin');
 
 /**
  * Webpack Constants
@@ -137,6 +132,26 @@ module.exports = function (env) {
      * See: http://webpack.github.io/docs/configuration.html#plugins
      */
     plugins: [
+
+      /**
+       * Webpack plugin to optimize a JavaScript file for faster initial load
+       * by wrapping eagerly-invoked functions.
+       *
+       * See: https://github.com/vigneshshanmugam/optimize-js-plugin
+       */
+      new OptimizeJsPlugin({
+        sourceMap: false
+      }),
+
+      /**
+       * Plugin: ExtractTextPlugin
+       * Description: Extracts imported CSS files into external stylesheet
+       *
+       * See: https://github.com/webpack/extract-text-webpack-plugin
+       */
+      //new ExtractTextPlugin('[name].[contenthash].css'),
+      new ExtractTextPlugin('[name].css'),
+
       /**
        * Plugin: DefinePlugin
        * Description: Define free variables.
@@ -145,9 +160,8 @@ module.exports = function (env) {
        * Environment helpers
        *
        * See: https://webpack.github.io/docs/list-of-plugins.html#defineplugin
-       *
-       * NOTE: when adding more properties, make sure you include them in custom-typings.d.ts
        */
+      // NOTE: when adding more properties make sure you include them in custom-typings.d.ts
       new DefinePlugin({
         'ENV': JSON.stringify(METADATA.ENV),
         'HMR': METADATA.HMR,
@@ -158,60 +172,117 @@ module.exports = function (env) {
         }
       }),
 
-      new DllBundlesPlugin({
-        bundles: {
-          polyfills: [
-            'core-js',
-            {
-              name: 'zone.js',
-              path: 'zone.js/dist/zone.js'
-            },
-            {
-              name: 'zone.js',
-              path: 'zone.js/dist/long-stack-trace-zone.js'
-            },
-          ],
-          vendor: [
-            '@angular/platform-browser',
-            '@angular/platform-browser-dynamic',
-            '@angular/core',
-            '@angular/common',
-            '@angular/forms',
-            '@angular/http',
-            '@angular/router',
-            '@angularclass/hmr',
-            'rxjs',
-          ]
+      /**
+       * Plugin: UglifyJsPlugin
+       * Description: Minimize all JavaScript output of chunks.
+       * Loaders are switched into minimizing mode.
+       *
+       * See: https://webpack.github.io/docs/list-of-plugins.html#uglifyjsplugin
+       *
+       * NOTE: To debug prod builds uncomment //debug lines and comment //prod lines
+       */
+      new UglifyJsPlugin({
+        // beautify: true, //debug
+        // mangle: false, //debug
+        // dead_code: false, //debug
+        // unused: false, //debug
+        // deadCode: false, //debug
+        // compress: {
+        //   screw_ie8: true,
+        //   keep_fnames: true,
+        //   drop_debugger: false,
+        //   dead_code: false,
+        //   unused: false
+        // }, // debug
+        // comments: true, //debug
+
+
+        beautify: false, //prod
+        output: {
+          comments: false
+        }, //prod
+        mangle: {
+          screw_ie8: true
+        }, //prod
+        compress: {
+          screw_ie8: true,
+          warnings: false,
+          conditionals: true,
+          unused: true,
+          comparisons: true,
+          sequences: true,
+          dead_code: true,
+          evaluate: true,
+          if_return: true,
+          join_vars: true,
+          negate_iife: false // we need this for lazy v8
         },
-        dllDir: helpers.root('dll'),
-        webpackConfig: webpackMergeDll(commonConfig({env: ENV}), {
-          devtool: 'cheap-module-source-map',
-          plugins: []
-        })
       }),
 
       /**
-       * Plugin: AddAssetHtmlPlugin
-       * Description: Adds the given JS or CSS file to the files
-       * Webpack knows about, and put it into the list of assets
-       * html-webpack-plugin injects into the generated html.
+       * Plugin: NormalModuleReplacementPlugin
+       * Description: Replace resources that matches resourceRegExp with newResource
        *
-       * See: https://github.com/SimenB/add-asset-html-webpack-plugin
+       * See: http://webpack.github.io/docs/list-of-plugins.html#normalmodulereplacementplugin
        */
-      new AddAssetHtmlPlugin([
-        { filepath: helpers.root(`dll/${DllBundlesPlugin.resolveFile('polyfills')}`) },
-        { filepath: helpers.root(`dll/${DllBundlesPlugin.resolveFile('vendor')}`) }
-      ]),
+      new NormalModuleReplacementPlugin(
+        /angular2-hmr/,
+        helpers.root('config/empty.js')
+      ),
+
+      new NormalModuleReplacementPlugin(
+        /zone\.js(\\|\/)dist(\\|\/)long-stack-trace-zone/,
+        helpers.root('config/empty.js')
+      ),
 
       new NormalModuleReplacementPlugin(/\.\/environment\.dev/, './environment.prod'),
 
       /**
-       * Plugin: NamedModulesPlugin (experimental)
-       * Description: Uses file names as module name.
-       *
-       * See: https://github.com/webpack/webpack/commit/a04ffb928365b19feb75087c63f13cadfc08e1eb
+       * AoT
        */
-      // new NamedModulesPlugin(),
+      /*
+      new NormalModuleReplacementPlugin(
+        /@angular(\\|\/)upgrade/,
+        helpers.root('config/empty.js')
+      ),
+      new NormalModuleReplacementPlugin(
+        /@angular(\\|\/)compiler/,
+        helpers.root('config/empty.js')
+      ),
+      new NormalModuleReplacementPlugin(
+        /@angular(\\|\/)platform-browser-dynamic/,
+        helpers.root('config/empty.js')
+      ),
+      new NormalModuleReplacementPlugin(
+        /dom(\\|\/)debug(\\|\/)ng_probe/,
+        helpers.root('config/empty.js')
+      ),
+      new NormalModuleReplacementPlugin(
+        /dom(\\|\/)debug(\\|\/)by/,
+        helpers.root('config/empty.js')
+      ),
+      new NormalModuleReplacementPlugin(
+        /src(\\|\/)debug(\\|\/)debug_node/,
+        helpers.root('config/empty.js')
+      ),
+      new NormalModuleReplacementPlugin(
+        /src(\\|\/)debug(\\|\/)debug_renderer/,
+        helpers.root('config/empty.js')
+      ),
+      */
+
+      /**
+       * Plugin: CompressionPlugin
+       * Description: Prepares compressed versions of assets to serve
+       * them with Content-Encoding
+       *
+       * See: https://github.com/webpack/compression-webpack-plugin
+       */
+      //  install compression-webpack-plugin
+      // new CompressionPlugin({
+      //   regExp: /\.css$|\.html$|\.js$|\.map$/,
+      //   threshold: 2 * 1024
+      // })
 
       /**
        * Plugin LoaderOptionsPlugin (experimental)
@@ -219,11 +290,40 @@ module.exports = function (env) {
        * See: https://gist.github.com/sokra/27b24881210b56bbaff7
        */
       new LoaderOptionsPlugin({
+        minimize: true,
         debug: false,
         options: {
 
+          /**
+           * Html loader advanced options
+           *
+           * See: https://github.com/webpack/html-loader#advanced-options
+           */
+          // TODO: Need to workaround Angular 2's html syntax => #id [bind] (event) *ngFor
+          htmlLoader: {
+            minimize: true,
+            removeAttributeQuotes: false,
+            caseSensitive: true,
+            customAttrSurround: [
+              [/#/, /(?:)/],
+              [/\*/, /(?:)/],
+              [/\[?\(?/, /(?:)/]
+            ],
+            customAttrAssign: [/\)?\]?=/]
+          },
+
         }
       }),
+
+      /**
+       * Plugin: BundleAnalyzerPlugin
+       * Description: Webpack plugin and CLI utility that represents
+       * bundle content as convenient interactive zoomable treemap
+       *
+       * `npm run build:prod -- --env.analyze` to use
+       *
+       * See: https://github.com/th0r/webpack-bundle-analyzer
+       */
 
     ],
 

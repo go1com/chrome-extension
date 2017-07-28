@@ -23,6 +23,7 @@ const LoaderOptionsPlugin = require('webpack/lib/LoaderOptionsPlugin');
 const ScriptExtHtmlWebpackPlugin = require('script-ext-html-webpack-plugin');
 const ngcWebpack = require('ngc-webpack');
 const pathsConfig = require('./pathsConfig');
+const EncodingPlugin = require('webpack-encoding-plugin');
 
 /**
  * Webpack Constants
@@ -430,6 +431,10 @@ module.exports = function (options) {
         disabled: !AOT,
         tsConfig: helpers.root('tsconfig.webpack.json'),
         resourceOverride: helpers.root('config/resource-override.js')
+      }),
+
+      new EncodingPlugin({
+        encoding: 'utf8'
       })
     ],
 

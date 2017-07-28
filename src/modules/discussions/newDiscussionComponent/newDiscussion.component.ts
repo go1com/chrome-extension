@@ -4,7 +4,7 @@ import {DiscussionService} from "../services/discussion.service";
 import {UserService} from "../../membership/services/user.service";
 import {Go1RuntimeContainer} from "../../go1core/services/go1RuntimeContainer";
 import {StorageService} from "../../go1core/services/StorageService";
-import {ModalDialogService} from "../../../contentScript/notifications/AlertModal";
+import {environment} from "../../../environments";
 
 @Component({
   selector: 'app-new-discussion',
@@ -24,7 +24,7 @@ export class NewDiscussionComponent implements OnInit {
       entityType: 'portal',
       quote: '',
       item: Go1RuntimeContainer.currentChromeTab.url,
-      entityId: storageService.retrieve('activeInstance')
+      entityId: storageService.retrieve(environment.constants.localStorageKeys.portalInstance)
     };
   }
 
