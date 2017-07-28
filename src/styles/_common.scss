@@ -1,4 +1,5 @@
 @import url('https://fonts.googleapis.com/css?family=Open+Sans|Ubuntu');
+@import "../../node_modules/bootstrap/scss/variables";
 @import "variables";
 
 *, input, textarea, select, label {
@@ -9,6 +10,30 @@
 
 .text-align-right {
   text-align: right;
+}
+
+.dialog-success {
+  background: $alert-success-bg;
+  color: $alert-success-text;
+  border-color: $alert-success-border;
+}
+
+.dialog-warning {
+  background: $alert-warning-bg;
+  color: $alert-warning-text;
+  border-color: $alert-warning-border;
+}
+
+.dialog-danger {
+  background: $alert-danger-bg;
+  color: $alert-danger-text;
+  border-color: $alert-danger-border;
+}
+
+.dialog-info {
+  background: $alert-info-bg;
+  color: $alert-info-text;
+  border-color: $alert-info-border;
 }
 
 .p-r-0 {

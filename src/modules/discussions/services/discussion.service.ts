@@ -1,12 +1,12 @@
 import {Injectable} from "@angular/core";
-import go1Config from "../../go1core/go1core.config";
 import {RestClientService} from "../../go1core/services/RestClientService";
 import {StorageService} from "../../go1core/services/StorageService";
 import firebase from 'firebase';
+import {environment} from "../../../environments/index";
 
 @Injectable()
 export class DiscussionService {
-  private baseUrl = go1Config.baseApiUrl;
+  private baseUrl = environment.baseApiUrl;
   private customHeaders: any;
   private fireBaseDb: firebase.database.Database;
 
@@ -20,12 +20,12 @@ export class DiscussionService {
   }
 
   getUserNotesFromService() {
-    return this.restClientService.get(`${this.baseUrl}/${go1Config.noteServicePath}notes`, this.customHeaders);
+    return this.restClientService.get(`${this.baseUrl}/${environment.noteServicePath}notes`, this.customHeaders);
   }
 
   async getUserNote(uuid: string) {
     return new Promise((resolve, reject) => {
-      let ref = this.fireBaseDb.ref(go1Config.fireBaseNotePath + uuid);
+      let ref = this.fireBaseDb.ref(environment.fireBaseNotePath + uuid);
 
       ref.on('value', (snapshot) => {
         resolve(snapshot.val());
@@ -36,7 +36,7 @@ export class DiscussionService {
   async createNote(newNote: any) {
     const response = await this.restClientService.post(this.makeNoteRequestUrl(newNote), null, this.customHeaders);
 
-    let newNoteFireObject = this.fireBaseDb.ref(go1Config.fireBaseNotePath + response.uuid);
+    let newNoteFireObject = this.fireBaseDb.ref(environment.fireBaseNotePath + response.uuid);
 
     const randomKey = '-' + this.randomString(19);
     let childData = {};
@@ -66,7 +66,7 @@ export class DiscussionService {
 
   makeNoteRequestUrl(newNote) {
     const validEntityTypes = ['lo', 'portal', 'group'];
-    let endpoint = `${this.baseUrl}/${go1Config.noteServicePath}note/`;
+    let endpoint = `${this.baseUrl}/${environment.noteServicePath}note/`;
 
     if (newNote.customType) {
       validEntityTypes.push(newNote.customType);

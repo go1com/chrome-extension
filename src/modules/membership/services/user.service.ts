@@ -5,13 +5,13 @@ import {BehaviorSubject} from 'rxjs/BehaviorSubject';
 import 'rxjs/add/operator/map';
 import 'rxjs/add/operator/catch';
 import 'rxjs/add/observable/throw';
-import go1Config from "../../go1core/go1core.config";
 import {RestClientService} from "../../go1core/services/RestClientService";
 import {StorageService} from "../../go1core/services/StorageService";
+import {environment} from "../../../environments/index";
 
 @Injectable()
 export class UserService {
-  private apiUrl = go1Config.baseApiUrl;
+  private apiUrl = environment.baseApiUrl;
   public currentUserSubject = new BehaviorSubject<any>({});
   public currentUser = this.currentUserSubject.asObservable();
   private currentUserObject: any = null;

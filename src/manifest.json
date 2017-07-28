@@ -13,7 +13,8 @@
   },
   "content_security_policy": "script-src 'self' 'unsafe-eval' https://cdn.firebase.com https://*.firebaseio.com; object-src 'self'",
   "permissions": [
-    "activeTab"
+    "activeTab",
+    "tabs"
   ],
   "content_scripts": [
     {
@@ -24,6 +25,8 @@
         "manifest.js",
         "polyfills.js",
         "vendor.js",
+        "libs/jquery-3.2.1.min.js",
+        "libs/jquery.dotdotdot.min.js",
         "contentScript.js"
       ],
       "css": [
@@ -38,6 +41,7 @@
   "web_accessible_resources": [
     "injects/*",
     "assets/fontawesome/*",
-    "assets/*"
+    "assets/*",
+    "libs/*"
   ]
 }

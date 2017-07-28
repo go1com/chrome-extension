@@ -1,4 +1,8 @@
 import {Go1LinkPreviewComponent} from "../sharedComponents/go1LinkPreview/go1LinkPreviewComponent/go1LinkPreview.component";
+import {ModalDialogService} from "./notifications/AlertModal";
+import {Go1ExtensionInjectionArea} from "./go1ExtensionInjectionArea";
+
+declare const $: any;
 
 export class NewDiscussionPopup {
   containerDOM: any;
@@ -9,14 +13,17 @@ export class NewDiscussionPopup {
   private quoteText: string;
 
   static openPopup(containerDOM, quote?: string) {
-    NewDiscussionPopup.currentOpeningPopup = new NewDiscussionPopup(containerDOM, () => {
+    if (NewDiscussionPopup.currentOpeningPopup) {
+      NewDiscussionPopup.currentOpeningPopup.hidePopup();
+    }
+
+    NewDiscussionPopup.currentOpeningPopup = new NewDiscussionPopup(() => {
       NewDiscussionPopup.currentOpeningPopup = null;
     });
     NewDiscussionPopup.currentOpeningPopup.showPopup(quote);
   }
 
-  constructor(parentNode, onDismissCallback: Function) {
-    this.containerDOM = parentNode;
+  constructor(onDismissCallback: Function) {
     this.linkPreview = new Go1LinkPreviewComponent();
     this.linkPreview.linkUrl = window.location.toString();
     this.onDismissCallback = onDismissCallback;
@@ -28,11 +35,11 @@ export class NewDiscussionPopup {
     }
 
     const html = require('../views/newDiscussionComponent.tpl.pug');
-    this.containerDOM.insertAdjacentHTML('beforeend', html);
-    this.popupDOM = this.containerDOM.querySelector('.new-discussion-page');
+
+    this.popupDOM = $(html);
+    Go1ExtensionInjectionArea.appendDOM(this.popupDOM);
     this.bindEventListeners();
-    this.popupDOM.classList.add('bounceIn');
-    this.popupDOM.classList.add('bounceInRight');
+    this.popupDOM.addClass('bounceIn bounceInRight');
 
     if (quote) {
       await this.showQuoteText(quote);
@@ -43,47 +50,58 @@ export class NewDiscussionPopup {
 
   private showQuoteText(quote: string) {
     this.quoteText = quote;
-    this.popupDOM.querySelector('input[name="noteTitle"]').value = quote;
-    this.popupDOM.querySelector('.quotation').querySelector('blockquote').innerText = this.quoteText;
-    this.popupDOM.querySelector('.quotation').style.removeProperty('display');
+
+    $('.quotation blockquote', this.popupDOM).text(this.quoteText);
+    $('.quotation', this.popupDOM).css('display', '');
+    $('.quotation blockquote', this.popupDOM).dotdotdot();
   }
 
   async showLinkPreview() {
     const linkPreviewHtml = require('../views/go1LinkPreview.simpleComponent.pug');
-    const linkPreviewContainer = this.popupDOM.querySelector('.link-preview');
+    const linkPreviewContainer = $('.link-preview', this.popupDOM);
+    const linkPreviewContent = $(linkPreviewHtml);
 
-    linkPreviewContainer.style.removeProperty('display');
-    linkPreviewContainer.innerHTML = linkPreviewHtml;
-    let isLoadingBlock = linkPreviewContainer.querySelector('.is-loading');
-    let loadingCompleteBlock = linkPreviewContainer.querySelector('.loading-completed');
+    linkPreviewContainer.css('display', '');
+    linkPreviewContainer.append(linkPreviewContent);
 
-    isLoadingBlock.style.display = 'block';
-    loadingCompleteBlock.style.display = 'none';
+    let isLoadingBlock = $('.is-loading', linkPreviewContent);
+    let loadingCompleteBlock = $('.loading-completed', linkPreviewContent);
+
+    isLoadingBlock.css('display', 'block');
+    loadingCompleteBlock.css('display', 'none');
     await this.linkPreview.loadLinkPreviewData();
+
     if (!this.linkPreview.linkPreview.image) {
       this.linkPreview.linkPreview.image = `chrome-extension://${chrome.runtime.id}/assets/no-image-icon-15.png`;
     }
-    isLoadingBlock.style.display = 'none';
-    loadingCompleteBlock.querySelector('.link-preview-img').src = this.linkPreview.linkPreview.image;
-    loadingCompleteBlock.querySelector('.description').innerText = this.linkPreview.linkPreview.description;
-    loadingCompleteBlock.querySelector('h5 > .title').innerText = this.linkPreview.linkPreview.title;
-    loadingCompleteBlock.style.removeProperty('display');
+
+    $('.link-preview-img', loadingCompleteBlock).attr('src', this.linkPreview.linkPreview.image);
+    $('.description', loadingCompleteBlock).text(this.linkPreview.linkPreview.description);
+    $('h5 > .title', loadingCompleteBlock).text(this.linkPreview.linkPreview.title);
+
+    isLoadingBlock.remove();
+    loadingCompleteBlock.css({'display': ''});
   }
 
   bindEventListeners() {
-    this.popupDOM.querySelector('.quotation').style.display = 'none';
-    this.popupDOM.querySelector('.link-preview').style.display = 'none';
-    this.popupDOM.querySelector('.go-back-btn').addEventListener('click', (event) => this.hidePopup());
-    this.popupDOM.querySelector('.actions-area .add-note-btn').addEventListener('click', (event) => this.addNote());
+    $('.quotation', this.popupDOM).css('display', 'none');
+    $('.link-preview', this.popupDOM).css('display', 'none');
+    $('.go-back-btn', this.popupDOM).on('click', (event) => this.hidePopup());
+    $('.actions-area .add-note-btn', this.popupDOM).on('click', (event) => this.addNote());
   }
 
   async addNote() {
     let newNoteData = {
-      title: this.popupDOM.querySelector('input[name="noteTitle"]').value,
-      body: this.popupDOM.querySelector('textarea[name="noteBody"]').value,
+      title: this.popupDOM.find('input[name="noteTitle"]').val(),
+      body: this.popupDOM.find('textarea[name="noteBody"]').val(),
       item: this.linkPreview.linkUrl,
       quote: this.quoteText || ''
     };
+
+    if (!newNoteData.title) {
+      ModalDialogService.showModal('Please enter the topic!', 'Topic missing!', 'warning', 'OK', 'warning');
+      return;
+    }
 
     chrome.runtime.sendMessage({
       from: 'content',
@@ -98,31 +116,15 @@ export class NewDiscussionPopup {
   }
 
   showSuccessPopup() {
-    const html = require('../views/newDiscussionAddedSuccess.pug');
-    this.containerDOM.insertAdjacentHTML('beforeend', html);
-    const notificationDOM = this.containerDOM.querySelector('.discussion-added-success');
-    notificationDOM.classList.add('bounceIn');
-    notificationDOM.classList.add('bounceInRight');
-
-    setTimeout(() => {
-      notificationDOM.classList.remove('boundIn');
-      notificationDOM.classList.remove('boundInRight');
-      notificationDOM.classList.add('bounceOut');
-      notificationDOM.classList.add('bounceOutRight');
-      setTimeout(() => {
-        this.containerDOM.removeChild(notificationDOM);
-      }, 1500);
-    }, 1500);
+    ModalDialogService.showModal('Note saved successfully', 'Congratulation!', 'success', '','primary', 3.5);
   }
 
   hidePopup() {
-    this.popupDOM.classList.remove('bounceIn');
-    this.popupDOM.classList.remove('bounceInRight');
-    this.popupDOM.classList.add('bounceOut');
-    this.popupDOM.classList.add('bounceOutRight');
+    this.popupDOM.removeClass('bounceIn bounceInRight');
+    this.popupDOM.addClass('bounceOut bounceOutRight');
 
     setTimeout(() => {
-      this.containerDOM.removeChild(this.popupDOM);
+      this.popupDOM.remove();
       this.onDismissCallback();
     }, 1500);
   }

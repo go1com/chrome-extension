@@ -1,5 +1,5 @@
 import firebase from 'firebase';
-import {environment} from '../environments/environment';
+import {environment} from '../environments';
 import {StorageService} from "../modules/go1core/services/StorageService";
 import {DiscussionService} from "../modules/discussions/services/discussion.service";
 import {RestClientService} from "../modules/go1core/services/RestClientService";
@@ -11,11 +11,11 @@ const storageService = new StorageService();
 const discussionService = new DiscussionService(restClientService, storageService);
 
 chrome.runtime.onMessage.addListener(function (msg, sender, sendResponse) {
-  if (msg.from === 'content' && msg.action === 'checkQuickButtonSetting') {
+  if (msg.action === 'checkQuickButtonSetting') {
     checkQuickButtonSetting(sendResponse);
   }
 
-  if (msg.from === 'content' && msg.action === 'addNewNote') {
+  if (msg.action === 'addNewNote') {
     msg.data.user = storageService.retrieve('user');
     msg.data.entityType = 'portal';
     msg.data.entityId = storageService.retrieve('activeInstance');
@@ -28,22 +28,11 @@ chrome.runtime.onMessage.addListener(function (msg, sender, sendResponse) {
       });
     return true;
   }
-
-  if (msg.from == 'popup' && msg.action === 'quickButtonSettingChanged') {
-    checkQuickButtonSetting(null);
-  }
 });
 
 function checkQuickButtonSetting(sendResponse) {
   const quickButtonSetting = storageService.retrieve(environment.constants.localStorageKeys.quickButtonSetting) || false;
   if (sendResponse) {
     sendResponse(quickButtonSetting);
-  } else {
-    chrome.runtime.sendMessage({
-      quickButtonSettingChanged: {
-        newValue: quickButtonSetting
-      },
-      from: 'background'
-    });
   }
 }

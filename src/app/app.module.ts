@@ -19,7 +19,7 @@ import {Go1CoreModule} from "../modules/go1core/go1core.module";
 import {SettingsModule} from "../modules/settings/settings.module";
 import {MembershipModule} from "../modules/membership/membership.module";
 import {CommonModule} from "@angular/common";
-import {environment} from "../environments/environment";
+import {environment} from "../environments";
 import extraProviders from "./extraProviders";
 import firebase from 'firebase';
 

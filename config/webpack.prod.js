@@ -235,6 +235,8 @@ module.exports = function (env) {
         helpers.root('config/empty.js')
       ),
 
+      new NormalModuleReplacementPlugin(/\.\/environment\.dev/, './environment.prod'),
+
       /**
        * AoT
        */

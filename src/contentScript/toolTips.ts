@@ -1,5 +1,7 @@
 import {NewDiscussionPopup} from "./discussionPopupModel";
+import {Go1ExtensionInjectionArea} from "./go1ExtensionInjectionArea";
 
+declare const $: any;
 
 export class ToolTipMenu {
   selectingText: any;
@@ -12,10 +14,13 @@ export class ToolTipMenu {
 
   static toolTipMenus: any[] = [];
 
-  static initializeTooltip(parentNode, boundingRect, selectingText) {
+  static initializeTooltip(boundingRect, selectingText) {
+    if (!Go1ExtensionInjectionArea.singleInstance)
+      throw new Error('Go1 Extension is not initialized');
+
     ToolTipMenu.closeLastTooltip(true);
 
-    const toolTip = new ToolTipMenu(parentNode);
+    const toolTip = new ToolTipMenu();
     ToolTipMenu.toolTipMenus.push(toolTip);
 
     toolTip.initialize(boundingRect, selectingText);
@@ -28,9 +33,6 @@ export class ToolTipMenu {
     }
   }
 
-  constructor(parentNode) {
-    this.containerDOM = parentNode;
-  }
 
   initialize(boundingRect, selectingText) {
     this.top = boundingRect.top;
@@ -41,33 +43,34 @@ export class ToolTipMenu {
 
     const tooltipHtml = require('../views/selectionToolTipMenu.pug');
 
-    this.containerDOM.insertAdjacentHTML('beforeend', tooltipHtml);
-    this.tooltipDOM = this.containerDOM.querySelector('.go1-tooltip');
+    this.tooltipDOM = $(tooltipHtml);
 
-    this.tooltipDOM.style.left = this.left + (this.elementWidth / 2) + 'px';
-    this.tooltipDOM.style.top = this.top + window.scrollY - 32 + 'px';
+    Go1ExtensionInjectionArea.appendDOM(this.tooltipDOM);
 
-    this.tooltipDOM.classList.add('fadeIn');
-    this.tooltipDOM.classList.add('fadeInBottom');
+    this.tooltipDOM.css({
+      left: this.left + (this.elementWidth / 2) + 'px',
+      top: this.top + window.scrollY - 32 + 'px'
+    });
+
+    this.tooltipDOM.addClass('fadeIn fadeInBottom');
     this.bindEventListeners();
   }
 
   dismiss(closeImmediately = false) {
     if (closeImmediately) {
-      this.containerDOM.removeChild(this.tooltipDOM);
+      this.tooltipDOM.remove();
+      return;
     }
 
-    this.tooltipDOM.classList.remove('fadeIn');
-    this.tooltipDOM.classList.remove('fadeInBottom');
-    this.tooltipDOM.classList.add('fadeOut');
-    this.tooltipDOM.classList.add('fadeOutBottom');
+    this.tooltipDOM.removeClass('fadeIn fadeInBottom');
+    this.tooltipDOM.addClass('fadeOut fadeOutBottom');
     setTimeout(() => {
-      this.containerDOM.removeChild(this.tooltipDOM);
+      this.tooltipDOM.remove();
     }, 1500);
   }
 
   private bindEventListeners() {
-    this.tooltipDOM.querySelector('a.create-note-cmd').addEventListener('click', async () => {
+    $('a.create-note-cmd', this.tooltipDOM).on('click', async () => {
       await NewDiscussionPopup.openPopup(this.containerDOM, this.selectingText);
       this.dismiss();
     });

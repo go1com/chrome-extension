@@ -11,6 +11,7 @@
     padding: 0;
     background: none;
     height: initial;
+    margin: 0;
 
     .go-back-btn {
       padding: 0;
@@ -50,6 +51,7 @@
       padding: 24px 10px 24px 56px;
       background-color: #FFF8DC;
       border-left: 2px solid #ffeb8e;
+      max-height: 165px;
     }
   }
 
@@ -64,6 +66,7 @@
     > .form-control {
       border: none;
       padding: 15px 10px;
+      min-height: 150px;
     }
   }
 

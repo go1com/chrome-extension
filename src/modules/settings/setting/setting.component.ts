@@ -2,7 +2,7 @@ import {Component, OnInit} from '@angular/core';
 import {Router} from '@angular/router';
 import {UserService} from '../../membership/services/user.service';
 import {StorageService} from "../../go1core/services/StorageService";
-import {environment} from "../../../environments/environment";
+import {environment} from "../../../environments";
 
 @Component({
   selector: 'app-setting',
@@ -34,9 +34,12 @@ export class SettingComponent implements OnInit {
 
     this.storageService.store(environment.constants.localStorageKeys.quickButtonSetting, this.quickButtonEnabled);
 
-    chrome.runtime.sendMessage({
-      action: 'quickButtonSettingChanged',
-      from: 'popup'
+    chrome.tabs.query({currentWindow: true}, function (tabs) {
+      tabs.forEach(tab => {
+        chrome.tabs.sendMessage(tab.id, {quickButtonSettingChanged: this.quickButtonEnabled}, function (response) {
+
+        });
+      });
     });
   }
 

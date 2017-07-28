@@ -4,6 +4,7 @@ import {DiscussionService} from "../services/discussion.service";
 import {UserService} from "../../membership/services/user.service";
 import {Go1RuntimeContainer} from "../../go1core/services/go1RuntimeContainer";
 import {StorageService} from "../../go1core/services/StorageService";
+import {ModalDialogService} from "../../../contentScript/notifications/AlertModal";
 
 @Component({
   selector: 'app-new-discussion',
@@ -36,6 +37,10 @@ export class NewDiscussionComponent implements OnInit {
   }
 
   async addNote() {
+    if (!this.data.title) {
+      alert('Please enter the topic!');
+      return;
+    }
     await this.discussionService.createNote(this.data);
     await this.goBack();
   }
