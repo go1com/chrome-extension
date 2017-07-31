@@ -19,6 +19,9 @@
 
   @import "newDiscussion.component";
   @import "link-preview.component";
+  @import "addToPortal.component";
+  @import "addToPortalSchedule.component";
+  @import "addToPortalSuccess.component";
 
   button, [role='button'] {
     cursor: pointer;

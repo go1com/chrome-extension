@@ -4,7 +4,7 @@ import {ActivatedRoute, Router} from "@angular/router";
 
 @Component({
   selector: 'app-discussions-list',
-  templateUrl: './discussionsList.component.html',
+  templateUrl: './discussionsList.component.pug',
   styleUrls: ['./discussionsList.component.scss']
 })
 export class DiscussionsListComponent implements OnInit, OnDestroy {
@@ -29,8 +29,8 @@ export class DiscussionsListComponent implements OnInit, OnDestroy {
     await this.router.navigate(['./newDiscussion'], {relativeTo: this.currentActivatedRoute});
   }
 
-  addToPortal() {
-
+  async addToPortal() {
+    await this.router.navigate(['/addToPortal']);
   }
 
   private async loadDiscussions() {

@@ -18,6 +18,10 @@ let routes: Routes = [
     loadChildren: '../modules/discussions#DiscussionsModule'
   },
   {
+    path: 'addToPortal',
+    loadChildren: '../modules/addToPortal#AddToPortalModule'
+  },
+  {
     path: 'portals',
     component: PortalsComponent
   },

@@ -1,0 +1,34 @@
+.discussions-list-page
+  go-header
+  .no-content([hidden]="!loading")
+    loading-indicator
+
+  .no-content([hidden]="loading || discussionsList.length")
+    img(src="assets/notes.png")
+    h4 There's No Notes on this Page
+
+    h6.
+      Be the first one to add a note
+      #[br ]
+      on this page by clicking on the below button
+      #[br ]
+      or drag to choose a favourite quote on the page
+
+  .discussions-list([hidden]="!discussionsList.length")
+    discussion-item(*ngFor="let discussionItem of discussionsList", [discussionItem]="discussionItem")
+
+  .action-area([hidden]="discussionsList.length")
+    button.rounded-button((click)="addDiscussion()") +
+
+
+  .actions-area.row([hidden]="!discussionsList.length")
+    .col-4
+      button.btn.btn-block((click)="addDiscussion()")
+        | #[img(src="assets/chat_black.png") ] Add Note
+
+    .col-4
+      button.btn.btn-block((click)="addToPortal()")
+        | #[img(src="assets/add_portal.png") ] Add to Portal
+
+    .col-4
+      button.btn.btn-block((click)="share()") Share

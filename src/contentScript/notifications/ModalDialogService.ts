@@ -10,7 +10,7 @@ export class ModalDialogService {
                    buttonStyle: 'primary' | 'danger' | 'warning' | 'info' | 'success' = 'primary',
                    autoCloseInSecond: number = 0) {
 
-    const modalContentHtml = require('./alertModal.pug');
+    const modalContentHtml = require('./modalDialog.pug');
 
     const modalContent = $(modalContentHtml);
 

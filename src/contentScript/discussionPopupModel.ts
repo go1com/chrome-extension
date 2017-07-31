@@ -111,7 +111,6 @@ export class NewDiscussionPopup {
         this.hidePopup();
         this.showSuccessPopup();
       }
-      debugger;
     });
   }
 

@@ -1,0 +1,36 @@
+@import "variables";
+
+.add-to-portal-success {
+  header {
+    background: $go1grey1;
+    padding: 25px 90px;
+    text-align: center;
+    color: $go1grey7;
+
+    button.btn-clean {
+      color: $go1grey7;
+      background: none;
+      position: absolute;
+      right: 0;
+      font-size: 20px;
+      font-weight: bold;
+      top: 0px;
+    }
+  }
+
+  .add-to-courses {
+    padding: 25px;
+  }
+
+  footer {
+    position: fixed;
+    bottom: 0;
+    width: 100%;
+    padding: 20px;
+
+    button {
+      border-radius: 55px;
+      float: right;
+    }
+  }
+}

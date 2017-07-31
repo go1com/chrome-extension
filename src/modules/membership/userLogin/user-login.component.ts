@@ -4,6 +4,7 @@ import {Router} from '@angular/router';
 import {UserService} from '../services/user.service'
 import {StorageService} from "../../go1core/services/StorageService";
 import {environment} from "../../../environments";
+import configuration from "../../../environments/configuration";
 
 @Component({
   selector: 'user-login',
@@ -63,7 +64,7 @@ export class UserLoginComponent implements OnInit {
       if (activeAccount.roles.indexOf('administrator') >= 0) {
         this.router.navigate(['/admin-dashboard']);
       } else {
-        this.router.navigate(['/discussions-list']);
+        this.router.navigate(['/' + configuration.defaultPage]);
       }
     } else {
       this.router.navigate(['']);

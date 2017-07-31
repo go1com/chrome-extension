@@ -71,7 +71,7 @@ export class ToolTipMenu {
 
   private bindEventListeners() {
     $('a.create-note-cmd', this.tooltipDOM).on('click', async () => {
-      await NewDiscussionPopup.openPopup(this.containerDOM, this.selectingText);
+      await NewDiscussionPopup.openPopup(this.selectingText);
       this.dismiss();
     });
   }
