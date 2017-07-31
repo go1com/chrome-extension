@@ -12,6 +12,10 @@ export class DiscussionService {
 
   constructor(private restClientService: RestClientService,
               private storageService: StorageService) {
+    if (firebase.apps.length === 0) {
+      firebase.initializeApp(environment.firebase);
+    }
+
     this.fireBaseDb = firebase.database();
 
     this.customHeaders = {
@@ -34,7 +38,9 @@ export class DiscussionService {
   }
 
   async createNote(newNote: any) {
-    const response = await this.restClientService.post(this.makeNoteRequestUrl(newNote), null, this.customHeaders);
+    const response = await this.restClientService.post(this.makeNoteRequestUrl(newNote),
+      null,
+      this.customHeaders);
 
     let newNoteFireObject = this.fireBaseDb.ref(environment.serviceUrls.fireBaseNotePath + response.uuid);
 
@@ -48,11 +54,13 @@ export class DiscussionService {
       user_id: newNote.user.id,
       created: new Date().getTime()
     };
-    newNoteFireObject.set({
+    let firebaseObject = {
       user_id: newNote.user.id,
       name: newNote.title,
       data: childData
-    });
+    };
+    newNoteFireObject.set(firebaseObject);
+    return firebaseObject;
   }
 
   randomString(length) {

@@ -1,10 +1,8 @@
-import firebase from 'firebase';
 import {environment} from '../environments';
 import {StorageService} from "../modules/go1core/services/StorageService";
 import {DiscussionService} from "../modules/discussions/services/discussion.service";
 import {RestClientService} from "../modules/go1core/services/RestClientService";
 
-firebase.initializeApp(environment.firebase);
 
 const restClientService = new RestClientService();
 const storageService = new StorageService();
@@ -21,10 +19,16 @@ chrome.runtime.onMessage.addListener(function (msg, sender, sendResponse) {
     msg.data.entityId = storageService.retrieve('activeInstance');
 
     discussionService.createNote(msg.data)
-      .then(() => {
+      .then((response) => {
         sendResponse({
           success: true
         });
+      })
+      .catch((error) => {
+        sendResponse({
+          success: false,
+          error
+        })
       });
     return true;
   }

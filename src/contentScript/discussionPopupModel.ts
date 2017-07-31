@@ -1,18 +1,17 @@
 import {Go1LinkPreviewComponent} from "../sharedComponents/go1LinkPreview/go1LinkPreviewComponent/go1LinkPreview.component";
-import {ModalDialogService} from "./notifications/AlertModal";
+import {ModalDialogService} from "./notifications/ModalDialogService";
 import {Go1ExtensionInjectionArea} from "./go1ExtensionInjectionArea";
 
 declare const $: any;
 
 export class NewDiscussionPopup {
-  containerDOM: any;
   popupDOM: any;
   linkPreview: Go1LinkPreviewComponent;
   private onDismissCallback: Function;
   static currentOpeningPopup: NewDiscussionPopup;
   private quoteText: string;
 
-  static openPopup(containerDOM, quote?: string) {
+  static async openPopup(quote?: string) {
     if (NewDiscussionPopup.currentOpeningPopup) {
       NewDiscussionPopup.currentOpeningPopup.hidePopup();
     }
@@ -20,7 +19,7 @@ export class NewDiscussionPopup {
     NewDiscussionPopup.currentOpeningPopup = new NewDiscussionPopup(() => {
       NewDiscussionPopup.currentOpeningPopup = null;
     });
-    NewDiscussionPopup.currentOpeningPopup.showPopup(quote);
+    await NewDiscussionPopup.currentOpeningPopup.showPopup(quote);
   }
 
   constructor(onDismissCallback: Function) {
@@ -112,6 +111,7 @@ export class NewDiscussionPopup {
         this.hidePopup();
         this.showSuccessPopup();
       }
+      debugger;
     });
   }
 

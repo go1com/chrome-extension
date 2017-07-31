@@ -59,7 +59,7 @@ export class Go1ExtensionInjectionArea {
   appendQuickButton() {
     this.containerArea.append(this.go1QuickButton);
 
-    this.go1QuickButton.on('click', (event) => NewDiscussionPopup.openPopup(Go1ExtensionInjectionArea.singleInstance));
+    this.go1QuickButton.on('click', (event) => NewDiscussionPopup.openPopup());
   }
 
   removeQuickButton() {
