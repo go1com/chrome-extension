@@ -3,7 +3,6 @@ import {Router} from '@angular/router';
 
 import {UserService} from '../services/user.service'
 import {StorageService} from "../../go1core/services/StorageService";
-import {environment} from "../../../environments";
 import configuration from "../../../environments/configuration";
 
 @Component({
@@ -58,7 +57,7 @@ export class UserLoginComponent implements OnInit {
 
   redirect(user): void {
     if (user.id) {
-      const activeInstanceId = this.storageService.retrieve(environment.constants.localStorageKeys.portalInstance);
+      const activeInstanceId = this.storageService.retrieve(configuration.constants.localStorageKeys.portalInstance);
       const activeAccount = user.accounts.find(account => account.instance.id === activeInstanceId);
 
       if (activeAccount.roles.indexOf('administrator') >= 0) {

@@ -1,7 +1,6 @@
 import {Component} from "@angular/core";
 import {ActivatedRoute, Router} from "@angular/router";
 import {Go1RuntimeContainer} from "../../go1core/services/go1RuntimeContainer";
-import {environment} from "../../../environments";
 import {StorageService} from "../../go1core/services/StorageService";
 import configuration from "../../../environments/configuration";
 import {routeNames} from "../addToPortal.routes";
@@ -25,7 +24,7 @@ export class AddToPortalComponent {
         type: 'weblink',
         path: Go1RuntimeContainer.currentChromeTab.url,
       },
-      instance: storageService.retrieve(environment.constants.localStorageKeys.portalInstance)
+      instance: storageService.retrieve(configuration.constants.localStorageKeys.portalInstance)
     };
   }
 

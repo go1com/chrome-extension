@@ -2,34 +2,35 @@ import {Injectable} from "@angular/core";
 import {RestClientService} from "../../go1core/services/RestClientService";
 import {StorageService} from "../../go1core/services/StorageService";
 import firebase from 'firebase';
-import {environment} from "../../../environments/index";
+import configuration from "../../../environments/configuration";
 
 @Injectable()
 export class DiscussionService {
-  private baseUrl = environment.baseApiUrl;
-  private customHeaders: any;
+  private baseUrl = configuration.environment.baseApiUrl;
   private fireBaseDb: firebase.database.Database;
 
   constructor(private restClientService: RestClientService,
               private storageService: StorageService) {
     if (firebase.apps.length === 0) {
-      firebase.initializeApp(environment.firebase);
+      firebase.initializeApp(configuration.environment.firebase);
     }
 
     this.fireBaseDb = firebase.database();
+  }
 
-    this.customHeaders = {
-      'Authorization': `Bearer ${ storageService.retrieve(environment.constants.localStorageKeys.authentication) }`
+  private getCustomHeaders() {
+    return {
+      'Authorization': `Bearer ${ this.storageService.retrieve(configuration.constants.localStorageKeys.authentication) }`
     };
   }
 
   getUserNotesFromService() {
-    return this.restClientService.get(`${this.baseUrl}/${environment.serviceUrls.noteService}notes`, this.customHeaders);
+    return this.restClientService.get(`${this.baseUrl}/${configuration.environment.serviceUrls.noteService}notes`, this.getCustomHeaders());
   }
 
   async getUserNote(uuid: string) {
     return new Promise((resolve, reject) => {
-      let ref = this.fireBaseDb.ref(environment.serviceUrls.fireBaseNotePath + uuid);
+      let ref = this.fireBaseDb.ref(configuration.environment.serviceUrls.fireBaseNotePath + uuid);
 
       ref.on('value', (snapshot) => {
         resolve(snapshot.val());
@@ -40,9 +41,9 @@ export class DiscussionService {
   async createNote(newNote: any) {
     const response = await this.restClientService.post(this.makeNoteRequestUrl(newNote),
       null,
-      this.customHeaders);
+      this.getCustomHeaders());
 
-    let newNoteFireObject = this.fireBaseDb.ref(environment.serviceUrls.fireBaseNotePath + response.uuid);
+    let newNoteFireObject = this.fireBaseDb.ref(configuration.environment.serviceUrls.fireBaseNotePath + response.uuid);
 
     const randomKey = '-' + this.randomString(19);
     let childData = {};
@@ -74,7 +75,7 @@ export class DiscussionService {
 
   makeNoteRequestUrl(newNote) {
     const validEntityTypes = ['lo', 'portal', 'group'];
-    let endpoint = `${this.baseUrl}/${environment.serviceUrls.noteService}note/`;
+    let endpoint = `${this.baseUrl}/${configuration.environment.serviceUrls.noteService}note/`;
 
     if (newNote.customType) {
       validEntityTypes.push(newNote.customType);

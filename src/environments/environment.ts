@@ -17,14 +17,4 @@ export interface Environment {
     authDomain: string,
     databaseURL: string
   }
-
-  constants: {
-    localStorageKeys: {
-      authentication: string,
-      portalInstance: string,
-      user: string,
-      uuid: string,
-      quickButtonSetting: string
-    }
-  }
 }

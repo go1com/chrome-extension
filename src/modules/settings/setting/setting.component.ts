@@ -3,6 +3,7 @@ import {Router} from '@angular/router';
 import {UserService} from '../../membership/services/user.service';
 import {StorageService} from "../../go1core/services/StorageService";
 import {environment} from "../../../environments";
+import configuration from "../../../environments/configuration";
 
 @Component({
   selector: 'app-setting',
@@ -20,7 +21,7 @@ export class SettingComponent implements OnInit {
   }
 
   ngOnInit() {
-    this.quickButtonEnabled = this.storageService.retrieve(environment.constants.localStorageKeys.quickButtonSetting) || false;
+    this.quickButtonEnabled = this.storageService.retrieve(configuration.constants.localStorageKeys.quickButtonSetting) || false;
 
     this.userService.currentUser.subscribe(
       (user) => {
@@ -32,7 +33,7 @@ export class SettingComponent implements OnInit {
   toggleQuickButton() {
     this.quickButtonEnabled = !this.quickButtonEnabled;
 
-    this.storageService.store(environment.constants.localStorageKeys.quickButtonSetting, this.quickButtonEnabled);
+    this.storageService.store(configuration.constants.localStorageKeys.quickButtonSetting, this.quickButtonEnabled);
 
     chrome.tabs.query({currentWindow: true}, function (tabs) {
       tabs.forEach(tab => {
