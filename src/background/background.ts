@@ -1,41 +1,20 @@
-import {StorageService} from "../modules/go1core/services/StorageService";
-import {DiscussionService} from "../modules/discussions/services/discussion.service";
-import {RestClientService} from "../modules/go1core/services/RestClientService";
-import configuration from "../environments/configuration";
+import {ChromeCmdHandleService} from "../commandHandlers/ChromeCmdHandleService";
+import {AddToPortalChromeCommandHandler} from "../commandHandlers/addToPortalChromeCommandHandler";
+import {CheckQuickButtonSettingChromeCommandHandler} from "../commandHandlers/checkQuickButtonSettingChromeCommandHandler";
+import {StartDiscussionChromeCommandHandler} from "../commandHandlers/startDiscussionChromeCommandHandler";
+import {AddToPortalScheduleChromeCommandHandler} from "../commandHandlers/addToPortalScheduleChromeCommandHandler";
+
+const commandHandlerService = new ChromeCmdHandleService();
+
+commandHandlerService.registerHandler(new StartDiscussionChromeCommandHandler());
+commandHandlerService.registerHandler(new AddToPortalChromeCommandHandler());
+commandHandlerService.registerHandler(new CheckQuickButtonSettingChromeCommandHandler());
+commandHandlerService.registerHandler(new AddToPortalScheduleChromeCommandHandler());
 
 chrome.runtime.onMessage.addListener(function (msg, sender, sendResponse) {
-  const restClientService = new RestClientService();
-  const storageService = new StorageService();
-
-  if (msg.action === 'checkQuickButtonSetting') {
-    checkQuickButtonSetting(storageService, sendResponse);
-  }
-
-  if (msg.action === 'addNewNote') {
-    msg.data.user = storageService.retrieve(configuration.constants.localStorageKeys.user);
-    msg.data.entityType = 'portal';
-    msg.data.entityId = storageService.retrieve(configuration.constants.localStorageKeys.portalInstance);
-
-    const discussionService = new DiscussionService(restClientService, storageService);
-    discussionService.createNote(msg.data)
-      .then((response) => {
-        sendResponse({
-          success: true
-        });
-      })
-      .catch((error) => {
-        sendResponse({
-          success: false,
-          error
-        })
-      });
+  if (commandHandlerService.hasHandler(msg.action)) {
+    commandHandlerService.handleCommand(msg.action, msg, sender, sendResponse);
     return true;
   }
+  sendResponse({success: false, error: new Error('No command handler found for request action'), errorData: msg});
 });
-
-function checkQuickButtonSetting(storageService, sendResponse) {
-  const quickButtonSetting = storageService.retrieve(configuration.constants.localStorageKeys.quickButtonSetting) || false;
-  if (sendResponse) {
-    sendResponse(quickButtonSetting);
-  }
-}

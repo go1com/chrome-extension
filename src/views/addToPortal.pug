@@ -1,7 +1,7 @@
 .add-to-portal.animated
   header.extension-header.row
     .col-2
-      a.btn.btn-no-border.btn-no-padding.go-back-btn((click)="goBack()" role="button")
+      a.btn.btn-no-border.btn-no-padding.go-back-btn.close-btn((click)="goBack()" role="button")
         i.icon.icon-left-arrow
     .col-8.text-center
       h5 Add To Portal
@@ -12,7 +12,7 @@
 
     input.form-control([(ngModel)]="data.tags", placeholder="Add tags")
 
-  .actions-area.row
+  .actions-area
     .col-8.offset-2
       button.btn.btn-primary.btn-block.rounded-btn#markAsComplete((click)="markAsComplete()") Mark as Complete
 

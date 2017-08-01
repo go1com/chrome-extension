@@ -8,6 +8,8 @@
   @import "loadingIndicator";
   @import "animate";
 
+  @import "fab";
+
   .row {
     width: 100%;
     max-width: 100%;
@@ -16,29 +18,6 @@
 
   > * {
     z-index: 10000000;
-  }
-
-  .go1-add-to-portal-button {
-    position: fixed;
-    right: 15px;
-    bottom: 15px;
-    width: 48px;
-    height: 48px;
-    min-height: 48px;
-    line-height: 48px;
-    background: url(data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAD4AAAA+CAMAAABEH1h2AAAByFBMVEX////////2/P7Fys3Gy87GzM/HzNDIzdHL0NTFzdDM0dbN0tfQ1drT2N3d4ufe4+je5Onf5erg5uvh5+y+x8zP1tzY3+Xa4uja4+nb5Ord5eq6xcvEztTH0tjW4ObZ4+m8yc7U3+fX4+nY4+rV4+q3xs7AzdbS4enT4unU4+rM2+TN3OXQ3+jQ3+nS4uqxxcy8zde9ztiwxMzC1N6vxs6wxs+0ytPJ4OrK4evH3+y91+TC3enE3uvF3+zG3+y10d682uWkws+uzdy93eyew9Gjx9akx9afxdOu1eWmz+Cm0OGw2uys2euu2uyv2+2r2euRwtSQwdSl1emo2e2p2u6Mxdqg1+6JxNqLxduOyN6c1e6d1u+FwtmGw9qT0eiU0eiW0uuZ1u6a1++PzeaV0uuPzeeU1eyU1e6V1u+L0euBx+OM0++N1PB4wt2Dzup2w993w9+BzOmDz+x7x+V0xOJ4x+duwuJqweJyyut2zOxpwuNyy+1FxfRGxPNGxfRGxvVHxPNHxfRIxfRIxvVJw/FKxvRLxfRLx/VNxvNOw+9OxPFOx/NPxfBPx/NPyPVQyPRRxvNRx/NSyPRZyfJby/Ncy/NeyvJgwudjjGGUAAAAfHRSTlMAg5CioqKioqKkpKSkpKSkpKSkpKenp6enp6eqqqqqqq2tra2vsrKysrK0tLS0tLa2trq6vLy8vr7DxcXFxcXHx8nOztHR0dTV2dnb3Nzc3+Dh4eHh6enq6urs7O3t7e3t7e3u7u/v8PD09fX19vb39/f3+Pr6+/z8/P39TvhOPQAAAidJREFUeNrt0tlX00AUwOEbWihQljZsyo4CbmBVFBVUVgUFN1QQ9xUFBWUXHLiEQmUXReHf5Ry4p6TNJJmZJx/8vczTN/dmTuCfTM8vv9jy4MnnT08ftlwqz9el7OFrH/+EMVr474fLh0RvCJ54/Qst/X5zXBeZfKR7Ebn96D7qdkFWyZ2faNv67ZIsx9HHttGx7dO6g766ii6tXgna6UBHGF0LdwRsdB9DgVhfgKvvknb1nRwfrJ9FwWbrLd+vVy+hcEvVehzP20KJtvLiVu9Cqbpi1y+LyPFImVlnvkPJXmWaeJUhy40q0/B+lK7/YHxxRJ5HiqO8kclz1ghUxggqNJJBPHcT7UpIQLs2c4mftN9d0+y3P0W8DlU41hFvV+PtxF+o8ZfEh9T4EPEp7pvvpWn7J3KaIv6dP9cccvpGfBg5beylafsnchom/l7t298Sv6nGbxFvUOMNxGvUftoa4jkrKnwlh3j6ONpFb85rPB2oZlSoGYAqmpfX80VRnjYqz0fTINpZJqvZGTjIPyDLB/xgqtKQ00YlmEvtleO9qRBT4ZqMXiuE2Py1hsTqtX6IK/kGE9XsejJY8j1mgvqRDziljDEhPZYCwPU9TED3kLaW2Dbnpo22RLAt6cKys14+nwQO+UqfOSww97zUB855K74wPmZfK7zgnic0MWPFMxMhD4jlLWidXmCmuQvTrQVekMiTHWq6Nzi5szM5eL/pXLYH/hffLh0xpDjAX3UqAAAAAElFTkSuQmCC);
-    border: none;
-    -webkit-border-radius: 100%;
-    -moz-border-radius: 100%;
-    border-radius: 100%;
-    color: #fff;
-    font-size: 24px;
-    font-weight: bold;
-    vertical-align: middle;
-    padding: 0;
-    background-size: contain;
-    outline: none;
-    box-shadow: none;
   }
 
   .notification {
@@ -60,13 +39,22 @@
 
   @import "newDiscussion.component";
 
-  .new-discussion-page {
+  .new-discussion-page,
+  .add-to-portal,
+  .add-to-portal-scheduled,
+  .add-to-portal-success {
     position: fixed;
     top: 20px;
     right: 20px;
     background: #fff;
     box-shadow: 0 0 20px 0 rgba(0, 0, 0, 0.5);
+    width: 415px;
   }
+
+  .add-to-portal-success {
+    height: 600px;
+  }
+
   @import "link-preview.component";
 
   .go1-tooltip {
@@ -114,7 +102,6 @@
       }
     }
   }
-
 
   @import "addToPortal.component";
   @import "addToPortalSchedule.component";

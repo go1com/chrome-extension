@@ -1,55 +1,47 @@
 import {Go1LinkPreviewComponent} from "../sharedComponents/go1LinkPreview/go1LinkPreviewComponent/go1LinkPreview.component";
 import {ModalDialogService} from "./notifications/ModalDialogService";
-import {Go1ExtensionInjectionArea} from "./go1ExtensionInjectionArea";
+import {PopupBaseModel} from "./basePopup/popupBaseModel";
+import {commandKeys} from "../commandHandlers/commandKeys";
 
 declare const $: any;
 
-export class NewDiscussionPopup {
-  popupDOM: any;
+export class NewDiscussionPopup extends PopupBaseModel {
   linkPreview: Go1LinkPreviewComponent;
-  private onDismissCallback: Function;
-  static currentOpeningPopup: NewDiscussionPopup;
-  private quoteText: string;
+  quoteText: string;
 
-  static async openPopup(quote?: string) {
-    if (NewDiscussionPopup.currentOpeningPopup) {
-      NewDiscussionPopup.currentOpeningPopup.hidePopup();
-    }
-
-    NewDiscussionPopup.currentOpeningPopup = new NewDiscussionPopup(() => {
-      NewDiscussionPopup.currentOpeningPopup = null;
-    });
-    await NewDiscussionPopup.currentOpeningPopup.showPopup(quote);
-  }
-
-  constructor(onDismissCallback: Function) {
+  constructor(quoteText?: string) {
+    super();
     this.linkPreview = new Go1LinkPreviewComponent();
     this.linkPreview.linkUrl = window.location.toString();
-    this.onDismissCallback = onDismissCallback;
+    if (quoteText) {
+      this.quoteText = quoteText;
+    }
   }
 
-  async showPopup(quote?: string) {
-    if (this.popupDOM) {
-      return;
-    }
+  protected getPopupHtml() {
+    return require('../views/newDiscussionComponent.tpl.pug');
+  }
 
-    const html = require('../views/newDiscussionComponent.tpl.pug');
-
-    this.popupDOM = $(html);
-    Go1ExtensionInjectionArea.appendDOM(this.popupDOM);
-    this.bindEventListeners();
-    this.popupDOM.addClass('bounceIn bounceInRight');
-
-    if (quote) {
-      await this.showQuoteText(quote);
+  protected async onPopupShown() {
+    if (this.quoteText) {
+      await this.showQuoteText();
     } else {
       await this.showLinkPreview();
     }
   }
 
-  private showQuoteText(quote: string) {
-    this.quoteText = quote;
+  protected bindEventListeners() {
+    $('.quotation', this.popupDOM).css('display', 'none');
+    $('.link-preview', this.popupDOM).css('display', 'none');
+    $('.go-back-btn', this.popupDOM).on('click', (event) => this.hidePopup());
+    $('.actions-area .add-note-btn', this.popupDOM).on('click', (event) => this.addNote());
+  }
 
+  protected onPopupHidden() {
+
+  }
+
+  private showQuoteText() {
     $('.quotation blockquote', this.popupDOM).text(this.quoteText);
     $('.quotation', this.popupDOM).css('display', '');
     $('.quotation blockquote', this.popupDOM).dotdotdot();
@@ -82,13 +74,6 @@ export class NewDiscussionPopup {
     loadingCompleteBlock.css({'display': ''});
   }
 
-  bindEventListeners() {
-    $('.quotation', this.popupDOM).css('display', 'none');
-    $('.link-preview', this.popupDOM).css('display', 'none');
-    $('.go-back-btn', this.popupDOM).on('click', (event) => this.hidePopup());
-    $('.actions-area .add-note-btn', this.popupDOM).on('click', (event) => this.addNote());
-  }
-
   async addNote() {
     let newNoteData = {
       title: this.popupDOM.find('input[name="noteTitle"]').val(),
@@ -104,27 +89,16 @@ export class NewDiscussionPopup {
 
     chrome.runtime.sendMessage({
       from: 'content',
-      action: 'addNewNote',
+      action: commandKeys.startDiscussion,
       data: newNoteData
     }, (response) => {
       if (response.success) {
-        this.hidePopup();
         this.showSuccessPopup();
       }
     });
   }
 
   showSuccessPopup() {
-    ModalDialogService.showModal('Note saved successfully', 'Congratulation!', 'success', '','primary', 3.5);
-  }
-
-  hidePopup() {
-    this.popupDOM.removeClass('bounceIn bounceInRight');
-    this.popupDOM.addClass('bounceOut bounceOutRight');
-
-    setTimeout(() => {
-      this.popupDOM.remove();
-      this.onDismissCallback();
-    }, 1500);
+    ModalDialogService.showModal('Note saved successfully', 'Congratulation!', 'success', '', 'primary', 3.5);
   }
 }

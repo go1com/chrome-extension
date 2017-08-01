@@ -1,5 +1,6 @@
-import {NewDiscussionPopup} from "./discussionPopupModel";
+import {NewDiscussionPopup} from "./newDiscussionPopup";
 import {Go1ExtensionInjectionArea} from "./go1ExtensionInjectionArea";
+import {PopupBaseModel} from "./basePopup/popupBaseModel";
 
 declare const $: any;
 
@@ -71,7 +72,8 @@ export class ToolTipMenu {
 
   private bindEventListeners() {
     $('a.create-note-cmd', this.tooltipDOM).on('click', async () => {
-      await NewDiscussionPopup.openPopup(this.selectingText);
+      let newDiscussionWithQuote = new NewDiscussionPopup(this.selectingText);
+      await PopupBaseModel.openPopup(newDiscussionWithQuote);
       this.dismiss();
     });
   }

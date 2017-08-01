@@ -1,5 +1,8 @@
-import {NewDiscussionPopup} from "./discussionPopupModel";
-import {ToolTipMenu} from "./toolTips";
+import {NewDiscussionPopup} from "./newDiscussionPopup";
+import {ToolTipMenu} from "./toolTipsMenu";
+import {AddToPortalPopup} from "./addToPortal/addToPortalPopup";
+import {PopupBaseModel} from "./basePopup/popupBaseModel";
+import {commandKeys} from "../commandHandlers/commandKeys";
 
 declare const $: any;
 
@@ -7,7 +10,7 @@ export class Go1ExtensionInjectionArea {
   static singleInstance: Go1ExtensionInjectionArea;
 
   containerArea: any;
-  go1QuickButton: any;
+  fabArea: any;
 
   static appendDOM(dom) {
     if (!Go1ExtensionInjectionArea.singleInstance) {
@@ -39,7 +42,7 @@ export class Go1ExtensionInjectionArea {
 
   constructor() {
     this.containerArea = $('<div class="go1-extension go1-extension-injected"></div>');
-    this.go1QuickButton = $('<button class="go1-add-to-portal-button"></button>');
+    this.fabArea = $(require('./views/fabButtons.pug'));
   }
 
   injectToDocument() {
@@ -47,7 +50,7 @@ export class Go1ExtensionInjectionArea {
 
     chrome.runtime.sendMessage({
       from: 'content',
-      action: 'checkQuickButtonSetting'
+      action: commandKeys.checkQuickButtonSettings
     }, (quickButtonSetting) => {
       if (!quickButtonSetting) {
         return;
@@ -57,12 +60,13 @@ export class Go1ExtensionInjectionArea {
   }
 
   appendQuickButton() {
-    this.containerArea.append(this.go1QuickButton);
+    this.containerArea.append(this.fabArea);
 
-    this.go1QuickButton.on('click', (event) => NewDiscussionPopup.openPopup());
+    this.fabArea.find('.start-discussion-btn').on('click', (event) => PopupBaseModel.openPopup(NewDiscussionPopup));
+    this.fabArea.find('.add-to-portal-btn').on('click', (event) => PopupBaseModel.openPopup(AddToPortalPopup));
   }
 
   removeQuickButton() {
-    this.go1QuickButton.remove();
+    this.fabArea.remove();
   }
 }
