@@ -3,6 +3,7 @@ import {AddToPortalChromeCommandHandler} from "../commandHandlers/addToPortalChr
 import {CheckQuickButtonSettingChromeCommandHandler} from "../commandHandlers/checkQuickButtonSettingChromeCommandHandler";
 import {StartDiscussionChromeCommandHandler} from "../commandHandlers/startDiscussionChromeCommandHandler";
 import {AddToPortalScheduleChromeCommandHandler} from "../commandHandlers/addToPortalScheduleChromeCommandHandler";
+import {GetLinkPreviewChromeCommandHandler} from "../commandHandlers/getLinkPreviewChromeCommandHandler";
 
 const commandHandlerService = new ChromeCmdHandleService();
 
@@ -10,6 +11,7 @@ commandHandlerService.registerHandler(new StartDiscussionChromeCommandHandler())
 commandHandlerService.registerHandler(new AddToPortalChromeCommandHandler());
 commandHandlerService.registerHandler(new CheckQuickButtonSettingChromeCommandHandler());
 commandHandlerService.registerHandler(new AddToPortalScheduleChromeCommandHandler());
+commandHandlerService.registerHandler(new GetLinkPreviewChromeCommandHandler());
 
 chrome.runtime.onMessage.addListener(function (msg, sender, sendResponse) {
   if (commandHandlerService.hasHandler(msg.action)) {

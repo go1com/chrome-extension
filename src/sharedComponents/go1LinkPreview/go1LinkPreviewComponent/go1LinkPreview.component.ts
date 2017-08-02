@@ -1,4 +1,6 @@
 import {Component, Input} from "@angular/core";
+import {LinkPreview} from "../../../modules/linkPreviewer/linkPreviewService";
+import {commandKeys} from "../../../commandHandlers/commandKeys";
 
 const linkPreviewApiKey = '597334fb87e1dc53999f43b96c08a134948e0f74c86ad';
 
@@ -24,9 +26,15 @@ export class Go1LinkPreviewComponent {
   public async loadLinkPreviewData() {
     this.isLoading = true;
 
-    this.linkPreview = await fetch(`https://api.linkpreview.net/?key=${linkPreviewApiKey}&q=${this.linkUrl}`)
-      .then(response => response.json());
-
-    this.isLoading = false;
+    return new Promise((resolve, reject) => {
+      chrome.runtime.sendMessage({
+        action: commandKeys.getLinkPreview,
+        data: this.linkUrl
+      }, (response) => {
+        this.linkPreview = response.data;
+        this.isLoading = false;
+        resolve();
+      });
+    });
   }
 }

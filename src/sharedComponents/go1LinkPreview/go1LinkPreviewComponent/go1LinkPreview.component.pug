@@ -7,7 +7,7 @@
       img.link-preview-img(src="assets/no-image-icon-15.png", *ngIf="!linkPreview.image")
     .col-9
       h5
-        | {{linkPreview.title}}
+        | {{ linkPreview.title }}
         button.close-btn((click)="closePreview()") &times;
       div.description {{ linkPreview.description }}
 
