@@ -10,11 +10,13 @@ import {ChromeCmdHandleService} from "./chromeExtensionsCommandHandler/ChromeCmd
 import {AddToPortalChromeCommandHandler} from "./chromeExtensionsCommandHandler/IChromeCommandHandler";
 import {StorageService} from "./services/StorageService";
 import {LoadingIndicatorComponent} from "./loadingIndicatorComponent/loadingIndicatorComponent";
+import {ImageSvgDirective} from "./imageSvgComponent/ImageSvgDirective";
 
 @NgModule({
   declarations: [
     Go1HeaderComponent,
-    LoadingIndicatorComponent
+    LoadingIndicatorComponent,
+    ImageSvgDirective
   ],
   imports: [
     CommonModule,
@@ -31,7 +33,8 @@ import {LoadingIndicatorComponent} from "./loadingIndicatorComponent/loadingIndi
   ],
   exports: [
     Go1HeaderComponent,
-    LoadingIndicatorComponent
+    LoadingIndicatorComponent,
+    ImageSvgDirective
   ]
 })
 export class Go1CoreModule {

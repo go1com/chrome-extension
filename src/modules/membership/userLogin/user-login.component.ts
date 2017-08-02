@@ -7,8 +7,7 @@ import configuration from "../../../environments/configuration";
 
 @Component({
   selector: 'user-login',
-  templateUrl: './user-login.component.pug',
-  styleUrls: ['./user-login.component.scss']
+  templateUrl: './user-login.component.pug'
 })
 
 export class UserLoginComponent implements OnInit {
@@ -36,15 +35,16 @@ export class UserLoginComponent implements OnInit {
 
   async login() {
     try {
-      const user = await this.userService.login(this.user);
-      if (user.accounts.length > 1) {
-        this.router.navigate(['/portals']);
-      }
+      const user: any = await this.userService.login(this.user);
+      // if (user.accounts.length > 1) {
+      //   this.router.navigate(['/portals']);
+      // }
 
-      if (user.accounts.length === 1) {
-        this.redirect(user);
-      }
+      // if (user.accounts.length === 1) {
+      this.redirect(user);
+      // }
     } catch (error) {
+      alert(error.message);
       this.errorMessage = error.message;
     }
   }

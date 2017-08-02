@@ -37,16 +37,15 @@ export class RestClientService {
       options.body = JSON.stringify(data);
     }
 
-    return fetch(url, options).then((response) => this.mapResponse(response));
-  }
+    return fetch(url, options)
+      .then((response) => {
+        if (response.ok)
+          return response.json();
 
-  private mapResponse<T>(response: any): T | any {
-    try {
-      return <T>response.json();
-    } catch (e) {
-      return <T>{};
-      // return response;
-    }
+        return response.json().then(response => {
+          throw response;
+        });
+      });
   }
 
   head<T>(url: string) {
@@ -61,7 +60,7 @@ export class RestClientService {
     return this.request<T>(url, RequestMethod.POST, data, customHeaders);
   }
 
-  put<T>(url: string, data?: any, customHeaders?: any)  {
+  put<T>(url: string, data?: any, customHeaders?: any) {
     return this.request<T>(url, RequestMethod.PUT, data, customHeaders);
   }
 

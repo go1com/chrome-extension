@@ -21,7 +21,11 @@ export class UserService {
   }
 
   async login(user: { username: string, password: string }) {
-    const postData = {instance: configuration.environment.authBackend, username: user.username, password: user.password};
+    const postData = {
+      instance: configuration.environment.authBackend,
+      username: user.username,
+      password: user.password
+    };
 
     return await this.restClientService.post(
       `${ this.apiUrl }/${configuration.environment.serviceUrls.user}account/login`,
