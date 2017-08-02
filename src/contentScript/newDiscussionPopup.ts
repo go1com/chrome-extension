@@ -33,7 +33,7 @@ export class NewDiscussionPopup extends PopupBaseModel {
   protected bindEventListeners() {
     $('.quotation', this.popupDOM).css('display', 'none');
     $('.link-preview', this.popupDOM).css('display', 'none');
-    $('.go-back-btn', this.popupDOM).on('click', (event) => this.hidePopup());
+    $('.go-back-btn', this.popupDOM).on('click', (event) => PopupBaseModel.closeLastPopup());
     $('.actions-area .add-note-btn', this.popupDOM).on('click', (event) => this.addNote());
   }
 
@@ -93,6 +93,7 @@ export class NewDiscussionPopup extends PopupBaseModel {
       data: newNoteData
     }, (response) => {
       if (response.success) {
+        PopupBaseModel.closeLastPopup();
         this.showSuccessPopup();
       }
     });

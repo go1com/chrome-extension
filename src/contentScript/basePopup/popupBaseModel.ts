@@ -46,7 +46,7 @@ export abstract class PopupBaseModel {
     this.onPopupShown();
   }
 
- hidePopup() {
+  private hidePopup() {
     this.popupDOM.removeClass('bounceIn bounceInRight');
     this.popupDOM.addClass('bounceOut bounceOutRight');
 
