@@ -31,7 +31,7 @@
       height: 24px;
       margin-right: 10px;
       float: left;
-      margin-top: -5px;
+      margin-top: -2px;
     }
 
     &:active,
@@ -44,7 +44,7 @@
       height: 56px;
       border: 1px solid $go1grey1;
       margin: 0 auto 0;
-      padding: 20px;
+      padding: 18px 20px;
       opacity: 0;
     }
 
@@ -71,7 +71,7 @@
     }
   }
 
-  &:hover {
+  &.active {
     .fab-button:not(:last-child) {
       opacity: 1;
       margin-left: 25px;

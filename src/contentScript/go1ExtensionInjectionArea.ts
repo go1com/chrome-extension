@@ -61,9 +61,24 @@ export class Go1ExtensionInjectionArea {
 
   appendQuickButton() {
     this.containerArea.append(this.fabArea);
+    const thisComponent = this;
+    $(thisComponent.fabArea).mouseleave(function (event) {
+      setTimeout(() => {
+        thisComponent.fabArea.removeClass('active');
+      }, 3000);
+    });
 
-    this.fabArea.find('.start-discussion-btn').on('click', (event) => PopupBaseModel.openPopup(NewDiscussionPopup));
-    this.fabArea.find('.add-to-portal-btn').on('click', (event) => PopupBaseModel.openPopup(AddToPortalPopup));
+    this.fabArea.find('.trigger-fab').on('click', (event) => {
+      thisComponent.fabArea.addClass('active');
+    });
+    this.fabArea.find('.start-discussion-btn').on('click', (event) => {
+      thisComponent.fabArea.removeClass('active');
+      PopupBaseModel.openPopup(NewDiscussionPopup);
+    });
+    this.fabArea.find('.add-to-portal-btn').on('click', (event) => {
+      thisComponent.fabArea.removeClass('active');
+      PopupBaseModel.openPopup(AddToPortalPopup);
+    });
   }
 
   removeQuickButton() {
