@@ -1,9 +1,7 @@
 import {Component, OnInit, ViewEncapsulation} from '@angular/core';
 import {UserService} from '../modules/membership/services/user.service';
-import {Router} from "@angular/router";
-import {AddToPortalChromeCommandHandler} from "../modules/go1core/chromeExtensionsCommandHandler/IChromeCommandHandler";
-import {ChromeCmdHandleService} from "../modules/go1core/chromeExtensionsCommandHandler/ChromeCmdHandleService";
 import {Go1RuntimeContainer} from "../modules/go1core/services/go1RuntimeContainer";
+import {PortalService} from "../modules/portal/services/PortalService";
 
 @Component({
   selector: 'app-root',
@@ -15,31 +13,19 @@ export class AppComponent implements OnInit {
   title = 'GO1 bookmark';
   user;
 
-  constructor(private userService: UserService,
-              private router: Router,
-              private chromeCmdHandleService: ChromeCmdHandleService,
-              private addToPortalCmdHandler: AddToPortalChromeCommandHandler) {
-    this.chromeCmdHandleService.registerRouter(router);
-    this.chromeCmdHandleService.registerHandler(addToPortalCmdHandler);
+  constructor(private userService: UserService, private portalService: PortalService) {
   }
 
   async ngOnInit() {
-    const thisAppComponent = this;
     await this.userService.refresh();
     this.user = this.userService.currentUser;
 
-    chrome.runtime.onMessage.addListener(function (request, sender, sendResponse) {
-      if (request.command) {
-        thisAppComponent.chromeCmdHandleService.handleCommand(request.command, request, sender, sendResponse);
-      }
+    await this.portalService.getPortal();
+    return new Promise(resolve => {
+      chrome.tabs.query({active: true}, function (tabs) {
+        Go1RuntimeContainer.currentChromeTab = tabs[0];
+        resolve();
+      });
     });
-
-    chrome.runtime.sendMessage({command: "POPUP_INITIALIZED"}, function (response) {
-    });
-
-    chrome.tabs.query({active: true}, function (tabs) {
-      Go1RuntimeContainer.currentChromeTab = tabs[0];
-    });
-
   }
 }

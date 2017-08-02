@@ -28,7 +28,7 @@ export class UserService {
     };
 
     return await this.restClientService.post(
-      `${ this.apiUrl }/${configuration.environment.serviceUrls.user}account/login`,
+      `${ this.apiUrl }/${configuration.serviceUrls.user}account/login`,
       postData)
       .then((response) => {
         this.setAuth(response);
@@ -46,7 +46,10 @@ export class UserService {
 
     if (currentUuid) {
       try {
-        const response = await this.restClientService.get(`${ this.apiUrl }/${configuration.environment.serviceUrls.user}account/current/${ currentUuid }`);
+        const response = await this.restClientService.get(`${ this.apiUrl }/${configuration.serviceUrls.user}account/current/${ currentUuid }`);
+
+        console.log(response.accounts.map(account => account.instance));
+        this.storageService.store(configuration.constants.localStorageKeys.portalInstance, response.accounts.map(account => account.instance));
         this.currentUserSubject.next(response);
       } catch (e) {
         this.cleanAuth();
@@ -59,11 +62,11 @@ export class UserService {
   switchPortal(portal: any) {
     console.log(portal);
     console.log(portal.id);
-    this.storageService.store(configuration.constants.localStorageKeys.portalInstance, portal.id);
+    this.storageService.store(configuration.constants.localStorageKeys.activeInstance, portal.id);
   }
 
   getInstanceId(): string {
-    return this.storageService.retrieve(configuration.constants.localStorageKeys.portalInstance);
+    return this.storageService.retrieve(configuration.constants.localStorageKeys.activeInstance);
   }
 
   logout() {
@@ -83,11 +86,11 @@ export class UserService {
     this.storageService.store(configuration.constants.localStorageKeys.authentication, user.jwt);
     this.storageService.store(configuration.constants.localStorageKeys.user, user);
     this.storageService.store(configuration.constants.localStorageKeys.uuid, user.uuid);
-    this.storageService.store(configuration.constants.localStorageKeys.portalInstance, user.accounts[0].instance.id);
+    this.storageService.store(configuration.constants.localStorageKeys.activeInstance, user.accounts[0].instance.id);
   }
 
   private cleanAuth() {
-    this.storageService.remove(configuration.constants.localStorageKeys.portalInstance);
+    this.storageService.remove(configuration.constants.localStorageKeys.activeInstance);
     this.storageService.remove(configuration.constants.localStorageKeys.user);
     this.storageService.remove(configuration.constants.localStorageKeys.authentication);
     this.storageService.remove(configuration.constants.localStorageKeys.uuid);

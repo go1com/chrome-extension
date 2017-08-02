@@ -66,9 +66,10 @@ export class NewDiscussionPopup extends PopupBaseModel {
       this.linkPreview.linkPreview.image = `chrome-extension://${chrome.runtime.id}/assets/no-image-icon-15.png`;
     }
 
-    $('.link-preview-img', loadingCompleteBlock).attr('src', this.linkPreview.linkPreview.image);
-    $('.description', loadingCompleteBlock).text(this.linkPreview.linkPreview.description);
-    $('h5 > .title', loadingCompleteBlock).text(this.linkPreview.linkPreview.title);
+    debugger;
+    loadingCompleteBlock.find('.link-preview-img').attr('src', this.linkPreview.linkPreview.image);
+    loadingCompleteBlock.find('.description').text(this.linkPreview.linkPreview.description || '');
+    loadingCompleteBlock.find('h5 > .title').text(this.linkPreview.linkPreview.title);
 
     isLoadingBlock.remove();
     loadingCompleteBlock.css({'display': ''});

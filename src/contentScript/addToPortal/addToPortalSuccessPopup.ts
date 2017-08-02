@@ -34,7 +34,7 @@ export class AddToPortalSuccessPopup extends PopupBaseModel {
           type: 'weblink',
           path: window.location.toString(),
         },
-        instance: this.storageService.retrieve(configuration.constants.localStorageKeys.portalInstance)
+        instance: this.storageService.retrieve(configuration.constants.localStorageKeys.activeInstance)
       };
     }
   }

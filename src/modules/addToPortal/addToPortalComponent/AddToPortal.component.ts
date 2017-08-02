@@ -24,7 +24,7 @@ export class AddToPortalComponent {
         type: 'weblink',
         path: Go1RuntimeContainer.currentChromeTab.url,
       },
-      instance: storageService.retrieve(configuration.constants.localStorageKeys.portalInstance)
+      instance: storageService.retrieve(configuration.constants.localStorageKeys.activeInstance)
     };
   }
 

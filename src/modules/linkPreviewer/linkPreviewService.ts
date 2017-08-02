@@ -18,7 +18,7 @@ export class LinkPreview {
     return {
       url,
       title: this._getTitle(doc),
-      description: this._getDescription(doc),
+      description: this._getDescription(doc) || '',
       mediaType: this._getMediaType(doc) || 'website',
       images: this._getImages(doc, url),
     };

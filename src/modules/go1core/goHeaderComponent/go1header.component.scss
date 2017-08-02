@@ -1,0 +1,24 @@
+@import "../../../styles/_variables.scss";
+
+.nav-header {
+  width: 100%;
+  height: 60px;
+  background-color: $go1brandColor;
+  display: flex;
+  align-items: center;
+  justify-content: space-around;
+  padding: 0 20px;
+
+  a .fa {
+    font-size: 28px;
+    color: $go1grey4;
+  }
+
+  a.active .fa {
+    color: #fff;
+  }
+
+  .full-width {
+    width: 100%;
+  }
+}

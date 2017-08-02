@@ -20,6 +20,7 @@ import {SettingsModule} from "../modules/settings/settings.module";
 import {MembershipModule} from "../modules/membership/membership.module";
 import {CommonModule} from "@angular/common";
 import extraProviders from "./extraProviders";
+import {PortalModule} from "../modules/portal/portal.module";
 
 
 @NgModule({
@@ -42,7 +43,8 @@ import extraProviders from "./extraProviders";
 
     Go1CoreModule,
     SettingsModule,
-    MembershipModule
+    MembershipModule,
+    PortalModule
   ],
   providers: [
     LearnerService,

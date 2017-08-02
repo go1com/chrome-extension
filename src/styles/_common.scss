@@ -2,12 +2,14 @@
 @import "../../node_modules/bootstrap/scss/variables";
 @import "variables";
 
-*, input, textarea, select, label {
+*:not(.fa) {
   outline: none;
   font-family: 'Open Sans', sans-serif;
-  color: $go1black;
 }
 
+.fa {
+  font-size: 18px;
+}
 
 header.extension-header {
   padding: 0;

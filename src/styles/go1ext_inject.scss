@@ -1,6 +1,7 @@
 @import "bootstrap-reboot";
 
 .go1-extension-injected {
+  @import "font-awesome/scss/font-awesome_main";
   @import "variables";
   @import "bootstrap";
   @import "bootstrap-grid";

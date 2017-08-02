@@ -6,11 +6,20 @@ const configuration = {
   constants: {
     localStorageKeys: {
       authentication: 'jwt',
-      portalInstance: 'activeInstance',
+      activeInstance: 'activeInstance',
+      portalInstance: 'portalInstance',
       user: 'user',
       uuid: 'uuid',
       quickButtonSetting: 'Go1.settings.quickButtonEnabled'
     }
+  },
+  serviceUrls: {
+    user: 'user-service/',
+    enrollment: 'enrolment-service/',
+    lo: 'lo-service/',
+    portal: 'portal-service/',
+    noteService: 'note-service/',
+    fireBaseNotePath: 'apiom_notes/'
   }
 };
 

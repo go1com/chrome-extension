@@ -4,4 +4,10 @@
   .add-tags, .actions-area {
     margin-top: 15px;
   }
+
+  .add-tags {
+    h6 {
+      text-transform: initial;
+    }
+  }
 }

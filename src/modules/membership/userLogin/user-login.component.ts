@@ -57,7 +57,7 @@ export class UserLoginComponent implements OnInit {
 
   redirect(user): void {
     if (user.id) {
-      const activeInstanceId = this.storageService.retrieve(configuration.constants.localStorageKeys.portalInstance);
+      const activeInstanceId = this.storageService.retrieve(configuration.constants.localStorageKeys.activeInstance);
       const activeAccount = user.accounts.find(account => account.instance.id === activeInstanceId);
 
       if (activeAccount.roles.indexOf('administrator') >= 0) {

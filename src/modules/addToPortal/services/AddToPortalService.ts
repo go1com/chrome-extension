@@ -6,7 +6,6 @@ import configuration from "../../../environments/configuration";
 @Injectable()
 export class AddToPortalService {
   private baseUrl = configuration.environment.baseApiUrl;
-  private customHeaders: any;
   private fireBaseDb: firebase.database.Database;
 
   constructor(private restClient: RestClientService,
@@ -16,9 +15,11 @@ export class AddToPortalService {
     }
 
     this.fireBaseDb = firebase.database();
+  }
 
-    this.customHeaders = {
-      'Authorization': `Bearer ${ storageService.retrieve(configuration.constants.localStorageKeys.authentication) }`
+  private getCustomHeaders() {
+    return {
+      'Authorization': `Bearer ${ this.storageService.retrieve(configuration.constants.localStorageKeys.authentication) }`
     };
   }
 

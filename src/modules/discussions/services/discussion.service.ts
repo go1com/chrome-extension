@@ -25,12 +25,12 @@ export class DiscussionService {
   }
 
   getUserNotesFromService() {
-    return this.restClientService.get(`${this.baseUrl}/${configuration.environment.serviceUrls.noteService}notes`, this.getCustomHeaders());
+    return this.restClientService.get(`${this.baseUrl}/${configuration.serviceUrls.noteService}notes`, this.getCustomHeaders());
   }
 
   async getUserNote(uuid: string) {
     return new Promise((resolve, reject) => {
-      let ref = this.fireBaseDb.ref(configuration.environment.serviceUrls.fireBaseNotePath + uuid);
+      let ref = this.fireBaseDb.ref(configuration.serviceUrls.fireBaseNotePath + uuid);
 
       ref.on('value', (snapshot) => {
         resolve(snapshot.val());
@@ -43,7 +43,7 @@ export class DiscussionService {
       null,
       this.getCustomHeaders());
 
-    let newNoteFireObject = this.fireBaseDb.ref(configuration.environment.serviceUrls.fireBaseNotePath + response.uuid);
+    let newNoteFireObject = this.fireBaseDb.ref(configuration.serviceUrls.fireBaseNotePath + response.uuid);
 
     const randomKey = '-' + this.randomString(19);
     let childData = {};
@@ -75,7 +75,7 @@ export class DiscussionService {
 
   makeNoteRequestUrl(newNote) {
     const validEntityTypes = ['lo', 'portal', 'group'];
-    let endpoint = `${this.baseUrl}/${configuration.environment.serviceUrls.noteService}note/`;
+    let endpoint = `${this.baseUrl}/${configuration.serviceUrls.noteService}note/`;
 
     if (newNote.customType) {
       validEntityTypes.push(newNote.customType);
