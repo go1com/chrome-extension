@@ -55,5 +55,9 @@
     padding: 15px 0 0;
     display: flex;
     flex-wrap: wrap;
+
+    select.form-control {
+      height: calc(2.25rem + 17px);
+    }
   }
 }

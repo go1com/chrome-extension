@@ -38,7 +38,6 @@ import {PortalModule} from "../modules/portal/portal.module";
     BrowserModule,
     CommonModule,
     FormsModule,
-    HttpModule,
     RouterModule.forRoot(routes, {useHash: true, preloadingStrategy: PreloadAllModules}),
 
     Go1CoreModule,

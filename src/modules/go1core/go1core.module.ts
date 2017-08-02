@@ -21,8 +21,8 @@ import {ImageSvgDirective} from "./imageSvgComponent/ImageSvgDirective";
   imports: [
     CommonModule,
     FormsModule,
-    HttpModule,
     RouterModule,
+
     MomentModule
   ],
   providers: [

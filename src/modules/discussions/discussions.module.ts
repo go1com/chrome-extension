@@ -11,6 +11,7 @@ import {DiscussionItemComponent} from "./discussionItemComponent/discussionItem.
 import {MomentModule} from "angular2-moment";
 import {MembershipModule} from "../membership/membership.module";
 import {Go1LinkPreviewModule} from "../../sharedComponents/go1LinkPreview/go1LinkPreview.module";
+import {PortalModule} from "../portal/portal.module";
 
 @NgModule({
   declarations: [
@@ -26,7 +27,8 @@ import {Go1LinkPreviewModule} from "../../sharedComponents/go1LinkPreview/go1Lin
 
     Go1CoreModule,
     MembershipModule,
-    Go1LinkPreviewModule
+    Go1LinkPreviewModule,
+    PortalModule
   ],
   providers: [
     DiscussionService
