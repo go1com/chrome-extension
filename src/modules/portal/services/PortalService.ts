@@ -14,7 +14,6 @@ export class PortalService {
     const uuid = this.storageService.retrieve(configuration.constants.localStorageKeys.uuid);
 
     let response = await this.restClientService.get(`${configuration.environment.baseApiUrl}/${configuration.serviceUrls.portal}public-key/${uuid}`);
-    console.log(response);
   }
 
   async getPortals() {

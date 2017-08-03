@@ -23,13 +23,22 @@ export class NewDiscussionComponent implements OnInit {
       body: '',
       entityType: 'portal',
       quote: '',
-      item: Go1RuntimeContainer.currentChromeTab.url,
+      item: Go1RuntimeContainer.currentChromeTab && Go1RuntimeContainer.currentChromeTab.url || '',
       entityId: storageService.retrieve(configuration.constants.localStorageKeys.activeInstance)
     };
   }
 
   async ngOnInit() {
     this.data.user = this.userService.getUser();
+    if (!this.data.item) {
+      return new Promise(resolve => {
+        chrome.tabs.query({active: true, currentWindow: true}, (tabs) => {
+          Go1RuntimeContainer.currentChromeTab = tabs[0];
+          this.data.item = Go1RuntimeContainer.currentChromeTab.url;
+          resolve();
+        });
+      });
+    }
   }
 
   async goBack() {
