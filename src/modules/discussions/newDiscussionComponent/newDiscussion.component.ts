@@ -29,7 +29,8 @@ export class NewDiscussionComponent implements OnInit {
   }
 
   async ngOnInit() {
-    this.data.user = this.userService.getUser();
+    this.data.user = await this.userService.getUser();
+
     if (!this.data.item) {
       return new Promise(resolve => {
         chrome.tabs.query({active: true, currentWindow: true}, (tabs) => {

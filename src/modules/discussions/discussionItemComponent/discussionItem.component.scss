@@ -23,4 +23,55 @@
       }
     }
   }
+
+  .dropdown-toggle:after {
+    display: none;
+  }
+
+  .dropdown-menu {
+    left: initial;
+    right: 0;
+    margin-top: 10px;
+    z-index: 1;
+    -webkit-border-radius: 3px;
+    -moz-border-radius: 3px;
+    border-radius: 3px;
+    -webkit-box-shadow: 0 0 20px rgba(71, 115, 137, .15);
+    -moz-box-shadow: 0 0 20px rgba(71, 115, 137, .15);
+    box-shadow: 0 0 20px rgba(71, 115, 137, .15);
+    border: 1px solid #cddbe2;
+
+    &:after,&:before {
+      position: absolute;
+      display: block;
+      width: 0;
+      height: 0;
+      border-color: transparent;
+      border-style: solid;
+      border-width: 9px;
+      content: ""
+    }
+
+    &:before {
+      border-bottom-color: rgba(0,0,0,.1);
+      border-top-width: 0;
+      right: 2px;
+      top: -10px;
+    }
+
+    &:after {
+      right: 3px;
+      top: -16px;
+      border-top-color: transparent;
+      border-right-color: transparent;
+      border-bottom-color: #fff;
+      border-left-color: transparent;
+      border-top-width: 0;
+      border-width: 8px;
+    }
+
+    .dropdown-item {
+      padding: 5px 20px;
+    }
+  }
 }

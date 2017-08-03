@@ -1,0 +1,10 @@
+.modal-header
+  h5.modal-title(*ngIf="context.title") {{ context.title }}
+
+.modal-body
+  div([innerHTML]="context.message")
+
+.modal-footer
+  button.btn.btn-default((click)="close(false)") {{ context.noButtonText || 'No' }}
+
+  button.btn(class="{{ context.yesButtonClass || 'btn-primary' }}", (click)="close(true)") {{ context.yesButtonText || 'Yes' }}

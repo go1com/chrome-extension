@@ -1,6 +1,5 @@
 import {ModuleWithProviders, NgModule} from "@angular/core";
 import {Go1HeaderComponent} from "./goHeaderComponent/Go1HeaderComponent";
-import {HttpModule} from "@angular/http";
 import {FormsModule} from "@angular/forms";
 import {RouterModule} from "@angular/router";
 import {RestClientService} from "./services/RestClientService";
@@ -11,17 +10,28 @@ import {AddToPortalChromeCommandHandler} from "./chromeExtensionsCommandHandler/
 import {StorageService} from "./services/StorageService";
 import {LoadingIndicatorComponent} from "./loadingIndicatorComponent/loadingIndicatorComponent";
 import {ImageSvgDirective} from "./imageSvgComponent/ImageSvgDirective";
+import {NgbModule} from "@ng-bootstrap/ng-bootstrap";
+import {ModalDialogService} from "./services/ModalDialogService";
+import {ConfirmationModalComponent} from "./components/confirmationModal/ConfirmationModalComponent";
+import {AlertModalComponent} from "./components/alertModal/AlertModalComponent";
+import {BootstrapModalModule} from "angular2-modal/plugins/bootstrap";
+import {ModalModule} from "angular2-modal";
 
 @NgModule({
   declarations: [
     Go1HeaderComponent,
     LoadingIndicatorComponent,
-    ImageSvgDirective
+    ImageSvgDirective,
+    ConfirmationModalComponent,
+    AlertModalComponent
   ],
   imports: [
     CommonModule,
     FormsModule,
     RouterModule,
+    NgbModule.forRoot(),
+    ModalModule.forRoot(),
+    BootstrapModalModule,
 
     MomentModule
   ],
@@ -29,12 +39,19 @@ import {ImageSvgDirective} from "./imageSvgComponent/ImageSvgDirective";
     RestClientService,
     StorageService,
     ChromeCmdHandleService,
-    AddToPortalChromeCommandHandler
+    AddToPortalChromeCommandHandler,
+    ModalDialogService
   ],
   exports: [
     Go1HeaderComponent,
     LoadingIndicatorComponent,
-    ImageSvgDirective
+    ImageSvgDirective,
+    ConfirmationModalComponent,
+    AlertModalComponent
+  ],
+  entryComponents: [
+    ConfirmationModalComponent,
+    AlertModalComponent
   ]
 })
 export class Go1CoreModule {
@@ -45,7 +62,8 @@ export class Go1CoreModule {
         RestClientService,
         StorageService,
         ChromeCmdHandleService,
-        AddToPortalChromeCommandHandler
+        AddToPortalChromeCommandHandler,
+        ModalDialogService
       ]
     }
   }

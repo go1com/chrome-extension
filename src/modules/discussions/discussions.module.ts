@@ -12,6 +12,7 @@ import {MomentModule} from "angular2-moment";
 import {MembershipModule} from "../membership/membership.module";
 import {Go1LinkPreviewModule} from "../../sharedComponents/go1LinkPreview/go1LinkPreview.module";
 import {PortalModule} from "../portal/portal.module";
+import {NgbModule} from "@ng-bootstrap/ng-bootstrap";
 
 @NgModule({
   declarations: [
@@ -24,6 +25,8 @@ import {PortalModule} from "../portal/portal.module";
     FormsModule,
     RouterModule.forChild(discussionModuleRoutes),
     MomentModule,
+
+    NgbModule,
 
     Go1CoreModule,
     MembershipModule,

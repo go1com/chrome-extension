@@ -21,6 +21,8 @@ import {MembershipModule} from "../modules/membership/membership.module";
 import {CommonModule} from "@angular/common";
 import extraProviders from "./extraProviders";
 import {PortalModule} from "../modules/portal/portal.module";
+import {NgbModule} from "@ng-bootstrap/ng-bootstrap";
+import {ModalModule} from "angular2-modal";
 
 
 @NgModule({
@@ -39,6 +41,8 @@ import {PortalModule} from "../modules/portal/portal.module";
     CommonModule,
     FormsModule,
     RouterModule.forRoot(routes, {useHash: true, preloadingStrategy: PreloadAllModules}),
+    NgbModule.forRoot(),
+    ModalModule.forRoot(),
 
     Go1CoreModule,
     SettingsModule,

@@ -1,8 +1,9 @@
 .setting-page
   go-header(activePage="settings")
   .photo-area
-    img.avator(src="../assets/avatar.png")
-    p.name {{ user.first_name}}
+    img.avator(*ngIf="!userAvatar" src="../assets/avatar.png")
+    img.avator(*ngIf="userAvatar" src="{{ userAvatar }}")
+    p.name {{ user.first_name }}
   .actions-area
     //.action-area
     //  span.action-name Notification

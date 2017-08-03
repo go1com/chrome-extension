@@ -1,0 +1,11 @@
+.modal-header
+  button.close(aria-label="Close", type="button", (click)="close()")
+    span(aria-hidden="true") &times;
+
+  h5.modal-title    {{ context.title }}
+
+.modal-body
+  div([innerHTML]="context.message")
+
+.modal-footer
+  button.btn(class="{{ context.okButtonClass || 'btn-primary' }}", (click)="close()") {{ context.okButtonText || 'OK' }}

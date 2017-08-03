@@ -1,4 +1,6 @@
-div([hidden]="!loading") Loading...
+.no-content([hidden]="!loading")
+  loading-indicator
+
 form((submit)="login()", [hidden]="loading")
   .imgcontainer
     image-svg#logo(src="../assets/go1-logo.svg")

@@ -16,6 +16,9 @@ export class UserService {
   public currentUser = this.currentUserSubject.asObservable();
   private currentUserObject: any = null;
 
+  private isRefreshing: boolean = false;
+  private isUserRefreshed: boolean = false;
+
   constructor(private restClientService: RestClientService,
               private storageService: StorageService) {
   }
@@ -42,13 +45,13 @@ export class UserService {
   }
 
   async refresh() {
+    this.isRefreshing = true;
     const currentUuid = this.storageService.retrieve(configuration.constants.localStorageKeys.uuid);
 
     if (currentUuid) {
       try {
         const response = await this.restClientService.get(`${ this.apiUrl }/${configuration.serviceUrls.user}account/current/${ currentUuid }`);
-
-        console.log(response.accounts.map(account => account.instance));
+        this.setAuth(response);
         this.storageService.store(configuration.constants.localStorageKeys.portalInstance, response.accounts.map(account => account.instance));
         this.currentUserSubject.next(response);
       } catch (e) {
@@ -57,11 +60,11 @@ export class UserService {
     } else {
       this.cleanAuth();
     }
+    this.isRefreshing = false;
+    this.isUserRefreshed = true;
   }
 
   switchPortal(portal: any) {
-    console.log(portal);
-    console.log(portal.id);
     this.storageService.store(configuration.constants.localStorageKeys.activeInstance, portal.id);
   }
 
@@ -74,7 +77,11 @@ export class UserService {
     this.currentUserSubject.next({});
   }
 
-  getUser() {
+  async getUser() {
+    if (this.isRefreshing || !this.isUserRefreshed) {
+      await this.refresh();
+    }
+
     if (this.currentUserObject)
       return this.currentUserObject;
 

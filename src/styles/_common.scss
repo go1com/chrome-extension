@@ -70,9 +70,12 @@ header.extension-header {
   padding-right: 0;
 }
 
-
 .p-l-0 {
   padding-left: 0;
+}
+
+.m-r-10 {
+  margin-right: 10px;
 }
 
 .text-center {
@@ -101,4 +104,27 @@ h6 {
   font-weight: bold;
   font-size: 15px;
   line-height: 25px;
+}
+
+.no-content {
+  top: 50%;
+  transform: translate(-50%, -50%);
+  left: 50%;
+  width: 90%;
+  position: absolute;
+  text-align: center;
+}
+
+
+.fade.in {
+  opacity: 1;
+}
+
+.modal-backdrop.fade.in {
+  opacity: 0.67;
+}
+
+.modal-content {
+  border-radius: 3px;
+  margin-top: 50%;
 }

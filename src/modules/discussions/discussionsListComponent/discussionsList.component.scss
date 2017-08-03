@@ -1,16 +1,7 @@
 @import "../../../styles/variables";
 
 .discussions-list-page {
-  background: #eef4f9;
-  height: 100%;
-
   .no-content {
-    top: 50%;
-    transform: translate(-50%, -50%);
-    left: 50%;
-    width: 90%;
-    position: absolute;
-    text-align: center;
     h4 {
       font-size: 16px;
       font-weight: bold;
