@@ -29,7 +29,6 @@ export class Go1LinkPreviewComponent {
         action: commandKeys.getLinkPreview,
         data: this.linkUrl
       }, (response) => {
-        debugger;
         this.linkPreview = response.data;
         this.isLoading = false;
         resolve();

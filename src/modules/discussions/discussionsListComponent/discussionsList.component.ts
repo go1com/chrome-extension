@@ -8,6 +8,8 @@ import {ActivatedRoute, Router} from "@angular/router";
   styleUrls: ['./discussionsList.component.scss']
 })
 export class DiscussionsListComponent implements OnInit, OnDestroy {
+  onNoteDeletedEvent: any;
+  onNoteCreatedEvent: any;
   discussionsList: any[];
   loading: boolean = false;
 
@@ -16,6 +18,8 @@ export class DiscussionsListComponent implements OnInit, OnDestroy {
               private zone: NgZone,
               private currentActivatedRoute: ActivatedRoute) {
     this.discussionsList = [];
+    this.onNoteCreatedEvent = discussionService.onNoteCreated.subscribe(() => this.loadDiscussions());
+    this.onNoteDeletedEvent = discussionService.onNoteDeleted.subscribe(() => this.loadDiscussions());
   }
 
   async ngOnInit() {
@@ -23,6 +27,8 @@ export class DiscussionsListComponent implements OnInit, OnDestroy {
   }
 
   ngOnDestroy(): void {
+    this.onNoteCreatedEvent.unsubscribe();
+    this.onNoteDeletedEvent.unsubscribe();
   }
 
   async addDiscussion() {
@@ -35,17 +41,19 @@ export class DiscussionsListComponent implements OnInit, OnDestroy {
 
   private async loadDiscussions() {
     this.loading = true;
+    this.discussionsList = [];
     const response = await this.discussionService.getUserNotesFromService();
 
     for (let i = 0; i < response.length; i++) {
-      const item = response[i];
-      const note: any = await this.discussionService.getUserNote(item.uuid);
+      const noteItem = response[i];
+      const note: any = await this.discussionService.getUserNote(noteItem.uuid);
       if (!note || !note.data) {
         return;
       }
 
       const keys = Object.keys(note.data);
-      const discussionTopic = note.data[keys[0]];
+      const discussionTopic:any = note.data[keys[0]];
+      discussionTopic.noteItem = noteItem;
 
       if (!discussionTopic) {
         return;

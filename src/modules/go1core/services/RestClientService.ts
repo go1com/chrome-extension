@@ -39,12 +39,20 @@ export class RestClientService {
 
     return fetch(url, options)
       .then((response) => {
-        if (response.ok)
-          return response.json();
+        if (response.ok) {
+          return response.text();
+        }
 
         return response.json().then(response => {
           throw response;
         });
+      })
+      .then(response => {
+        try {
+          return JSON.parse(response);
+        } catch(e) {
+          return response;
+        }
       });
   }
 

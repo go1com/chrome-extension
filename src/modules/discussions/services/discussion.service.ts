@@ -1,4 +1,4 @@
-import {Injectable} from "@angular/core";
+import {EventEmitter, Injectable} from "@angular/core";
 import {RestClientService} from "../../go1core/services/RestClientService";
 import {StorageService} from "../../go1core/services/StorageService";
 import firebase from 'firebase';
@@ -8,6 +8,8 @@ import configuration from "../../../environments/configuration";
 export class DiscussionService {
   private baseUrl = configuration.environment.baseApiUrl;
   private fireBaseDb: firebase.database.Database;
+  public onNoteDeleted: EventEmitter<any> = new EventEmitter<any>();
+  public onNoteCreated: EventEmitter<any> = new EventEmitter<any>();
 
   constructor(private restClientService: RestClientService,
               private storageService: StorageService) {
@@ -36,6 +38,19 @@ export class DiscussionService {
         resolve(snapshot.val());
       });
     });
+  }
+
+  async deleteNote(noteUuid: string) {
+    try {
+      let endpoint = `${this.baseUrl}/${configuration.serviceUrls.noteService}note/${noteUuid}`;
+
+      const response = await this.restClientService.delete(endpoint, this.getCustomHeaders());
+
+      console.log(response);
+    } catch (error) {
+      console.error(error);
+      throw error;
+    }
   }
 
   async createNote(newNote: any) {
