@@ -3,11 +3,11 @@
     .col Loading Preview...
   .row.loading-completed([hidden]="isLoading")
     .col-3
-      img.link-preview-img([src]="linkPreview.image", *ngIf="linkPreview.image")
-      img.link-preview-img(src="assets/no-image-icon-15.png", *ngIf="!linkPreview.image")
+      img.link-preview-img([src]="linkPreview.image", *ngIf="linkPreview && linkPreview.image")
+      img.link-preview-img(src="assets/no-image-icon-15.png", *ngIf="!linkPreview || !linkPreview.image")
     .col-9
       h5
-        | {{ linkPreview.title }}
+        | {{ linkPreview && linkPreview.title }}
         button.close-btn((click)="closePreview()") &times;
-      div.description {{ linkPreview.description }}
+      div.description {{ linkPreview?.description }}
 

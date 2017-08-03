@@ -52,7 +52,7 @@ export class UserService {
       try {
         const response = await this.restClientService.get(`${ this.apiUrl }/${configuration.serviceUrls.user}account/current/${ currentUuid }`);
         this.setAuth(response);
-        this.storageService.store(configuration.constants.localStorageKeys.portalInstance, response.accounts.map(account => account.instance));
+        this.storageService.store(configuration.constants.localStorageKeys.portalInstances, response.accounts.map(account => account.instance));
         this.currentUserSubject.next(response);
       } catch (e) {
         this.cleanAuth();

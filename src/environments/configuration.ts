@@ -7,7 +7,7 @@ const configuration = {
     localStorageKeys: {
       authentication: 'jwt',
       activeInstance: 'activeInstance',
-      portalInstance: 'portalInstance',
+      portalInstances: 'portalInstances',
       user: 'user',
       uuid: 'uuid',
       quickButtonSetting: 'Go1.settings.quickButtonEnabled'

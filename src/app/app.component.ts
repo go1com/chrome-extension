@@ -3,6 +3,7 @@ import {UserService} from '../modules/membership/services/user.service';
 import {Go1RuntimeContainer} from "../modules/go1core/services/go1RuntimeContainer";
 import {Overlay} from "angular2-modal";
 import {ModalDialogService} from "../modules/go1core/services/ModalDialogService";
+import {PortalService} from "../modules/portal/services/PortalService";
 
 @Component({
   selector: 'app-root',
@@ -16,13 +17,17 @@ export class AppComponent implements OnInit {
   constructor(private userService: UserService,
               @Inject(Overlay) private overlay: Overlay,
               private vcRef: ViewContainerRef,
-              public modalDialogService: ModalDialogService) {
+              public modalDialogService: ModalDialogService,
+              private portalService: PortalService) {
     overlay.defaultViewContainer = vcRef;
     modalDialogService.setViewContainer(vcRef);
     this.userService.refresh();
   }
 
   async ngOnInit() {
+    const portalInfo = await this.portalService.getDefaultPortalInfo();
+
+    console.log(portalInfo);
     return new Promise(resolve => {
       chrome.tabs.query({active: true, currentWindow: true}, function (tabs) {
         Go1RuntimeContainer.currentChromeTab = tabs[0];

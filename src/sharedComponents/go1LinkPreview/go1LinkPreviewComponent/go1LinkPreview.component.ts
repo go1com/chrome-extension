@@ -1,4 +1,4 @@
-import {Component, Input} from "@angular/core";
+import {Component, EventEmitter, Input, Output} from "@angular/core";
 import {LinkPreview} from "../../../modules/linkPreviewer/linkPreviewService";
 import {commandKeys} from "../../../commandHandlers/commandKeys";
 
@@ -9,7 +9,8 @@ import {commandKeys} from "../../../commandHandlers/commandKeys";
 export class Go1LinkPreviewComponent {
   @Input('linkUrl') linkUrl: any;
 
-  linkPreview: any = {};
+  @Input() linkPreview: any = {};
+  @Output() linkPreviewChange: EventEmitter<any> = new EventEmitter<any>();
 
   isLoading = false;
 
@@ -18,6 +19,9 @@ export class Go1LinkPreviewComponent {
   }
 
   async ngAfterViewInit() {
+    if (!this.linkPreview) {
+      this.linkPreview = {};
+    }
     await this.loadLinkPreviewData();
   }
 
@@ -31,6 +35,7 @@ export class Go1LinkPreviewComponent {
       }, (response) => {
         this.linkPreview = response.data;
         this.isLoading = false;
+        this.linkPreviewChange.emit(this.linkPreview);
         resolve();
       });
     });

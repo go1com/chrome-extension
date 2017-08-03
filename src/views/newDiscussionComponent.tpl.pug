@@ -13,7 +13,7 @@
   .link-preview
     label Related to:
     .link-preview-component(*ngIf="!!data.item")
-      go1-link-preview(*ngIf="!!data.item", [linkUrl]="data.item")
+      go1-link-preview(*ngIf="!!data.item", [linkUrl]="data.item", [(linkPreview)]="linkPreview")
   .description
     textarea.form-control([(ngModel)]="data.body" name="noteBody" placeholder="Say something about this page" rows=10)
 

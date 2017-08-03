@@ -11,6 +11,7 @@ import configuration from "../../../environments/configuration";
   templateUrl: '../../../views/newDiscussionComponent.tpl.pug'
 })
 export class NewDiscussionComponent implements OnInit {
+  linkPreview: any;
   data: any;
 
   constructor(private router: Router,
@@ -48,8 +49,7 @@ export class NewDiscussionComponent implements OnInit {
 
   async addNote() {
     if (!this.data.title) {
-      alert('Please enter the topic!');
-      return;
+      this.data.title = 'Note from ' + this.linkPreview.title;
     }
     await this.discussionService.createNote(this.data);
     await this.goBack();

@@ -14,7 +14,6 @@ export class DiscussionItemComponent {
   }
 
   ngOnInit() {
-    console.log(this.discussionItem);
   }
 
   async deleteItem() {

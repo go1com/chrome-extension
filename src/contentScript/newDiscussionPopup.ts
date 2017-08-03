@@ -66,7 +66,6 @@ export class NewDiscussionPopup extends PopupBaseModel {
       this.linkPreview.linkPreview.image = `chrome-extension://${chrome.runtime.id}/assets/no-image-icon-15.png`;
     }
 
-    debugger;
     loadingCompleteBlock.find('.link-preview-img').attr('src', this.linkPreview.linkPreview.image);
     loadingCompleteBlock.find('.description').text(this.linkPreview.linkPreview.description || '');
     loadingCompleteBlock.find('h5 > .title').text(this.linkPreview.linkPreview.title);
@@ -77,16 +76,11 @@ export class NewDiscussionPopup extends PopupBaseModel {
 
   async addNote() {
     let newNoteData = {
-      title: this.popupDOM.find('input[name="noteTitle"]').val(),
+      title: this.popupDOM.find('input[name="noteTitle"]').val() || 'Note from ' + this.linkPreview.linkPreview.title,
       body: this.popupDOM.find('textarea[name="noteBody"]').val(),
       item: this.linkPreview.linkUrl,
       quote: this.quoteText || ''
     };
-
-    if (!newNoteData.title) {
-      ModalDialogService.showModal('Please enter the topic!', 'Topic missing!', 'warning', 'OK', 'warning');
-      return;
-    }
 
     chrome.runtime.sendMessage({
       from: 'content',
