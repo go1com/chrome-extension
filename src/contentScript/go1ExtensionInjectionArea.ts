@@ -40,23 +40,34 @@ export class Go1ExtensionInjectionArea {
     return Go1ExtensionInjectionArea.singleInstance;
   }
 
+  static toggleQuickButton() {
+    Go1ExtensionInjectionArea.singleInstance.checkQuickButtonSettings();
+  }
+
   constructor() {
     this.containerArea = $('<div class="go1-extension go1-extension-injected"></div>');
     this.fabArea = $(require('./views/fabButtons.pug'));
   }
 
-  injectToDocument() {
-    $('body').append(this.containerArea);
-
+  checkQuickButtonSettings(firstTimeInitial = false) {
     chrome.runtime.sendMessage({
       from: 'content',
       action: commandKeys.checkQuickButtonSettings
     }, (quickButtonSetting) => {
       if (!quickButtonSetting) {
+        if (firstTimeInitial) {
+          return;
+        }
+        this.removeQuickButton();
         return;
       }
       this.appendQuickButton();
     });
+  }
+
+  injectToDocument() {
+    $('body').append(this.containerArea);
+    this.checkQuickButtonSettings(true);
   }
 
   appendQuickButton() {

@@ -17,19 +17,15 @@
   .discussions-list([hidden]="!discussionsList.length")
     discussion-item(*ngFor="let discussionItem of discussionsList", [discussionItem]="discussionItem")
 
-  .action-area([hidden]="discussionsList.length")
-    button.rounded-button((click)="addDiscussion()") +
-
-
-  .actions-area.row([hidden]="!discussionsList.length")
-    .col-4
+  .actions-area.row
+    .col-6
       button.btn.btn-block((click)="addDiscussion()")
         | #[i.fa.fa-comment ] Add Note
 
-    .col-4
+    .col-6
       button.btn.btn-block((click)="addToPortal()")
-        | #[i.fa.fa-sign-in] Add to Portal
-
-    .col-4
-      button.btn.btn-block((click)="share()")
-        | #[i.fa.fa-share ] Share
+        | #[i.fa.fa-sign-in] Save this page
+    //
+    //.col-4
+    //  button.btn.btn-block((click)="share()")
+    //    | #[i.fa.fa-share ] Share

@@ -22,7 +22,7 @@ export class AppComponent implements OnInit {
 
     await this.portalService.getPortal();
     return new Promise(resolve => {
-      chrome.tabs.query({active: true}, function (tabs) {
+      chrome.tabs.query({active: true, currentWindow: true}, function (tabs) {
         Go1RuntimeContainer.currentChromeTab = tabs[0];
         resolve();
       });

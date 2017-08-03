@@ -2,8 +2,6 @@ import {Component, Input} from "@angular/core";
 import {LinkPreview} from "../../../modules/linkPreviewer/linkPreviewService";
 import {commandKeys} from "../../../commandHandlers/commandKeys";
 
-const linkPreviewApiKey = '597334fb87e1dc53999f43b96c08a134948e0f74c86ad';
-
 @Component({
   selector: 'go1-link-preview',
   templateUrl: './go1LinkPreview.component.pug'
