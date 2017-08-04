@@ -27,8 +27,9 @@ export class SettingComponent implements OnInit {
     this.quickButtonEnabled = this.storageService.retrieve(configuration.constants.localStorageKeys.quickButtonSetting) || false;
 
     this.user = await this.userService.getUser();
-    this.userAvatar = this.user.accounts[0].avatar.uri;
-    if (!this.userAvatar.startsWith('https') && !this.userAvatar.startsWith('http:')) {
+    this.userAvatar = this.user.avatar && this.user.avatar.uri;
+
+    if (this.userAvatar && !this.userAvatar.startsWith('https') && !this.userAvatar.startsWith('http:')) {
       this.userAvatar = 'https:' + this.userAvatar;
     }
   }

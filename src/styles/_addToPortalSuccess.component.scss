@@ -30,14 +30,18 @@
   }
 
   footer {
-    position: absolute;
-    bottom: 0;
     width: 100%;
     padding: 20px;
 
     button {
       border-radius: 55px;
       float: right;
+    }
+
+    &:after {
+      clear: both;
+      content: "";
+      display: table;
     }
   }
 }

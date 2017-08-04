@@ -9,6 +9,8 @@ import {AddToPortalRoutes} from "./addToPortal.routes";
 import {AddToPortalSuccessComponent} from "./addToPortalSuccessComponent/addToPortalSuccess.component";
 import {AddToPortalComponent} from "./addToPortalComponent/AddToPortal.component";
 import {LearningItemScheduleComponent} from "./saveForLaterComponent/learningItemSchedule.component";
+import {PortalModule} from "../portal/portal.module";
+import {TagInputModule} from "../../sharedComponents/tagInput/tag-input.module";
 
 @NgModule({
   imports: [
@@ -17,8 +19,10 @@ import {LearningItemScheduleComponent} from "./saveForLaterComponent/learningIte
     RouterModule.forChild(AddToPortalRoutes),
     MomentModule,
 
+    TagInputModule,
 
-    Go1CoreModule
+    Go1CoreModule,
+    PortalModule
   ],
   declarations: [
     AddToPortalComponent,

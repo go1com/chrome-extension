@@ -7,13 +7,18 @@
       h5 Add To Portal
     .col-2
 
-  .add-tags
+  .form-group
     h6 Add Tags
 
-    input.form-control([(ngModel)]="data.tags", placeholder="Add tags")
+    tag-input([(ngModel)]="data.tags", placeholder="Add tags")
+
+  .form-group
+    h6 Select Portal
+
+    portal-selection([(portal)]="data.instance")
 
   .actions-area
     .col-8.offset-2
-      button.btn.btn-primary.btn-block.rounded-btn#markAsComplete((click)="markAsComplete()") Mark as Complete
+      button.btn.btn-primary.btn-block#markAsComplete((click)="markAsComplete()") Mark as Complete
 
-      button.btn.btn-primary.btn-block.rounded-btn#saveForLater((click)="saveForLater()") Save for Later
+      //button.btn.btn-primary.btn-block#saveForLater((click)="saveForLater()") Save for Later

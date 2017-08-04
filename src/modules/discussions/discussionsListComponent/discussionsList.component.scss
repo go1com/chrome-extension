@@ -1,6 +1,7 @@
 @import "../../../styles/variables";
 
 .discussions-list-page {
+  height: 600px;
   .no-content {
     h4 {
       font-size: 16px;
@@ -11,22 +12,6 @@
       font-size: 14px;
       line-height: 1.3;
     }
-  }
-
-  .rounded-button {
-    position: absolute;
-    right: 15px;
-    bottom: 15px;
-    width: 48px;
-    height: 48px;
-    background: $go1brandColor;
-    border: none;
-    -webkit-border-radius: 100%;
-    -moz-border-radius: 100%;
-    border-radius: 100%;
-    color: #fff;
-    font-size: 24px;
-    font-weight: bold;
   }
 
   .discussions-list {
@@ -61,13 +46,13 @@
     }
 
     button.btn {
-      background: #fff;
-      border-radius: 30px;
-      box-shadow: 0 0 15px 2px rgba(0, 0, 0, .2);
       padding: 5px;
       font-size: 12px;
       font-weight: bold;
       min-height: 42px;
+      border: 1px solid $go1black;
+      color: $go1black;
+      background: #fff;
 
       .fa {
         margin-right: 10px;

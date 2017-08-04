@@ -1,0 +1,18 @@
+tag-input-item([text]="tag", [index]="index", [selected]="selectedTag === index", (tagRemoved)="_removeTag($event)", *ngFor="let tag of tagsList; let index = index")
+
+form.ng2-tag-input-form([formGroup]="tagInputForm")
+  input.ng2-tag-input-field(
+  #tagInputElement="",
+  formControlName="tagInputField",
+  [placeholder]="placeholder",
+  (paste)="onInputPaste($event)",
+  (keydown)="onKeydown($event)",
+  (blur)="onInputBlurred($event)",
+  (focus)="onInputFocused()")
+
+  .tag-input-autocomplete-container(*ngIf="showAutocomplete()")
+    tag-input-autocomplete(
+    [items]="autocompleteResults",
+    [selectFirstItem] = "autocompleteSelectFirstItem",
+    (itemSelected) = "onAutocompleteSelect($event)",
+    (enterPressed) = "onAutocompleteEnter($event)")

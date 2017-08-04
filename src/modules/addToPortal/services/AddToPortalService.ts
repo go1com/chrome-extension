@@ -6,15 +6,9 @@ import configuration from "../../../environments/configuration";
 @Injectable()
 export class AddToPortalService {
   private baseUrl = configuration.environment.baseApiUrl;
-  private fireBaseDb: firebase.database.Database;
 
   constructor(private restClient: RestClientService,
               private storageService: StorageService) {
-    if (firebase.apps.length === 0) {
-      firebase.initializeApp(configuration.environment.firebase);
-    }
-
-    this.fireBaseDb = firebase.database();
   }
 
   private getCustomHeaders() {
@@ -23,8 +17,18 @@ export class AddToPortalService {
     };
   }
 
-  async addToPortal() {
+  async addToPortal(data: any) {
+    return this.restClient.post(
+      `${configuration.environment.baseApiUrl}/${configuration.serviceUrls.lo}li`,
+      data,
+      this.getCustomHeaders());
+  }
 
+  async updateLearningItem(data: any) {
+    return this.restClient.put(
+      `${configuration.environment.baseApiUrl}/${configuration.serviceUrls.lo}li/${data.id}`,
+      data,
+      this.getCustomHeaders());
   }
 
   async markAsComplete() {

@@ -60,11 +60,7 @@ export class UserLoginComponent implements OnInit {
       const activeInstanceId = this.storageService.retrieve(configuration.constants.localStorageKeys.activeInstance);
       const activeAccount = user.accounts.find(account => account.instance.id === activeInstanceId);
 
-      if (activeAccount.roles.indexOf('administrator') >= 0) {
-        this.router.navigate(['/admin-dashboard']);
-      } else {
-        this.router.navigate(['/' + configuration.defaultPage]);
-      }
+      this.router.navigate(['/' + configuration.defaultPage]);
     } else {
       this.router.navigate(['']);
     }

@@ -27,7 +27,7 @@ export class DiscussionItemComponent {
 
     if (confirm) {
       await this.discussionService.deleteNote(this.discussionItem.noteItem.uuid);
-      this.discussionService.onNoteDeleted.emit(true);
+      this.discussionService.onNoteDeleted.emit(this.discussionItem.noteItem.uuid);
     }
   }
 }

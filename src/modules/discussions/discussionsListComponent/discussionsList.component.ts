@@ -19,7 +19,7 @@ export class DiscussionsListComponent implements OnInit, OnDestroy {
               private currentActivatedRoute: ActivatedRoute) {
     this.discussionsList = [];
     this.onNoteCreatedEvent = discussionService.onNoteCreated.subscribe(() => this.loadDiscussions());
-    this.onNoteDeletedEvent = discussionService.onNoteDeleted.subscribe(() => this.loadDiscussions());
+    this.onNoteDeletedEvent = discussionService.onNoteDeleted.subscribe((noteUuid) => this.removeNote(noteUuid));
   }
 
   async ngOnInit() {
@@ -39,6 +39,10 @@ export class DiscussionsListComponent implements OnInit, OnDestroy {
     await this.router.navigate(['/addToPortal']);
   }
 
+  private async removeNote(noteUuid) {
+    this.discussionsList = this.discussionsList.filter(discussionTopic => discussionTopic.noteItem.uuid !== noteUuid);
+  }
+
   private async loadDiscussions() {
     this.loading = true;
     this.discussionsList = [];
@@ -52,7 +56,7 @@ export class DiscussionsListComponent implements OnInit, OnDestroy {
       }
 
       const keys = Object.keys(note.data);
-      const discussionTopic:any = note.data[keys[0]];
+      const discussionTopic: any = note.data[keys[0]];
       discussionTopic.noteItem = noteItem;
 
       if (!discussionTopic) {

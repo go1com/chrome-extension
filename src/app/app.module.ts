@@ -40,6 +40,7 @@ import {ModalModule} from "angular2-modal";
     BrowserModule,
     CommonModule,
     FormsModule,
+    HttpModule,
     RouterModule.forRoot(routes, {useHash: true, preloadingStrategy: PreloadAllModules}),
     NgbModule.forRoot(),
     ModalModule.forRoot(),
