@@ -6,6 +6,7 @@ import configuration from "../../../environments/configuration";
 import {routeNames} from "../addToPortal.routes";
 import {AddToPortalService} from "../services/AddToPortalService";
 import {commandKeys} from "../../../commandHandlers/commandKeys";
+import {EnrollmentService} from "../../enrollment/services/enrollment.service";
 
 @Component({
   selector: 'add-to-portal',
@@ -17,6 +18,7 @@ export class AddToPortalComponent {
   constructor(private router: Router,
               private addToPortalService: AddToPortalService,
               private currentActiveRoute: ActivatedRoute,
+              private enrollmentService: EnrollmentService,
               private storageService: StorageService) {
     this.data = {
       title: '',
@@ -69,8 +71,11 @@ export class AddToPortalComponent {
 
   async markAsComplete() {
     const response = await this.addToPortalService.addToPortal(this.data);
-    console.log(response);
-    debugger;
+
+    const enrollmentResponse: any = await this.enrollmentService.enrollToLearningItem(response.id, this.data.instance);
+
+    const markAsCompleteEnrollment = await this.enrollmentService.markEnrollmentAsCompleted(enrollmentResponse.id);
+
     await this.router.navigate(['./' + routeNames.success], {relativeTo: this.currentActiveRoute});
   }
 
