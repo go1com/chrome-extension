@@ -20,7 +20,9 @@ form((submit)="login()", [hidden]="loading")
       input#password.form-control(type="password", name="password", [(ngModel)]="user.password", placeholder="Password")
 
     .group.m-t-15
-      button.btn.btn-primary.btn-block#login-btn Log In
+      button.btn.btn-primary.btn-block#login-btn([disabled]="loggingIn").
+        Log In
+        #[loading-indicator(colorScheme="white", [hidden]="!loggingIn") ]
 
     div.hr
       hr

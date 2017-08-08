@@ -24,6 +24,13 @@
   -webkit-animation: loading-circleFadeDelay 1.2s infinite ease-in-out both;
   animation: loading-circleFadeDelay 1.2s infinite ease-in-out both;
 }
+
+.loading-fading-circle.white {
+  .loading-circle:before {
+    background-color: #fff;
+  }
+}
+
 .loading-fading-circle .loading-circle2 {
   -webkit-transform: rotate(30deg);
   -ms-transform: rotate(30deg);

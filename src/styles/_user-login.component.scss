@@ -96,6 +96,22 @@ user-login {
     font-size: 14px;
   }
 
+  #login-btn {
+    padding: 10px 30px;
+    line-height: 24px;
+    vertical-align: middle;
+
+    loading-indicator {
+      .loading-fading-circle {
+        width: 24px;
+        height: 24px;
+        margin: 0 0 0 15px;
+        display: inline-block;
+        vertical-align: middle;
+      }
+    }
+  }
+
   .btn.btn-facebook, .btn.btn-google {
     padding: 10px;
     background: #fff;

@@ -5,4 +5,5 @@ import {Component, Input} from "@angular/core";
   templateUrl: './loadingIncidator.html'
 })
 export class LoadingIndicatorComponent{
+  @Input() colorScheme: any;
 }

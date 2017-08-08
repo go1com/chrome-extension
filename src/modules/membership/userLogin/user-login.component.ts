@@ -12,6 +12,7 @@ import {ModalDialogService} from "../../go1core/services/ModalDialogService";
 })
 
 export class UserLoginComponent implements OnInit {
+  loggingIn: boolean;
   user: any;
   errorMessage: string;
   loading = true;
@@ -37,20 +38,17 @@ export class UserLoginComponent implements OnInit {
 
   async login() {
     try {
+      this.loggingIn = true;
       const user: any = await this.userService.login(this.user);
-      // if (user.accounts.length > 1) {
-      //   this.router.navigate(['/portals']);
-      // }
-
-      // if (user.accounts.length === 1) {
       this.redirect(user);
-      // }
     } catch (error) {
       await this.modalDialogService.showAlert(
         error.message,
         'Error logging in'
       );
       this.errorMessage = error.message;
+    } finally {
+      this.loggingIn = false;
     }
   }
 
