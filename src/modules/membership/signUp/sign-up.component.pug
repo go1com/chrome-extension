@@ -1,0 +1,33 @@
+.no-content([hidden]="!loading")
+  loading-indicator
+
+form((submit)="login()", [hidden]="loading")
+  .back-to-login
+    a.btn.btn-no-border.btn-no-padding.go-back-btn([routerLink]="['/']" role="button") ← Return to login
+
+  .imgcontainer
+    image-svg#logo(src="../assets/go1-logo.svg")
+
+  .container
+    h5.text-align-left Create your account
+    h5.sub-header.text-align-left.grey6 It's fast and free
+
+    .group.m-t-15
+      label Your Email
+      input#email.form-control(type="email", name="email", [(ngModel)]="username")
+
+    .group.m-t-15
+      label First Name
+      input#firstname.form-control(type="email", name="email", [(ngModel)]="firstname")
+
+    .group.m-t-15
+      label Last Name
+      input#lastname.form-control(type="email", name="email", [(ngModel)]="lastname")
+
+    .group.m-t-15
+      button.btn.btn-primary.btn-block#login-btn([disabled]="signingup").
+        Create GO1 account
+        #[loading-indicator(colorScheme="white", [hidden]="!signingup") ]
+
+
+

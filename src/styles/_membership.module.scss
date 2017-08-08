@@ -1,16 +1,50 @@
 @import "variables";
 
 user-login {
+  .imgcontainer {
+    padding: 10px 10px;
+    position: absolute;
+    right: 20px;
+    top: 10px;
+  }
+}
+
+forgot-password, user-sign-up {
+  .imgcontainer {
+    padding: 10px 10px;
+    text-align: right;
+    top: 10px;
+  }
+
+  .back-to-login {
+    padding: 10px;
+    position: absolute;
+  }
+}
+
+user-login, forgot-password, user-sign-up {
+  height: $chrome-ext-max-height;
+
   form {
     overflow: hidden;
     margin: 0 0;
     padding: 23px 10px;
 
-
     background: url('/assets/go1-banner.jpg');
     background-position: 100% 100%;
     background-size: 100%;
     background-repeat: no-repeat;
+    height: 100%;
+  }
+
+  image-svg#logo {
+    svg {
+      width: 64px;
+
+      path {
+        fill: $go1brandColor;
+      }
+    }
   }
 
   h5 {
@@ -25,23 +59,6 @@ user-login {
     outline: none !important;
     border: 1px solid #46c6f5;
     /*box-shadow: 0 0 10px #719ECE;*/
-  }
-
-  .imgcontainer {
-    padding: 10px 10px;
-    position: absolute;
-    right: 20px;
-    top: 10px;
-  }
-
-  image-svg#logo {
-    svg {
-      width: 64px;
-
-      path {
-        fill: $go1brandColor;
-      }
-    }
   }
 
   img.or {
@@ -151,5 +168,9 @@ user-login {
     a {
       color: $go1grey6;
     }
+  }
+
+  a.go-back-btn {
+    color: $go1grey6;
   }
 }
