@@ -1,7 +1,7 @@
 import {environment} from "./index";
 
 const configuration = {
-  defaultPage: 'discussions-list',
+  defaultPage: 'discussions-list/discussions-list',
   environment: environment,
   constants: {
     localStorageKeys: {

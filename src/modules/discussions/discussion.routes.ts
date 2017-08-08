@@ -6,6 +6,7 @@ export const discussionModuleRoutes = [
     path: '',
     children: [
       {path: '', component: DiscussionsListComponent},
+      {path: 'discussions-list', component: DiscussionsListComponent},
       {path: 'newDiscussion', component: NewDiscussionComponent}
     ]
   },

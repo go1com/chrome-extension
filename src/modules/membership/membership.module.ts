@@ -5,6 +5,7 @@ import {UserResolve} from "./services/user.resolve";
 import {UserService} from "./services/user.service";
 import {FormsModule} from "@angular/forms";
 import {RouterModule} from "@angular/router";
+import membershipRoutes from "./membership.routes";
 
 @NgModule({
   declarations: [
@@ -13,6 +14,8 @@ import {RouterModule} from "@angular/router";
   imports: [
     FormsModule,
     RouterModule,
+
+    RouterModule.forChild(membershipRoutes),
     Go1CoreModule
   ],
   providers: [

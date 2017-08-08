@@ -11,6 +11,10 @@
   font-size: 18px;
 }
 
+body {
+  background: $go1bodyBackground;
+}
+
 header.extension-header {
   padding: 0;
   background: none;
@@ -32,6 +36,26 @@ header.extension-header {
 
 .text-align-right {
   text-align: right;
+}
+
+.text-align-left {
+  text-align: left;
+}
+
+*.grey3 {
+  color: $go1grey3 !important;
+}
+
+*.grey4 {
+  color: $go1grey4 !important;
+}
+
+*.grey5 {
+  color: $go1grey5 !important;
+}
+
+*.grey6 {
+  color: $go1grey6 !important;
 }
 
 .btn {
@@ -76,6 +100,18 @@ header.extension-header {
 
 .m-r-10 {
   margin-right: 10px;
+}
+
+.m-t-5 {
+  margin-top: 5px;
+}
+
+.m-t-10 {
+  margin-top: 10px;
+}
+
+.m-t-15 {
+  margin-top: 15px;
 }
 
 .form-control {

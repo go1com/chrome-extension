@@ -4,6 +4,7 @@ import {Router} from '@angular/router';
 import {UserService} from '../services/user.service'
 import {StorageService} from "../../go1core/services/StorageService";
 import configuration from "../../../environments/configuration";
+import {ModalDialogService} from "../../go1core/services/ModalDialogService";
 
 @Component({
   selector: 'user-login',
@@ -17,6 +18,7 @@ export class UserLoginComponent implements OnInit {
 
   constructor(private userService: UserService,
               private storageService: StorageService,
+              private modalDialogService: ModalDialogService,
               private router: Router) {
   }
 
@@ -44,7 +46,10 @@ export class UserLoginComponent implements OnInit {
       this.redirect(user);
       // }
     } catch (error) {
-      alert(error.message);
+      await this.modalDialogService.showAlert(
+        error.message,
+        'Error logging in'
+      );
       this.errorMessage = error.message;
     }
   }

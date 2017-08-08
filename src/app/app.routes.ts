@@ -3,15 +3,14 @@ import {AdminDashboardComponent} from "./admin-dashboard/admin-dashboard.compone
 import {LearnerDashboardComponent} from "./learner-dashboard/learner-dashboard.component";
 import {PortalsComponent} from "./portals/portals.component";
 
-import {UserLoginComponent} from "../modules/membership/userLogin/user-login.component";
-
 import {SettingComponent} from "../modules/settings/setting/setting.component";
+
 import {Routes} from "@angular/router";
 
 let routes: Routes = [
   {
     path: '',
-    component: UserLoginComponent
+    loadChildren: '../modules/membership#MembershipModule'
   },
   {
     path: 'discussions-list',

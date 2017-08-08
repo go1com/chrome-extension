@@ -4,19 +4,36 @@
 form((submit)="login()", [hidden]="loading")
   .imgcontainer
     image-svg#logo(src="../assets/go1-logo.svg")
-    #signin-text Sign In to GO1
 
   .container
-    input#email.form-control(type="email", name="email", [(ngModel)]="user.username", placeholder="E-mail")
-    input#password.form-control(type="password", name="password", [(ngModel)]="user.password", placeholder="Password")
-    button#login-btn Log In
-    //div.hr
-    //  hr
-    //  .or-text Or
-    //
-    //button#register-btn.register-btn(type="button", (click)="register()") Register
-    //.link-text#forgot
-    //  a(href="/") Forgot password?
+    h5.text-align-left Login now!
+    h5.sub-header.text-align-left.grey6 to start your learning journey
+
+    .group.m-t-15
+      label Your Email
+      input#email.form-control(type="email", name="email", [(ngModel)]="user.username", placeholder="E-mail")
+
+    .group.m-t-15
+      div
+        label Your Password
+        a.pull-right.small.grey6.m-t-5(routerLink="/forgotPassword") Forgot it?
+      input#password.form-control(type="password", name="password", [(ngModel)]="user.password", placeholder="Password")
+
+    .group.m-t-15
+      button.btn.btn-primary.btn-block#login-btn Log In
+
+    div.hr
+      hr
+      .or-text.grey5 Or continue with
+
+    .social-login-section.row
+      .col-6
+        button.btn.btn-default.btn-google.btn-block #[.icon] Google
+      .col-6
+        button.btn.btn-default.btn-facebook.btn-block #[.icon] Facebook
+
+    div.sign-up-section
+      a(routerLink="/signUp") Or sign up using email
 
 
 
