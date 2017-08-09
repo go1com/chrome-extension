@@ -6,20 +6,20 @@ form((submit)="login()", [hidden]="loading")
     image-svg#logo(src="../assets/go1-logo.svg")
 
   .container
-    h5.text-align-left Login now!
-    h5.sub-header.text-align-left.grey6 to start your learning journey
+    h4.text-align-left Login now!
+    h5.sub-header.text-align-left.grey6.m-t-10 to start your learning journey
 
-    .group.m-t-15
+    .group.m-t-25
       label Your Email
       input#email.form-control(type="email", name="email", [(ngModel)]="user.username", placeholder="E-mail")
 
-    .group.m-t-15
+    .group.m-t-25
       div
         label Your Password
         a.pull-right.small.grey6.m-t-5(routerLink="/forgotPassword") Forgot it?
       input#password.form-control(type="password", name="password", [(ngModel)]="user.password", placeholder="Password")
 
-    .group.m-t-15
+    .group.m-t-25
       button.btn.btn-primary.btn-block#login-btn([disabled]="loggingIn").
         Log In
         #[loading-indicator(colorScheme="white", [hidden]="!loggingIn") ]
