@@ -44,6 +44,13 @@ export class UserService {
       });
   }
 
+  async register(accountData: any) {
+    return await this.restClientService.post(
+      `${ this.apiUrl }/${configuration.serviceUrls.user}account/`,
+      accountData
+    );
+  }
+
   async forgotPasswordRequest(email: string) {
     return await this.restClientService.post(
       `${ this.apiUrl }/${configuration.serviceUrls.user}password/${configuration.environment.defaultPortal}/${email}`,
@@ -56,9 +63,7 @@ export class UserService {
 
     if (currentUuid) {
       try {
-        const response = await this.restClientService.get(`${ this.apiUrl }/${configuration.serviceUrls.user}account/current/${ currentUuid }`);
-        this.setAuth(response);
-        this.storageService.store(configuration.constants.localStorageKeys.portalInstances, response.accounts.map(account => account.instance));
+        const response = await this.getAuthenticatedUserInfo(currentUuid);
         this.currentUserSubject.next(response);
       } catch (e) {
         this.cleanAuth();
@@ -68,6 +73,13 @@ export class UserService {
     }
     this.isRefreshing = false;
     this.isUserRefreshed = true;
+  }
+
+  async getAuthenticatedUserInfo(userUUID) {
+    const response = await this.restClientService.get(`${ this.apiUrl }/${configuration.serviceUrls.user}account/current/${ userUUID }`);
+    this.setAuth(response);
+    this.storageService.store(configuration.constants.localStorageKeys.portalInstances, response.accounts.map(account => account.instance));
+    return response;
   }
 
   switchPortal(portal: any) {

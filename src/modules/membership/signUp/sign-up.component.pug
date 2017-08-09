@@ -1,7 +1,7 @@
 .no-content([hidden]="!loading")
   loading-indicator
 
-form((submit)="login()", [hidden]="loading")
+form((submit)="signUp()", [hidden]="loading")
   .back-to-login
     a.btn.btn-no-border.btn-no-padding.go-back-btn([routerLink]="['/']" role="button") ← Return to login
 
@@ -14,20 +14,21 @@ form((submit)="login()", [hidden]="loading")
 
     .group.m-t-15
       label Your Email
-      input#email.form-control(type="email", name="email", [(ngModel)]="username")
+      input#email.form-control(type="email", name="email", [(ngModel)]="signUpData.email", [disabled]="signingUp", (ngModelChange)="validateEmailFormat()")
+      span.help.help-warning([hidden]="!emailInvalidFormat") Please enter correct email format
 
     .group.m-t-15
       label First Name
-      input#firstname.form-control(type="email", name="email", [(ngModel)]="firstname")
+      input#firstname.form-control(type="text", name="first_name", [(ngModel)]="signUpData.first_name", [disabled]="signingUp")
 
     .group.m-t-15
       label Last Name
-      input#lastname.form-control(type="email", name="email", [(ngModel)]="lastname")
+      input#lastname.form-control(type="text", name="last_name", [(ngModel)]="signUpData.last_name", [disabled]="signingUp")
 
     .group.m-t-15
-      button.btn.btn-primary.btn-block#login-btn([disabled]="signingup").
+      button.btn.btn-primary.btn-block#login-btn([disabled]="!canSignUp() || signingUp", (click)="signUp()").
         Create GO1 account
-        #[loading-indicator(colorScheme="white", [hidden]="!signingup") ]
+        #[loading-indicator(colorScheme="white", [hidden]="!signingUp") ]
 
 
 

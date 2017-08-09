@@ -2,7 +2,6 @@ import {Component, OnInit} from '@angular/core';
 import {Router} from '@angular/router';
 import {UserService} from '../../membership/services/user.service';
 import {StorageService} from "../../go1core/services/StorageService";
-import {environment} from "../../../environments";
 import configuration from "../../../environments/configuration";
 import {commandKeys} from "../../../commandHandlers/commandKeys";
 

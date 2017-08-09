@@ -9,7 +9,7 @@ user-login {
   }
 }
 
-forgot-password, user-sign-up, forgot-password-success {
+forgot-password, user-sign-up, forgot-password-success, signup-success {
   .imgcontainer {
     padding: 10px 10px;
     text-align: right;
@@ -33,7 +33,7 @@ forgot-password-success {
   }
 }
 
-user-login, forgot-password, user-sign-up, forgot-password-success {
+user-login, forgot-password, user-sign-up, forgot-password-success, signup-success {
   height: $chrome-ext-max-height;
 
   form {

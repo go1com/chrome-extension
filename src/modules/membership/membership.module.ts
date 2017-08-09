@@ -9,13 +9,15 @@ import membershipRoutes from "./membership.routes";
 import {ForgotPasswordComponent} from "./forgotPassword/forgot-password.component";
 import {SignUpComponent} from "./signUp/sign-up.component";
 import {ForgotPasswordSuccessComponent} from "./forgotPasswordSuccess/forgot-password-success.component";
+import {SignupSuccessComponent} from "./signUpSuccess/signup-success.component";
 
 @NgModule({
   declarations: [
     UserLoginComponent,
     ForgotPasswordComponent,
     ForgotPasswordSuccessComponent,
-    SignUpComponent
+    SignUpComponent,
+    SignupSuccessComponent
   ],
   imports: [
     FormsModule,
@@ -32,7 +34,8 @@ import {ForgotPasswordSuccessComponent} from "./forgotPasswordSuccess/forgot-pas
     UserLoginComponent,
     ForgotPasswordComponent,
     ForgotPasswordSuccessComponent,
-    SignUpComponent
+    SignUpComponent,
+    SignupSuccessComponent
   ]
 })
 export class MembershipModule {

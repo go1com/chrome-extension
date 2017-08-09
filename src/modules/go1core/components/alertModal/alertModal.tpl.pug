@@ -1,8 +1,8 @@
 .modal-header
+  h5.modal-title {{ context.title }}
+
   button.close(aria-label="Close", type="button", (click)="close()")
     span(aria-hidden="true") &times;
-
-  h5.modal-title    {{ context.title }}
 
 .modal-body
   div([innerHTML]="context.message")

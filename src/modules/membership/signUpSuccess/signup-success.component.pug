@@ -1,0 +1,20 @@
+.no-content([hidden]="!loading")
+  loading-indicator
+
+form([hidden]="loading")
+  .imgcontainer
+    image-svg#logo(src="../assets/go1-logo.svg")
+
+  .container
+    h5.text-align-left Your account is ready!
+    h5.sub-header.text-align-left.grey6.m-t-25.
+      Hi {{ email }}, your account has been created and ready to use.
+
+    h5.sub-header.text-align-left.grey6.m-t-25.
+      You can start using GO1 app now or you can watch our instruction to learn what you can do with GO1 app
+
+    .group.m-t-25
+      a.btn.btn-outline-primary.btn-block((click)="getStarted()", role="button") Get Started
+
+
+
