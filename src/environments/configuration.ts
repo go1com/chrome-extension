@@ -15,6 +15,8 @@ const configuration = {
   },
   serviceUrls: {
     user: 'user-service/',
+    facebookAuth: 'social-login/fb-login',
+    googleAuth: 'social-login/google-login',
     enrollment: 'enrolment-service/',
     lo: 'lo-service/',
     portal: 'portal-service/',

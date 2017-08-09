@@ -52,6 +52,14 @@ export class UserLoginComponent implements OnInit {
     }
   }
 
+  async facebookLogIn() {
+    window.open(`chrome-extension://${chrome.runtime.id}/index.html#/socialLogin/facebook`);
+  }
+
+  async googleLogin() {
+    window.open(`chrome-extension://${chrome.runtime.id}/index.html#/socialLogin/google`);
+  }
+
   register() {
     this.router.navigate(["/"]).then(result => {
       window.location.href = 'https://dev.mygo1.com/p';

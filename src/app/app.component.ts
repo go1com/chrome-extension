@@ -27,7 +27,6 @@ export class AppComponent implements OnInit {
   async ngOnInit() {
     const portalInfo = await this.portalService.getDefaultPortalInfo();
 
-    console.log(portalInfo);
     return new Promise(resolve => {
       chrome.tabs.query({active: true, currentWindow: true}, function (tabs) {
         Go1RuntimeContainer.currentChromeTab = tabs[0];

@@ -1,0 +1,23 @@
+.no-content([hidden]="!loading")
+  loading-indicator
+
+form((submit)="login()", [hidden]="loading")
+  .imgcontainer
+    image-svg#logo(src="../assets/go1-logo.svg")
+
+  .container
+    h4.text-align-left([hidden]="loggedInSuccess") Logging in with #[div.provider-icon(class="icon-{{provider}}") ]
+    h4.text-align-left([hidden]="!loggedInSuccess") Success! #[div.provider-icon(class="icon-{{provider}}") ]
+
+    div.hr.m-t-20([hidden]="!loggingIn")
+      hr
+      .or-text.grey5 Please wait...
+
+    loading-indicator([hidden]="!loggingIn")
+
+    .login-success.m-t-20([hidden]="!loggedInSuccess")
+      h5.sub-header.
+        You have successfully logged in with #[div.provider-icon(class="icon-{{provider}}") ]. Now you can close this window and use the extension.
+
+    .actions-area.m-t-20
+      button.btn.btn-primary.btn-block.m-t-20((click)="close()", [hidden]="!loggedInSuccess") Close

@@ -11,13 +11,13 @@ form((submit)="login()", [hidden]="loading")
 
     .group.m-t-25
       label Your Email
-      input#email.form-control(type="email", name="email", [(ngModel)]="user.username", placeholder="E-mail")
+      input#email.form-control(type="email", name="email", [(ngModel)]="user.username", placeholder="E-mail", [disabled]="loggingIn")
 
     .group.m-t-25
       div
         label Your Password
         a.pull-right.small.grey6.m-t-5(routerLink="/forgotPassword") Forgot it?
-      input#password.form-control(type="password", name="password", [(ngModel)]="user.password", placeholder="Password")
+      input#password.form-control(type="password", name="password", [(ngModel)]="user.password", placeholder="Password", [disabled]="loggingIn")
 
     .group.m-t-25
       button.btn.btn-primary.btn-block#login-btn([disabled]="loggingIn").
@@ -30,9 +30,9 @@ form((submit)="login()", [hidden]="loading")
 
     .social-login-section.row
       .col-6
-        button.btn.btn-default.btn-google.btn-block #[.icon] Google
+        button.btn.btn-default.btn-google.btn-block((click)="googleLogin()", [disabled]="loggingIn") #[.icon] Google
       .col-6
-        button.btn.btn-default.btn-facebook.btn-block #[.icon] Facebook
+        button.btn.btn-default.btn-facebook.btn-block((click)="facebookLogIn()", [disabled]="loggingIn") #[.icon] Facebook
 
     div.sign-up-section
       a(routerLink="/signUp") Or sign up using email

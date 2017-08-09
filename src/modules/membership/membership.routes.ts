@@ -5,6 +5,7 @@ import {ForgotPasswordComponent} from "./forgotPassword/forgot-password.componen
 import {SignUpComponent} from "./signUp/sign-up.component";
 import {ForgotPasswordSuccessComponent} from "./forgotPasswordSuccess/forgot-password-success.component";
 import {SignupSuccessComponent} from "./signUpSuccess/signup-success.component";
+import {SocialLoginComponent} from "./socialLogin/social-login.component";
 
 let membershipRoutes: Routes = [
   {
@@ -16,6 +17,7 @@ let membershipRoutes: Routes = [
       {path: 'forgotPasswordSuccess/:email', component: ForgotPasswordSuccessComponent},
       {path: 'signUp', component: SignUpComponent},
       {path: 'signUpSuccess/:email', component: SignupSuccessComponent},
+      {path: 'socialLogin/:oauthProvider', component: SocialLoginComponent}
     ]
   },
 ];
