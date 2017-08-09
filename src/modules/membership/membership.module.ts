@@ -8,11 +8,13 @@ import {RouterModule} from "@angular/router";
 import membershipRoutes from "./membership.routes";
 import {ForgotPasswordComponent} from "./forgotPassword/forgot-password.component";
 import {SignUpComponent} from "./signUp/sign-up.component";
+import {ForgotPasswordSuccessComponent} from "./forgotPasswordSuccess/forgot-password-success.component";
 
 @NgModule({
   declarations: [
     UserLoginComponent,
     ForgotPasswordComponent,
+    ForgotPasswordSuccessComponent,
     SignUpComponent
   ],
   imports: [
@@ -29,6 +31,7 @@ import {SignUpComponent} from "./signUp/sign-up.component";
   exports: [
     UserLoginComponent,
     ForgotPasswordComponent,
+    ForgotPasswordSuccessComponent,
     SignUpComponent
   ]
 })

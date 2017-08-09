@@ -6,7 +6,7 @@ export const environment: Environment = {
   // authBackend: 'accounts-dev.gocatalyze.com',
 
   baseApiUrl: 'https://api.mygo1.com/v3',
-  defaultPortal: "auto-tham.mygo1.com",
+  defaultPortal: "public.mygo1.com",
   firebase: {
     apiKey: 'AIzaSyD1ZxCmbiqgizgZOefDAn56YMb99A8CspM',
     authDomain: 'notes-c4d57.firebaseapp.com',

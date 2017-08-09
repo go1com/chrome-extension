@@ -44,6 +44,12 @@ export class UserService {
       });
   }
 
+  async forgotPasswordRequest(email: string) {
+    return await this.restClientService.post(
+      `${ this.apiUrl }/${configuration.serviceUrls.user}password/${configuration.environment.defaultPortal}/${email}`,
+    );
+  }
+
   async refresh() {
     this.isRefreshing = true;
     const currentUuid = this.storageService.retrieve(configuration.constants.localStorageKeys.uuid);
