@@ -5,6 +5,7 @@ import {MembershipModule} from "../membership/membership.module";
 import {FormsModule} from "@angular/forms";
 import {RouterModule} from "@angular/router";
 import {CommonModule} from "@angular/common";
+import {PortalModule} from "../portal/portal.module";
 
 @NgModule({
   declarations: [
@@ -16,6 +17,7 @@ import {CommonModule} from "@angular/common";
     RouterModule,
 
     Go1CoreModule,
+    PortalModule,
     MembershipModule
   ],
   exports: [

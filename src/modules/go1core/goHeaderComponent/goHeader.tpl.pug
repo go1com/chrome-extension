@@ -1,11 +1,10 @@
 .nav-header
   ul.nav.full-width
-    li.col.text-center
+    li.col-2.text-center
       a([routerLink]="'/discussions-list/discussions-list'" routerLinkActive="active")
-        i.fa.fa-comment
-    li.col.text-center
-      a(routerLinkActive="active")
-        i.fa.fa-bell
-    li.col.text-center
+        i.fa.fa-comments
+    li.col-8.text-center.
+      {{ title }}
+    li.col-2.text-center
       a([routerLink]="'/setting'" routerLinkActive="active")
         i.fa.fa-cog

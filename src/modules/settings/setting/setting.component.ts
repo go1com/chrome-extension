@@ -4,6 +4,7 @@ import {UserService} from '../../membership/services/user.service';
 import {StorageService} from "../../go1core/services/StorageService";
 import configuration from "../../../environments/configuration";
 import {commandKeys} from "../../../commandHandlers/commandKeys";
+import {PortalService} from "../../portal/services/PortalService";
 
 @Component({
   selector: 'app-setting',
@@ -11,19 +12,24 @@ import {commandKeys} from "../../../commandHandlers/commandKeys";
   styleUrls: ['./setting.component.scss']
 })
 export class SettingComponent implements OnInit {
+  defaultPortal: any;
   private user;
   private userAvatar;
   private quickButtonEnabled: boolean;
 
   constructor(private userService: UserService,
               private storageService: StorageService,
+              private portalService: PortalService,
               private router: Router) {
     this.userAvatar = null;
     this.user = {};
+    this.defaultPortal = null;
   }
 
   async ngOnInit() {
     this.quickButtonEnabled = this.storageService.retrieve(configuration.constants.localStorageKeys.quickButtonSetting) || false;
+    this.defaultPortal = this.portalService.getDefaultPortalSetting();
+    console.log(this.defaultPortal);
 
     this.user = await this.userService.getUser();
     this.userAvatar = this.user.avatar && this.user.avatar.uri;
@@ -31,6 +37,10 @@ export class SettingComponent implements OnInit {
     if (this.userAvatar && !this.userAvatar.startsWith('https') && !this.userAvatar.startsWith('http:')) {
       this.userAvatar = 'https:' + this.userAvatar;
     }
+  }
+
+  changeDefaultPortal(defaultPortal) {
+    this.portalService.setDefaultPortal(defaultPortal);
   }
 
   toggleQuickButton() {
@@ -51,6 +61,6 @@ export class SettingComponent implements OnInit {
 
   signout() {
     this.userService.logout();
-    this.router.navigate(['/']);
+    this.router.navigate(['/membership/login']);
   }
 }

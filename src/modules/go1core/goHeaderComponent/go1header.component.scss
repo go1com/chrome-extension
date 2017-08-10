@@ -3,19 +3,16 @@
 .nav-header {
   width: 100%;
   height: 60px;
-  background-color: $go1brandColor;
   display: flex;
   align-items: center;
   justify-content: space-around;
+  background: #fff;
   padding: 0 20px;
+  border-bottom: 1px solid $go1grey2;
 
   a .fa {
     font-size: 28px;
-    color: $go1grey3;
-  }
-
-  a.active .fa {
-    color: #fff;
+    color: $go1grey5;
   }
 
   .full-width {

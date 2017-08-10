@@ -46,6 +46,7 @@
       margin: 0 auto 0;
       padding: 18px 20px;
       opacity: 0;
+      display: none;
     }
 
     &.plus-icon {
@@ -74,6 +75,7 @@
   &.active {
     .fab-button:not(:last-child) {
       opacity: 1;
+      display: initial;
       margin-left: 25px;
     }
 

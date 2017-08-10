@@ -5,6 +5,7 @@ tag-input {
   padding: 5px 10px;
   border-radius: 3px;
   border: 1px solid $go1grey3;
+  background: #fff;
   min-height: 42px;
   display: block;
 
@@ -13,6 +14,7 @@ tag-input {
   }
 
   .ng2-tag-input-field {
+    background: none;
     font-size: 16px;
     display: inline-block;
     width: auto;

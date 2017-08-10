@@ -32,7 +32,7 @@ export class DiscussionsListComponent implements OnInit, OnDestroy {
   }
 
   async addDiscussion() {
-    await this.router.navigate(['./newDiscussion'], {relativeTo: this.currentActivatedRoute});
+    await this.router.navigate(['../newDiscussion'], {relativeTo: this.currentActivatedRoute});
   }
 
   async addToPortal() {

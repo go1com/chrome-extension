@@ -7,6 +7,7 @@ import {Component, Input} from "@angular/core";
 })
 export class Go1HeaderComponent {
   @Input() activePage: string;
+  @Input() title: string;
 
   constructor() {
 

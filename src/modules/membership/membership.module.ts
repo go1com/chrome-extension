@@ -25,7 +25,7 @@ import {SocialLoginComponent} from "./socialLogin/social-login.component";
     FormsModule,
     RouterModule,
 
-    RouterModule.forChild(membershipRoutes),
+    // RouterModule.forChild(membershipRoutes),
     Go1CoreModule
   ],
   providers: [

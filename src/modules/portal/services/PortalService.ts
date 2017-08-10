@@ -16,13 +16,21 @@ export class PortalService {
     let response = await this.restClientService.get(`${configuration.environment.baseApiUrl}/${configuration.serviceUrls.portal}public-key/${uuid}`);
   }
 
-  async getPortal(id: string|number) {
+  async getPortal(id: string | number) {
     let response = await this.restClientService.get(`${configuration.environment.baseApiUrl}/${configuration.serviceUrls.portal}${id}`);
     return response;
   }
 
+  setDefaultPortal(portalId: string) {
+    this.storageService.store(configuration.constants.localStorageKeys.activeInstance, portalId);
+  }
+
+  getDefaultPortalSetting() {
+    return this.storageService.retrieve(configuration.constants.localStorageKeys.activeInstance);
+  }
+
   async getDefaultPortalInfo() {
-    return this.getPortal(configuration.environment.defaultPortal);
+    return this.getPortal(this.getDefaultPortalSetting() || configuration.environment.defaultPortal);
   }
 
   async getPortals() {

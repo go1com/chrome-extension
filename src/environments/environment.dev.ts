@@ -1,7 +1,7 @@
 import {Environment} from "./environment";
 
 export const environment: Environment = {
-  production: false,
+  production: true,
   authBackend: 'accounts.gocatalyze.com',
   // authBackend: 'accounts-dev.gocatalyze.com',
 

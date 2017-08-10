@@ -25,15 +25,8 @@ export class UserLoginComponent implements OnInit {
 
   ngOnInit() {
     this.user = {};
-    // check existing jwt to show login form or redirect to a router
-    this.userService.currentUser.subscribe(
-      user => {
-        setTimeout(() => {
-          this.loading = false;
-        }, 500);
-        this.redirect(user);
-      }
-    );
+
+    this.loading = false;
   }
 
   async login() {
@@ -60,20 +53,12 @@ export class UserLoginComponent implements OnInit {
     window.open(`chrome-extension://${chrome.runtime.id}/index.html#/socialLogin/google`);
   }
 
-  register() {
-    this.router.navigate(["/"]).then(result => {
-      window.location.href = 'https://dev.mygo1.com/p';
-    });
-  }
-
   redirect(user): void {
     if (user.id) {
       const activeInstanceId = this.storageService.retrieve(configuration.constants.localStorageKeys.activeInstance);
       const activeAccount = user.accounts.find(account => account.instance.id === activeInstanceId);
 
       this.router.navigate(['/' + configuration.defaultPage]);
-    } else {
-      this.router.navigate(['']);
     }
   }
 }

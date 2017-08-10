@@ -1,9 +1,10 @@
 import {Component, Inject, OnInit, ViewContainerRef, ViewEncapsulation} from '@angular/core';
-import {UserService} from '../modules/membership/services/user.service';
 import {Go1RuntimeContainer} from "../modules/go1core/services/go1RuntimeContainer";
 import {Overlay} from "angular2-modal";
 import {ModalDialogService} from "../modules/go1core/services/ModalDialogService";
-import {PortalService} from "../modules/portal/services/PortalService";
+import configuration from "../environments/configuration";
+import {UserService} from "../modules/membership/services/user.service";
+import {Router} from "@angular/router";
 
 @Component({
   selector: 'app-root',
@@ -14,24 +15,27 @@ import {PortalService} from "../modules/portal/services/PortalService";
 export class AppComponent implements OnInit {
   title = 'GO1 bookmark';
 
-  constructor(private userService: UserService,
-              @Inject(Overlay) private overlay: Overlay,
+  constructor(@Inject(Overlay) private overlay: Overlay,
               private vcRef: ViewContainerRef,
               public modalDialogService: ModalDialogService,
-              private portalService: PortalService) {
+              private userService: UserService,
+              private router: Router) {
     overlay.defaultViewContainer = vcRef;
     modalDialogService.setViewContainer(vcRef);
-    this.userService.refresh();
   }
 
   async ngOnInit() {
-    const portalInfo = await this.portalService.getDefaultPortalInfo();
-
-    return new Promise(resolve => {
+    await new Promise(resolve => {
       chrome.tabs.query({active: true, currentWindow: true}, function (tabs) {
         Go1RuntimeContainer.currentChromeTab = tabs[0];
         resolve();
       });
     });
+
+    if (this.userService.isLoggedIn()) {
+      this.router.navigate(['/' + configuration.defaultPage]);
+    } else {
+      this.router.navigate(['/membership/login']);
+    }
   }
 }

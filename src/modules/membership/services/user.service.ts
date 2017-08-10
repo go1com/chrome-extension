@@ -57,6 +57,10 @@ export class UserService {
     );
   }
 
+  isLoggedIn() {
+    return !!this.storageService.retrieve(configuration.constants.localStorageKeys.uuid);
+  }
+
   async refresh() {
     this.isRefreshing = true;
     const currentUuid = this.storageService.retrieve(configuration.constants.localStorageKeys.uuid);
@@ -111,8 +115,11 @@ export class UserService {
     this.storageService.store(configuration.constants.localStorageKeys.authentication, user.jwt);
     this.storageService.store(configuration.constants.localStorageKeys.user, user);
     this.storageService.store(configuration.constants.localStorageKeys.uuid, user.uuid);
-    this.storageService.store(configuration.constants.localStorageKeys.activeInstance, user.accounts[0].instance.id);
     this.storageService.store(configuration.constants.localStorageKeys.portalInstances, user.accounts.map(account => account.instance));
+
+    if (!this.storageService.retrieve(configuration.constants.localStorageKeys.activeInstance)) {
+      this.storageService.store(configuration.constants.localStorageKeys.activeInstance, user.accounts[0].instance.id);
+    }
   }
 
   private cleanAuth() {

@@ -11,7 +11,6 @@ let membershipRoutes: Routes = [
   {
     path: '',
     children: [
-      {path: '', component: UserLoginComponent},
       {path: 'login', component: UserLoginComponent},
       {path: 'forgotPassword', component: ForgotPasswordComponent},
       {path: 'forgotPasswordSuccess/:email', component: ForgotPasswordSuccessComponent},

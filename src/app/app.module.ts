@@ -2,7 +2,7 @@ import {BrowserModule} from '@angular/platform-browser';
 import {NgModule} from '@angular/core';
 import {FormsModule} from '@angular/forms';
 import {HttpModule} from '@angular/http';
-import {PreloadAllModules, RouterModule} from '@angular/router';
+import {NoPreloading, PreloadAllModules, RouterModule} from '@angular/router';
 
 import {AppComponent} from './app.component';
 
@@ -23,11 +23,13 @@ import extraProviders from "./extraProviders";
 import {PortalModule} from "../modules/portal/portal.module";
 import {NgbModule} from "@ng-bootstrap/ng-bootstrap";
 import {ModalModule} from "angular2-modal";
+import {RedirectingComponent} from "./redirectingComponent/redirecting.component";
 
 
 @NgModule({
   declarations: [
     AppComponent,
+    RedirectingComponent,
     HeaderComponent,
     LearnerDashboardComponent,
     PortalsComponent,
@@ -41,7 +43,11 @@ import {ModalModule} from "angular2-modal";
     CommonModule,
     FormsModule,
     HttpModule,
-    RouterModule.forRoot(routes, {useHash: true, preloadingStrategy: PreloadAllModules}),
+    RouterModule.forRoot(routes, {
+      useHash: true,
+      preloadingStrategy: NoPreloading
+      // preloadingStrategy: PreloadAllModules
+    }),
     NgbModule.forRoot(),
     ModalModule.forRoot(),
 

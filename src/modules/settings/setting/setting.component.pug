@@ -1,9 +1,13 @@
 .setting-page
-  go-header(activePage="settings")
-  .photo-area
-    img.avator(*ngIf="!userAvatar" src="../assets/avatar.png")
-    img.avator(*ngIf="userAvatar" src="{{ userAvatar }}")
-    p.name {{ user.first_name }}
+  go-header(activePage="settings", title="Settings")
+  .photo-area.row
+    .col-3
+      img.avator(*ngIf="!userAvatar" src="../assets/avatar.png")
+      img.avator(*ngIf="userAvatar" src="{{ userAvatar }}")
+    .col-9
+      p.name {{ user.first_name }} {{ user.last_name }}
+      p.mail.grey5 {{ user.mail }}
+
   .actions-area
     //.action-area
     //  span.action-name Notification
@@ -16,5 +20,8 @@
         input#cmn-toggle-2.cmn-toggle.cmn-toggle-round(type="checkbox", [(ngModel)]="quickButtonEnabled", (click)="toggleQuickButton()")
         label.label-switch(for="cmn-toggle-2")
     .action-area
-      span.action-name
-        a.signout((click)="signout()") Sign Out
+      span.action-name Default Portal
+      portal-selection([(portal)]="defaultPortal", (portalChange)="changeDefaultPortal(defaultPortal)")
+
+  .signout-area
+    a.btn.btn-primary.btn-sm.signout-btn((click)="signout()" tabindex="-1") Sign Out
