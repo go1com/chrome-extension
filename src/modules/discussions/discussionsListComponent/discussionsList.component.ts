@@ -1,29 +1,40 @@
 import {Component, NgZone, OnDestroy, OnInit} from "@angular/core";
 import {DiscussionService} from "../services/discussion.service";
 import {ActivatedRoute, Router} from "@angular/router";
+import {PortalService} from "../../portal/services/PortalService";
 
 @Component({
   selector: 'app-discussions-list',
-  templateUrl: './discussionsList.component.pug',
-  styleUrls: ['./discussionsList.component.scss']
+  templateUrl: './discussionsList.component.pug'
 })
 export class DiscussionsListComponent implements OnInit, OnDestroy {
   onNoteDeletedEvent: any;
   onNoteCreatedEvent: any;
   discussionsList: any[];
   loading: boolean = false;
+  portal: any;
+  changePortalId: string = '';
 
   constructor(private discussionService: DiscussionService,
               private router: Router,
+              private portalService: PortalService,
               private zone: NgZone,
               private currentActivatedRoute: ActivatedRoute) {
     this.discussionsList = [];
     this.onNoteCreatedEvent = discussionService.onNoteCreated.subscribe(() => this.loadDiscussions());
     this.onNoteDeletedEvent = discussionService.onNoteDeleted.subscribe((noteUuid) => this.removeNote(noteUuid));
+    this.portal = null;
   }
 
   async ngOnInit() {
     await this.loadDiscussions();
+    this.portal = await this.portalService.getDefaultPortalInfo();
+    this.changePortalId = '';
+  }
+
+  async onPortalChanged(portalId) {
+    this.portalService.setDefaultPortal(portalId);
+    this.portal = await this.portalService.getDefaultPortalInfo();
   }
 
   ngOnDestroy(): void {

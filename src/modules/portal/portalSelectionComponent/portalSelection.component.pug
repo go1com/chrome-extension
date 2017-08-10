@@ -1,2 +1,3 @@
 select.form-control([(ngModel)]="portal", (change)="onPortalChanged()")
+  option(value="") {{ placeholder }}
   option(*ngFor="let option of availablePortals", [value]="option.id") {{ option.title }}

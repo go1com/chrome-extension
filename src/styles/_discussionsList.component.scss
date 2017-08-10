@@ -1,7 +1,8 @@
-@import "../../../styles/variables";
+@import "variables";
 
 .discussions-list-page {
   height: $chrome-ext-max-height;
+  background: $chrome-ext-background;
 
   .no-content {
     h4 {
@@ -12,6 +13,7 @@
     h6 {
       font-size: 14px;
       line-height: 1.3;
+      font-weight: normal;
     }
   }
 
@@ -23,6 +25,14 @@
     border-bottom: 1px solid $go1grey4;
     overflow-y: auto;
     overflow-x: hidden;
+  }
+
+  .actions {
+    portal-selection {
+      select.form-control {
+        height: 52px !important;
+      }
+    }
   }
 
   .actions-area {

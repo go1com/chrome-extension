@@ -4,27 +4,32 @@
     loading-indicator
 
   .no-content([hidden]="loading || discussionsList.length")
-    img(src="assets/notes.png")
+    img(src="assets/Note-empty.png")
     h4 There's No Notes on this Page
 
-    h6.
-      Be the first one to add a note
-      #[br ]
-      on this page by clicking on the below button
-      #[br ]
-      or drag to choose a favourite quote on the page
+    h6(*ngIf="portal").
+      Add this page to #[strong {{ portal?.title }} ] to start a new discussion.
+
+    .actions.m-t-40
+      button.btn.btn-block.btn-primary((click)="addToPortal()") Add this Page
+
+
+    .actions.m-t-20
+      portal-selection(placeholder="Change Portal", [(portal)]="changePortalId", (portalChange)="onPortalChanged(changePortalId)")
+
+
 
   .discussions-list([hidden]="!discussionsList.length")
     discussion-item(*ngFor="let discussionItem of discussionsList", [discussionItem]="discussionItem")
 
-  .actions-area.row
-    .col-6
-      button.btn.btn-block((click)="addDiscussion()")
-        | #[i.fa.fa-comment ] Add Note
-
-    .col-6
-      button.btn.btn-block((click)="addToPortal()")
-        | #[i.fa.fa-sign-in] Save this page
+  //.actions-area.row
+  //  .col-6
+  //    button.btn.btn-block((click)="addDiscussion()")
+  //      | #[i.fa.fa-comment ] Add Note
+  //
+  //  .col-6
+  //    button.btn.btn-block((click)="addToPortal()")
+  //      | #[i.fa.fa-sign-in] Save this page
     //
     //.col-4
     //  button.btn.btn-block((click)="share()")

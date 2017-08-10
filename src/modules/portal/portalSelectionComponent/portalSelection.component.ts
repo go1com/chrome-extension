@@ -10,6 +10,8 @@ export class PortalSelectionComponent {
   @Input() portal: any;
   @Output() portalChange: EventEmitter<any> = new EventEmitter<any>();
 
+  @Input() placeholder?: string = "Select Portal";
+
   constructor(private portalService: PortalService) {
     this.availablePortals = [];
   }
