@@ -6,7 +6,7 @@ declare const $: any;
 
 $('head').append('<link href="https://maxcdn.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css" rel="stylesheet" />')
 
-Go1ExtensionInjectionArea.initialize();
+// Go1ExtensionInjectionArea.initialize();
 
 chrome.runtime.onMessage.addListener(function (msg, sender, sendResponse) {
   if (msg.name === commandKeys.checkQuickButtonSettings) {

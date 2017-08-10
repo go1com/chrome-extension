@@ -27,7 +27,7 @@ export class PortalsComponent implements OnInit {
             }
           );
 
-          this.activeInstance = localStorage.getItem('activeInstance');
+          this.activeInstance = localStorage.getItem('currentActivePortalId');
         }
       }
     );

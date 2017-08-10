@@ -43,7 +43,7 @@ export class LearnerDashboardComponent implements OnInit {
       if (user.id) {
         if (user.accounts.length > 1) {
           this.activeInstance = user.accounts.find(account => {
-            return account.instance.id = localStorage.getItem('activeInstance');
+            return account.instance.id = localStorage.getItem('currentActivePortalId');
           }).instance;
         }
       }

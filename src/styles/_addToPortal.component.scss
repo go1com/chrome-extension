@@ -1,6 +1,4 @@
 .add-to-portal {
-  padding: 10px;
-
   .actions-area {
     margin-top: 15px;
   }
@@ -9,5 +7,9 @@
     h6 {
       text-transform: initial;
     }
+  }
+
+  .actions-area {
+    padding: 20px;
   }
 }

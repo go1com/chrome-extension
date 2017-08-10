@@ -12,6 +12,7 @@ import {LearningItemScheduleComponent} from "./saveForLaterComponent/learningIte
 import {PortalModule} from "../portal/portal.module";
 import {TagInputModule} from "../../sharedComponents/tagInput/tag-input.module";
 import {EnrollmentModule} from "../enrollment/enrollment.module";
+import {Go1LinkPreviewModule} from "../../sharedComponents/go1LinkPreview/go1LinkPreview.module";
 
 @NgModule({
   imports: [
@@ -24,7 +25,8 @@ import {EnrollmentModule} from "../enrollment/enrollment.module";
 
     Go1CoreModule,
     PortalModule,
-    EnrollmentModule
+    EnrollmentModule,
+    Go1LinkPreviewModule
   ],
   declarations: [
     AddToPortalComponent,

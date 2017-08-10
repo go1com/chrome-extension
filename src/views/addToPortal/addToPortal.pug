@@ -1,0 +1,20 @@
+.add-to-portal.animated
+  go-header([title]="'Add a Note'")
+
+  .related-to
+    go1-link-preview([linkUrl]="tabUrl")
+
+  .form-group
+    h6 Add Tags
+
+    tag-input([(ngModel)]="data.tags", placeholder="Add tags")
+
+  .form-group
+    h6 Select Portal
+
+    portal-selection([(portal)]="data.instance")
+
+  .actions-area
+    button.btn.btn-primary#markAsComplete((click)="addToPortal()") Add to Portal
+
+    //button.btn.btn-primary.btn-block#saveForLater((click)="saveForLater()") Save for Later

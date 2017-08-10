@@ -39,8 +39,9 @@ export class SettingComponent implements OnInit {
     }
   }
 
-  changeDefaultPortal(defaultPortal) {
-    this.portalService.setDefaultPortal(defaultPortal);
+  async changeDefaultPortal(defaultPortal) {
+    const portal = await this.portalService.getPortal(defaultPortal);
+    this.portalService.setDefaultPortal(portal);
   }
 
   toggleQuickButton() {

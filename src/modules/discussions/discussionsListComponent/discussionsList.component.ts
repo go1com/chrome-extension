@@ -2,6 +2,7 @@ import {Component, NgZone, OnDestroy, OnInit} from "@angular/core";
 import {DiscussionService} from "../services/discussion.service";
 import {ActivatedRoute, Router} from "@angular/router";
 import {PortalService} from "../../portal/services/PortalService";
+import configuration from "../../../environments/configuration";
 
 @Component({
   selector: 'app-discussions-list',
@@ -33,8 +34,8 @@ export class DiscussionsListComponent implements OnInit, OnDestroy {
   }
 
   async onPortalChanged(portalId) {
-    this.portalService.setDefaultPortal(portalId);
-    this.portal = await this.portalService.getDefaultPortalInfo();
+    this.portal = await this.portalService.getPortal(portalId);
+    this.portalService.setDefaultPortal(this.portal);
   }
 
   ngOnDestroy(): void {
@@ -47,7 +48,7 @@ export class DiscussionsListComponent implements OnInit, OnDestroy {
   }
 
   async addToPortal() {
-    await this.router.navigate(['/addToPortal']);
+    await this.router.navigate(['/', configuration.pages.addToPortal]);
   }
 
   private async removeNote(noteUuid) {

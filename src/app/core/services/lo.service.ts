@@ -35,7 +35,7 @@ export class LoService {
 
   public fetchCourses(query): Observable<Course[]> {
     return this.http
-      .get(`${ this.apiUrl }/lo-service/lo/${ localStorage.getItem('activeInstance') }?${ query && 'title=' + query + '&' }type[0]=course&me=all&author=1`, {headers: this.headers})
+      .get(`${ this.apiUrl }/lo-service/lo/${ localStorage.getItem('currentActivePortalId') }?${ query && 'title=' + query + '&' }type[0]=course&me=all&author=1`, {headers: this.headers})
       .map(response => Course.buildCourses(response.json()));
   }
 
@@ -46,7 +46,7 @@ export class LoService {
 
     return this.http.post(`${ this.apiUrl }/lo-service/li`, {
         'author': user.mail,
-        'instance': localStorage.getItem('activeInstance'),
+        'instance': localStorage.getItem('currentActivePortalId'),
         'title': li.$title,
         'description': '',
         'published': 1,
@@ -79,7 +79,7 @@ export class LoService {
           'data': {},
           'published': 1,
           'type': 'course',
-          'instance': localStorage.getItem('activeInstance'),
+          'instance': localStorage.getItem('currentActivePortalId'),
           'authors': [user.mail]
         },
         {headers: this.headers})
@@ -96,7 +96,7 @@ export class LoService {
           'data': {'requiredSequence': false},
           'published': 1,
           'type': 'module',
-          'instance': localStorage.getItem('activeInstance'),
+          'instance': localStorage.getItem('currentActivePortalId'),
           'link': {
             'sourceId': course.$id,
             'weight': course.$modules.length

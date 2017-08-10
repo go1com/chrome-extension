@@ -55,7 +55,7 @@ export class UserLoginComponent implements OnInit {
 
   redirect(user): void {
     if (user.id) {
-      const activeInstanceId = this.storageService.retrieve(configuration.constants.localStorageKeys.activeInstance);
+      const activeInstanceId = this.storageService.retrieve(configuration.constants.localStorageKeys.currentActivePortalId);
       const activeAccount = user.accounts.find(account => account.instance.id === activeInstanceId);
 
       this.router.navigate(['/' + configuration.defaultPage]);

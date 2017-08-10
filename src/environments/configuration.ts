@@ -1,12 +1,13 @@
 import {environment} from "./index";
 
 const configuration = {
-  defaultPage: 'discussions-list/discussions-list',
+  defaultPage: 'discussionsList/',
   environment: environment,
   constants: {
     localStorageKeys: {
       authentication: 'jwt',
-      activeInstance: 'activeInstance',
+      currentActivePortalId: 'currentActivePortalId',
+      currentActivePortal: 'currentActivePortal',
       portalInstances: 'portalInstances',
       user: 'user',
       uuid: 'uuid',
@@ -22,6 +23,10 @@ const configuration = {
     portal: 'portal-service/',
     noteService: 'note-service/',
     fireBaseNotePath: 'apiom_notes/'
+  },
+  pages: {
+    addToPortal: 'addToPortal',
+    discussionsList: 'discussionsList'
   }
 };
 

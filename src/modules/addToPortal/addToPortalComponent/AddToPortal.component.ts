@@ -10,10 +10,11 @@ import {EnrollmentService} from "../../enrollment/services/enrollment.service";
 
 @Component({
   selector: 'add-to-portal',
-  templateUrl: '../../../views/addToPortal.pug'
+  templateUrl: '../../../views/addToPortal/addToPortal.pug'
 })
 export class AddToPortalComponent {
   data: any;
+  tabUrl: string = '';
 
   constructor(private router: Router,
               private addToPortalService: AddToPortalService,
@@ -28,7 +29,7 @@ export class AddToPortalComponent {
       data: {},
       single_li: true,
       published: 1,
-      instance: this.storageService.retrieve(configuration.constants.localStorageKeys.activeInstance)
+      instance: this.storageService.retrieve(configuration.constants.localStorageKeys.currentActivePortalId)
     };
   }
 
@@ -37,6 +38,7 @@ export class AddToPortalComponent {
       await new Promise(resolve => {
         chrome.tabs.query({active: true, currentWindow: true}, (tabs) => {
           Go1RuntimeContainer.currentChromeTab = tabs[0];
+          this.tabUrl = tabs[0].url;
           resolve();
         });
       });
@@ -53,7 +55,7 @@ export class AddToPortalComponent {
       },
       single_li: true,
       published: 1,
-      instance: this.storageService.retrieve(configuration.constants.localStorageKeys.activeInstance),
+      instance: this.storageService.retrieve(configuration.constants.localStorageKeys.currentActivePortalId),
       author: this.storageService.retrieve(configuration.constants.localStorageKeys.user).mail
     };
   }
@@ -69,12 +71,21 @@ export class AddToPortalComponent {
     });
   }
 
-  async markAsComplete() {
-    const response = await this.addToPortalService.addToPortal(this.data);
+  async addToPortal() {
+    return await this.addToPortalService.addToPortal(this.data);
+  }
 
-    const enrollmentResponse: any = await this.enrollmentService.enrollToLearningItem(response.id, this.data.instance);
+  async enrollToItem(learningItemId) {
+    return await this.enrollmentService.enrollToLearningItem(learningItemId, this.data.instance);
+  }
 
-    const markAsCompleteEnrollment = await this.enrollmentService.markEnrollmentAsCompleted(enrollmentResponse.id);
+  async addAndEnroll() {
+    const learningItem = await this.addToPortal();
+    await this.enrollToItem(learningItem.id);
+  }
+
+  async goToSuccess() {
+    // const markAsCompleteEnrollment = await this.enrollmentService.markEnrollmentAsCompleted(enrollmentResponse.id);
 
     await this.router.navigate(['./' + routeNames.success], {relativeTo: this.currentActiveRoute});
   }

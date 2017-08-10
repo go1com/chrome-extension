@@ -21,12 +21,13 @@ export class PortalService {
     return response;
   }
 
-  setDefaultPortal(portalId: string) {
-    this.storageService.store(configuration.constants.localStorageKeys.activeInstance, portalId);
+  setDefaultPortal(portal: any) {
+    this.storageService.store(configuration.constants.localStorageKeys.currentActivePortalId, portal.id);
+    this.storageService.store(configuration.constants.localStorageKeys.currentActivePortal, portal);
   }
 
   getDefaultPortalSetting() {
-    return this.storageService.retrieve(configuration.constants.localStorageKeys.activeInstance);
+    return this.storageService.retrieve(configuration.constants.localStorageKeys.currentActivePortalId);
   }
 
   async getDefaultPortalInfo() {

@@ -39,7 +39,7 @@ export class AdminDashboardComponent implements OnInit {
         this.user = user;
         if (this.user.accounts.length > 1) {
           this.activeInstance = this.user.accounts.find(account => {
-            return account.instance.id === localStorage.getItem('activeInstance');
+            return account.instance.id === localStorage.getItem('currentActivePortalId');
           }).instance;
         }
 

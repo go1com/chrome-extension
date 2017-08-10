@@ -36,7 +36,7 @@ export class AddToPortalSchedulePopup extends PopupBaseModel {
           type: 'weblink',
           path: window.location.toString(),
         },
-        instance: this.storageService.retrieve(configuration.constants.localStorageKeys.activeInstance)
+        instance: this.storageService.retrieve(configuration.constants.localStorageKeys.currentActivePortalId)
       };
     }
   }

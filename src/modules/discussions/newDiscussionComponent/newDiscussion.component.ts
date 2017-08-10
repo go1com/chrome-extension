@@ -25,7 +25,7 @@ export class NewDiscussionComponent implements OnInit {
       entityType: 'portal',
       quote: '',
       item: Go1RuntimeContainer.currentChromeTab && Go1RuntimeContainer.currentChromeTab.url || '',
-      entityId: storageService.retrieve(configuration.constants.localStorageKeys.activeInstance)
+      entityId: storageService.retrieve(configuration.constants.localStorageKeys.currentActivePortalId)
     };
   }
 

@@ -16,7 +16,7 @@ export class LearnerService {
   constructor(private http: Http) { }
 
   getLearnerAwards(): Observable<any> {
-    const url = `${ this.apiUrl }/award-service/instance/${ localStorage.getItem('activeInstance') }?status[]=in-progress&status[]=completed&enrolment=true`;
+    const url = `${ this.apiUrl }/award-service/instance/${ localStorage.getItem('currentActivePortalId') }?status[]=in-progress&status[]=completed&enrolment=true`;
 
     return this.http.get(url, { headers: this.headers })
       .map(response => response.json());

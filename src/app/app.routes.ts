@@ -13,6 +13,7 @@ import {ForgotPasswordSuccessComponent} from "../modules/membership/forgotPasswo
 import {SignUpComponent} from "../modules/membership/signUp/sign-up.component";
 import {SignupSuccessComponent} from "../modules/membership/signUpSuccess/signup-success.component";
 import {SocialLoginComponent} from "../modules/membership/socialLogin/social-login.component";
+import configuration from "../environments/configuration";
 
 let routes: Routes = [
   {
@@ -31,11 +32,11 @@ let routes: Routes = [
     ]
   },
   {
-    path: 'discussions-list',
+    path: configuration.pages.discussionsList,
     loadChildren: '../modules/discussions#DiscussionsModule'
   },
   {
-    path: 'addToPortal',
+    path: configuration.pages.addToPortal,
     loadChildren: '../modules/addToPortal#AddToPortalModule'
   },
   {
