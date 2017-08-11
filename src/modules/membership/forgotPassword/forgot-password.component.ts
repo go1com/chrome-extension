@@ -29,7 +29,7 @@ export class ForgotPasswordComponent {
     this.requestingNewPassword = true;
     try {
       await this.userService.forgotPasswordRequest(this.username);
-      await this.router.navigate(['/forgotPasswordSuccess', this.username]);
+      await this.router.navigate(['/membership/forgotPasswordSuccess', this.username]);
     } catch (e) {
       await this.modalDialogService.showAlert(e.message);
     } finally {

@@ -16,7 +16,7 @@ form((submit)="login()", [hidden]="loading")
     .group.m-t-25
       div
         label Your Password
-        a.pull-right.small.grey6.m-t-5(routerLink="/forgotPassword") Forgot it?
+        a.pull-right.small.grey6.m-t-5(routerLink="/membership/forgotPassword") Forgot it?
       input#password.form-control(type="password", name="password", [(ngModel)]="user.password", placeholder="Password", [disabled]="loggingIn")
 
     .group.m-t-25
@@ -35,7 +35,7 @@ form((submit)="login()", [hidden]="loading")
         button.btn.btn-default.btn-facebook.btn-block((click)="facebookLogIn()", [disabled]="loggingIn") #[.icon] Facebook
 
     div.sign-up-section
-      a(routerLink="/signUp") Or sign up using email
+      a(routerLink="/membership/signUp") Or sign up using email
 
 
 
