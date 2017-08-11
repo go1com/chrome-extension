@@ -10,26 +10,28 @@
     h6(*ngIf="portal").
       Add this page to #[strong {{ portal?.title }} ] to start a new discussion.
 
-    .actions.m-t-40
-      button.btn.btn-block.btn-primary((click)="addToPortal()") Add this Page
+    .actions-group
+      .actions.m-t-40
+        button.btn.btn-block.btn-primary((click)="addToPortal()") #[i.fa.fa-sign-in] Add this Page
 
+      .actions.m-t-20
+        button.btn.btn-block.btn-primary((click)="addDiscussion()") #[i.fa.fa-comment ] Add Note
 
-    .actions.m-t-20
-      portal-selection(placeholder="Change Portal", [(portal)]="changePortalId", (portalChange)="onPortalChanged(changePortalId)")
-
-
+      .actions.m-t-20
+        portal-selection(placeholder="Change Portal", [(portal)]="changePortalId", (portalChange)="onPortalChanged(changePortalId)")
 
   .discussions-list([hidden]="!discussionsList.length")
     discussion-item(*ngFor="let discussionItem of discussionsList", [discussionItem]="discussionItem")
 
-  //.actions-area.row
-  //  .col-6
-  //    button.btn.btn-block((click)="addDiscussion()")
-  //      | #[i.fa.fa-comment ] Add Note
-  //
-  //  .col-6
-  //    button.btn.btn-block((click)="addToPortal()")
-  //      | #[i.fa.fa-sign-in] Save this page
+
+  .actions-area.row([hidden]="!discussionsList.length")
+    .col-6
+      button.btn.btn-block((click)="addDiscussion()")
+        | #[i.fa.fa-comment ] Add Note
+
+    .col-6
+      button.btn.btn-block((click)="addToPortal()")
+        | #[i.fa.fa-sign-in] Save this page
     //
     //.col-4
     //  button.btn.btn-block((click)="share()")

@@ -2,8 +2,30 @@
 
 .link-preview-frame {
   border: 1px solid $go1grey3;
-  padding: 10px;
+  padding: 20px;
   max-height: 140px;
+  background: #fff;
+
+  .site-info-container {
+    vertical-align: middle;
+
+    .favicon {
+      width: 20px;
+      height: 20px;
+      display: inline-block;
+
+      + .site-domain {
+        display: inline-block;
+        margin-left: 10px;
+        font-weight: lighter;
+        letter-spacing: -1px;
+      }
+    }
+  }
+
+  .site-detail-container{
+    margin-top: 10px;
+  }
 
   .link-preview-img {
     width: 100%;

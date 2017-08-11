@@ -72,7 +72,7 @@ export class DiscussionService {
     };
     let firebaseObject = {
       user_id: newNote.user.id,
-      name: newNote.title,
+      name: newNote.uniqueName,
       data: childData
     };
     newNoteFireObject.set(firebaseObject);

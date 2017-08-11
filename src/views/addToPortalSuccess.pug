@@ -1,8 +1,13 @@
 .add-to-portal-success.animated
+  go-header(title="Add To Portal Success")
   header
-    button.btn.btn-clean.close-btn((click)="goBack()") &times;
     .success-icon
-    h6 Page has been successfully added to your portal as a New Learning Item
+    h4 This page has been added!
+    h5.sub-header This page has been successfully added to {{ currentPortal?.title }} as new Learning Item
+
+
+  .actions-area
+    button.btn.btn-primary((click)="viewPageOnPortal()") View on your Portal
 
   //.add-to-courses
   //  h6 Do you want to add it to a course?
@@ -13,6 +18,3 @@
   //    //    label.
   //    //      #[input(type="checkbox", [checked]="checkSelection(course)", (click)="toggleSelection(course)", [value]="course.id") ]
   //    //      {{ course.name }}
-
-  footer
-    button.btn.btn-primary.close-btn((click)="goBack()") Done

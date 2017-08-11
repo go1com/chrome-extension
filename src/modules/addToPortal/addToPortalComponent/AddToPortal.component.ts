@@ -7,47 +7,56 @@ import {routeNames} from "../addToPortal.routes";
 import {AddToPortalService} from "../services/AddToPortalService";
 import {commandKeys} from "../../../commandHandlers/commandKeys";
 import {EnrollmentService} from "../../enrollment/services/enrollment.service";
+import {DiscussionService} from "../../discussions/services/discussion.service";
+import {UserService} from "../../membership/services/user.service";
 
 @Component({
   selector: 'add-to-portal',
   templateUrl: '../../../views/addToPortal/addToPortal.pug'
 })
 export class AddToPortalComponent {
+  noteData: any;
   data: any;
   tabUrl: string = '';
+  isLoading: boolean = false;
+  linkPreview: any = null;
 
   constructor(private router: Router,
               private addToPortalService: AddToPortalService,
               private currentActiveRoute: ActivatedRoute,
               private enrollmentService: EnrollmentService,
+              private discussionService: DiscussionService,
+              private userService: UserService,
               private storageService: StorageService) {
     this.data = {
       title: '',
       description: '',
       type: 'iframe',
       tags: [],
-      data: {},
+      data: {
+        path: ''
+      },
       single_li: true,
       published: 1,
-      instance: this.storageService.retrieve(configuration.constants.localStorageKeys.currentActivePortalId)
+      instance: this.storageService.retrieve(configuration.constants.localStorageKeys.currentActivePortalId),
+      author: this.storageService.retrieve(configuration.constants.localStorageKeys.user).mail
     };
   }
 
   async ngOnInit() {
+    this.isLoading = true;
     if (!Go1RuntimeContainer.currentChromeTab || !Go1RuntimeContainer.currentChromeTab.url) {
-      await new Promise(resolve => {
-        chrome.tabs.query({active: true, currentWindow: true}, (tabs) => {
-          Go1RuntimeContainer.currentChromeTab = tabs[0];
-          this.tabUrl = tabs[0].url;
-          resolve();
-        });
-      });
+      await this.getCurrentTabInfo();
     }
 
-    const pageMeta: any = await this.loadPageMetadata(Go1RuntimeContainer.currentChromeTab.url);
+    const user = await this.userService.getUser();
+
+    this.tabUrl = Go1RuntimeContainer.currentChromeTab.url;
+
+    this.linkPreview = await this.loadPageMetadata(Go1RuntimeContainer.currentChromeTab.url);
     this.data = {
-      title: pageMeta.title,
-      description: pageMeta.description,
+      title: this.linkPreview.title,
+      description: this.linkPreview.description,
       type: 'iframe',
       tags: [],
       data: {
@@ -58,6 +67,39 @@ export class AddToPortalComponent {
       instance: this.storageService.retrieve(configuration.constants.localStorageKeys.currentActivePortalId),
       author: this.storageService.retrieve(configuration.constants.localStorageKeys.user).mail
     };
+
+    this.noteData = {
+      uniqueName: '',
+      title: '',
+      body: '',
+      entityType: 'portal',
+      quote: '',
+      item: Go1RuntimeContainer.currentChromeTab.url || '',
+      entityId: this.storageService.retrieve(configuration.constants.localStorageKeys.currentActivePortalId),
+      user: user
+    };
+
+    this.isLoading = false;
+  }
+
+  private getCurrentTabInfo() {
+    return new Promise(resolve => {
+      chrome.tabs.query({active: true, currentWindow: true}, (tabs) => {
+        Go1RuntimeContainer.currentChromeTab = tabs[0];
+        resolve();
+      });
+    });
+  }
+
+  async onAddToPortalBtnClicked() {
+    const learningItem = await this.addToPortal();
+    // this.noteData.uniqueName = `${Go1RuntimeContainer.currentChromeTab.url}__${learningItem.id}`;
+
+    // this.noteData.title = `Note from ${Go1RuntimeContainer.currentChromeTab.url}`;
+
+    // await this.discussionService.createNote(this.noteData);
+
+    await this.goToSuccess();
   }
 
   private async loadPageMetadata(url) {
@@ -85,9 +127,7 @@ export class AddToPortalComponent {
   }
 
   async goToSuccess() {
-    // const markAsCompleteEnrollment = await this.enrollmentService.markEnrollmentAsCompleted(enrollmentResponse.id);
-
-    await this.router.navigate(['./' + routeNames.success], {relativeTo: this.currentActiveRoute});
+    await this.router.navigate(['./', configuration.pages.addToPortal, routeNames.success]);
   }
 
   goBack() {

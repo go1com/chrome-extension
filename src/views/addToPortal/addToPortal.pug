@@ -1,20 +1,30 @@
 .add-to-portal.animated
-  go-header([title]="'Add a Note'")
+  go-header([title]="'Add to Portal'")
 
   .related-to
-    go1-link-preview([linkUrl]="tabUrl")
+    .link-preview-frame
+      .is-loading([hidden]="!isLoading")
+        .col Loading Preview...
+      .loading-completed([hidden]="isLoading")
+        .site-info-container
+          img.favicon([src]="linkPreview?.favicon")
+          .site-domain.grey5 {{ linkPreview?.hostname }}
+        .site-detail-container
+          h5
+            | {{ linkPreview && linkPreview.title }}
 
-  .form-group
-    h6 Add Tags
+  .note-detail-section
+    .form-group
+      div.grey5.related-to-title Add Tags:
 
-    tag-input([(ngModel)]="data.tags", placeholder="Add tags")
+      tag-input([(ngModel)]="data.tags", placeholder="Add tags")
 
-  .form-group
-    h6 Select Portal
+    //.form-group
+    //  h6 Select Portal
+    //
+    //  portal-selection([(portal)]="data.instance")
 
-    portal-selection([(portal)]="data.instance")
+    .actions-area
+      button.btn.btn-primary#markAsComplete((click)="onAddToPortalBtnClicked()") Add to Portal
 
-  .actions-area
-    button.btn.btn-primary#markAsComplete((click)="addToPortal()") Add to Portal
-
-    //button.btn.btn-primary.btn-block#saveForLater((click)="saveForLater()") Save for Later
+      //button.btn.btn-primary.btn-block#saveForLater((click)="saveForLater()") Save for Later

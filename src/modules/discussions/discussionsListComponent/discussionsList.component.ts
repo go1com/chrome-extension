@@ -44,11 +44,11 @@ export class DiscussionsListComponent implements OnInit, OnDestroy {
   }
 
   async addDiscussion() {
-    await this.router.navigate(['../newDiscussion'], {relativeTo: this.currentActivatedRoute});
+    await this.router.navigate(['/', configuration.pages.discussionsList, 'newDiscussion'], {relativeTo: this.currentActivatedRoute});
   }
 
   async addToPortal() {
-    await this.router.navigate(['/', configuration.pages.addToPortal]);
+    await this.router.navigate(['/', configuration.pages.addToPortal, configuration.pages.addToPortal]);
   }
 
   private async removeNote(noteUuid) {
@@ -64,7 +64,7 @@ export class DiscussionsListComponent implements OnInit, OnDestroy {
       const noteItem = response[i];
       const note: any = await this.discussionService.getUserNote(noteItem.uuid);
       if (!note || !note.data) {
-        return;
+        break;
       }
 
       const keys = Object.keys(note.data);
@@ -72,7 +72,7 @@ export class DiscussionsListComponent implements OnInit, OnDestroy {
       discussionTopic.noteItem = noteItem;
 
       if (!discussionTopic) {
-        return;
+        break;
       }
 
       discussionTopic.messages = [];
@@ -83,7 +83,6 @@ export class DiscussionsListComponent implements OnInit, OnDestroy {
 
       this.discussionsList.push(discussionTopic);
     }
-
     this.zone.run(() => {
       this.loading = false;
     });

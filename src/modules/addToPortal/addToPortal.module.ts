@@ -13,6 +13,8 @@ import {PortalModule} from "../portal/portal.module";
 import {TagInputModule} from "../../sharedComponents/tagInput/tag-input.module";
 import {EnrollmentModule} from "../enrollment/enrollment.module";
 import {Go1LinkPreviewModule} from "../../sharedComponents/go1LinkPreview/go1LinkPreview.module";
+import {DiscussionsModule} from "../discussions/discussions.module";
+import {MembershipModule} from "../membership/membership.module";
 
 @NgModule({
   imports: [
@@ -24,6 +26,8 @@ import {Go1LinkPreviewModule} from "../../sharedComponents/go1LinkPreview/go1Lin
     TagInputModule,
 
     Go1CoreModule,
+    DiscussionsModule,
+    MembershipModule,
     PortalModule,
     EnrollmentModule,
     Go1LinkPreviewModule

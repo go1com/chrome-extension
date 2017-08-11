@@ -5,12 +5,14 @@ import {UserService} from "../../membership/services/user.service";
 import {Go1RuntimeContainer} from "../../go1core/services/go1RuntimeContainer";
 import {StorageService} from "../../go1core/services/StorageService";
 import configuration from "../../../environments/configuration";
+import {commandKeys} from "../../../commandHandlers/commandKeys";
 
 @Component({
   selector: 'app-new-discussion',
   templateUrl: '../../../views/newDiscussionComponent.tpl.pug'
 })
 export class NewDiscussionComponent implements OnInit {
+  isLoading: boolean;
   linkPreview: any;
   data: any;
 
@@ -30,17 +32,22 @@ export class NewDiscussionComponent implements OnInit {
   }
 
   async ngOnInit() {
+    this.isLoading = true;
     this.data.user = await this.userService.getUser();
 
-    if (!this.data.item) {
-      return new Promise(resolve => {
-        chrome.tabs.query({active: true, currentWindow: true}, (tabs) => {
-          Go1RuntimeContainer.currentChromeTab = tabs[0];
-          this.data.item = Go1RuntimeContainer.currentChromeTab.url;
-          resolve();
-        });
+    this.linkPreview = await this.loadPageMetadata(Go1RuntimeContainer.currentChromeTab.url);
+    this.isLoading = false;
+  }
+
+  private async loadPageMetadata(url) {
+    return new Promise((resolve, reject) => {
+      chrome.runtime.sendMessage({
+        action: commandKeys.getLinkPreview,
+        data: url
+      }, (response) => {
+        resolve(response.data);
       });
-    }
+    });
   }
 
   async goBack() {
@@ -51,6 +58,8 @@ export class NewDiscussionComponent implements OnInit {
     if (!this.data.title) {
       this.data.title = 'Note from ' + this.linkPreview.title;
     }
+
+    this.data.uniqueName = `${Go1RuntimeContainer.currentChromeTab.url}__`;
     await this.discussionService.createNote(this.data);
     await this.goBack();
   }

@@ -1,4 +1,4 @@
-import {Component, EventEmitter, Input, Output} from "@angular/core";
+import {Component, EventEmitter, Input, NgZone, Output} from "@angular/core";
 import {LinkPreview} from "../../../modules/linkPreviewer/linkPreviewService";
 import {commandKeys} from "../../../commandHandlers/commandKeys";
 
@@ -14,7 +14,7 @@ export class Go1LinkPreviewComponent {
 
   isLoading = false;
 
-  constructor() {
+  constructor(private zone: NgZone) {
 
   }
 
@@ -33,10 +33,12 @@ export class Go1LinkPreviewComponent {
         action: commandKeys.getLinkPreview,
         data: this.linkUrl
       }, (response) => {
-        this.linkPreview = response.data;
-        this.isLoading = false;
-        this.linkPreviewChange.emit(this.linkPreview);
-        resolve();
+        this.zone.run(()=>{
+          this.linkPreview = response.data;
+          this.isLoading = false;
+          this.linkPreviewChange.emit(this.linkPreview);
+          resolve();
+        });
       });
     });
   }

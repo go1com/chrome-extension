@@ -1,7 +1,6 @@
 import {Component} from "@angular/core";
 import configuration from "../../../environments/configuration";
-import {Router} from "@angular/router";
-import * as _ from 'lodash';
+import {StorageService} from "../../go1core/services/StorageService";
 
 @Component({
   selector: 'add-to-portal-success',
@@ -10,44 +9,18 @@ import * as _ from 'lodash';
 export class AddToPortalSuccessComponent {
   courses: any[];
   selectedCourseIds: any[];
+  currentPortal: any;
 
-  constructor(private router: Router) {
+  constructor(private storageService: StorageService) {
     this.courses = [];
     this.selectedCourseIds = [];
   }
 
   async ngOnInit() {
-    this.courses = [{
-      id: 1,
-      name: 'fake course 1'
-    }, {
-      id: 2,
-      name: 'fake course 2'
-    }, {
-      id: 3,
-      name: 'fake course 3'
-    }, {
-      id: 4,
-      name: 'fake course 4'
-    }, {
-      id: 5,
-      name: 'fake course 5'
-    }];
+    this.currentPortal = this.storageService.retrieve(configuration.constants.localStorageKeys.currentActivePortal);
   }
 
-  goBack() {
-    this.router.navigate(['/' + configuration.defaultPage]);
-  }
-
-  checkSelection(course) {
-    return this.selectedCourseIds.indexOf(course.id) > -1;
-  }
-
-  toggleSelection(course) {
-    if (this.checkSelection(course)) {
-      this.selectedCourseIds = _.without(this.selectedCourseIds, course.id);
-    } else {
-      this.selectedCourseIds.push(course.id);
-    }
+  viewPageOnPortal() {
+    window.open(`https://${this.currentPortal.title}/p/#/app/my-teaching/resources/`, '_blank');
   }
 }

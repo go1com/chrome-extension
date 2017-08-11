@@ -1,11 +1,27 @@
 @import "variables";
 
 .new-discussion-page {
-  padding: 10px;
-  width: 415px;
   height: $chrome-ext-max-height;
   max-height: $chrome-ext-max-height;
   font-size: 16px;
+  background: #fff;
+
+  .actions-area {
+    margin-top: 15px;
+  }
+
+  .related-to {
+    background: $chrome-ext-background;
+    padding: 20px;
+    .related-to-title {
+      margin-bottom: 15px;
+      font-weight: lighter;
+    }
+  }
+
+  .note-detail-section {
+    background: #fff;
+  }
 
   .sub-header {
     margin-left: -10px;
@@ -41,18 +57,49 @@
   }
 
   > .description {
-    margin: 0 -10px;
+    margin: 0 10px;
+    position: relative;
     border-bottom: 1px solid $go1grey4;
+    border-top: 1px solid $go1grey4;
 
     > .form-control {
       border: none;
       padding: 15px 10px;
       min-height: 150px;
     }
+
+    &:after,&:before {
+      position: absolute;
+      display: block;
+      width: 0;
+      height: 0;
+      border-color: transparent;
+      border-style: solid;
+      border-width: 19px;
+      content: ""
+    }
+
+    &:before {
+      border-bottom-color: $go1grey4;
+      border-top-width: 0;
+      left: 9px;
+      top: -19px;
+    }
+
+    &:after {
+      left: 10px;
+      top: -35px;
+      border-top-color: transparent;
+      border-right-color: transparent;
+      border-bottom-color: #fff;
+      border-left-color: transparent;
+      border-top-width: 0;
+      border-width: 18px;
+    }
   }
 
   .actions-area {
-    padding: 15px 0 0;
+    padding: 15px;
     display: flex;
     flex-wrap: wrap;
 

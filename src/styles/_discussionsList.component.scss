@@ -18,11 +18,7 @@
   }
 
   .discussions-list {
-    position: absolute;
     width: 100%;
-    top: 60px;
-    bottom: 62px;
-    border-bottom: 1px solid $go1grey4;
     overflow-y: auto;
     overflow-x: hidden;
   }

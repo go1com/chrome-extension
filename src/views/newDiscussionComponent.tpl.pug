@@ -1,21 +1,25 @@
 .new-discussion-page.animated
-  header.extension-header.row
-    .col-2
-      a.btn.btn-no-border.btn-no-padding.go-back-btn((click)="goBack()" role="button")
-        i.icon.icon-left-arrow
-    .col-8.text-center
-      h5 START DISCUSSION
-    .col-2
-  .sub-header
-      input.form-control([(ngModel)]="data.title" name="noteTitle" placeholder="Discussion Topic")
+  go-header([title]="'Add a Note'")
+
+  .related-to
+    div.grey5.related-to-title Related to:
+
+    .link-preview-frame
+      .is-loading([hidden]="!isLoading")
+        .col Loading Preview...
+      .loading-completed([hidden]="isLoading")
+        .site-info-container
+          img.favicon([src]="linkPreview?.favicon")
+          .site-domain.grey5 {{ linkPreview?.hostname }}
+        .site-detail-container
+          h5
+            | {{ linkPreview && linkPreview.title }}
+
   .quotation(*ngIf="data.quote")
       blockquote {{ data.quote }}
-  .link-preview
-    label Related to:
-    .link-preview-component(*ngIf="!!data.item")
-      go1-link-preview(*ngIf="!!data.item", [linkUrl]="data.item", [(linkPreview)]="linkPreview")
+
   .description
-    textarea.form-control([(ngModel)]="data.body" name="noteBody" placeholder="Say something about this page" rows=10)
+    textarea.form-control([(ngModel)]="data.body" name="noteBody" placeholder="Add your notes..." rows=10)
 
   .actions-area
       .col-7.p-l-0

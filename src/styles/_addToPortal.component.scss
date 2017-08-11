@@ -1,6 +1,23 @@
+@import "variables";
+
 .add-to-portal {
+  background: #fff;
+
   .actions-area {
     margin-top: 15px;
+  }
+
+  .related-to {
+    background: $chrome-ext-background;
+    padding: 20px;
+    .related-to-title {
+      margin-bottom: 15px;
+      font-weight: lighter;
+    }
+  }
+
+  .note-detail-section {
+    background: #fff;
   }
 
   .add-tags {
