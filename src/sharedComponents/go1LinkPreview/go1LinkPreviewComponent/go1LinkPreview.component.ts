@@ -33,12 +33,19 @@ export class Go1LinkPreviewComponent {
         action: commandKeys.getLinkPreview,
         data: this.linkUrl
       }, (response) => {
-        this.zone.run(()=>{
+        if (this.zone) {
+          this.zone.run(() => {
+            this.linkPreview = response.data;
+            this.isLoading = false;
+            this.linkPreviewChange.emit(this.linkPreview);
+            resolve();
+          });
+        }else {
           this.linkPreview = response.data;
           this.isLoading = false;
           this.linkPreviewChange.emit(this.linkPreview);
           resolve();
-        });
+        }
       });
     });
   }

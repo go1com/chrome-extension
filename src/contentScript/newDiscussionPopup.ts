@@ -11,7 +11,7 @@ export class NewDiscussionPopup extends PopupBaseModel {
 
   constructor(quoteText?: string) {
     super();
-    this.linkPreview = new Go1LinkPreviewComponent();
+    this.linkPreview = new Go1LinkPreviewComponent(null);
     this.linkPreview.linkUrl = window.location.toString();
     if (quoteText) {
       this.quoteText = quoteText;
@@ -25,9 +25,8 @@ export class NewDiscussionPopup extends PopupBaseModel {
   protected async onPopupShown() {
     if (this.quoteText) {
       await this.showQuoteText();
-    } else {
-      await this.showLinkPreview();
     }
+    await this.showLinkPreview();
   }
 
   protected bindEventListeners() {
@@ -48,9 +47,8 @@ export class NewDiscussionPopup extends PopupBaseModel {
   }
 
   async showLinkPreview() {
-    const linkPreviewHtml = require('../views/go1LinkPreview.simpleComponent.pug');
-    const linkPreviewContainer = $('.link-preview', this.popupDOM);
-    const linkPreviewContent = $(linkPreviewHtml);
+    const linkPreviewContainer = $('.related-to', this.popupDOM);
+    const linkPreviewContent = linkPreviewContainer;
 
     linkPreviewContainer.css('display', '');
     linkPreviewContainer.append(linkPreviewContent);
@@ -66,9 +64,9 @@ export class NewDiscussionPopup extends PopupBaseModel {
       this.linkPreview.linkPreview.image = `chrome-extension://${chrome.runtime.id}/assets/no-image-icon-15.png`;
     }
 
-    loadingCompleteBlock.find('.link-preview-img').attr('src', this.linkPreview.linkPreview.image);
-    loadingCompleteBlock.find('.description').text(this.linkPreview.linkPreview.description || '');
-    loadingCompleteBlock.find('h5 > .title').text(this.linkPreview.linkPreview.title);
+    loadingCompleteBlock.find('.favicon').attr('src', this.linkPreview.linkPreview.favicon);
+    loadingCompleteBlock.find('.site-domain').text(this.linkPreview.linkPreview.hostname || '');
+    loadingCompleteBlock.find('.site-detail-container > h5').text(this.linkPreview.linkPreview.title);
 
     isLoadingBlock.remove();
     loadingCompleteBlock.css({'display': ''});
@@ -79,7 +77,8 @@ export class NewDiscussionPopup extends PopupBaseModel {
       title: this.popupDOM.find('input[name="noteTitle"]').val() || 'Note from ' + this.linkPreview.linkPreview.title,
       body: this.popupDOM.find('textarea[name="noteBody"]').val(),
       item: this.linkPreview.linkUrl,
-      quote: this.quoteText || ''
+      quote: this.quoteText || '',
+      uniqueName : `${this.linkPreview.linkUrl}__`
     };
 
     chrome.runtime.sendMessage({
