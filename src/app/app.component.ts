@@ -5,6 +5,7 @@ import {ModalDialogService} from "../modules/go1core/services/ModalDialogService
 import configuration from "../environments/configuration";
 import {UserService} from "../modules/membership/services/user.service";
 import {Router} from "@angular/router";
+import {StorageService} from "../modules/go1core/services/StorageService";
 
 @Component({
   selector: 'app-root',
@@ -19,6 +20,7 @@ export class AppComponent implements OnInit {
               private vcRef: ViewContainerRef,
               public modalDialogService: ModalDialogService,
               private userService: UserService,
+              private storageService: StorageService,
               private router: Router) {
     overlay.defaultViewContainer = vcRef;
     modalDialogService.setViewContainer(vcRef);
@@ -31,6 +33,10 @@ export class AppComponent implements OnInit {
         resolve();
       });
     });
+
+    if (this.storageService.retrieve(configuration.constants.localStorageKeys.socialLogin)) {
+      return
+    }
 
     if (this.userService.isLoggedIn()) {
       this.router.navigate(['/' + configuration.defaultPage]);

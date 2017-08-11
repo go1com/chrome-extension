@@ -60,7 +60,7 @@ export class SignUpComponent {
       if (response.jwt) {
         await this.userService.getAuthenticatedUserInfo(response.uuid);
       }
-      await this.router.navigate(['/signUpSuccess', this.signUpData.email]);
+      await this.router.navigate(['/membership/signUpSuccess', this.signUpData.email]);
     } catch (e) {
       await this.modalDialogService.showAlert(e.message, 'Error while signing up', 'OK', 'btn-warning');
     } finally {

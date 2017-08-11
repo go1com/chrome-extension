@@ -46,11 +46,15 @@ export class UserLoginComponent implements OnInit {
   }
 
   async facebookLogIn() {
-    window.open(`chrome-extension://${chrome.runtime.id}/index.html#/socialLogin/facebook`);
+    this.storageService.store(configuration.constants.localStorageKeys.socialLogin, true);
+
+    window.open(`chrome-extension://${chrome.runtime.id}/index.html#/membership/socialLogin/facebook`);
   }
 
   async googleLogin() {
-    window.open(`chrome-extension://${chrome.runtime.id}/index.html#/socialLogin/google`);
+    this.storageService.store(configuration.constants.localStorageKeys.socialLogin, true);
+
+    window.open(`chrome-extension://${chrome.runtime.id}/index.html#/membership/socialLogin/google`);
   }
 
   redirect(user): void {

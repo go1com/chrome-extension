@@ -3,6 +3,7 @@ import {ActivatedRoute, Router} from "@angular/router";
 import {UserService} from "../services/user.service";
 import {ModalDialogService} from "../../go1core/services/ModalDialogService";
 import configuration from "../../../environments/configuration";
+import {StorageService} from "../../go1core/services/StorageService";
 
 @Component({
   selector: 'social-login',
@@ -15,7 +16,7 @@ export class SocialLoginComponent {
 
   constructor(private currentRoute: ActivatedRoute,
               private userService: UserService,
-              private router: Router,
+              private storageService: StorageService,
               private modalDialogService: ModalDialogService) {
 
   }
@@ -67,7 +68,7 @@ export class SocialLoginComponent {
     this.loggingIn = false;
 
     this.loggedInSuccess = true;
-    console.log(data);
+    this.storageService.remove(configuration.constants.localStorageKeys.socialLogin);
   }
 
   close() {

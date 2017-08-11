@@ -11,7 +11,8 @@ const configuration = {
       portalInstances: 'portalInstances',
       user: 'user',
       uuid: 'uuid',
-      quickButtonSetting: 'Go1.settings.quickButtonEnabled'
+      quickButtonSetting: 'Go1.settings.quickButtonEnabled',
+      socialLogin: 'socialLoggingIn'
     }
   },
   serviceUrls: {
