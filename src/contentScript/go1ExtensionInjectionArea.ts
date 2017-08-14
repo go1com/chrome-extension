@@ -24,21 +24,6 @@ export class Go1ExtensionInjectionArea {
     if (!Go1ExtensionInjectionArea.singleInstance) {
       Go1ExtensionInjectionArea.singleInstance = new Go1ExtensionInjectionArea();
       Go1ExtensionInjectionArea.singleInstance.injectToDocument();
-
-      document.addEventListener('mouseup', (event) => {
-        if ($(event.target).closest('.go1-extension-injected').length) {
-          return;
-        }
-
-        const selectedText = window.getSelection().toString();
-        if (selectedText) {
-          let selectedTextPosition = window.getSelection().getRangeAt(0).getBoundingClientRect();
-
-          ToolTipMenu.initializeTooltip(selectedTextPosition, selectedText);
-        } else {
-          ToolTipMenu.closeLastTooltip();
-        }
-      });
     }
 
     return Go1ExtensionInjectionArea.singleInstance;
@@ -93,6 +78,21 @@ export class Go1ExtensionInjectionArea {
     this.fabArea.find('.add-to-portal-btn').on('click', (event) => {
       thisComponent.fabArea.removeClass('active');
       PopupBaseModel.openPopup(AddToPortalPopup);
+    });
+
+    document.addEventListener('mouseup', (event) => {
+      if ($(event.target).closest('.go1-extension-injected').length) {
+        return;
+      }
+
+      const selectedText = window.getSelection().toString();
+      if (selectedText) {
+        let selectedTextPosition = window.getSelection().getRangeAt(0).getBoundingClientRect();
+
+        ToolTipMenu.initializeTooltip(selectedTextPosition, selectedText);
+      } else {
+        ToolTipMenu.closeLastTooltip();
+      }
     });
   }
 

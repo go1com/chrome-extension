@@ -19,7 +19,6 @@ export class StartDiscussionChromeCommandHandler implements IChromeCommandHandle
   handle(request: any, sender: any, sendResponse: Function) {
     request.data.user = this.storageService.retrieve(configuration.constants.localStorageKeys.user);
     request.data.entityType = 'portal';
-    request.data.entityId = this.storageService.retrieve(configuration.constants.localStorageKeys.currentActivePortalId);
 
     const discussionService = new DiscussionService(this.restClientService, this.storageService);
     discussionService.createNote(request.data)

@@ -2,7 +2,11 @@
   go-header([title]="'Add a Note'")
 
   .related-to
+    div.close-popup.pull-right
+      button.close-popup-btn &times;
+
     div.grey5.related-to-title Related to:
+
 
     .link-preview-frame
       .is-loading([hidden]="!isLoading")
@@ -15,10 +19,10 @@
           h5
             | {{ linkPreview && linkPreview.title }}
 
-  .quotation(*ngIf="data.quote")
+  .description
+    .quotation(*ngIf="data.quote")
       blockquote {{ data.quote }}
 
-  .description
     textarea.form-control([(ngModel)]="data.body" name="noteBody" placeholder="Add your notes..." rows=10)
 
   .actions-area

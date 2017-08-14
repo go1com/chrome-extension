@@ -13,6 +13,13 @@ export class CheckQuickButtonSettingChromeCommandHandler implements IChromeComma
   }
 
   handle(request: any, sender: any, sendResponse: Function) {
+    if (!this.storageService.retrieve(configuration.constants.localStorageKeys.authentication)) {
+      if (sendResponse) {
+        sendResponse(false);
+      }
+      return;
+    }
+    
     const quickButtonSetting = this.storageService.retrieve(configuration.constants.localStorageKeys.quickButtonSetting) || false;
     if (sendResponse) {
       sendResponse(quickButtonSetting);

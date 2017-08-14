@@ -2,16 +2,26 @@ import {Go1LinkPreviewComponent} from "../sharedComponents/go1LinkPreview/go1Lin
 import {ModalDialogService} from "./notifications/ModalDialogService";
 import {PopupBaseModel} from "./basePopup/popupBaseModel";
 import {commandKeys} from "../commandHandlers/commandKeys";
+import {PortalService} from "../modules/portal/services/PortalService";
+import {RestClientService} from "../modules/go1core/services/RestClientService";
+import {StorageService} from "../modules/go1core/services/StorageService";
 
 declare const $: any;
 
 export class NewDiscussionPopup extends PopupBaseModel {
   linkPreview: Go1LinkPreviewComponent;
   quoteText: string;
+  restClientService: RestClientService;
+  storageService: StorageService;
+  private portalService: PortalService;
+  private portalSelectComponent: any;
 
   constructor(quoteText?: string) {
     super();
     this.linkPreview = new Go1LinkPreviewComponent(null);
+    this.restClientService = new RestClientService();
+    this.storageService = new StorageService();
+    this.portalService = new PortalService(this.restClientService, this.storageService);
     this.linkPreview.linkUrl = window.location.toString();
     if (quoteText) {
       this.quoteText = quoteText;
@@ -23,6 +33,7 @@ export class NewDiscussionPopup extends PopupBaseModel {
   }
 
   protected async onPopupShown() {
+    this.loadPortalSelector();
     if (this.quoteText) {
       await this.showQuoteText();
     }
@@ -32,12 +43,29 @@ export class NewDiscussionPopup extends PopupBaseModel {
   protected bindEventListeners() {
     $('.quotation', this.popupDOM).css('display', 'none');
     $('.link-preview', this.popupDOM).css('display', 'none');
-    $('.go-back-btn', this.popupDOM).on('click', (event) => PopupBaseModel.closeLastPopup());
+    $('.close-popup-btn', this.popupDOM).on('click', (event) => PopupBaseModel.closeLastPopup());
     $('.actions-area .add-note-btn', this.popupDOM).on('click', (event) => this.addNote());
   }
 
   protected onPopupHidden() {
 
+  }
+
+  private async loadPortalSelector() {
+    chrome.runtime.sendMessage({
+      action: commandKeys.getPortals
+    }, (response) => {
+      const portals = response.portals;
+      const defaultPortal = response.defaultPortal;
+      this.portalSelectComponent = $(`<select class="form-control" ></select>`);
+
+      portals.forEach(portal => {
+        this.portalSelectComponent.append($(`<option value="${portal.id}">${portal.title}</option>`));
+      });
+
+      this.popupDOM.find('portal-selection').replaceWith(this.portalSelectComponent);
+      this.portalSelectComponent.val(defaultPortal);
+    });
   }
 
   private showQuoteText() {
@@ -78,7 +106,8 @@ export class NewDiscussionPopup extends PopupBaseModel {
       body: this.popupDOM.find('textarea[name="noteBody"]').val(),
       item: this.linkPreview.linkUrl,
       quote: this.quoteText || '',
-      uniqueName : `${this.linkPreview.linkUrl}__`
+      uniqueName: `${this.linkPreview.linkUrl}__`,
+      entityId: this.portalSelectComponent.val()
     };
 
     chrome.runtime.sendMessage({
