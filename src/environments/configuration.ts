@@ -4,6 +4,7 @@ const configuration = {
   defaultPage: 'discussionsList/',
   environment: environment,
   constants: {
+    indexPage: `chrome-extension://${chrome.runtime.id}/index.html`,
     localStorageKeys: {
       authentication: 'jwt',
       currentActivePortalId: 'currentActivePortalId',
@@ -26,6 +27,9 @@ const configuration = {
     fireBaseNotePath: 'apiom_notes/'
   },
   pages: {
+    membershipModule: '/membership',
+    fbLogin: '/membership/socialLogin/facebook',
+    ggLogin: '/membership/socialLogin/google',
     addToPortal: 'addToPortal',
     discussionsList: 'discussionsList'
   }

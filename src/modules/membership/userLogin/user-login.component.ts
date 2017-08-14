@@ -48,13 +48,13 @@ export class UserLoginComponent implements OnInit {
   async facebookLogIn() {
     this.storageService.store(configuration.constants.localStorageKeys.socialLogin, true);
 
-    window.open(`chrome-extension://${chrome.runtime.id}/index.html#/membership/socialLogin/facebook`);
+    window.open(`${configuration.constants.indexPage}#${configuration.pages.ggLogin}`);
   }
 
   async googleLogin() {
     this.storageService.store(configuration.constants.localStorageKeys.socialLogin, true);
 
-    window.open(`chrome-extension://${chrome.runtime.id}/index.html#/membership/socialLogin/google`);
+    window.open(`${configuration.constants.indexPage}#${configuration.pages.ggLogin}`);
   }
 
   redirect(user): void {
