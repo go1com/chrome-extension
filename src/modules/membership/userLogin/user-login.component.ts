@@ -48,7 +48,7 @@ export class UserLoginComponent implements OnInit {
   async facebookLogIn() {
     this.storageService.store(configuration.constants.localStorageKeys.socialLogin, true);
 
-    window.open(`${configuration.constants.indexPage}#${configuration.pages.ggLogin}`);
+    window.open(`${configuration.constants.indexPage}#${configuration.pages.fbLogin}`);
   }
 
   async googleLogin() {

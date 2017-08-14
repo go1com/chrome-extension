@@ -22,6 +22,10 @@ export class SocialLoginComponent {
   }
 
   async ngOnInit() {
+    window.onbeforeunload = () => {
+      this.storageService.remove(configuration.constants.localStorageKeys.socialLogin);
+    };
+
     this.currentRoute.params.subscribe(async params => {
       this.provider = params['oauthProvider'];
 
@@ -39,6 +43,10 @@ export class SocialLoginComponent {
         window.close();
       }
     });
+  }
+
+  ngOnDestroy() {
+    this.storageService.remove(configuration.constants.localStorageKeys.socialLogin);
   }
 
   loginWithFacebook() {
