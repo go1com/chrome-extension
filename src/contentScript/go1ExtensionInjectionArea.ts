@@ -26,6 +26,10 @@ export class Go1ExtensionInjectionArea {
       Go1ExtensionInjectionArea.singleInstance.injectToDocument();
 
       document.addEventListener('mouseup', (event) => {
+        if ($(event.target).closest('.go1-extension-injected').length) {
+          return;
+        }
+
         const selectedText = window.getSelection().toString();
         if (selectedText) {
           let selectedTextPosition = window.getSelection().getRangeAt(0).getBoundingClientRect();
