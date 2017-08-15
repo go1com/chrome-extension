@@ -2,7 +2,6 @@ import {Component, OnInit} from "@angular/core";
 import {ActivatedRoute, Router} from "@angular/router";
 import {DiscussionService} from "../services/discussion.service";
 import {UserService} from "../../membership/services/user.service";
-import {Go1RuntimeContainer} from "../../go1core/services/go1RuntimeContainer";
 import {StorageService} from "../../go1core/services/StorageService";
 import configuration from "../../../environments/configuration";
 import {commandKeys} from "../../../commandHandlers/commandKeys";
@@ -26,7 +25,7 @@ export class NewDiscussionComponent implements OnInit {
       body: '',
       entityType: 'portal',
       quote: '',
-      item: Go1RuntimeContainer.currentChromeTab && Go1RuntimeContainer.currentChromeTab.url || '',
+      item: configuration.currentChromeTab && configuration.currentChromeTab.url || '',
       entityId: storageService.retrieve(configuration.constants.localStorageKeys.currentActivePortalId)
     };
   }
@@ -35,7 +34,7 @@ export class NewDiscussionComponent implements OnInit {
     this.isLoading = true;
     this.data.user = await this.userService.getUser();
 
-    this.linkPreview = await this.loadPageMetadata(Go1RuntimeContainer.currentChromeTab.url);
+    this.linkPreview = await this.loadPageMetadata(configuration.currentChromeTab.url);
     this.isLoading = false;
   }
 
@@ -59,7 +58,7 @@ export class NewDiscussionComponent implements OnInit {
       this.data.title = 'Note from ' + this.linkPreview.title;
     }
 
-    this.data.uniqueName = `${Go1RuntimeContainer.currentChromeTab.url}__`;
+    this.data.uniqueName = `${configuration.currentChromeTab.url}__`;
     await this.discussionService.createNote(this.data);
     await this.goBack();
   }

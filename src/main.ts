@@ -7,4 +7,8 @@ if (configuration.environment.production) {
   enableProdMode();
 }
 
-platformBrowserDynamic().bootstrapModule(AppModule);
+
+chrome.tabs.query({active: true, currentWindow: true}, function (tabs) {
+  configuration.currentChromeTab = tabs[0];
+  platformBrowserDynamic().bootstrapModule(AppModule);
+});

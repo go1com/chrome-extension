@@ -1,6 +1,5 @@
 import {Component} from "@angular/core";
 import {ActivatedRoute, Router} from "@angular/router";
-import {Go1RuntimeContainer} from "../../go1core/services/go1RuntimeContainer";
 import {StorageService} from "../../go1core/services/StorageService";
 import configuration from "../../../environments/configuration";
 import {routeNames} from "../addToPortal.routes";
@@ -45,22 +44,22 @@ export class AddToPortalComponent {
 
   async ngOnInit() {
     this.isLoading = true;
-    if (!Go1RuntimeContainer.currentChromeTab || !Go1RuntimeContainer.currentChromeTab.url) {
+    if (!configuration.currentChromeTab || !configuration.currentChromeTab.url) {
       await this.getCurrentTabInfo();
     }
 
     const user = await this.userService.getUser();
 
-    this.tabUrl = Go1RuntimeContainer.currentChromeTab.url;
+    this.tabUrl = configuration.currentChromeTab.url;
 
-    this.linkPreview = await this.loadPageMetadata(Go1RuntimeContainer.currentChromeTab.url);
+    this.linkPreview = await this.loadPageMetadata(configuration.currentChromeTab.url);
     this.data = {
       title: this.linkPreview.title,
       description: this.linkPreview.description,
       type: 'iframe',
       tags: [],
       data: {
-        path: Go1RuntimeContainer.currentChromeTab.url
+        path: configuration.currentChromeTab.url
       },
       single_li: true,
       published: 1,
@@ -74,7 +73,7 @@ export class AddToPortalComponent {
       body: '',
       entityType: 'portal',
       quote: '',
-      item: Go1RuntimeContainer.currentChromeTab.url || '',
+      item: configuration.currentChromeTab.url || '',
       entityId: this.storageService.retrieve(configuration.constants.localStorageKeys.currentActivePortalId),
       user: user
     };
@@ -85,7 +84,7 @@ export class AddToPortalComponent {
   private getCurrentTabInfo() {
     return new Promise(resolve => {
       chrome.tabs.query({active: true, currentWindow: true}, (tabs) => {
-        Go1RuntimeContainer.currentChromeTab = tabs[0];
+        configuration.currentChromeTab = tabs[0];
         resolve();
       });
     });
@@ -93,9 +92,9 @@ export class AddToPortalComponent {
 
   async onAddToPortalBtnClicked() {
     const learningItem = await this.addToPortal();
-    // this.noteData.uniqueName = `${Go1RuntimeContainer.currentChromeTab.url}__${learningItem.id}`;
+    // this.noteData.uniqueName = `${configuration.currentChromeTab.url}__${learningItem.id}`;
 
-    // this.noteData.title = `Note from ${Go1RuntimeContainer.currentChromeTab.url}`;
+    // this.noteData.title = `Note from ${configuration.currentChromeTab.url}`;
 
     // await this.discussionService.createNote(this.noteData);
 

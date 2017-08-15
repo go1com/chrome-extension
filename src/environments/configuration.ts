@@ -3,6 +3,7 @@ import {environment} from "./index";
 const configuration = {
   defaultPage: 'discussionsList/',
   environment: environment,
+  currentChromeTab: null,
   constants: {
     indexPage: `chrome-extension://${chrome.runtime.id}/index.html`,
     localStorageKeys: {

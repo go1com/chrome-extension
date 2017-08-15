@@ -63,16 +63,22 @@ export class DiscussionsListComponent implements OnInit, OnDestroy {
     for (let i = 0; i < response.length; i++) {
       const noteItem = response[i];
       const note: any = await this.discussionService.getUserNote(noteItem.uuid);
+
       if (!note || !note.data) {
-        break;
+        continue;
       }
 
       const keys = Object.keys(note.data);
       const discussionTopic: any = note.data[keys[0]];
+
+      // only load items that belong to current page.
+      if (discussionTopic.item !== configuration.currentChromeTab.url)
+        continue;
+
       discussionTopic.noteItem = noteItem;
 
       if (!discussionTopic) {
-        break;
+        continue;
       }
 
       discussionTopic.messages = [];

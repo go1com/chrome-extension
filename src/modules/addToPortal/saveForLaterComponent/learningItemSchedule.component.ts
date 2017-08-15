@@ -1,6 +1,5 @@
 import {Component} from "@angular/core";
 import {ActivatedRoute, Router} from "@angular/router";
-import {Go1RuntimeContainer} from "../../go1core/services/go1RuntimeContainer";
 import {StorageService} from "../../go1core/services/StorageService";
 import configuration from "../../../environments/configuration";
 import {routeNames} from "../addToPortal.routes";
@@ -22,7 +21,7 @@ export class LearningItemScheduleComponent {
       tags: [],
       data: {
         type: 'weblink',
-        path: Go1RuntimeContainer.currentChromeTab.url,
+        path: configuration.currentChromeTab.url,
       },
       instance: storageService.retrieve(configuration.constants.localStorageKeys.currentActivePortalId)
     };

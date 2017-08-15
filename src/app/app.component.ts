@@ -1,5 +1,4 @@
 import {Component, Inject, OnInit, ViewContainerRef, ViewEncapsulation} from '@angular/core';
-import {Go1RuntimeContainer} from "../modules/go1core/services/go1RuntimeContainer";
 import {Overlay} from "angular2-modal";
 import {ModalDialogService} from "../modules/go1core/services/ModalDialogService";
 import configuration from "../environments/configuration";
@@ -27,13 +26,6 @@ export class AppComponent implements OnInit {
   }
 
   async ngOnInit() {
-    await new Promise(resolve => {
-      chrome.tabs.query({active: true, currentWindow: true}, function (tabs) {
-        Go1RuntimeContainer.currentChromeTab = tabs[0];
-        resolve();
-      });
-    });
-
     if (this.storageService.retrieve(configuration.constants.localStorageKeys.socialLogin)) {
       return
     }
