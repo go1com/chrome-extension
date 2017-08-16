@@ -1,0 +1,3 @@
+.avatar-container
+  img([src]="userProfile?.avatar", *ngIf="userProfile?.avatar",  alt="{{ userProfile?.first_name + ' ' + userProfile?.last_name }}")
+  img(*ngIf="!userProfile?.avatar", src="assets/avatar.png" alt="")

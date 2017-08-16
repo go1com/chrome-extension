@@ -18,7 +18,7 @@ social-login, social-login-success {
     top: 10px;
   }
 
-  .provider-icon{
+  .provider-icon {
     height: 24px;
     width: 24px;
     display: inline-block;
@@ -209,5 +209,34 @@ user-login, forgot-password, user-sign-up, forgot-password-success, signup-succe
 
   a.go-back-btn {
     color: $go1grey6;
+  }
+}
+
+.user-profile {
+  display: flex;
+
+  .avatar {
+    width: 48px;
+    height: 48px;
+    margin-right: 10px;
+
+    img {
+      width: 100%;
+      -webkit-border-radius: 100%;
+      -moz-border-radius: 100%;
+      border-radius: 100%;
+    }
+  }
+
+  .media-body {
+    .name {
+      font-size: 14px;
+      font-weight: 600;
+      color: $go1black;
+    }
+    .external-text {
+      font-size: 14px;
+      opacity: .7;
+    }
   }
 }

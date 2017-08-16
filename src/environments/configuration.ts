@@ -19,6 +19,7 @@ const configuration = {
   },
   serviceUrls: {
     user: 'user-service/',
+    userProfile: 'social-service/profile',
     facebookAuth: 'social-login/fb-login',
     googleAuth: 'social-login/google-login',
     enrollment: 'enrolment-service/',
@@ -29,10 +30,14 @@ const configuration = {
   },
   pages: {
     membershipModule: '/membership',
+    discussionModule: '/discussionsList',
+    addToPortalModule: '/addToPortal',
     fbLogin: '/membership/socialLogin/facebook',
     ggLogin: '/membership/socialLogin/google',
     addToPortal: 'addToPortal',
-    discussionsList: 'discussionsList'
+    discussionsList: 'discussionsList',
+    discussionDetail: 'discussionDetail',
+    newDiscussion: 'newDiscussion'
   }
 };
 

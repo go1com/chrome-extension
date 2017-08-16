@@ -18,6 +18,8 @@ const applicationJsonType = 'application/json';
 
 @Injectable()
 export class RestClientService {
+  getUrls: any[] = [];
+
   request<T>(url: string, type: string, data?: any, customHeaders?: any) {
     let headers = {
       'Content-Type': applicationJsonType,
@@ -50,7 +52,7 @@ export class RestClientService {
       .then(response => {
         try {
           return JSON.parse(response);
-        } catch(e) {
+        } catch (e) {
           return response;
         }
       });
@@ -60,8 +62,28 @@ export class RestClientService {
     return this.request<T>(url, RequestMethod.HEAD);
   }
 
-  get<T>(url: string, customHeaders?: any) {
+  get <T>(url: string, customHeaders?: any) {
     return this.request<T>(url, RequestMethod.GET, null, customHeaders);
+  }
+
+  singleGet<T>(url: string, customHeaders?: any) {
+    let existingRequest = this.getUrls.find(getRequest => getRequest.url === url);
+    if (existingRequest) {
+      console.log('existing request available');
+      return existingRequest.request;
+    }
+
+    const promise = this.request<T>(url, RequestMethod.GET, null, customHeaders).then(response => {
+      this.getUrls = _.filter(this.getUrls, getRequest => getRequest.url !== url);
+      return response;
+    });
+
+    this.getUrls.push({
+      url: url,
+      request: promise
+    });
+
+    return promise;
   }
 
   post<T>(url: string, data?: any, customHeaders?: any) {

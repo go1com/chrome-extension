@@ -27,7 +27,13 @@ export class DiscussionService {
   }
 
   getUserNotesFromService() {
-    return this.restClientService.get(`${this.baseUrl}/${configuration.serviceUrls.noteService}notes`, this.getCustomHeaders());
+    let url = `${this.baseUrl}/${configuration.serviceUrls.noteService}notes`;
+
+    if (configuration.currentChromeTab && configuration.currentChromeTab.url) {
+      url += `?context[url]=${configuration.currentChromeTab.url}`;
+    }
+
+    return this.restClientService.get(url, this.getCustomHeaders());
   }
 
   async getUserNote(uuid: string) {
@@ -54,7 +60,8 @@ export class DiscussionService {
   }
 
   async createNote(newNote: any) {
-    const response = await this.restClientService.post(this.makeNoteRequestUrl(newNote),
+    const response = await this.restClientService.post(
+      `${this.makeNoteRequestUrl(newNote)}`,
       null,
       this.getCustomHeaders());
 
@@ -101,6 +108,10 @@ export class DiscussionService {
       endpoint += [newNote.entityType, newNote.entityId].join('/');
     } else {
       endpoint += '/' + newNote.loid;
+    }
+
+    if (newNote.item) {
+      endpoint += `?context[url]=${newNote.item}`;
     }
 
     return endpoint;

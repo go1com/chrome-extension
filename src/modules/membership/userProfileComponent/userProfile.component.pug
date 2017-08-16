@@ -1,0 +1,7 @@
+.user-profile
+  .media-left.avatar
+    img([src]="userProfile?.avatar", *ngIf="userProfile?.avatar",  alt="{{ userProfile?.first_name + ' ' + userProfile?.last_name }}")
+    img(*ngIf="!userProfile?.avatar", src="assets/avatar.png" alt="")
+  .media-body.text-align-left
+    .name {{ userProfile?.first_name }} {{ userProfile?.last_name }}
+    .external-text(*ngIf="externalText") {{ externalText }}

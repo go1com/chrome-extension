@@ -86,6 +86,14 @@ export class UserService {
     return response;
   }
 
+  async getUserProfile(userId) {
+    const response = await this.restClientService.singleGet(
+      `${ this.apiUrl }/${configuration.serviceUrls.userProfile}/${ userId }`,
+      this.getCustomHeaders());
+
+    return response;
+  }
+
   switchPortal(portal: any) {
     this.storageService.store(configuration.constants.localStorageKeys.currentActivePortalId, portal.id);
     this.storageService.store(configuration.constants.localStorageKeys.currentActivePortal, portal);
@@ -93,6 +101,12 @@ export class UserService {
 
   getInstanceId(): string {
     return this.storageService.retrieve(configuration.constants.localStorageKeys.currentActivePortalId);
+  }
+
+  private getCustomHeaders() {
+    return {
+      'Authorization': `Bearer ${ this.storageService.retrieve(configuration.constants.localStorageKeys.authentication) }`
+    };
   }
 
   logout() {

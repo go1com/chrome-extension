@@ -92,13 +92,20 @@ export class AddToPortalComponent {
 
   async onAddToPortalBtnClicked() {
     const learningItem = await this.addToPortal();
-    // this.noteData.uniqueName = `${configuration.currentChromeTab.url}__${learningItem.id}`;
-
-    // this.noteData.title = `Note from ${configuration.currentChromeTab.url}`;
-
-    // await this.discussionService.createNote(this.noteData);
 
     await this.goToSuccess();
+  }
+
+  async onMarkAsCompleteBtnClicked() {
+    const learningItem = await this.addToPortal();
+    await this.markAsComplete(learningItem);
+    await this.goToSuccess();
+  }
+
+  async markAsComplete(learningItem) {
+    const enrollmentResponse: any = await this.enrollToItem(learningItem.id);
+
+    const markAsCompleteEnrollment = await this.enrollmentService.markEnrollmentAsCompleted(enrollmentResponse.id);
   }
 
   private async loadPageMetadata(url) {

@@ -1,17 +1,19 @@
-.discussion-item.row
-  .col-3
-    .avatar-container
-      img(src="assets/avatar.png" alt="")
+.discussion-item(*ngIf="discussionItem")
+  user-profile(*ngIf="discussionItem?.user_id", [userId]="discussionItem?.user_id" externalText="{{ discussionItem?.created | amTimeAgo }}")
+  .discussion-detail
+    div.message([innerHtml]="discussionItem?.message")
 
-
-  .col.description
-    h5(*ngIf="discussionItem.name", [innerHtml]="discussionItem.name")
-    h5(*ngIf="!discussionItem.name", [innerHtml]="discussionItem.message")
-    .menu(ngbDropdown)
-      button.more-btn(ngbDropdownToggle)
-        img(src="assets/icon_more.png")
-      .dropdown-menu
-        button.dropdown-item((click)="deleteItem()") #[i.fa.fa-trash.m-r-10] Delete
-        // button.dropdown-item #[i.fa.fa-share.m-r-10] Share
-    .created
-      small {{ discussionItem.created | amTimeAgo }}
+//.col-3
+//  user-avatar([userId]="discussionItem.user_id")
+//
+//.col-9.description
+//  h5(*ngIf="discussionItem.name", [innerHtml]="discussionItem.name")
+//  h5(*ngIf="!discussionItem.name", [innerHtml]="discussionItem.message")
+//  .menu(ngbDropdown)
+//    button.more-btn(ngbDropdownToggle)
+//      img(src="assets/icon_more.png")
+//    .dropdown-menu
+//      button.dropdown-item((click)="deleteItem()") #[i.fa.fa-trash.m-r-10] Delete
+//      // button.dropdown-item #[i.fa.fa-share.m-r-10] Share
+//  .created
+//    small {{ discussionItem.created | amTimeAgo }}

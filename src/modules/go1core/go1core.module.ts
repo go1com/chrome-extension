@@ -16,6 +16,7 @@ import {ConfirmationModalComponent} from "./components/confirmationModal/Confirm
 import {AlertModalComponent} from "./components/alertModal/AlertModalComponent";
 import {BootstrapModalModule} from "angular2-modal/plugins/bootstrap";
 import {ModalModule} from "angular2-modal";
+import {CkeditorDirective} from "./ckeditorComponent/ckeditor.component";
 
 @NgModule({
   declarations: [
@@ -23,7 +24,8 @@ import {ModalModule} from "angular2-modal";
     LoadingIndicatorComponent,
     ImageSvgDirective,
     ConfirmationModalComponent,
-    AlertModalComponent
+    AlertModalComponent,
+    CkeditorDirective
   ],
   imports: [
     CommonModule,
@@ -47,7 +49,8 @@ import {ModalModule} from "angular2-modal";
     LoadingIndicatorComponent,
     ImageSvgDirective,
     ConfirmationModalComponent,
-    AlertModalComponent
+    AlertModalComponent,
+    CkeditorDirective
   ],
   entryComponents: [
     ConfirmationModalComponent,

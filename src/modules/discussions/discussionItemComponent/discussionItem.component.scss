@@ -1,13 +1,7 @@
 @import "../../../styles/variables";
 
 .discussion-item {
-  background: #fff;
   border-bottom: 1px solid $go1grey2;
-
-  .avatar-container {
-    padding: 15px;
-    width: 100%;
-  }
 
   .description {
     padding: 15px;

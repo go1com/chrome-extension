@@ -5,12 +5,14 @@ import {UserResolve} from "./services/user.resolve";
 import {UserService} from "./services/user.service";
 import {FormsModule} from "@angular/forms";
 import {RouterModule} from "@angular/router";
-import membershipRoutes from "./membership.routes";
 import {ForgotPasswordComponent} from "./forgotPassword/forgot-password.component";
 import {SignUpComponent} from "./signUp/sign-up.component";
 import {ForgotPasswordSuccessComponent} from "./forgotPasswordSuccess/forgot-password-success.component";
 import {SignupSuccessComponent} from "./signUpSuccess/signup-success.component";
 import {SocialLoginComponent} from "./socialLogin/social-login.component";
+import {UserAvatarComponent} from "./userAvatarComponent/userAvatar.component";
+import {CommonModule} from "@angular/common";
+import {UserProfileComponent} from "./userProfileComponent/userProfile.component";
 
 @NgModule({
   declarations: [
@@ -19,10 +21,13 @@ import {SocialLoginComponent} from "./socialLogin/social-login.component";
     ForgotPasswordSuccessComponent,
     SignUpComponent,
     SignupSuccessComponent,
-    SocialLoginComponent
+    SocialLoginComponent,
+    UserAvatarComponent,
+    UserProfileComponent
   ],
   imports: [
     FormsModule,
+    CommonModule,
     RouterModule,
 
     // RouterModule.forChild(membershipRoutes),
@@ -38,7 +43,9 @@ import {SocialLoginComponent} from "./socialLogin/social-login.component";
     ForgotPasswordSuccessComponent,
     SignUpComponent,
     SignupSuccessComponent,
-    SocialLoginComponent
+    SocialLoginComponent,
+    UserAvatarComponent,
+    UserProfileComponent
   ]
 })
 export class MembershipModule {

@@ -44,11 +44,11 @@ export class DiscussionsListComponent implements OnInit, OnDestroy {
   }
 
   async addDiscussion() {
-    await this.router.navigate(['/', configuration.pages.discussionsList, 'newDiscussion'], {relativeTo: this.currentActivatedRoute});
+    await this.router.navigate([configuration.pages.discussionModule, configuration.pages.newDiscussion], {relativeTo: this.currentActivatedRoute});
   }
 
   async addToPortal() {
-    await this.router.navigate(['/', configuration.pages.addToPortal, configuration.pages.addToPortal]);
+    await this.router.navigate([configuration.pages.addToPortalModule, configuration.pages.addToPortal]);
   }
 
   private async removeNote(noteUuid) {

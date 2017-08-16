@@ -13,12 +13,14 @@ import {MembershipModule} from "../membership/membership.module";
 import {Go1LinkPreviewModule} from "../../sharedComponents/go1LinkPreview/go1LinkPreview.module";
 import {PortalModule} from "../portal/portal.module";
 import {NgbModule} from "@ng-bootstrap/ng-bootstrap";
+import {DiscussionDetailComponent} from "./discussionDetailComponent/discussionDetail.component";
 
 @NgModule({
   declarations: [
     DiscussionsListComponent,
     NewDiscussionComponent,
-    DiscussionItemComponent
+    DiscussionItemComponent,
+    DiscussionDetailComponent
   ],
   imports: [
     CommonModule,
