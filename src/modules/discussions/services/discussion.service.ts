@@ -3,6 +3,7 @@ import {RestClientService} from "../../go1core/services/RestClientService";
 import {StorageService} from "../../go1core/services/StorageService";
 import firebase from 'firebase';
 import configuration from "../../../environments/configuration";
+import {Observable} from "rxjs/Observable";
 
 @Injectable()
 export class DiscussionService {
@@ -46,13 +47,21 @@ export class DiscussionService {
     });
   }
 
+  subscribeUserNote(uuid: string) {
+    return Observable.create((observer) => {
+      let ref = this.fireBaseDb.ref(configuration.serviceUrls.fireBaseNotePath + uuid);
+
+      ref.on('value', (snapshot) => {
+        observer.next(snapshot.val());
+      });
+    });
+  }
+
   async deleteNote(noteUuid: string) {
     try {
       let endpoint = `${this.baseUrl}/${configuration.serviceUrls.noteService}note/${noteUuid}`;
 
       const response = await this.restClientService.delete(endpoint, this.getCustomHeaders());
-
-      console.log(response);
     } catch (error) {
       console.error(error);
       throw error;
@@ -67,23 +76,36 @@ export class DiscussionService {
 
     let newNoteFireObject = this.fireBaseDb.ref(configuration.serviceUrls.fireBaseNotePath + response.uuid);
 
-    const randomKey = '-' + this.randomString(19);
+    const randomKey = '-Kri' + this.randomString(16);
     let childData = {};
-    childData[randomKey] = {
-      name: newNote.title,
-      message: newNote.body,
-      item: newNote.item || '',
-      quote: newNote.quote || '',
-      user_id: newNote.user.id,
-      created: new Date().getTime()
-    };
+
     let firebaseObject = {
       user_id: newNote.user.id,
       name: newNote.uniqueName,
       data: childData
     };
     newNoteFireObject.set(firebaseObject);
+
+    await this.addMessage(response.uuid, {
+      name: newNote.title,
+      message: newNote.body,
+      item: newNote.item || '',
+      quote: newNote.quote || '',
+      user_id: newNote.user.id,
+      created: new Date().getTime()
+    });
+
     return firebaseObject;
+  }
+
+  async addMessage(uuid: any, messageData: any) {
+    return await this.fireBaseDb.ref(configuration.serviceUrls.fireBaseNotePath + uuid).child('data')
+      .push(messageData);
+  }
+
+  async addReply(noteUuid: any, messageId: any, messageData: any) {
+    return await this.fireBaseDb.ref(`${configuration.serviceUrls.fireBaseNotePath}${noteUuid}/data/${messageId}`).child('replies')
+      .push(messageData);
   }
 
   randomString(length) {

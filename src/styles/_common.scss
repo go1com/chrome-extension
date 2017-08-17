@@ -67,6 +67,14 @@ header.extension-header {
   font-weight: bold;
 }
 
+.btn-sm, .btn-group-sm > .btn {
+  padding: 0.25rem 0.5rem;
+}
+
+.form-actions {
+  padding: 10px 0;
+}
+
 .dialog-success {
   background: $alert-success-bg;
   color: $alert-success-text;

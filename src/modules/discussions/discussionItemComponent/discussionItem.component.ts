@@ -3,6 +3,7 @@ import {ModalDialogService} from "../../go1core/services/ModalDialogService";
 import {DiscussionService} from "../services/discussion.service";
 import {Router} from "@angular/router";
 import configuration from "../../../environments/configuration";
+import {UserService} from "../../membership/services/user.service";
 
 @Component({
   selector: 'discussion-item',
@@ -10,15 +11,18 @@ import configuration from "../../../environments/configuration";
   styleUrls: ['./discussionItem.component.scss']
 })
 export class DiscussionItemComponent {
+  postingReply: boolean;
   @Input() discussionItem: any;
 
+  replyMessage: string = '';
+  discussionStarted: boolean = false;
+
   constructor(private modalDialogService: ModalDialogService,
-              private router: Router,
+              private userService: UserService,
               private discussionService: DiscussionService) {
   }
 
   ngOnInit() {
-    console.log(this.discussionItem);
   }
 
   async deleteItem() {
@@ -36,7 +40,23 @@ export class DiscussionItemComponent {
     }
   }
 
-  async goToDiscussionDetail() {
-    await this.router.navigate([configuration.pages.discussionModule, configuration.pages.discussionDetail, this.discussionItem.noteItem.uuid]);
+  toggleDiscussion() {
+    this.discussionStarted = !this.discussionStarted;
+  }
+
+  async addReply() {
+    let user: any = await this.userService.getUser();
+
+    let noteReplydata = {
+      message: this.replyMessage,
+      user_id: user.id,
+      created: new Date().getTime()
+    };
+
+    this.postingReply = true;
+    await this.discussionService.addMessage(this.discussionItem.noteItem.uuid, noteReplydata);
+    this.discussionItem.messages.push(noteReplydata);
+    this.replyMessage = '';
+    this.postingReply = false;
   }
 }

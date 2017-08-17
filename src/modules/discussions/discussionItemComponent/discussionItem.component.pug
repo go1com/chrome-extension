@@ -1,19 +1,28 @@
 .discussion-item(*ngIf="discussionItem")
   user-profile(*ngIf="discussionItem?.user_id", [userId]="discussionItem?.user_id" externalText="{{ discussionItem?.created | amTimeAgo }}")
-  .discussion-detail
-    div.message([innerHtml]="discussionItem?.message")
+  .discussion-content
+    .discussion-detail
+      div.message([innerHtml]="discussionItem?.message")
+      div.actions
+        button.no-border((click)="toggleDiscussion()")
+          i.fa.fa-comments
+          span(*ngIf="discussionItem.messages.length") {{ discussionItem.messages.length }} discussion{{ discussionItem.messages.length > 1 ? 's' : '' }}
+          span(*ngIf="!discussionItem.messages.length") Share your thoughts
+        //button.no-border()
+        //  i.fa.fa-thumbs-up
+        //  | Like this
 
-//.col-3
-//  user-avatar([userId]="discussionItem.user_id")
-//
-//.col-9.description
-//  h5(*ngIf="discussionItem.name", [innerHtml]="discussionItem.name")
-//  h5(*ngIf="!discussionItem.name", [innerHtml]="discussionItem.message")
-//  .menu(ngbDropdown)
-//    button.more-btn(ngbDropdownToggle)
-//      img(src="assets/icon_more.png")
-//    .dropdown-menu
-//      button.dropdown-item((click)="deleteItem()") #[i.fa.fa-trash.m-r-10] Delete
-//      // button.dropdown-item #[i.fa.fa-share.m-r-10] Share
-//  .created
-//    small {{ discussionItem.created | amTimeAgo }}
+        .menu(ngbDropdown)
+          button.more-btn.no-border(ngbDropdownToggle)
+            i.fa.fa-ellipsis-h
+          .dropdown-menu
+            button.dropdown-item((click)="deleteItem()") #[i.fa.fa-trash.m-r-10] Delete
+
+    .discussion-thread.animated.fast([class.fadeInDown]="discussionStarted", [class.fadeOutUp]="!discussionStarted")
+      textarea.form-control([(ngModel)]="replyMessage" name="noteBody" placeholder="Share your thoughts..." rows="4", [disabled]="postingReply")
+      .form-actions.pull-right
+        button.btn.btn-sm.btn-primary((click)="addReply()") Post
+      .clearfix
+
+      .replies
+        discussion-reply(*ngFor="let message of discussionItem.messages", [reply]="message")

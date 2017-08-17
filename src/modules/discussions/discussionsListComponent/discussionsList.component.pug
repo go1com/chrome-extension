@@ -1,5 +1,5 @@
 .discussions-list-page
-  go-header([title]="'Page&rsquo;s Notes'")
+  go-header([title]="'Notes &amp; Discussions'")
   .no-content([hidden]="!loading")
     loading-indicator
 
@@ -21,7 +21,7 @@
         portal-selection(placeholder="Change Portal", [(portal)]="changePortalId", (portalChange)="onPortalChanged(changePortalId)")
 
   .discussions-list([hidden]="!discussionsList.length")
-    discussion-item(*ngFor="let discussionItem of discussionsList", [discussionItem]="discussionItem")
+    discussion-item(*ngFor="let discussionItem of discussionsList | currentChromePage", [discussionItem]="discussionItem")
 
 
   .actions-area.row([hidden]="!discussionsList.length")

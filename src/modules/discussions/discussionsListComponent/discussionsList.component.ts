@@ -69,26 +69,42 @@ export class DiscussionsListComponent implements OnInit, OnDestroy {
       }
 
       const keys = Object.keys(note.data);
-      const discussionTopic: any = note.data[keys[0]];
 
-      // only load items that belong to current page.
-      if (discussionTopic.item !== configuration.currentChromeTab.url)
-        continue;
+      let discussionTopic: any = null;
+      let foundIndex: any = -1;
+      keys.forEach((key, index) => {
+        if (discussionTopic)
+          return;
 
-      discussionTopic.noteItem = noteItem;
+        let tmpDiscussionTopic = note.data[key];
+        tmpDiscussionTopic.$id = key;
+
+        if (tmpDiscussionTopic.item === configuration.currentChromeTab.url) {
+          discussionTopic = tmpDiscussionTopic;
+          foundIndex = index;
+        }
+      });
 
       if (!discussionTopic) {
         continue;
       }
 
+      discussionTopic.noteItem = noteItem;
+
       discussionTopic.messages = [];
 
-      for (let index = 1; index < keys.length; index++) {
-        discussionTopic.messages.push(note.data[keys[index]]);
+      for (let index = 0; index < keys.length; index++) {
+        if (index != foundIndex) {
+          let messageData = note.data[keys[index]];
+          messageData.$id = keys[index];
+
+          discussionTopic.messages.push(messageData);
+        }
       }
 
       this.discussionsList.push(discussionTopic);
     }
+
     this.zone.run(() => {
       this.loading = false;
     });

@@ -13,14 +13,16 @@ import {MembershipModule} from "../membership/membership.module";
 import {Go1LinkPreviewModule} from "../../sharedComponents/go1LinkPreview/go1LinkPreview.module";
 import {PortalModule} from "../portal/portal.module";
 import {NgbModule} from "@ng-bootstrap/ng-bootstrap";
-import {DiscussionDetailComponent} from "./discussionDetailComponent/discussionDetail.component";
+import {DiscussionReplyComponent} from "./discussionReply/discussionReply.component";
+import {CurrentChromePageOnlyPipe} from "./services/currentChromePageOnlyPipe";
 
 @NgModule({
   declarations: [
     DiscussionsListComponent,
     NewDiscussionComponent,
     DiscussionItemComponent,
-    DiscussionDetailComponent
+    DiscussionReplyComponent,
+    CurrentChromePageOnlyPipe
   ],
   imports: [
     CommonModule,
@@ -41,7 +43,9 @@ import {DiscussionDetailComponent} from "./discussionDetailComponent/discussionD
   exports: [
     DiscussionsListComponent,
     NewDiscussionComponent,
-    DiscussionItemComponent
+    DiscussionItemComponent,
+    DiscussionReplyComponent,
+    CurrentChromePageOnlyPipe
   ]
 })
 export class DiscussionsModule {

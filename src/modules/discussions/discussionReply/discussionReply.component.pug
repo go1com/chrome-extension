@@ -1,0 +1,8 @@
+.discussion-reply(*ngIf="reply")
+  user-profile(*ngIf="reply?.user_id", [userId]="reply?.user_id" externalText="{{ reply?.created | amTimeAgo }}")
+  .discussion-content
+    .discussion-detail([class.hasDiscussion]="discussionStarted")
+      .message([innerHtml]="reply?.message")
+
+      .replies
+        discussion-reply(*ngFor="let _reply of reply.replies", [reply]="_reply")

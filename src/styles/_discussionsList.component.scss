@@ -12,6 +12,37 @@
     margin-top: 10px;
   }
 
+  .actions {
+    color: $go1grey6;
+
+    button.no-border {
+      border: none;
+      background: none;
+      font-size: 13px;
+      color: $go1grey6;
+      outline: none;
+
+      &:hover {
+        color: $go1brandColor;
+      }
+
+      .fa {
+        font-size: 14px;
+        margin-right: 10px;
+      }
+    }
+
+    .menu {
+      float: right;
+
+      button.no-border {
+        .fa {
+          margin-right: 0;
+        }
+      }
+    }
+  }
+
   .discussion-detail {
     margin-top: 20px;
     padding: 10px;
@@ -21,6 +52,13 @@
     -moz-border-radius: 3px;
     border-radius: 3px;
     background: #fff;
+    z-index: 900;
+
+    &.hasDiscussion {
+      -webkit-border-radius: 3px 3px 0 0;
+      -moz-border-radius: 3px 3px 0 0;
+      border-radius: 3px 3px 0 0;
+    }
 
     .message {
       border-bottom: 1px solid $go1grey4;
@@ -68,6 +106,24 @@
       border-width: 12px;
     }
   }
+
+  .discussion-reply {
+    margin-top: 15px;
+
+    .message {
+      border-bottom: none;
+    }
+  }
+
+  .discussion-thread {
+    border: 1px solid $go1grey4;
+    border-top: none;
+    padding: 15px;
+    -webkit-border-radius: 0 0 3px 3px;
+    -moz-border-radius: 0 0 3px 3px;
+    border-radius: 0 0 3px 3px;
+    z-index: 800;
+  }
 }
 
 .discussions-list-page {
@@ -91,6 +147,9 @@
     width: 100%;
     overflow-y: auto;
     overflow-x: hidden;
+    position: absolute;
+    bottom: 60px;
+    top: 60px;
   }
 
   .actions {
