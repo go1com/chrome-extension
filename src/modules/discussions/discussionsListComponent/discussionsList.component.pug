@@ -3,7 +3,7 @@
   .no-content([hidden]="!loading")
     loading-indicator
 
-  .no-content([hidden]="loading || discussionsList.length")
+  .no-content([hidden]="loading || notesToShow().length")
     img(src="assets/Note-empty.png")
     h4 There's No Notes on this Page
 
@@ -20,11 +20,11 @@
       .actions.m-t-20
         portal-selection(placeholder="Change Portal", [(portal)]="changePortalId", (portalChange)="onPortalChanged(changePortalId)")
 
-  .discussions-list([hidden]="!discussionsList.length")
-    discussion-item(*ngFor="let discussionItem of discussionsList | currentChromePage", [discussionItem]="discussionItem")
+  .discussions-list([hidden]="!notesToShow().length")
+    discussion-item(*ngFor="let discussionItem of notesToShow()", [discussionItem]="discussionItem")
 
 
-  .actions-area.row([hidden]="!discussionsList.length")
+  .actions-area.row([hidden]="!notesToShow().length")
     .col-6
       button.btn.btn-block((click)="addDiscussion()")
         | #[i.fa.fa-comment ] Add Note

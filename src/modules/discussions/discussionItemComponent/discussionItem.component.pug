@@ -18,11 +18,11 @@
           .dropdown-menu
             button.dropdown-item((click)="deleteItem()") #[i.fa.fa-trash.m-r-10] Delete
 
-    .discussion-thread.animated.fast([class.fadeInDown]="discussionStarted", [class.fadeOutUp]="!discussionStarted")
+    .discussion-thread.animated.fast([class.fadeInDown]="discussionStarted", [class.fadeOutUp]="!discussionStarted", [hidden]="!discussionStarted")
       textarea.form-control([(ngModel)]="replyMessage" name="noteBody" placeholder="Share your thoughts..." rows="4", [disabled]="postingReply")
       .form-actions.pull-right
         button.btn.btn-sm.btn-primary((click)="addReply()") Post
       .clearfix
 
-      .replies
+      .replies([hidden]="!discussionStarted")
         discussion-reply(*ngFor="let message of discussionItem.messages", [reply]="message")

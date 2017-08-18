@@ -91,6 +91,10 @@ export class UserService {
       `${ this.apiUrl }/${configuration.serviceUrls.userProfile}/${ userId }`,
       this.getCustomHeaders());
 
+    if (response.avatar && response.avatar.startsWith('//')) {
+      response.avatar = 'https://' + response.avatar;
+    }
+
     return response;
   }
 

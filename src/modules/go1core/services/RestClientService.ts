@@ -69,12 +69,14 @@ export class RestClientService {
   singleGet<T>(url: string, customHeaders?: any) {
     let existingRequest = this.getUrls.find(getRequest => getRequest.url === url);
     if (existingRequest) {
-      console.log('existing request available');
       return existingRequest.request;
     }
 
     const promise = this.request<T>(url, RequestMethod.GET, null, customHeaders).then(response => {
-      this.getUrls = _.filter(this.getUrls, getRequest => getRequest.url !== url);
+      setTimeout(() => {
+        this.getUrls = _.filter(this.getUrls, getRequest => getRequest.url !== url);
+      }, 700);
+
       return response;
     });
 

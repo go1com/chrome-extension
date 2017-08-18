@@ -52,7 +52,11 @@ export class DiscussionsListComponent implements OnInit, OnDestroy {
   }
 
   private async removeNote(noteUuid) {
-    this.discussionsList = this.discussionsList.filter(discussionTopic => discussionTopic.noteItem.uuid !== noteUuid);
+    this.discussionsList = this.discussionsList.filter(discussionTopic => discussionTopic.uuid !== noteUuid);
+  }
+
+  notesToShow() {
+    return this.discussionsList.filter(discussionTopic => discussionTopic.item === configuration.currentChromeTab.url);
   }
 
   private async loadDiscussions() {
@@ -62,51 +66,61 @@ export class DiscussionsListComponent implements OnInit, OnDestroy {
 
     for (let i = 0; i < response.length; i++) {
       const noteItem = response[i];
-      const note: any = await this.discussionService.getUserNote(noteItem.uuid);
-
-      if (!note || !note.data) {
-        continue;
-      }
-
-      const keys = Object.keys(note.data);
-
-      let discussionTopic: any = null;
-      let foundIndex: any = -1;
-      keys.forEach((key, index) => {
-        if (discussionTopic)
-          return;
-
-        let tmpDiscussionTopic = note.data[key];
-        tmpDiscussionTopic.$id = key;
-
-        if (tmpDiscussionTopic.item === configuration.currentChromeTab.url) {
-          discussionTopic = tmpDiscussionTopic;
-          foundIndex = index;
-        }
-      });
-
-      if (!discussionTopic) {
-        continue;
-      }
-
-      discussionTopic.noteItem = noteItem;
-
-      discussionTopic.messages = [];
-
-      for (let index = 0; index < keys.length; index++) {
-        if (index != foundIndex) {
-          let messageData = note.data[keys[index]];
-          messageData.$id = keys[index];
-
-          discussionTopic.messages.push(messageData);
-        }
-      }
-
-      this.discussionsList.push(discussionTopic);
+      this.discussionService.subscribeUserNote(noteItem.uuid)
+        .subscribe((note: any) => {
+          if (!note || !note.data) {
+            return;
+          }
+          this.onNoteReceived(noteItem, note);
+        });
     }
 
     this.zone.run(() => {
       this.loading = false;
     });
+  }
+
+  onNoteReceived(noteItem: any, noteData: any) {
+    let discussionTopic: any = this.discussionsList.find(discussion => discussion.uuid == noteItem.uuid);
+    if (discussionTopic == null) {
+      discussionTopic = {
+        uuid: noteItem.uuid,
+        noteItem: noteItem,
+        messages: []
+      };
+      this.discussionsList.push(discussionTopic);
+    }
+
+    const keys = Object.keys(noteData.data);
+
+    let foundIndex: any = -1;
+    keys.forEach((key, index) => {
+      if (foundIndex > -1)
+        return;
+
+      let tmpDiscussionTopic = noteData.data[key];
+      tmpDiscussionTopic.$id = key;
+
+      if (tmpDiscussionTopic.item === configuration.currentChromeTab.url) {
+        discussionTopic.item = tmpDiscussionTopic.item;
+        discussionTopic.quote = tmpDiscussionTopic.quote;
+        discussionTopic.user_id = tmpDiscussionTopic.user_id;
+        discussionTopic.message = tmpDiscussionTopic.message;
+        discussionTopic.created = tmpDiscussionTopic.created;
+        discussionTopic.name = tmpDiscussionTopic.name;
+        foundIndex = index;
+      }
+    });
+
+    discussionTopic.messages = [];
+
+    for (let index = 0; index < keys.length; index++) {
+      if (index != foundIndex) {
+        let messageData = noteData.data[keys[index]];
+        messageData.$id = keys[index];
+
+        discussionTopic.messages.push(messageData);
+      }
+    }
   }
 }

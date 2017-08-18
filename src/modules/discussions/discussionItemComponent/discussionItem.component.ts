@@ -55,7 +55,6 @@ export class DiscussionItemComponent {
 
     this.postingReply = true;
     await this.discussionService.addMessage(this.discussionItem.noteItem.uuid, noteReplydata);
-    this.discussionItem.messages.push(noteReplydata);
     this.replyMessage = '';
     this.postingReply = false;
   }
