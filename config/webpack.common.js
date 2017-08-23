@@ -339,7 +339,8 @@ module.exports = function (options) {
        * See: https://github.com/ampedandwired/html-webpack-plugin
        */
       new HtmlWebpackPlugin({
-        template: 'src/index.html',
+        template: 'src/index.pug',
+        filename: 'index.html',
         title: METADATA.title,
         chunks: ['manifest', 'polyfills', 'vendor', 'main'],
         chunksSortMode: orderByList(['manifest', 'polyfills', 'vendor', 'main']),
@@ -348,7 +349,7 @@ module.exports = function (options) {
       }),
 
       new HtmlWebpackPlugin({
-        template: 'src/background.html',
+        template: 'src/background.pug',
         filename: 'background.html',
         title: METADATA.title,
         chunks: ['manifest', 'polyfills', 'vendor', 'vendor-background', 'background'],
