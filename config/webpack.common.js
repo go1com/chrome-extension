@@ -323,11 +323,10 @@ module.exports = function (options) {
       new CopyWebpackPlugin([
           {from: 'src/assets', to: 'assets'},
           {from: 'src/libs', to: 'libs'},
-          {from: 'src/manifest.json'},
           {from: 'src/logo.png'},
           {from: 'src/favicon.ico'}
         ],
-        isProd ? {ignore: ['mock-data/**/*']} : undefined
+        {ignore: ['mock-data/**/*']}
       ),
 
 

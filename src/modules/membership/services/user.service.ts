@@ -113,6 +113,14 @@ export class UserService {
     };
   }
 
+  async getUserAutoComplete(query) {
+    const currentPortal = this.storageService.retrieve(configuration.constants.localStorageKeys.currentActivePortal).title;
+    return this.restClientService.get(
+      `${ this.apiUrl }/${configuration.serviceUrls.user}account/chipscontact/${currentPortal}/${query}`,
+      this.getCustomHeaders()
+    );
+  }
+
   logout() {
     this.cleanAuth();
     this.currentUserSubject.next({});

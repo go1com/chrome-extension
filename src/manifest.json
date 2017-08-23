@@ -1,8 +1,8 @@
 {
   "manifest_version": 2,
-  "name": "GO1 bookmark",
-  "description": "GO1 bookmark",
-  "version": "1.0",
+  "name": "${PRODUCT_NAME}",
+  "description": "${PRODUCT_DESCRIPTION}",
+  "version": "${PRODUCT_VERSION}",
   "browser_action": {
     "default_icon": "assets/icon.png",
     "default_popup": "index.html"
@@ -15,7 +15,7 @@
     "persistent": true,
     "page": "background.html"
   },
-  "content_security_policy": "script-src 'self' 'unsafe-eval' 'unsafe-inline' https://cdn.firebase.com https://*.firebaseio.com; object-src 'self'",
+  "content_security_policy": "script-src 'self' 'unsafe-eval' https://cdn.firebase.com https://*.firebaseio.com; object-src 'self'",
   "permissions": [
     "activeTab",
     "tabs"

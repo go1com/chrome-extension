@@ -1,7 +1,9 @@
 import {Directive, ElementRef, EventEmitter, Input, Output, Renderer2, forwardRef, AfterViewInit} from "@angular/core";
 import {ControlValueAccessor, NG_VALUE_ACCESSOR} from "@angular/forms";
+import * as atWho from 'at.js';
 
 declare const CKEDITOR: any;
+declare const $: any;
 
 @Directive({
   selector: '[ckeditor]',
@@ -14,6 +16,8 @@ declare const CKEDITOR: any;
   ],
 })
 export class CkeditorDirective implements ControlValueAccessor, AfterViewInit {
+  private atWhoConfig: any;
+
   writeValue(obj: any): void {
     this._value = obj;
     if (this.editor)
@@ -42,6 +46,7 @@ export class CkeditorDirective implements ControlValueAccessor, AfterViewInit {
               private renderer: Renderer2) {
     this.element = elementRef.nativeElement;
     this.renderer.setAttribute(this.element, 'contenteditable', 'true');
+    this.atWhoConfig = {};
   }
 
   async ngAfterViewInit() {
@@ -49,7 +54,7 @@ export class CkeditorDirective implements ControlValueAccessor, AfterViewInit {
     this.editor = CKEDITOR.inline(this.element, {
       toolbar: 'Custom',
       toolbar_Custom: [
-        { name: 'basicstyles', items: [ 'Bold', 'Italic', 'Underline', 'Strike' ] }
+        {name: 'basicstyles', items: ['Bold', 'Italic', 'Underline', 'Strike']}
       ],
       height: 150,
       minHeight: '150px'
@@ -64,6 +69,32 @@ export class CkeditorDirective implements ControlValueAccessor, AfterViewInit {
       this.onTouched();
       this.value = this.editor.getData();
     });
+
+    // Switching from and to source mode
+    this.editor.on('mode', (e) => {
+      this.loadAtWho(this.editor, this.atWhoConfig);
+    });
+
+    // First load
+    this.loadAtWho(this.editor, this.atWhoConfig);
+  }
+
+  loadAtWho(editor, config) {
+    // WYSIWYG mode when switching from source mode
+    if (editor.mode != 'source') {
+
+      editor.document.getBody().$.contentEditable = true;
+
+      $(editor.document.getBody().$)
+        .atwho('setIframe', editor.window.getFrame().$)
+        .atwho(config);
+
+    }
+    // Source mode when switching from WYSIWYG
+    else {
+      $(editor.container.$).find(".cke_source").atwho(config);
+    }
+
   }
 
   /**

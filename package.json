@@ -1,7 +1,8 @@
 {
-  "name": "go1-bookmark",
-  "version": "0.0.0",
-  "description": "Go1 Bookmark Chrome Extension",
+  "name": "go1-extension",
+  "version": "0.0.1",
+  "description": "GO1 Extension allows GO1 users to share, save websites as bookmarks in their notes on GO1 portal with ease.",
+  "productName": "GO1 Extension",
   "keywords": [
     "angular",
     "angular2",
@@ -88,6 +89,7 @@
     "angular2-modal": "^2.0.3",
     "angular2-moment": "^1.6.0",
     "angularfire2": "^4.0.0-rc.1",
+    "at.js": "^1.5.3",
     "bootstrap": "^4.0.0-alpha.6",
     "cheerio-without-node-native": "^0.20.2",
     "ckeditor": "^4.7.1",
@@ -100,6 +102,7 @@
     "lodash": "^4.17.4",
     "reflect-metadata": "^0.1.10",
     "rxjs": "5.1.0",
+    "tinymce": "^4.6.5",
     "zone.js": "~0.8.5"
   },
   "devDependencies": {
@@ -136,6 +139,7 @@
     "gh-pages": "^0.12.0",
     "gulp": "^3.9.1",
     "gulp-babel": "^6.1.2",
+    "gulp-replace": "^0.6.1",
     "gulp-sass": "^3.1.0",
     "gulp-sourcemaps": "^2.6.0",
     "html-webpack-plugin": "^2.28.0",

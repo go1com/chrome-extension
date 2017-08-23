@@ -103,6 +103,23 @@ export class DiscussionService {
       .push(messageData);
   }
 
+  async mentionUsers(uuid: any, mentionedUsers: string[]) {
+    const payloadBody = {
+      notify: true,
+      privacy: {
+        connection: {
+          type: "custom",
+          friends: mentionedUsers
+        }
+      }
+    };
+
+    return await this.restClientService.post(
+      `${this.baseUrl}/${configuration.serviceUrls.noteService}share/user/${uuid}`,
+      payloadBody,
+      this.getCustomHeaders());
+  }
+
   async addReply(noteUuid: any, messageId: any, messageData: any) {
     return await this.fireBaseDb.ref(`${configuration.serviceUrls.fireBaseNotePath}${noteUuid}/data/${messageId}`).child('replies')
       .push(messageData);
