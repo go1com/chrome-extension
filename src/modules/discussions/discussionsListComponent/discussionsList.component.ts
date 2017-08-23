@@ -3,6 +3,7 @@ import {DiscussionService} from "../services/discussion.service";
 import {ActivatedRoute, Router} from "@angular/router";
 import {PortalService} from "../../portal/services/PortalService";
 import configuration from "../../../environments/configuration";
+import {UserService} from "../../membership/services/user.service";
 
 @Component({
   selector: 'app-discussions-list',
@@ -15,10 +16,12 @@ export class DiscussionsListComponent implements OnInit, OnDestroy {
   loading: boolean = false;
   portal: any;
   changePortalId: string = '';
+  private user: any;
 
   constructor(private discussionService: DiscussionService,
               private router: Router,
               private portalService: PortalService,
+              private userService: UserService,
               private zone: NgZone,
               private currentActivatedRoute: ActivatedRoute) {
     this.discussionsList = [];
@@ -30,12 +33,28 @@ export class DiscussionsListComponent implements OnInit, OnDestroy {
   async ngOnInit() {
     await this.loadDiscussions();
     this.portal = await this.portalService.getDefaultPortalInfo();
+    this.user = await this.userService.getUser();
     this.changePortalId = '';
   }
 
   async onPortalChanged(portalId) {
     this.portal = await this.portalService.getPortal(portalId);
     this.portalService.setDefaultPortal(this.portal);
+  }
+
+  canAddToPortal() {
+    if (!this.portal || !this.user)
+      return false;
+
+    if (this.portal.configuration.public_writing)
+      return true;
+
+    const currentPortalAccount = this.user.accounts.find(acc => acc.instance_name == this.portal.title);
+
+    if (!currentPortalAccount)
+      return false;
+
+    return currentPortalAccount.roles.indexOf('administrator') > -1;
   }
 
   ngOnDestroy(): void {

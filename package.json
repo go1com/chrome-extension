@@ -1,7 +1,7 @@
 {
   "name": "go1-extension",
-  "version": "0.0.1",
-  "description": "GO1 Extension allows GO1 users to share, save websites as bookmarks in their notes on GO1 portal with ease.",
+  "version": "0.0.2",
+  "description": "GO1 Extension allows users to create notes, discussions and save website pages as learning resources to their GO1 Portal with ease.",
   "productName": "GO1 Extension",
   "keywords": [
     "angular",

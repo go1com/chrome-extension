@@ -99,6 +99,17 @@ header.extension-header {
 //  border-color: $alert-info-border;
 //}
 
+
+//
+// Alternate buttons
+//
+
+@each $color, $value in $theme-colors {
+  .btn-#{$color} {
+    @include button-variant($value, $value, lighten($value, 1.75%));
+  }
+}
+
 .p-r-0 {
   padding-right: 0;
 }

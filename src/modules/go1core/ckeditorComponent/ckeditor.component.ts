@@ -57,43 +57,32 @@ export class CkeditorDirective implements ControlValueAccessor, AfterViewInit {
         {name: 'basicstyles', items: ['Bold', 'Italic', 'Underline', 'Strike']}
       ],
       height: 150,
-      minHeight: '150px'
+      minHeight: '150px',
+      extraPlugins: 'mention',
+      suggestionsTriggerKey: {
+        keyCode: CKEDITOR.SHIFT + 50
+      }
+    });
+
+
+    CKEDITOR.on('instanceReady', function (instance) {
+      instance.editor.execCommand('reloadSuggetionBox', [{
+        id: 1,
+        label: 'Justin',
+      }, {
+        id: 2,
+        label: 'Justin 2',
+      }]);
     });
 
     // Set initial value
     this.editor.setData(this.value);
-
 
     // CKEditor change event
     this.editor.on('change', () => {
       this.onTouched();
       this.value = this.editor.getData();
     });
-
-    // Switching from and to source mode
-    this.editor.on('mode', (e) => {
-      this.loadAtWho(this.editor, this.atWhoConfig);
-    });
-
-    // First load
-    this.loadAtWho(this.editor, this.atWhoConfig);
-  }
-
-  loadAtWho(editor, config) {
-    // WYSIWYG mode when switching from source mode
-    if (editor.mode != 'source') {
-
-      editor.document.getBody().$.contentEditable = true;
-
-      $(editor.document.getBody().$)
-        .atwho('setIframe', editor.window.getFrame().$)
-        .atwho(config);
-
-    }
-    // Source mode when switching from WYSIWYG
-    else {
-      $(editor.container.$).find(".cke_source").atwho(config);
-    }
 
   }
 
