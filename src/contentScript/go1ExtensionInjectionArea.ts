@@ -1,6 +1,4 @@
 import {ToolTipMenu} from "./toolTipsMenu";
-import {AddToPortalPopup} from "./addToPortal/addToPortalPopup";
-import {PopupBaseModel} from "./basePopup/popupBaseModel";
 import {commandKeys} from "../commandHandlers/commandKeys";
 
 declare const $: any;
