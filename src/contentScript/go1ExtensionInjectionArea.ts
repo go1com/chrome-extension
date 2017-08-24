@@ -1,4 +1,3 @@
-import {NewDiscussionPopup} from "./newDiscussionPopup";
 import {ToolTipMenu} from "./toolTipsMenu";
 import {AddToPortalPopup} from "./addToPortal/addToPortalPopup";
 import {PopupBaseModel} from "./basePopup/popupBaseModel";
@@ -11,6 +10,7 @@ export class Go1ExtensionInjectionArea {
 
   containerArea: any;
   fabArea: any;
+  createNoteEnabled: boolean;
 
   static appendDOM(dom) {
     if (!Go1ExtensionInjectionArea.singleInstance) {
@@ -33,7 +33,12 @@ export class Go1ExtensionInjectionArea {
     Go1ExtensionInjectionArea.singleInstance.checkQuickButtonSettings();
   }
 
+  static toggleCreateNote() {
+    Go1ExtensionInjectionArea.singleInstance.checkCreateNoteSettings();
+  }
+
   constructor() {
+    this.createNoteEnabled = false;
     this.containerArea = $('<div class="go1-extension go1-extension-injected"></div>');
     this.fabArea = $(require('./views/fabButtons.pug'));
   }
@@ -54,9 +59,28 @@ export class Go1ExtensionInjectionArea {
     });
   }
 
+  checkCreateNoteSettings(firstTimeInitial = false) {
+    chrome.runtime.sendMessage({
+      from: 'content',
+      action: commandKeys.checkCreateNoteSettings
+    }, (createNoteEnabled) => {
+      this.createNoteEnabled = createNoteEnabled;
+
+      if (!createNoteEnabled) {
+        if (firstTimeInitial) {
+          return;
+        }
+        this.removeListenerToSelectingText();
+        return;
+      }
+      this.addListenerToSelectingText();
+    });
+  }
+
   injectToDocument() {
     $('body').append(this.containerArea);
     this.checkQuickButtonSettings(true);
+    this.checkCreateNoteSettings(true);
   }
 
   appendQuickButton() {
@@ -71,32 +95,64 @@ export class Go1ExtensionInjectionArea {
     this.fabArea.find('.trigger-fab').on('click', (event) => {
       thisComponent.fabArea.addClass('active');
     });
+
     this.fabArea.find('.start-discussion-btn').on('click', (event) => {
       thisComponent.fabArea.removeClass('active');
-      PopupBaseModel.openPopup(NewDiscussionPopup);
+
+      chrome.runtime.sendMessage({
+        from: 'content',
+        action: commandKeys.startDiscussion
+      });
     });
+
     this.fabArea.find('.add-to-portal-btn').on('click', (event) => {
       thisComponent.fabArea.removeClass('active');
-      PopupBaseModel.openPopup(AddToPortalPopup);
+
+      chrome.runtime.sendMessage({
+        from: 'content',
+        action: commandKeys.addToPortal
+      });
     });
+  }
 
-    document.addEventListener('mouseup', (event) => {
-      if ($(event.target).closest('.go1-extension-injected').length) {
-        return;
-      }
+  addListenerToSelectingText() {
+    document.addEventListener('mouseup', event => this.onDocumentMouseUp(event));
+  }
 
-      const selectedText = window.getSelection().toString();
-      if (selectedText) {
-        let selectedTextPosition = window.getSelection().getRangeAt(0).getBoundingClientRect();
-
-        ToolTipMenu.initializeTooltip(selectedTextPosition, selectedText);
-      } else {
-        ToolTipMenu.closeLastTooltip();
-      }
-    });
+  removeListenerToSelectingText() {
+    document.removeEventListener('mouseup', event => this.onDocumentMouseUp(event));
   }
 
   removeQuickButton() {
     this.fabArea.remove();
+  }
+
+  private onDocumentMouseUp(event: any) {
+    if ($(event.target).closest('.go1-extension-injected').length) {
+      return;
+    }
+
+    if (!this.createNoteEnabled)
+      return;
+
+    const selectedText = window.getSelection().toString();
+
+    if (selectedText) {
+      let selectedTextPosition = window.getSelection().getRangeAt(0).getBoundingClientRect();
+      ToolTipMenu.initializeTooltip(selectedTextPosition, selectedText);
+
+      // chrome.runtime.sendMessage({
+      //   from: 'content',
+      //   action: commandKeys.changeBrowserActionBadgeText,
+      //   text: '+quote',
+      //   title: 'GO1 Extension - Click to add new note'
+      // });
+    } else {
+      // chrome.runtime.sendMessage({
+      //   from: 'content',
+      //   action: commandKeys.changeBrowserActionBadgeText
+      // });
+      ToolTipMenu.closeLastTooltip();
+    }
   }
 }

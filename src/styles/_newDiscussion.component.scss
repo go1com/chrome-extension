@@ -79,7 +79,8 @@
     border-top: 1px solid $go1grey4;
 
     .cke_textarea_inline {
-      min-height: 150px;
+      min-height: 105px;
+      max-height: 150px;
     }
 
     > .form-control {

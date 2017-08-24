@@ -11,6 +11,10 @@ export class StorageService {
     this.localStorage = localStorage;
   }
 
+  exists(key: string): boolean {
+    return !!this.localStorage.getItem(key);
+  }
+
   retrieve(key: string) {
     let result = this.localStorage.getItem(key);
     if (result == undefined || result == null)

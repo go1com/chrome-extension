@@ -1,4 +1,5 @@
 import {Go1ExtensionInjectionArea} from "../go1ExtensionInjectionArea";
+import configuration from "../../environments/configuration";
 
 declare const $: any;
 
@@ -7,18 +8,22 @@ export abstract class PopupBaseModel {
   static currentOpeningPopup: PopupBaseModel[] = [];
 
   static async openPopup(popupModel) {
-    PopupBaseModel.closeLastPopup();
-    let popup;
-    if (typeof popupModel === "function") {
-      popup = new popupModel();
-    } else if (popupModel instanceof PopupBaseModel) {
-      popup = popupModel;
-    } else {
-      throw new Error('Parameter incorrect. The parameter must be a class or instance of PopupBaseModel');
-    }
+    // PopupBaseModel.closeLastPopup();
+    // let popup;
+    // if (typeof popupModel === "function") {
+    //   popup = new popupModel();
+    // } else if (popupModel instanceof PopupBaseModel) {
+    //   popup = popupModel;
+    // } else {
+    //   throw new Error('Parameter incorrect. The parameter must be a class or instance of PopupBaseModel');
+    // }
+    //
+    // await popup.showPopup();
+    // PopupBaseModel.currentOpeningPopup.push(popup);
 
-    await popup.showPopup();
-    PopupBaseModel.currentOpeningPopup.push(popup);
+    let url = `${configuration.constants.indexPage}#${configuration.pages.discussionModule}/${configuration.pages.newDiscussion}`;
+    console.log('opening url: ', url);
+    window.open(url, `newDiscussion`, `height=620px,width=430px`);
   }
 
   static closeLastPopup() {

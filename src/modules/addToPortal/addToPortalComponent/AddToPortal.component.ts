@@ -11,7 +11,7 @@ import {UserService} from "../../membership/services/user.service";
 
 @Component({
   selector: 'add-to-portal',
-  templateUrl: '../../../views/addToPortal/addToPortal.pug'
+  templateUrl: './addToPortal.pug'
 })
 export class AddToPortalComponent {
   noteData: any;
@@ -19,14 +19,24 @@ export class AddToPortalComponent {
   tabUrl: string = '';
   isLoading: boolean = false;
   linkPreview: any = null;
+  addToPortalFromBackground: boolean = false;
+  private pageUrl: any;
 
   constructor(private router: Router,
               private addToPortalService: AddToPortalService,
               private currentActiveRoute: ActivatedRoute,
               private enrollmentService: EnrollmentService,
-              private discussionService: DiscussionService,
               private userService: UserService,
               private storageService: StorageService) {
+
+    if (this.storageService.exists(configuration.constants.localStorageKeys.addToPortalParams)) {
+      const pageToCreateNote = this.storageService.retrieve(configuration.constants.localStorageKeys.addToPortalParams);
+      this.pageUrl = pageToCreateNote.url;
+      this.addToPortalFromBackground = true;
+    } else {
+      this.pageUrl = configuration.currentChromeTab && configuration.currentChromeTab.url || '';
+    }
+
     this.data = {
       title: '',
       description: '',
@@ -44,22 +54,19 @@ export class AddToPortalComponent {
 
   async ngOnInit() {
     this.isLoading = true;
-    if (!configuration.currentChromeTab || !configuration.currentChromeTab.url) {
-      await this.getCurrentTabInfo();
-    }
 
     const user = await this.userService.getUser();
 
-    this.tabUrl = configuration.currentChromeTab.url;
+    this.tabUrl = this.pageUrl;
 
-    this.linkPreview = await this.loadPageMetadata(configuration.currentChromeTab.url);
+    this.linkPreview = await this.loadPageMetadata(this.pageUrl);
     this.data = {
       title: this.linkPreview.title,
       description: this.linkPreview.description,
       type: 'iframe',
       tags: [],
       data: {
-        path: configuration.currentChromeTab.url
+        path: this.pageUrl
       },
       single_li: true,
       published: 1,
@@ -67,27 +74,17 @@ export class AddToPortalComponent {
       author: this.storageService.retrieve(configuration.constants.localStorageKeys.user).mail
     };
 
-    this.noteData = {
-      uniqueName: '',
-      title: '',
-      body: '',
-      entityType: 'portal',
-      quote: '',
-      item: configuration.currentChromeTab.url || '',
-      entityId: this.storageService.retrieve(configuration.constants.localStorageKeys.currentActivePortalId),
-      user: user
-    };
-
     this.isLoading = false;
+
+    if (this.addToPortalFromBackground) {
+      window.onbeforeunload = () => {
+        this.storageService.remove(configuration.constants.localStorageKeys.addToPortalParams);
+      };
+    }
   }
 
-  private getCurrentTabInfo() {
-    return new Promise(resolve => {
-      chrome.tabs.query({active: true, currentWindow: true}, (tabs) => {
-        configuration.currentChromeTab = tabs[0];
-        resolve();
-      });
-    });
+  async ngOnDestroy() {
+    this.storageService.remove(configuration.constants.localStorageKeys.addToPortalParams);
   }
 
   async onAddToPortalBtnClicked() {

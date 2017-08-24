@@ -8,24 +8,37 @@ import {commandKeys} from "../../../commandHandlers/commandKeys";
 
 @Component({
   selector: 'app-new-discussion',
-  templateUrl: '../../../views/newDiscussionComponent.tpl.pug'
+  templateUrl: './newDiscussionComponent.tpl.pug'
 })
 export class NewDiscussionComponent implements OnInit {
   isLoading: boolean;
   linkPreview: any;
   data: any;
+  private pageUrl: any | string;
+  newDiscussionFromBackgroundPage: boolean = false;
 
   constructor(private router: Router,
               private discussionService: DiscussionService,
               private currentActivatedRoute: ActivatedRoute,
               private userService: UserService,
               private storageService: StorageService) {
+    let quotation = '';
+
+    if (this.storageService.exists(configuration.constants.localStorageKeys.createNoteParams)) {
+      const pageToCreateNote = this.storageService.retrieve(configuration.constants.localStorageKeys.createNoteParams);
+      this.pageUrl = pageToCreateNote.url;
+      quotation = pageToCreateNote.quotation || '';
+      this.newDiscussionFromBackgroundPage = true;
+    } else {
+      this.pageUrl = configuration.currentChromeTab && configuration.currentChromeTab.url || '';
+    }
+
     this.data = {
       title: '',
       body: '',
       entityType: 'portal',
-      quote: '',
-      item: configuration.currentChromeTab && configuration.currentChromeTab.url || '',
+      quote: quotation,
+      item: this.pageUrl,
       entityId: storageService.retrieve(configuration.constants.localStorageKeys.currentActivePortalId)
     };
   }
@@ -34,8 +47,18 @@ export class NewDiscussionComponent implements OnInit {
     this.isLoading = true;
     this.data.user = await this.userService.getUser();
 
-    this.linkPreview = await this.loadPageMetadata(configuration.currentChromeTab.url);
+    this.linkPreview = await this.loadPageMetadata(this.pageUrl);
     this.isLoading = false;
+
+    if (this.newDiscussionFromBackgroundPage) {
+      window.onbeforeunload = () => {
+        this.storageService.remove(configuration.constants.localStorageKeys.createNoteParams);
+      };
+    }
+  }
+
+  async ngOnDestroy() {
+    this.storageService.remove(configuration.constants.localStorageKeys.createNoteParams);
   }
 
   private async loadPageMetadata(url) {
@@ -58,8 +81,14 @@ export class NewDiscussionComponent implements OnInit {
       this.data.title = 'Note from ' + this.linkPreview.title;
     }
 
-    this.data.uniqueName = `${configuration.currentChromeTab.url}__`;
+    this.data.uniqueName = `${this.pageUrl}__`;
     await this.discussionService.createNote(this.data);
+
+    if (this.newDiscussionFromBackgroundPage) {
+      window.close();
+      return;
+    }
+
     await this.goBack();
   }
 }

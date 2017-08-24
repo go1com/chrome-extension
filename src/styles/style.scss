@@ -27,6 +27,10 @@ button, [role='button'] {
   cursor: pointer;
 }
 
+.cke_toolbox, .cke_voice_label {
+  display: none;
+}
+
 .btn-no-padding {
   padding: 0;
 }

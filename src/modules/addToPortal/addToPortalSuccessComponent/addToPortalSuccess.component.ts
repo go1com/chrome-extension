@@ -22,5 +22,6 @@ export class AddToPortalSuccessComponent {
 
   viewPageOnPortal() {
     window.open(`https://${this.currentPortal.title}/p/#/app/my-teaching/resources/`, '_blank');
+    window.close();
   }
 }

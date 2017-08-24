@@ -3,7 +3,7 @@ import {Overlay} from "angular2-modal";
 import {ModalDialogService} from "../modules/go1core/services/ModalDialogService";
 import configuration from "../environments/configuration";
 import {UserService} from "../modules/membership/services/user.service";
-import {Router} from "@angular/router";
+import {ActivatedRoute, Router} from "@angular/router";
 import {StorageService} from "../modules/go1core/services/StorageService";
 
 @Component({
@@ -27,13 +27,24 @@ export class AppComponent implements OnInit {
 
   async ngOnInit() {
     if (this.storageService.retrieve(configuration.constants.localStorageKeys.socialLogin)) {
-      return
+      return;
     }
 
     if (this.userService.isLoggedIn()) {
+      if (this.storageService.exists(configuration.constants.localStorageKeys.createNoteParams)) {
+        this.router.navigate([configuration.pages.discussionModule, configuration.pages.newDiscussion]);
+        return;
+      }
+
+      if (this.storageService.exists(configuration.constants.localStorageKeys.addToPortalParams)) {
+        this.router.navigate([configuration.pages.addToPortalModule, configuration.pages.addToPortal]);
+        return;
+      }
+
       this.router.navigate(['/' + configuration.defaultPage]);
-    } else {
-      this.router.navigate(['/membership/login']);
+      return;
     }
+
+    this.router.navigate(['/membership/login']);
   }
 }

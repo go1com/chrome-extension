@@ -1,15 +1,16 @@
 import {Component, OnInit} from "@angular/core";
+import {ActivatedRoute} from "@angular/router";
 
 @Component({
   selector: 'redirecting',
   templateUrl: './redirecting.component.pug'
 })
 export class RedirectingComponent implements OnInit {
-  constructor() {
+  constructor(private activatedRoute: ActivatedRoute) {
 
   }
 
-  ngOnInit() {
-
+  async ngOnInit() {
+    console.log('activatedRoute', this.activatedRoute);
   }
 }

@@ -29,14 +29,6 @@ export class GetLinkPreviewChromeCommandHandler implements IChromeCommandHandler
           });
           return;
         }
-
-        chrome.tabs.captureVisibleTab(null, {}, function (image) {
-          response.image = image;
-          sendResponse({
-            success: true,
-            data: response
-          });
-        });
       });
   }
 }

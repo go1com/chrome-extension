@@ -53,14 +53,14 @@ export class SocialLoginComponent {
     this.loggingIn = true;
 
     window.addEventListener('message', (response) => this.onResponse(response));
-    window.open(`${configuration.environment.baseApiUrl}/${configuration.serviceUrls.facebookAuth}`, '_blank');
+    window.open(`${configuration.environment.baseApiUrl}/${configuration.serviceUrls.facebookAuth}`, 'social_login_facebook');
   }
 
   loginWithGoogle() {
     this.loggingIn = true;
 
     window.addEventListener('message', (response) => this.onResponse(response));
-    window.open(`${configuration.environment.baseApiUrl}/${configuration.serviceUrls.googleAuth}`, '_blank');
+    window.open(`${configuration.environment.baseApiUrl}/${configuration.serviceUrls.googleAuth}`, 'social_login_google');
   }
 
   async onResponse(message) {

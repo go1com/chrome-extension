@@ -74,6 +74,7 @@ header.extension-header {
 .form-actions {
   padding: 10px 0;
 }
+
 //
 //.dialog-success {
 //  background: $alert-success-bg;
@@ -98,7 +99,6 @@ header.extension-header {
 //  color: $alert-info-text;
 //  border-color: $alert-info-border;
 //}
-
 
 //
 // Alternate buttons
@@ -158,6 +158,12 @@ header.extension-header {
 
 .text-center {
   text-align: center;
+}
+
+.dropdown.show {
+  .dropdown-menu {
+    display: initial;
+  }
 }
 
 label {

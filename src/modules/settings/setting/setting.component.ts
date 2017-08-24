@@ -16,6 +16,7 @@ export class SettingComponent implements OnInit {
   private user;
   private userAvatar;
   private quickButtonEnabled: boolean;
+  private createNoteEnabled: boolean;
 
   constructor(private userService: UserService,
               private storageService: StorageService,
@@ -28,8 +29,9 @@ export class SettingComponent implements OnInit {
 
   async ngOnInit() {
     this.quickButtonEnabled = this.storageService.retrieve(configuration.constants.localStorageKeys.quickButtonSetting) || false;
+    this.createNoteEnabled = this.storageService.retrieve(configuration.constants.localStorageKeys.createNoteSetting) || false;
+
     this.defaultPortal = this.portalService.getDefaultPortalSetting();
-    console.log(this.defaultPortal);
 
     this.user = await this.userService.getUser();
     this.userAvatar = this.user.avatar && this.user.avatar.uri;
@@ -53,6 +55,22 @@ export class SettingComponent implements OnInit {
       tabs.forEach(tab => {
         chrome.tabs.sendMessage(tab.id, {
           name: commandKeys.checkQuickButtonSettings
+        }, function (response) {
+
+        });
+      });
+    });
+  }
+
+  toggleCreateNoteToolTip() {
+    this.createNoteEnabled = !this.createNoteEnabled;
+
+    this.storageService.store(configuration.constants.localStorageKeys.createNoteSetting, this.createNoteEnabled);
+
+    chrome.tabs.query({currentWindow: true}, function (tabs) {
+      tabs.forEach(tab => {
+        chrome.tabs.sendMessage(tab.id, {
+          name: commandKeys.checkCreateNoteSettings
         }, function (response) {
 
         });

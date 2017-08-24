@@ -5,6 +5,8 @@ import {StartDiscussionChromeCommandHandler} from "../commandHandlers/startDiscu
 import {AddToPortalScheduleChromeCommandHandler} from "../commandHandlers/addToPortalScheduleChromeCommandHandler";
 import {GetLinkPreviewChromeCommandHandler} from "../commandHandlers/getLinkPreviewChromeCommandHandler";
 import {GetPortalsChromeCommandHandler} from "../commandHandlers/getPortalsChromeCommandHandler";
+import {ChangeIconBadgeChromeCommandHandler} from "../commandHandlers/changeIconBadgeChromeCommandHandler";
+import {CheckCreateNoteMenuSettingChromeCommandHandler} from "../commandHandlers/checkCreateNoteMenuSettingChromeCommandHandler";
 
 const commandHandlerService = new ChromeCmdHandleService();
 
@@ -14,6 +16,8 @@ commandHandlerService.registerHandler(new CheckQuickButtonSettingChromeCommandHa
 commandHandlerService.registerHandler(new AddToPortalScheduleChromeCommandHandler());
 commandHandlerService.registerHandler(new GetLinkPreviewChromeCommandHandler());
 commandHandlerService.registerHandler(new GetPortalsChromeCommandHandler());
+commandHandlerService.registerHandler(new ChangeIconBadgeChromeCommandHandler());
+commandHandlerService.registerHandler(new CheckCreateNoteMenuSettingChromeCommandHandler());
 
 chrome.runtime.onMessage.addListener(function (msg, sender, sendResponse) {
   if (commandHandlerService.hasHandler(msg.action)) {

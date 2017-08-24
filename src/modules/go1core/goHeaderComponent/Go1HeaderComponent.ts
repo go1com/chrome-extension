@@ -1,4 +1,5 @@
 import {Component, Input} from "@angular/core";
+import configuration from "../../../environments/configuration";
 
 @Component({
   selector: 'go-header',
@@ -10,6 +11,10 @@ export class Go1HeaderComponent {
   @Input() title: string;
 
   constructor() {
+    console.log(window.name);
+  }
 
+  canShowBackAndSetting() {
+    return window.name !== configuration.constants.popupDefaultName;
   }
 }

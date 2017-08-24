@@ -1,6 +1,5 @@
-import {NewDiscussionPopup} from "./newDiscussionPopup";
 import {Go1ExtensionInjectionArea} from "./go1ExtensionInjectionArea";
-import {PopupBaseModel} from "./basePopup/popupBaseModel";
+import {commandKeys} from "../commandHandlers/commandKeys";
 
 declare const $: any;
 
@@ -72,8 +71,14 @@ export class ToolTipMenu {
 
   private bindEventListeners() {
     $('a.create-note-cmd', this.tooltipDOM).on('click', async () => {
-      let newDiscussionWithQuote = new NewDiscussionPopup(this.selectingText);
-      await PopupBaseModel.openPopup(newDiscussionWithQuote);
+
+      chrome.runtime.sendMessage({
+        from: 'content',
+        action: commandKeys.startDiscussion,
+        quotation: this.selectingText
+      });
+      // let newDiscussionWithQuote = new NewDiscussionPopup(this.selectingText);
+      // await PopupBaseModel.openPopup(newDiscussionWithQuote);
       this.dismiss();
     });
   }

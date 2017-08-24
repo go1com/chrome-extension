@@ -1,9 +1,9 @@
 .nav-header
   ul.nav.full-width
     li.col-2.text-center
-      a([routerLink]="'/discussionsList/'" routerLinkActive="active")
+      a([routerLink]="'/discussionsList/'" routerLinkActive="active", *ngIf="canShowBackAndSetting()")
         i.fa.fa-comments
     li.col-8.text-center.title([innerHtml]="title")
     li.col-2.text-center
-      a([routerLink]="'/setting'" routerLinkActive="active")
+      a([routerLink]="'/setting'" routerLinkActive="active", *ngIf="canShowBackAndSetting()")
         i.fa.fa-cog

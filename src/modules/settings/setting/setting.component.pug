@@ -19,6 +19,13 @@
       .switch
         input#cmn-toggle-2.cmn-toggle.cmn-toggle-round(type="checkbox", [(ngModel)]="quickButtonEnabled", (click)="toggleQuickButton()")
         label.label-switch(for="cmn-toggle-2")
+
+    .action-area
+      span.action-name Show 'Create Note' tooltip when user selects text on websites
+      .switch
+        input#cmn-toggle-create-note.cmn-toggle.cmn-toggle-round(type="checkbox", [(ngModel)]="createNoteEnabled", (click)="toggleCreateNoteToolTip()")
+        label.label-switch(for="cmn-toggle-create-note")
+
     .action-area
       span.action-name Default Portal
       portal-selection([(portal)]="defaultPortal", (portalChange)="changeDefaultPortal(defaultPortal)")

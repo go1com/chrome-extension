@@ -6,6 +6,7 @@ const configuration = {
   currentChromeTab: null,
   constants: {
     indexPage: `chrome-extension://${chrome.runtime.id}/index.html`,
+    popupDefaultName: 'GO1_EXTENSION_POPUP',
     localStorageKeys: {
       authentication: 'jwt',
       currentActivePortalId: 'currentActivePortalId',
@@ -14,7 +15,10 @@ const configuration = {
       user: 'user',
       uuid: 'uuid',
       quickButtonSetting: 'Go1.settings.quickButtonEnabled',
-      socialLogin: 'socialLoggingIn'
+      createNoteSetting: 'Go1.settings.createNoteEnabled',
+      socialLogin: 'socialLoggingIn',
+      createNoteParams: 'GO1.Command.createNoteParams',
+      addToPortalParams: 'GO1.Command.addToPortalParams',
     }
   },
   serviceUrls: {

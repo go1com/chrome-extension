@@ -15,6 +15,12 @@ chrome.runtime.onMessage.addListener(function (msg, sender, sendResponse) {
     return true;
   }
 
+  if (msg.name === commandKeys.checkCreateNoteSettings) {
+    Go1ExtensionInjectionArea.toggleCreateNote();
+    sendResponse({success: true});
+    return true;
+  }
+
   sendResponse({success: false, message: 'No action handler found'});
   return false;
 });
