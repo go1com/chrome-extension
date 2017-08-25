@@ -2,6 +2,7 @@
 
 .setting-page {
   margin: 0 0;
+  height: 100%;
   background: $chrome-ext-background;
 
   .nav-icon:hover {
@@ -64,6 +65,16 @@
     a:hover {
       opacity: 0.8;
     }
+  }
+
+  .copyright {
+    position: fixed;
+    bottom: 0;
+    text-align: center;
+    width: 100%;
+    font-size: 14px;
+    padding: 5px;
+    color: $go1grey5;
   }
 
   /* ============= Toggle Common ============== */
