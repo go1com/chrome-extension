@@ -1,6 +1,7 @@
 import {environment} from "./index";
 
 const configuration = {
+  version: '@EXTENSION_VERSION@',
   defaultPage: 'discussionsList/',
   environment: environment,
   currentChromeTab: null,

@@ -15,10 +15,11 @@
     "persistent": true,
     "page": "background.html"
   },
-  "content_security_policy": "script-src 'self' 'unsafe-eval' 'nonce-ckeditor4710' https://cdn.firebase.com https://*.firebaseio.com; object-src 'self'",
+  "content_security_policy": "script-src 'self' 'unsafe-eval' https://cdn.firebase.com https://*.firebaseio.com; object-src 'self'",
   "permissions": [
     "activeTab",
-    "tabs"
+    "tabs",
+    "notifications"
   ],
   "options_page": "index.html",
   "content_scripts": [

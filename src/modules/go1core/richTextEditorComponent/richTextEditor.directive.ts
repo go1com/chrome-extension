@@ -56,17 +56,18 @@ export class RichTextEditorDirective implements ControlValueAccessor, AfterViewI
       mode: Medium.richMode,
       placeholder: this.placeholder,
       onKeyUp: (event) => {
+
+        console.log(event);
+
         if (event.key === '@') {
           this.startProcessingAutocomplete(event.key);
           return;
         }
 
-        if (event.key === '=') {
+        if (event.key === ' ') {
           this.stopProcessingAutocomplete(event.key);
           return;
         }
-
-        console.log(event);
         this.processKeyUp(event.key);
       },
     });

@@ -219,7 +219,7 @@ var rangy = window['rangy'] || null,
     'closeBracket': 221,
     'singleQuote': 222
   },
-  Medium = (function () {
+  Medium: any = (function () {
 
     /**
      * Medium.js - Taking control of content editable
@@ -2694,5 +2694,7 @@ Medium.defaultSettings = {
   keyContext: null,
   drag: false
 };
+
+
 
 export default Medium;

@@ -5,7 +5,6 @@ import {StorageService} from "../../go1core/services/StorageService";
 import configuration from "../../../environments/configuration";
 import {commandKeys} from "../../../commandHandlers/commandKeys";
 import {PortalService} from "../../portal/services/PortalService";
-import {RestClientService} from "../../go1core/services/RestClientService";
 
 @Component({
   selector: 'app-setting',
@@ -13,7 +12,7 @@ import {RestClientService} from "../../go1core/services/RestClientService";
   styleUrls: ['./setting.component.scss']
 })
 export class SettingComponent implements OnInit {
-  versionInfo: any;
+  versionInfo: string = configuration.version;
   defaultPortal: any;
   private user;
   private userAvatar;
@@ -22,22 +21,16 @@ export class SettingComponent implements OnInit {
   private currentYear: number;
 
   constructor(private userService: UserService,
-              private restClientService: RestClientService,
               private storageService: StorageService,
               private portalService: PortalService,
               private router: Router) {
     this.userAvatar = null;
     this.user = {};
     this.defaultPortal = null;
-    this.versionInfo = null;
     this.currentYear = new Date().getFullYear();
   }
 
   async ngOnInit() {
-    this.restClientService.get('/manifest.json').then(response => {
-      this.versionInfo = response;
-    });
-
     this.quickButtonEnabled = this.storageService.retrieve(configuration.constants.localStorageKeys.quickButtonSetting) || false;
     this.createNoteEnabled = this.storageService.retrieve(configuration.constants.localStorageKeys.createNoteSetting) || false;
 

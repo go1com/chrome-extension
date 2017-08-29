@@ -24,6 +24,7 @@ const ScriptExtHtmlWebpackPlugin = require('script-ext-html-webpack-plugin');
 const ngcWebpack = require('ngc-webpack');
 const pathsConfig = require('./pathsConfig');
 const EncodingPlugin = require('webpack-encoding-plugin');
+const packageJson = require('../package.json');
 
 /**
  * Webpack Constants
@@ -127,13 +128,25 @@ module.exports = function (options) {
          */
         {
           test: /\.ts$/,
-          use: [{
-            loader: '@angularclass/hmr-loader',
-            options: {
-              pretty: !isProd,
-              prod: isProd
-            }
-          },
+          use: [
+            {
+              loader: 'string-replace-loader',
+              query: {
+                multiple: [
+                  {
+                    search: '@EXTENSION_VERSION@',
+                    replace: packageJson.version
+                  }
+                ]
+              }
+            },
+            {
+              loader: '@angularclass/hmr-loader',
+              options: {
+                pretty: !isProd,
+                prod: isProd
+              }
+            },
             {
               /**
                *  MAKE SURE TO CHAIN VANILLA JS CODE, I.E. TS COMPILATION OUTPUT.

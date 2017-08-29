@@ -9,6 +9,7 @@ import {ChangeIconBadgeChromeCommandHandler} from "../commandHandlers/changeIcon
 import {CheckCreateNoteMenuSettingChromeCommandHandler} from "../commandHandlers/checkCreateNoteMenuSettingChromeCommandHandler";
 
 const commandHandlerService = new ChromeCmdHandleService();
+const extensionVersion = '@EXTENSION_VERSION@';
 
 commandHandlerService.registerHandler(new StartDiscussionChromeCommandHandler());
 commandHandlerService.registerHandler(new AddToPortalChromeCommandHandler());
@@ -25,4 +26,16 @@ chrome.runtime.onMessage.addListener(function (msg, sender, sendResponse) {
     return true;
   }
   sendResponse({success: false, error: new Error('No command handler found for request action'), errorData: msg});
+});
+
+
+chrome.runtime.onInstalled.addListener((details) => {
+  if (details.reason === 'update') {
+    chrome.notifications.create(`go1-extension-update-notification-${new Date().getTime()}`, {
+      iconUrl: '/assets/icon.png',
+      type: 'basic',
+      message: `The extension has been updated to version ${extensionVersion}`,
+      title: `GO1 Extension Updated`
+    });
+  }
 });

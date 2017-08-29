@@ -12,6 +12,7 @@ gulp.task('manifest', () => {
   source = source.pipe(replace('${PRODUCT_DESCRIPTION}', config.description));
   source = source.pipe(replace('${PRODUCT_VERSION}', config.version));
   source = source.pipe(replace('${PRODUCT_NAME}', config.productName));
+  source = source.pipe(replace('${BUILD_TIME}', new Date()));
 
   return source.pipe(gulp.dest('dist'));
 });
