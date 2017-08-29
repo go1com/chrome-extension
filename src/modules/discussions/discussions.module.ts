@@ -15,6 +15,7 @@ import {PortalModule} from "../portal/portal.module";
 import {NgbModule} from "@ng-bootstrap/ng-bootstrap";
 import {DiscussionReplyComponent} from "./discussionReply/discussionReply.component";
 import {CurrentChromePageOnlyPipe} from "./services/currentChromePageOnlyPipe";
+import {MentionModule} from "../mentionModule/mention.module";
 
 @NgModule({
   declarations: [
@@ -35,7 +36,8 @@ import {CurrentChromePageOnlyPipe} from "./services/currentChromePageOnlyPipe";
     Go1CoreModule,
     MembershipModule,
     Go1LinkPreviewModule,
-    PortalModule
+    PortalModule,
+    MentionModule
   ],
   providers: [
     DiscussionService

@@ -16,6 +16,7 @@ export class NewDiscussionComponent implements OnInit {
   data: any;
   private pageUrl: any | string;
   newDiscussionFromBackgroundPage: boolean = false;
+  mentionedUsers: any[] = [];
 
   constructor(private router: Router,
               private discussionService: DiscussionService,
@@ -82,7 +83,12 @@ export class NewDiscussionComponent implements OnInit {
     }
 
     this.data.uniqueName = `${this.pageUrl}__`;
-    await this.discussionService.createNote(this.data);
+    const noteData = await this.discussionService.createNote(this.data);
+
+    if (this.mentionedUsers.length) {
+      let mentionedUserIds = this.mentionedUsers.map((user) => user.rootId.toString());
+      await this.discussionService.mentionUsers(noteData.$uuid, mentionedUserIds);
+    }
 
     if (this.newDiscussionFromBackgroundPage) {
       window.close();

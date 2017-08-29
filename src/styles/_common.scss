@@ -211,3 +211,40 @@ h6 {
   border-radius: 3px;
   margin-top: 50%;
 }
+
+.medium-editor-mention-panel {
+  font-size: 16px;
+  left: 0;
+  line-height: 1.4;
+  min-width: 100px;
+  position: absolute;
+  text-align: center;
+  top: 0;
+  word-break: break-all;
+  word-wrap: break-word;
+  visibility: hidden;
+  overflow: hidden;
+  border: 1px solid rgba(0,0,0,0.15);
+  background-color: white;
+
+  ul.mention-list {
+    list-style: none;
+    text-align: left;
+    padding: 0;
+    margin: 0;
+
+    li {
+      padding: 5px;
+      cursor: pointer;
+
+      + li {
+        border-top: 1px solid $go1grey4;
+      }
+    }
+  }
+}
+
+.medium-editor-mention-panel-active {
+  visibility: visible;
+  overflow: visible;
+}

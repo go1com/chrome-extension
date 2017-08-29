@@ -23,7 +23,7 @@
     .quotation(*ngIf="data.quote")
       blockquote {{ data.quote }}
 
-    .text-editor(rich-text-editor [(ngModel)]="data.body" placeholder="Add your notes...")
+    .text-editor(rich-text-editor [(ngModel)]="data.body" placeholder="Add your notes...", [(mentionedUsers)]="mentionedUsers")
     //textarea.form-control(ckeditor [(ngModel)]="data.body" name="noteBody" placeholder="Add your notes..." rows=10)
 
   .actions-area

@@ -16,7 +16,6 @@ import {ConfirmationModalComponent} from "./components/confirmationModal/Confirm
 import {AlertModalComponent} from "./components/alertModal/AlertModalComponent";
 import {BootstrapModalModule} from "angular2-modal/plugins/bootstrap";
 import {ModalModule} from "angular2-modal";
-import {RichTextEditorDirective} from "./richTextEditorComponent/richTextEditor.directive";
 
 @NgModule({
   declarations: [
@@ -24,8 +23,7 @@ import {RichTextEditorDirective} from "./richTextEditorComponent/richTextEditor.
     LoadingIndicatorComponent,
     ImageSvgDirective,
     ConfirmationModalComponent,
-    AlertModalComponent,
-    RichTextEditorDirective
+    AlertModalComponent
   ],
   imports: [
     CommonModule,
@@ -49,8 +47,7 @@ import {RichTextEditorDirective} from "./richTextEditorComponent/richTextEditor.
     LoadingIndicatorComponent,
     ImageSvgDirective,
     ConfirmationModalComponent,
-    AlertModalComponent,
-    RichTextEditorDirective
+    AlertModalComponent
   ],
   entryComponents: [
     ConfirmationModalComponent,

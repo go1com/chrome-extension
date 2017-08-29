@@ -4,6 +4,7 @@ import {StorageService} from "../../go1core/services/StorageService";
 import firebase from 'firebase';
 import configuration from "../../../environments/configuration";
 import {Observable} from "rxjs/Observable";
+import * as _ from 'lodash';
 
 @Injectable()
 export class DiscussionService {
@@ -82,7 +83,7 @@ export class DiscussionService {
     let firebaseObject = {
       user_id: newNote.user.id,
       name: newNote.uniqueName,
-      data: childData
+      data: childData,
     };
     newNoteFireObject.set(firebaseObject);
 
@@ -95,7 +96,10 @@ export class DiscussionService {
       created: new Date().getTime()
     });
 
-    return firebaseObject;
+    const clonedFirebaseObj: any = _.cloneDeep(firebaseObject);
+    clonedFirebaseObj.$uuid = response.uuid;
+
+    return clonedFirebaseObj;
   }
 
   async addMessage(uuid: any, messageData: any) {
