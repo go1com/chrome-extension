@@ -21,6 +21,7 @@ export class AddToPortalComponent {
   linkPreview: any = null;
   addToPortalFromBackground: boolean = false;
   private pageUrl: any;
+  learningItem: any;
 
   constructor(private router: Router,
               private addToPortalService: AddToPortalService,
@@ -55,11 +56,10 @@ export class AddToPortalComponent {
   async ngOnInit() {
     this.isLoading = true;
 
-    const user = await this.userService.getUser();
-
     this.tabUrl = this.pageUrl;
 
     this.linkPreview = await this.loadPageMetadata(this.pageUrl);
+
     this.data = {
       title: this.linkPreview.title,
       description: this.linkPreview.description,
@@ -74,29 +74,32 @@ export class AddToPortalComponent {
       author: this.storageService.retrieve(configuration.constants.localStorageKeys.user).mail
     };
 
-    this.isLoading = false;
-
     if (this.addToPortalFromBackground) {
       window.onbeforeunload = () => {
         this.storageService.remove(configuration.constants.localStorageKeys.addToPortalParams);
       };
     }
+
+    this.learningItem = await this.addToPortal();
+
+    this.isLoading = false;
   }
 
   async ngOnDestroy() {
     this.storageService.remove(configuration.constants.localStorageKeys.addToPortalParams);
   }
 
-  async onAddToPortalBtnClicked() {
-    const learningItem = await this.addToPortal();
-
-    await this.goToSuccess();
+  async shareButtonClicked() {
+    await this.router.navigate(['./', configuration.pages.addToPortal, configuration.pages.shareLearningItem, this.learningItem.id]);
   }
 
   async onMarkAsCompleteBtnClicked() {
-    const learningItem = await this.addToPortal();
-    await this.markAsComplete(learningItem);
+    await this.markAsComplete(this.learningItem);
     await this.goToSuccess();
+  }
+
+  async saveForLaterClicked() {
+
   }
 
   async markAsComplete(learningItem) {

@@ -26,6 +26,25 @@ export class EnrollmentService {
     );
   }
 
+  async assignToUser(learningItemId, portalId, userId) {
+    return this.restClientService.post(
+      `${this.baseUrl}/${configuration.serviceUrls.enrollment}plan/${portalId}/${learningItemId}/user/USER_ID=${userId}`,
+      null,
+      this.getCustomHeaders()
+    );
+  }
+
+  async scheduleLearningItem(learningItemId, portalId, dueDate) {
+    return this.restClientService.post(
+      `${this.baseUrl}/${configuration.serviceUrls.enrollment}plan/${portalId}/${learningItemId}/user/USER_ID=self`,
+      {
+        notify: true,
+        due_date: dueDate
+      },
+      this.getCustomHeaders()
+    );
+  }
+
   async markEnrollmentAsCompleted(enrollmentId) {
     return this.restClientService.put(
       `${this.baseUrl}/${configuration.serviceUrls.enrollment}enrolment/${enrollmentId}`,

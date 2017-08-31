@@ -19,17 +19,21 @@
 
       tag-input([(ngModel)]="data.tags", placeholder="Add tags")
 
-    //.form-group
-    //  h6 Select Portal
-    //
-    //  portal-selection([(portal)]="data.instance")
-
     .actions-area
       .row
         .col-6
-          button.btn.btn-primary.btn-block#addToPortal((click)="onAddToPortalBtnClicked()") Add to Portal
+          button.btn.btn-primary.btn-block#markAsComplete((click)="onMarkAsCompleteBtnClicked()", [disabled] = "loading").
+            #[i.fa.fa-check] Mark as Complete
 
         .col-6
-          button.btn.btn-primary.btn-block#markAsComplete((click)="onMarkAsCompleteBtnClicked()") Mark as Complete
+          button.btn.btn-primary.btn-block#addToPortal((click)="shareButtonClicked()", [disabled]="loading").
+            #[i.fa.fa-share] Share
 
-      //button.btn.btn-primary.btn-block#saveForLater((click)="saveForLater()") Save for Later
+        //.col-6
+        //  button.btn.btn-primary.btn-block#saveForLater((click)="saveForLaterClicked()").
+        //    #[i.fa.fa-calendar] Save for later
+
+      //.row.justify-content-center.m-t-10
+      //  .col-6
+      //    button.btn.btn-primary.btn-block#addToPortal((click)="shareButtonClicked()").
+      //      #[i.fa.fa-share] Share

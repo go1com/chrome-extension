@@ -1,0 +1,30 @@
+.add-to-portal.animated
+  go-header([title]="'Share Item'")
+
+  .related-to
+    .link-preview-frame
+      .is-loading([hidden]="!isLoading")
+        .col Loading Preview...
+      .loading-completed([hidden]="isLoading")
+        .site-info-container
+          img.favicon([src]="linkPreview?.favicon")
+          .site-domain.grey5 {{ linkPreview?.hostname }}
+        .site-detail-container
+          h5
+            | {{ linkPreview && linkPreview.title }}
+
+  .note-detail-section
+    .form-group
+      div.grey5.related-to-title Share to user:
+
+      input([(ngModel)]="shareToUser", [ngbTypeahead]="searchForUser", [inputFormatter]="formatUserSelection", placeholder="Select User")
+
+    .actions-area
+      .row
+        .col-6
+          button.btn.btn-primary.btn-block#shareBtn((click)="shareBtnClicked()").
+            #[i.fa.fa-check] Share
+
+        .col-6
+          button.btn.btn-default.btn-block#cancelBtn((click)="cancelBtnClicked()").
+            Cancel

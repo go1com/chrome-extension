@@ -40,6 +40,7 @@ const configuration = {
     fbLogin: '/membership/socialLogin/facebook',
     ggLogin: '/membership/socialLogin/google',
     addToPortal: 'addToPortal',
+    shareLearningItem: 'shareLearningItem',
     discussionsList: 'discussionsList',
     discussionDetail: 'discussionDetail',
     newDiscussion: 'newDiscussion'

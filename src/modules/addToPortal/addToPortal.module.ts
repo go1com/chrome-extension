@@ -15,6 +15,8 @@ import {EnrollmentModule} from "../enrollment/enrollment.module";
 import {Go1LinkPreviewModule} from "../../sharedComponents/go1LinkPreview/go1LinkPreview.module";
 import {DiscussionsModule} from "../discussions/discussions.module";
 import {MembershipModule} from "../membership/membership.module";
+import {ShareLearningItemComponent} from "./shareLearningItemComponent/shareLearningItem.component";
+import {NgbTypeaheadModule} from "@ng-bootstrap/ng-bootstrap";
 
 @NgModule({
   imports: [
@@ -24,6 +26,7 @@ import {MembershipModule} from "../membership/membership.module";
     MomentModule,
 
     TagInputModule,
+    NgbTypeaheadModule,
 
     Go1CoreModule,
     DiscussionsModule,
@@ -35,7 +38,8 @@ import {MembershipModule} from "../membership/membership.module";
   declarations: [
     AddToPortalComponent,
     AddToPortalSuccessComponent,
-    LearningItemScheduleComponent
+    LearningItemScheduleComponent,
+    ShareLearningItemComponent
   ],
   providers: [
     AddToPortalService
@@ -43,7 +47,8 @@ import {MembershipModule} from "../membership/membership.module";
   exports: [
     AddToPortalComponent,
     AddToPortalSuccessComponent,
-    LearningItemScheduleComponent
+    LearningItemScheduleComponent,
+    ShareLearningItemComponent
   ]
 })
 export class AddToPortalModule {
