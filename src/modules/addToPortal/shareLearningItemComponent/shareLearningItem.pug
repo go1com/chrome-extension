@@ -17,8 +17,7 @@
     .form-group
       div.grey5.related-to-title Share to user:
 
-      input([(ngModel)]="shareToUser", [ngbTypeahead]="searchForUser", [inputFormatter]="formatUserSelection", placeholder="Select User")
-
+      typeahead([(ngModel)]="shareToUser", [typeAheadSetup]="typeAheadSetup")
     .actions-area
       .row
         .col-6

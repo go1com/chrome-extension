@@ -6,8 +6,8 @@ import {routeNames} from "../addToPortal.routes";
 import {AddToPortalService} from "../services/AddToPortalService";
 import {commandKeys} from "../../../commandHandlers/commandKeys";
 import {EnrollmentService} from "../../enrollment/services/enrollment.service";
-import {DiscussionService} from "../../discussions/services/discussion.service";
 import {UserService} from "../../membership/services/user.service";
+import * as _ from 'lodash';
 
 @Component({
   selector: 'add-to-portal',
@@ -86,10 +86,17 @@ export class AddToPortalComponent {
   }
 
   async ngOnDestroy() {
+    if (!_.isEqual(this.learningItem.tags, this.data.tags)) {
+      await this.addToPortalService.updateLearningItem({
+        id: this.learningItem.id,
+        tags: this.learningItem.tags
+      });
+    }
     this.storageService.remove(configuration.constants.localStorageKeys.addToPortalParams);
   }
 
   async shareButtonClicked() {
+    this.storageService.store(configuration.constants.localStorageKeys.cacheLearningItem + this.learningItem.id, this.learningItem);
     await this.router.navigate(['./', configuration.pages.addToPortal, configuration.pages.shareLearningItem, this.learningItem.id]);
   }
 
@@ -125,11 +132,6 @@ export class AddToPortalComponent {
 
   async enrollToItem(learningItemId) {
     return await this.enrollmentService.enrollToLearningItem(learningItemId, this.data.instance);
-  }
-
-  async addAndEnroll() {
-    const learningItem = await this.addToPortal();
-    await this.enrollToItem(learningItem.id);
   }
 
   async goToSuccess() {

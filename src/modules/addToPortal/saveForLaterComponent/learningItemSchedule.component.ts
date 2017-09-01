@@ -6,7 +6,7 @@ import {routeNames} from "../addToPortal.routes";
 
 @Component({
   selector: 'learning-item-schedule',
-  templateUrl: '../../../views/addToPortalSchedule.pug'
+  templateUrl: './addToPortalSchedule.pug'
 })
 export class LearningItemScheduleComponent {
   data: any;

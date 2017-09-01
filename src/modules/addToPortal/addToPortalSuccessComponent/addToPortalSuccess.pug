@@ -1,0 +1,20 @@
+.add-to-portal-success.animated
+  go-header(title="Add To Portal Success")
+
+  header(*ngIf="!sharedToUser")
+    .success-icon
+    h4 This page has been added!
+    h5.sub-header This page has been successfully added to {{ currentPortal?.title }} as new Learning Item
+
+  header(*ngIf="sharedToUser")
+    .success-icon
+    h4 This page has been shared to #[strong {{ sharedToUser.name }}!]
+    h5.sub-header This page has been successfully added to {{ currentPortal?.title }} as new Learning Item and assigned to #[a(href='mailto:{{sharedToUser.mail}}') {{ sharedToUser.name }} ]
+
+
+  .actions-area
+    .col-7
+      button.btn.btn-primary((click)="viewPageOnPortal()") View on your Portal
+
+    .col-5
+      button.btn.btn-primary((click)="goBack()") Go back

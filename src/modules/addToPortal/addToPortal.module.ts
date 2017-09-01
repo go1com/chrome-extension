@@ -16,7 +16,8 @@ import {Go1LinkPreviewModule} from "../../sharedComponents/go1LinkPreview/go1Lin
 import {DiscussionsModule} from "../discussions/discussions.module";
 import {MembershipModule} from "../membership/membership.module";
 import {ShareLearningItemComponent} from "./shareLearningItemComponent/shareLearningItem.component";
-import {NgbTypeaheadModule} from "@ng-bootstrap/ng-bootstrap";
+import {TypeAheadModule} from "../../sharedComponents/typeahead-plugin/typeahead.module";
+
 
 @NgModule({
   imports: [
@@ -26,7 +27,8 @@ import {NgbTypeaheadModule} from "@ng-bootstrap/ng-bootstrap";
     MomentModule,
 
     TagInputModule,
-    NgbTypeaheadModule,
+
+    TypeAheadModule,
 
     Go1CoreModule,
     DiscussionsModule,

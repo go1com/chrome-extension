@@ -7,22 +7,44 @@ import {AddToPortalService} from "../services/AddToPortalService";
 import {commandKeys} from "../../../commandHandlers/commandKeys";
 import {EnrollmentService} from "../../enrollment/services/enrollment.service";
 import {UserService} from "../../membership/services/user.service";
-import {Observable} from "rxjs/Observable";
 
 @Component({
   selector: 'share-learning-item',
   templateUrl: './shareLearningItem.pug'
 })
 export class ShareLearningItemComponent {
+  addToPortalFromBackground: boolean;
   shareToUser: any;
-  noteData: any;
   data: any;
   tabUrl: string = '';
   isLoading: boolean = false;
   linkPreview: any = null;
-  addToPortalFromBackground: boolean = false;
   private pageUrl: any;
   learningItem: any;
+
+  autoCompleteTimeout: any;
+
+  typeAheadSetup: any = {
+    customTemplate: '<div> {{ item.name }} ({{ item.mail }})</div>',
+    placeHolder: 'Select User',
+    textProperty: 'name',
+    valueProperty: 'rootId',
+    searchProperty: 'name',
+    onSelect: (selectedItem: any) => {
+      this.shareToUser = selectedItem;
+    },
+    asynchDataCall: async (value: string, cb: any) => {
+      if (this.autoCompleteTimeout)
+        clearTimeout(this.autoCompleteTimeout);
+
+      this.autoCompleteTimeout = setTimeout(async () => {
+        const response = await this.userService.getUserAutoComplete(value);
+        cb(response);
+      }, 300);
+    },
+  };
+
+  private portalId: any | any | string;
 
   constructor(private router: Router,
               private currentActiveRoute: ActivatedRoute,
@@ -34,48 +56,41 @@ export class ShareLearningItemComponent {
   }
 
   async ngOnInit() {
+    this.isLoading = true;
     this.currentActiveRoute.params.subscribe(params => {
-      console.log(params);
       this.learningItem = params['learningItemId'];
+
+      if (this.storageService.exists(configuration.constants.localStorageKeys.cacheLearningItem + this.learningItem)) {
+        const pageToCreateNote = this.storageService.retrieve(configuration.constants.localStorageKeys.cacheLearningItem + this.learningItem);
+        this.pageUrl = pageToCreateNote.data.path;
+        this.addToPortalFromBackground = true;
+      } else {
+        this.pageUrl = configuration.currentChromeTab && configuration.currentChromeTab.url || '';
+      }
     });
 
-    this.isLoading = true;
+    this.portalId = this.storageService.retrieve(configuration.constants.localStorageKeys.currentActivePortalId);
 
     this.tabUrl = this.pageUrl;
 
     this.linkPreview = await this.loadPageMetadata(this.pageUrl);
 
     this.shareToUser = null;
+
+    this.isLoading = false;
   }
 
   async ngOnDestroy() {
+    this.storageService.remove(configuration.constants.localStorageKeys.cacheLearningItem + this.learningItem);
   }
 
   async shareBtnClicked() {
-
+    await this.enrollmentService.assignToUser(this.learningItem, this.portalId, this.shareToUser.rootId);
     await this.goToSuccess();
   }
 
   cancelBtnClicked() {
     this.goBack();
-  }
-
-  searchForUser = (query) => {
-    if (query === '') {
-      return Observable.of([]);
-    }
-
-    return Observable.create(observer => {
-      this.userService.getUserAutoComplete(query)
-        .then(response => {
-          observer.next(response);
-        })
-    });
-  }
-
-  formatUserSelection = (userObj) => {
-    console.log(userObj);
-    return userObj.mail;
   }
 
   private async loadPageMetadata(url) {
@@ -89,28 +104,12 @@ export class ShareLearningItemComponent {
     });
   }
 
-  async addToPortal() {
-    return await this.addToPortalService.addToPortal(this.data);
-  }
-
-  async enrollToItem(learningItemId) {
-    return await this.enrollmentService.enrollToLearningItem(learningItemId, this.data.instance);
-  }
-
-  async addAndEnroll() {
-    const learningItem = await this.addToPortal();
-    await this.enrollToItem(learningItem.id);
-  }
-
   async goToSuccess() {
+    this.storageService.store(configuration.constants.localStorageKeys.sharedLiToUser, this.shareToUser);
     await this.router.navigate(['./', configuration.pages.addToPortal, routeNames.success]);
   }
 
   goBack() {
     this.router.navigate(['/' + configuration.defaultPage]);
-  }
-
-  async saveForLater() {
-    await this.router.navigate(['./' + routeNames.saveForLater], {relativeTo: this.currentActiveRoute});
   }
 }

@@ -20,6 +20,8 @@ const configuration = {
       socialLogin: 'socialLoggingIn',
       createNoteParams: 'GO1.Command.createNoteParams',
       addToPortalParams: 'GO1.Command.addToPortalParams',
+      cacheLearningItem: 'GO1.shareLearning.learningItemId_',
+      sharedLiToUser: 'GO1.shareLearning.sharedLiToUser'
     }
   },
   serviceUrls: {

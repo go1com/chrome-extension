@@ -14,19 +14,19 @@
             | {{ linkPreview && linkPreview.title }}
 
   .note-detail-section
-    .form-group
+    .form-group(*ngIf="learningItem")
       div.grey5.related-to-title Add Tags:
 
-      tag-input([(ngModel)]="data.tags", placeholder="Add tags")
+      tag-input([(ngModel)]="learningItem.tags", placeholder="Add tags")
 
     .actions-area
       .row
         .col-6
-          button.btn.btn-primary.btn-block#markAsComplete((click)="onMarkAsCompleteBtnClicked()", [disabled] = "loading").
+          button.btn.btn-primary.btn-block#markAsComplete((click)="onMarkAsCompleteBtnClicked()", [disabled]="isLoading").
             #[i.fa.fa-check] Mark as Complete
 
         .col-6
-          button.btn.btn-primary.btn-block#addToPortal((click)="shareButtonClicked()", [disabled]="loading").
+          button.btn.btn-primary.btn-block#addToPortal((click)="shareButtonClicked()", [disabled]="isLoading").
             #[i.fa.fa-share] Share
 
         //.col-6

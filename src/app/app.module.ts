@@ -24,6 +24,7 @@ import {PortalModule} from "../modules/portal/portal.module";
 import {NgbModule} from "@ng-bootstrap/ng-bootstrap";
 import {ModalModule} from "angular2-modal";
 import {RedirectingComponent} from "./redirectingComponent/redirecting.component";
+import {TypeAheadModule} from "../sharedComponents/typeahead-plugin/typeahead.module";
 
 
 @NgModule({
@@ -51,6 +52,8 @@ import {RedirectingComponent} from "./redirectingComponent/redirecting.component
     NgbModule.forRoot(),
     ModalModule.forRoot(),
 
+
+    TypeAheadModule.forRoot(),
     Go1CoreModule,
     SettingsModule,
     MembershipModule,

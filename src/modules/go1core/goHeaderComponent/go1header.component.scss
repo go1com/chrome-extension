@@ -10,9 +10,17 @@
   padding: 0 20px;
   border-bottom: 1px solid $go1grey2;
 
-  a .fa {
-    font-size: 28px;
-    color: $go1grey5;
+  a {
+    .fa {
+      font-size: 28px;
+      color: $go1grey3;
+    }
+
+    &.active {
+      .fa {
+        color: $go1grey7;
+      }
+    }
   }
 
   .full-width {

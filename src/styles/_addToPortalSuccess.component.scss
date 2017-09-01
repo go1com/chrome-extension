@@ -37,6 +37,8 @@
 
   .actions-area {
     text-align: center;
+    display: flex;
+    flex-wrap: wrap;
   }
 
   footer {
