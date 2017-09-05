@@ -11,13 +11,13 @@
           .site-domain.grey5 {{ linkPreview?.hostname }}
         .site-detail-container
           h5
-            | {{ linkPreview && linkPreview.title }}
+            | {{ linkPreview && linkPreview.title | ellipsis:60 }}
 
   .note-detail-section
     .form-group(*ngIf="learningItem")
       div.grey5.related-to-title Add Tags:
 
-      tag-input([(ngModel)]="learningItem.tags", placeholder="Add tags")
+      tag-input([(ngModel)]="learningItem.tags", autofocus, placeholder="Add tags")
 
     .actions-area
       .row

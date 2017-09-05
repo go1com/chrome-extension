@@ -29,6 +29,7 @@ export class NewDiscussionComponent implements OnInit {
       const pageToCreateNote = this.storageService.retrieve(configuration.constants.localStorageKeys.createNoteParams);
       this.pageUrl = pageToCreateNote.url;
       quotation = pageToCreateNote.quotation || '';
+      this.storageService.remove(configuration.constants.localStorageKeys.createNoteParams);
       this.newDiscussionFromBackgroundPage = true;
     } else {
       this.pageUrl = configuration.currentChromeTab && configuration.currentChromeTab.url || '';
@@ -50,16 +51,9 @@ export class NewDiscussionComponent implements OnInit {
 
     this.linkPreview = await this.loadPageMetadata(this.pageUrl);
     this.isLoading = false;
-
-    if (this.newDiscussionFromBackgroundPage) {
-      window.onbeforeunload = () => {
-        this.storageService.remove(configuration.constants.localStorageKeys.createNoteParams);
-      };
-    }
   }
 
   async ngOnDestroy() {
-    this.storageService.remove(configuration.constants.localStorageKeys.createNoteParams);
   }
 
   private async loadPageMetadata(url) {

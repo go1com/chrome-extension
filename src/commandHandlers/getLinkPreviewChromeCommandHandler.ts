@@ -17,18 +17,24 @@ export class GetLinkPreviewChromeCommandHandler implements IChromeCommandHandler
         const anchor = document.createElement('a');
         anchor.href = request.data;
 
-        response.favicon = `${anchor.protocol}//${anchor.hostname}${anchor.port && anchor.port != '80' ? `:${anchor.port}` : ''}/favicon.ico`;
+        if (!response.favicon)
+          response.favicon = `${anchor.protocol}//${anchor.hostname}${anchor.port && anchor.port != '80' ? `:${anchor.port}` : ''}/favicon.ico`;
+
+        if (!response.favicon.startsWith(anchor.protocol)) {
+          response.favicon = `${anchor.protocol}//${anchor.hostname}${anchor.port && anchor.port != '80' ? `:${anchor.port}` : ''}${response.favicon}`;
+        }
+
         response.hostname = anchor.hostname;
 
         if (response.images && response.images.length) {
           response.image = response.images[0];
-
-          sendResponse({
-            success: true,
-            data: response
-          });
-          return;
         }
+
+        sendResponse({
+          success: true,
+          data: response
+        });
+        return;
       });
   }
 }

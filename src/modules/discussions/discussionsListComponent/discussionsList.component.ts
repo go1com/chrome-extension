@@ -17,6 +17,7 @@ export class DiscussionsListComponent implements OnInit, OnDestroy {
   portal: any;
   changePortalId: string = '';
   private user: any;
+  private loadingTimeout: any;
 
   constructor(private discussionService: DiscussionService,
               private router: Router,
@@ -94,12 +95,19 @@ export class DiscussionsListComponent implements OnInit, OnDestroy {
         });
     }
 
-    this.zone.run(() => {
+    this.zone.run(() => this.closeLoading());
+  }
+
+  closeLoading() {
+    this.loadingTimeout = setTimeout(() => {
       this.loading = false;
-    });
+    }, 750);
   }
 
   onNoteReceived(noteItem: any, noteData: any) {
+    if (this.loadingTimeout)
+      clearTimeout(this.loadingTimeout);
+
     let discussionTopic: any = this.discussionsList.find(discussion => discussion.uuid == noteItem.uuid);
     if (discussionTopic == null) {
       discussionTopic = {
@@ -141,5 +149,7 @@ export class DiscussionsListComponent implements OnInit, OnDestroy {
         discussionTopic.messages.push(messageData);
       }
     }
+
+    this.zone.run(() => this.closeLoading());
   }
 }

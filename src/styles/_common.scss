@@ -224,7 +224,6 @@ h6 {
   word-wrap: break-word;
   visibility: hidden;
   overflow: hidden;
-  border: 1px solid rgba(0,0,0,0.15);
   background-color: white;
 
   ul.mention-list {
@@ -236,9 +235,10 @@ h6 {
     li {
       padding: 5px;
       cursor: pointer;
+      border: 1px solid $go1grey4;
 
       + li {
-        border-top: 1px solid $go1grey4;
+        border-top: none;
       }
     }
   }

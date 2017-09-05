@@ -21,6 +21,7 @@ export class LinkPreview {
       description: this._getDescription(doc) || '',
       mediaType: this._getMediaType(doc) || 'website',
       images: this._getImages(doc, url),
+      favicon: this._getFavicon(doc)
     };
   }
 
@@ -32,6 +33,10 @@ export class LinkPreview {
     }
 
     return title;
+  }
+
+  _getFavicon(doc) {
+    return doc('link[rel*=\'icon\']').attr('href') || "";
   }
 
   _getDescription(doc) {

@@ -7,7 +7,7 @@ form((submit)="login()", [hidden]="loading")
 
   .container
     h4.text-align-left([hidden]="loggedInSuccess") Logging in with #[div.provider-icon(class="icon-{{provider}}") ]
-    h4.text-align-left([hidden]="!loggedInSuccess") Success! #[div.provider-icon(class="icon-{{provider}}") ]
+    h4.text-align-left([hidden]="!loggedInSuccess") Success!
 
     div.hr.m-t-20([hidden]="!loggingIn")
       hr

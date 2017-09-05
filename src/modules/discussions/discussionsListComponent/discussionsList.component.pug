@@ -12,7 +12,7 @@
 
     .actions-group
       .actions.m-t-40(*ngIf="canAddToPortal()")
-        button.btn.btn-block.btn-primary((click)="addToPortal()") #[i.fa.fa-sign-in] Add this Page
+        button.btn.btn-block.btn-primary((click)="addToPortal()") #[i.fa.fa-sign-in] Add this page
 
       .actions.m-t-20
         button.btn.btn-block.btn-primary((click)="addDiscussion()") #[i.fa.fa-comment ] Add Note
@@ -20,18 +20,18 @@
       .actions.m-t-20
         portal-selection(placeholder="Change Portal", [(portal)]="changePortalId", (portalChange)="onPortalChanged(changePortalId)")
 
-  .discussions-list([hidden]="!notesToShow().length")
+  .discussions-list([hidden]="loading || !notesToShow().length")
     discussion-item(*ngFor="let discussionItem of notesToShow()", [discussionItem]="discussionItem")
 
 
-  .actions-area.row([hidden]="!notesToShow().length")
+  .actions-area.row([hidden]="loading || !notesToShow().length")
     .col-6
       button.btn.btn-block((click)="addDiscussion()")
         | #[i.fa.fa-comment ] Add Note
 
     .col-6(*ngIf="canAddToPortal()")
       button.btn.btn-block((click)="addToPortal()")
-        | #[i.fa.fa-sign-in] Save this page
+        | #[i.fa.fa-sign-in] Add this page
     //
     //.col-4
     //  button.btn.btn-block((click)="share()")

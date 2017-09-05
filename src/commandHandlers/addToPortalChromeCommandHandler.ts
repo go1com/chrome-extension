@@ -21,6 +21,6 @@ export class AddToPortalChromeCommandHandler implements IChromeCommandHandler {
     });
 
     let url = `${configuration.constants.indexPage}`;
-    window.open(url, configuration.constants.popupDefaultName, `height=625px,width=425px,right=10px,top=10px`);
+    window.open(url, configuration.constants.popupDefaultName, `height=645px,width=425px,right=10px,top=10px,resizable=0`);
   }
 }

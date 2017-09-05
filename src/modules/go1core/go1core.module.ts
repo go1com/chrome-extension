@@ -16,14 +16,22 @@ import {ConfirmationModalComponent} from "./components/confirmationModal/Confirm
 import {AlertModalComponent} from "./components/alertModal/AlertModalComponent";
 import {BootstrapModalModule} from "angular2-modal/plugins/bootstrap";
 import {ModalModule} from "angular2-modal";
+import {AutofocusDirective} from "./autofocus-directive/autofocus.directive";
+import {EllipsisPipe} from "./ellipsis-pipe/ellipsis.pipe";
+import {ImageFallbackDirective} from "./imageFallbackDirective/imageFallback.directive";
 
 @NgModule({
   declarations: [
     Go1HeaderComponent,
     LoadingIndicatorComponent,
-    ImageSvgDirective,
     ConfirmationModalComponent,
-    AlertModalComponent
+    AlertModalComponent,
+
+    ImageSvgDirective,
+    AutofocusDirective,
+    ImageFallbackDirective,
+
+    EllipsisPipe
   ],
   imports: [
     CommonModule,
@@ -45,9 +53,14 @@ import {ModalModule} from "angular2-modal";
   exports: [
     Go1HeaderComponent,
     LoadingIndicatorComponent,
-    ImageSvgDirective,
     ConfirmationModalComponent,
-    AlertModalComponent
+    AlertModalComponent,
+
+    ImageSvgDirective,
+    AutofocusDirective,
+    ImageFallbackDirective,
+
+    EllipsisPipe
   ],
   entryComponents: [
     ConfirmationModalComponent,

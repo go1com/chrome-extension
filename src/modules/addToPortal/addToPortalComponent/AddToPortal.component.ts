@@ -34,6 +34,7 @@ export class AddToPortalComponent {
       const pageToCreateNote = this.storageService.retrieve(configuration.constants.localStorageKeys.addToPortalParams);
       this.pageUrl = pageToCreateNote.url;
       this.addToPortalFromBackground = true;
+      this.storageService.remove(configuration.constants.localStorageKeys.addToPortalParams);
     } else {
       this.pageUrl = configuration.currentChromeTab && configuration.currentChromeTab.url || '';
     }
@@ -74,12 +75,6 @@ export class AddToPortalComponent {
       author: this.storageService.retrieve(configuration.constants.localStorageKeys.user).mail
     };
 
-    if (this.addToPortalFromBackground) {
-      window.onbeforeunload = () => {
-        this.storageService.remove(configuration.constants.localStorageKeys.addToPortalParams);
-      };
-    }
-
     this.learningItem = await this.addToPortal();
 
     this.isLoading = false;
@@ -92,7 +87,6 @@ export class AddToPortalComponent {
         tags: this.learningItem.tags
       });
     }
-    this.storageService.remove(configuration.constants.localStorageKeys.addToPortalParams);
   }
 
   async shareButtonClicked() {

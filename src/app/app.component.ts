@@ -6,6 +6,8 @@ import {UserService} from "../modules/membership/services/user.service";
 import {ActivatedRoute, Router} from "@angular/router";
 import {StorageService} from "../modules/go1core/services/StorageService";
 
+declare const $: any;
+
 @Component({
   selector: 'app-root',
   templateUrl: './app.component.pug',
@@ -26,6 +28,10 @@ export class AppComponent implements OnInit {
   }
 
   async ngOnInit() {
+    if (window.name === configuration.constants.popupDefaultName) {
+      $('body').addClass('go1-popup');
+    }
+
     if (this.storageService.retrieve(configuration.constants.localStorageKeys.socialLogin)) {
       return;
     }

@@ -17,17 +17,17 @@
           .site-domain.grey5 {{ linkPreview?.hostname }}
         .site-detail-container
           h5
-            | {{ linkPreview && linkPreview.title }}
+            | {{ linkPreview && linkPreview.title | ellipsis:60 }}
 
   .description
     .quotation(*ngIf="data.quote")
-      blockquote {{ data.quote }}
+      blockquote {{ data.quote | ellipsis:88 }}
 
-    .text-editor(rich-text-editor [(ngModel)]="data.body" placeholder="Add your notes...", [(mentionedUsers)]="mentionedUsers")
+    .text-editor(rich-text-editor [(ngModel)]="data.body" placeholder="Add your notes...", autofocus, [(mentionedUsers)]="mentionedUsers")
     //textarea.form-control(ckeditor [(ngModel)]="data.body" name="noteBody" placeholder="Add your notes..." rows=10)
 
   .actions-area
-      .col-7.p-l-0
-        portal-selection([(portal)]="data.entityId")
-      .col-5.text-align-right.p-r-0
-        button.btn.btn-primary.add-note-btn((click)="addNote()") Add Note
+    .col-7.p-l-0
+      portal-selection([(portal)]="data.entityId")
+    .col-5.text-align-right.p-r-0
+      button.btn.btn-primary.add-note-btn((click)="addNote()") Add Note

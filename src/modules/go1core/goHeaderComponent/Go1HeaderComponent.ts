@@ -11,7 +11,6 @@ export class Go1HeaderComponent {
   @Input() title: string;
 
   constructor() {
-    console.log(window.name);
   }
 
   canShowBackAndSetting() {
