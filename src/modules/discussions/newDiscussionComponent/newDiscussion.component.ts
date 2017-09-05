@@ -76,6 +76,10 @@ export class NewDiscussionComponent implements OnInit {
       this.data.title = 'Note from ' + this.linkPreview.title;
     }
 
+    if (!this.data.body) {
+      this.data.body = this.data.quote || 'Note from ' + this.linkPreview.title;
+    }
+
     this.data.uniqueName = `${this.pageUrl}__`;
     const noteData = await this.discussionService.createNote(this.data);
 
