@@ -1,7 +1,7 @@
 import {Component} from "@angular/core";
 import configuration from "../../../environments/configuration";
 import {StorageService} from "../../go1core/services/StorageService";
-import {ActivatedRoute, Router} from "@angular/router";
+import {Router} from "@angular/router";
 
 @Component({
   selector: 'add-to-portal-success',

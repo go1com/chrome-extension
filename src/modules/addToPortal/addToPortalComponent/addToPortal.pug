@@ -14,26 +14,27 @@
             | {{ linkPreview && linkPreview.title | ellipsis:60 }}
 
   .note-detail-section
+    .form-group(*ngIf="learningItem") This page has been successfully added to {{ currentPortal?.title }} as new Learning Item. Feel free to add some tags below, Share to other user or Mark this as complete using the buttons below.
     .form-group(*ngIf="learningItem")
-      div.grey5.related-to-title Add Tags:
+      div.grey5 Add Tags:
 
       tag-input([(ngModel)]="learningItem.tags", autofocus, placeholder="Add tags")
 
     .actions-area
       .row
         .col-6
-          button.btn.btn-primary.btn-block#markAsComplete((click)="onMarkAsCompleteBtnClicked()", [disabled]="isLoading").
+          button.btn.btn-primary.btn-block#doneBtn((click)="onDoneBtnClicked()", [disabled]="isLoading", title="Close this page without further action").
+            #[i.fa.fa-check] Done
+
+        .col-6
+          button.btn.btn-primary.btn-block#shareBtn((click)="shareButtonClicked()", [disabled]="isLoading", title="Share this page other user").
+            #[i.fa.fa-share] Share
+
+      .row.m-t-10
+        .col-6
+          button.btn.btn-primary.btn-block#markAsComplete((click)="onMarkAsCompleteBtnClicked()", [disabled]="isLoading", title="Mark this page as completed").
             #[i.fa.fa-check] Mark as Complete
 
         .col-6
-          button.btn.btn-primary.btn-block#addToPortal((click)="shareButtonClicked()", [disabled]="isLoading").
-            #[i.fa.fa-share] Share
-
-        //.col-6
-        //  button.btn.btn-primary.btn-block#saveForLater((click)="saveForLaterClicked()").
-        //    #[i.fa.fa-calendar] Save for later
-
-      //.row.justify-content-center.m-t-10
-      //  .col-6
-      //    button.btn.btn-primary.btn-block#addToPortal((click)="shareButtonClicked()").
-      //      #[i.fa.fa-share] Share
+          //button.btn.btn-primary.btn-block#saveForLater((click)="saveForLaterClicked()", [disabled]="isLoading", title="Schedule this page for revisit later").
+          //  #[i.fa.fa-calender] Save for Later

@@ -61,6 +61,7 @@ export class ImageFallbackDirective {
       .then(() => {
         this.imageLoadError = false;
         this.setImage(this.actualImageUrl);
+        $(this.elementRef.nativeElement).show();
       }, () => {
         this.imageLoadError = true;
         $(this.elementRef.nativeElement).hide();

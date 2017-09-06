@@ -36,7 +36,10 @@ export class LinkPreview {
   }
 
   _getFavicon(doc) {
-    return doc('link[rel*=\'icon\']').attr('href') || "";
+    return doc('link[rel=\'apple-touch-icon-precomposed\']').attr('href') ||
+      doc('link[rel=\'shortcut icon\']').attr('href') ||
+      doc('link[rel=\'icon\']').attr('href') ||
+      "";
   }
 
   _getDescription(doc) {
