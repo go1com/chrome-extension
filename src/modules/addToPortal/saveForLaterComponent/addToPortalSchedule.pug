@@ -1,21 +1,38 @@
 .add-to-portal-scheduled.animated
-  header.extension-header.row
-    .col-2
-      a.btn.btn-no-border.btn-no-padding.go-back-btn.close-btn((click)="goBack()" role="button")
-        i.icon.icon-left-arrow
-    .col-8.text-center
-      h5 Schedule
-    .col-2
+  go-header([title]="'Schedule Learning Item'")
+
+  .related-to
+    .link-preview-frame
+      .is-loading([hidden]="!isLoading")
+        .col Loading Preview...
+      .loading-completed([hidden]="isLoading")
+        .site-info-container
+          img.favicon([src]="linkPreview?.favicon")
+          .site-domain.grey5 {{ linkPreview?.hostname }}
+        .site-detail-container
+          h5
+            | {{ linkPreview && linkPreview.title | ellipsis:60 }}
+
+  .note-detail-section
+    .form-group(*ngIf="learningItem") Select a schedule date and time below for viewing later.
 
   .schedule-section
-    .form-group
-      label Date
-      input.form-control([(ngModel)]="data.tags", placeholder="Date")
+    .form-group.row
+      label.col-3.p-l-0 Date
+      .input-group.col-9
+        input.form-control([(ngModel)]="scheduleDate", (ngModelChange)="onDateChanged()", placeholder="mm/dd/yyyy", ngbDatepicker, #d="ngbDatepicker")
+        button.input-group-addon((click)="d.toggle()")
+          i.fa.fa-calendar
 
-    .form-group
-      label Time
-      input.form-control([(ngModel)]="data.tags", placeholder="Time")
+    .form-group.row
+      label.col-3.p-l-0 Time
+      .col-9
+        ngb-timepicker([(ngModel)]="scheduleTime", (ngModelChange)="onTimeChanged()", type="time", placeholder="Time", [seconds]="false")
 
-  .actions-area.row
-    .col-8.offset-2
-      button.btn.btn-primary.btn-block.rounded-btn#saveForLater((click)="save()") Save
+  .actions-area
+    .row
+      .col-6
+        button.btn.btn-primary.btn-block.rounded-btn#saveForLater((click)="save()") Save Schedule
+
+      .col-6
+        button.btn.btn-default.btn-block.rounded-btn#close((click)="goBack()") Close

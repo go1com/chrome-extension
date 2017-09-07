@@ -14,7 +14,6 @@
             | {{ linkPreview && linkPreview.title | ellipsis:60 }}
 
   .note-detail-section
-    .form-group(*ngIf="learningItem") This page has been successfully added to {{ currentPortal?.title }} as new Learning Item. Feel free to add some tags below, Share to other user or Mark this as complete using the buttons below.
     .form-group(*ngIf="learningItem")
       div.grey5 Add Tags:
 
@@ -36,5 +35,5 @@
             #[i.fa.fa-check] Mark as Complete
 
         .col-6
-          //button.btn.btn-primary.btn-block#saveForLater((click)="saveForLaterClicked()", [disabled]="isLoading", title="Schedule this page for revisit later").
-          //  #[i.fa.fa-calender] Save for Later
+          button.btn.btn-primary.btn-block#saveForLater((click)="saveForLaterClicked()", [disabled]="isLoading", title="Schedule this page for revisit later").
+            #[i.fa.fa-calendar] Save for Later

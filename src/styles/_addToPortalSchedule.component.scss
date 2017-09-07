@@ -1,7 +1,18 @@
+@import "variables";
+
 .add-to-portal-scheduled {
-  padding: 10px;
+  background: $chrome-ext-background;
+
+  .related-to {
+    background: $chrome-ext-background;
+    padding: 20px;
+    .related-to-title {
+      margin-bottom: 15px;
+      font-weight: lighter;
+    }
+  }
 
   .schedule-section, .actions-area {
-    margin-top: 15px;
+    margin: 20px;
   }
 }

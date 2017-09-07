@@ -17,7 +17,7 @@ export const AddToPortalRoutes = [
       {path: '', component: AddToPortalComponent},
       {path: configuration.pages.addToPortal, component: AddToPortalComponent},
       {path: `${configuration.pages.shareLearningItem}/:learningItemId`, component: ShareLearningItemComponent},
-      {path: 'saveForLater', component: LearningItemScheduleComponent},
+      {path: `${configuration.pages.scheduleLearningItem}/:learningItemId`, component: LearningItemScheduleComponent},
       {path: routeNames.success, component: AddToPortalSuccessComponent}
     ]
   },

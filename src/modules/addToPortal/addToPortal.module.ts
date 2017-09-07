@@ -17,6 +17,7 @@ import {DiscussionsModule} from "../discussions/discussions.module";
 import {MembershipModule} from "../membership/membership.module";
 import {ShareLearningItemComponent} from "./shareLearningItemComponent/shareLearningItem.component";
 import {TypeAheadModule} from "../../sharedComponents/typeahead-plugin/typeahead.module";
+import {NgbModule} from "@ng-bootstrap/ng-bootstrap";
 
 
 @NgModule({
@@ -26,6 +27,7 @@ import {TypeAheadModule} from "../../sharedComponents/typeahead-plugin/typeahead
     RouterModule.forChild(AddToPortalRoutes),
     MomentModule,
 
+    NgbModule,
     TagInputModule,
 
     TypeAheadModule,

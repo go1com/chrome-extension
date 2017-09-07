@@ -51,7 +51,7 @@ export class EnrollmentService {
       {
         notify: true,
         due_date: dueDate,
-        status: 'Scheduled'
+        status: SCHEDULED
       },
       this.getCustomHeaders()
     );

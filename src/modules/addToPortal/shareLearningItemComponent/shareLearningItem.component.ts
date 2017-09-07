@@ -13,7 +13,6 @@ import {UserService} from "../../membership/services/user.service";
   templateUrl: './shareLearningItem.pug'
 })
 export class ShareLearningItemComponent {
-  addToPortalFromBackground: boolean;
   shareToUser: any;
   data: any;
   tabUrl: string = '';
@@ -63,7 +62,7 @@ export class ShareLearningItemComponent {
       if (this.storageService.exists(configuration.constants.localStorageKeys.cacheLearningItem + this.learningItem)) {
         const pageToCreateNote = this.storageService.retrieve(configuration.constants.localStorageKeys.cacheLearningItem + this.learningItem);
         this.pageUrl = pageToCreateNote.data.path;
-        this.addToPortalFromBackground = true;
+        this.storageService.remove(configuration.constants.localStorageKeys.cacheLearningItem + this.learningItem);
       } else {
         this.pageUrl = configuration.currentChromeTab && configuration.currentChromeTab.url || '';
       }

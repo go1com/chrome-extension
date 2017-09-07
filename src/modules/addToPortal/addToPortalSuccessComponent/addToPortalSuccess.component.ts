@@ -22,10 +22,7 @@ export class AddToPortalSuccessComponent {
   async ngOnInit() {
     if (this.storageService.exists(configuration.constants.localStorageKeys.sharedLiToUser)) {
       this.sharedToUser = this.storageService.retrieve(configuration.constants.localStorageKeys.sharedLiToUser);
-
-      window.onbeforeunload = () => {
-        this.storageService.remove(configuration.constants.localStorageKeys.sharedLiToUser);
-      };
+      this.storageService.remove(configuration.constants.localStorageKeys.sharedLiToUser);
     }
 
     this.currentPortal = this.storageService.retrieve(configuration.constants.localStorageKeys.currentActivePortal);

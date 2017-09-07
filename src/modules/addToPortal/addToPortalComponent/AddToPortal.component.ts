@@ -100,7 +100,8 @@ export class AddToPortalComponent {
   }
 
   async saveForLaterClicked() {
-
+    this.storageService.store(configuration.constants.localStorageKeys.cacheLearningItem + this.learningItem.id, this.learningItem);
+    await this.router.navigate(['./', configuration.pages.addToPortal, configuration.pages.scheduleLearningItem, this.learningItem.id]);
   }
 
   async markAsComplete(learningItem) {
@@ -134,9 +135,5 @@ export class AddToPortalComponent {
 
   goBack() {
     this.router.navigate(['/' + configuration.defaultPage]);
-  }
-
-  async saveForLater() {
-    await this.router.navigate(['./' + routeNames.saveForLater], {relativeTo: this.currentActiveRoute});
   }
 }

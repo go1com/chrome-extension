@@ -8,6 +8,7 @@ const configuration = {
   constants: {
     indexPage: `chrome-extension://${chrome.runtime.id}/index.html`,
     popupDefaultName: 'GO1_EXTENSION_POPUP',
+    momentISOFormat: 'YYYY-MM-DD[T]HH:mm:ssZZ',
     localStorageKeys: {
       authentication: 'jwt',
       currentActivePortalId: 'currentActivePortalId',
@@ -43,6 +44,7 @@ const configuration = {
     ggLogin: '/membership/socialLogin/google',
     addToPortal: 'addToPortal',
     shareLearningItem: 'shareLearningItem',
+    scheduleLearningItem: 'scheduleLearningItem',
     discussionsList: 'discussionsList',
     discussionDetail: 'discussionDetail',
     newDiscussion: 'newDiscussion'
