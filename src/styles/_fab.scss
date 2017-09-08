@@ -25,6 +25,7 @@
     font-size: 14px;
     box-shadow: 0 5px 20px -5px rgba(0, 0, 0, .5);
     color: $go1grey7;
+    cursor: pointer;
 
     > .icon {
       width: 24px;
@@ -41,7 +42,7 @@
     }
 
     &:not(:last-child) {
-      height: 56px;
+      height: initial;
       border: 1px solid $go1grey1;
       margin: 0 auto 0;
       padding: 18px 20px;

@@ -1,5 +1,4 @@
 import {Component, EventEmitter, Input, NgZone, Output} from "@angular/core";
-import {LinkPreview} from "../../../modules/linkPreviewer/linkPreviewService";
 import {commandKeys} from "../../../commandHandlers/commandKeys";
 
 @Component({

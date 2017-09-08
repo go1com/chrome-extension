@@ -30,12 +30,4 @@ export class AddToPortalService {
       data,
       this.getCustomHeaders());
   }
-
-  async markAsComplete() {
-
-  }
-
-  async scheduleForLater() {
-
-  }
 }

@@ -5,8 +5,6 @@ import {RouterModule} from "@angular/router";
 import {RestClientService} from "./services/RestClientService";
 import {CommonModule} from "@angular/common";
 import {MomentModule} from "angular2-moment";
-import {ChromeCmdHandleService} from "./chromeExtensionsCommandHandler/ChromeCmdHandleService";
-import {AddToPortalChromeCommandHandler} from "./chromeExtensionsCommandHandler/IChromeCommandHandler";
 import {StorageService} from "./services/StorageService";
 import {LoadingIndicatorComponent} from "./loadingIndicatorComponent/loadingIndicatorComponent";
 import {ImageSvgDirective} from "./imageSvgComponent/ImageSvgDirective";
@@ -46,8 +44,6 @@ import {ImageFallbackDirective} from "./imageFallbackDirective/imageFallback.dir
   providers: [
     RestClientService,
     StorageService,
-    ChromeCmdHandleService,
-    AddToPortalChromeCommandHandler,
     ModalDialogService
   ],
   exports: [
@@ -74,8 +70,6 @@ export class Go1CoreModule {
       providers: [
         RestClientService,
         StorageService,
-        ChromeCmdHandleService,
-        AddToPortalChromeCommandHandler,
         ModalDialogService
       ]
     }
