@@ -11,6 +11,7 @@ import {commandKeys} from "../../../commandHandlers/commandKeys";
   templateUrl: './newDiscussionComponent.tpl.pug'
 })
 export class NewDiscussionComponent implements OnInit {
+  noteStatus: any = configuration.constants.noteStatuses.PUBLIC_NOTE;
   isLoading: boolean;
   linkPreview: any;
   data: any;
@@ -28,6 +29,7 @@ export class NewDiscussionComponent implements OnInit {
     if (this.storageService.exists(configuration.constants.localStorageKeys.createNoteParams)) {
       const pageToCreateNote = this.storageService.retrieve(configuration.constants.localStorageKeys.createNoteParams);
       this.pageUrl = pageToCreateNote.url;
+      this.noteStatus = pageToCreateNote.lo_status; // public/private;
       quotation = pageToCreateNote.quotation || '';
       this.storageService.remove(configuration.constants.localStorageKeys.createNoteParams);
       this.newDiscussionFromBackgroundPage = true;
@@ -38,10 +40,15 @@ export class NewDiscussionComponent implements OnInit {
     this.data = {
       title: '',
       body: '',
-      entityType: 'portal',
       quote: quotation,
       item: this.pageUrl,
-      entityId: storageService.retrieve(configuration.constants.localStorageKeys.currentActivePortalId)
+      entityType: configuration.constants.noteChromeExtType,
+      entityId: Math.floor(new Date().getTime() / 1000),
+      portalId: storageService.retrieve(configuration.constants.localStorageKeys.currentActivePortalId),
+      context: {
+        url: this.pageUrl,
+        lo_status: this.noteStatus || configuration.constants.noteStatuses.PUBLIC_NOTE
+      }
     };
   }
 

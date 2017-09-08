@@ -31,8 +31,16 @@ export class DiscussionService {
   getUserNotesFromService() {
     let url = `${this.baseUrl}/${configuration.serviceUrls.noteService}notes`;
 
+    let queries = [];
+
+    queries.push(`type=${configuration.constants.noteChromeExtType}`);
+
     if (configuration.currentChromeTab && configuration.currentChromeTab.url) {
-      url += `?context[url]=${configuration.currentChromeTab.url}`;
+      queries.push(`context\\[url\\]=${configuration.currentChromeTab.url}`);
+    }
+
+    if (queries.length) {
+      url += `?${queries.join('&')}`;
     }
 
     return this.restClientService.get(url, this.getCustomHeaders());
@@ -77,7 +85,6 @@ export class DiscussionService {
 
     let newNoteFireObject = this.fireBaseDb.ref(configuration.serviceUrls.fireBaseNotePath + response.uuid);
 
-    const randomKey = '-Kri' + this.randomString(16);
     let childData = {};
 
     let firebaseObject = {
@@ -129,17 +136,8 @@ export class DiscussionService {
       .push(messageData);
   }
 
-  randomString(length) {
-    let text = "";
-    let possible = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789_";
-    for (let i = 0; i < length; i++) {
-      text += possible.charAt(Math.floor(Math.random() * possible.length));
-    }
-    return text;
-  }
-
   makeNoteRequestUrl(newNote) {
-    const validEntityTypes = ['lo', 'portal', 'group'];
+    const validEntityTypes = ['lo', 'portal', 'group', configuration.constants.noteChromeExtType];
     let endpoint = `${this.baseUrl}/${configuration.serviceUrls.noteService}note/`;
 
     if (newNote.customType) {
@@ -153,8 +151,18 @@ export class DiscussionService {
       endpoint += '/' + newNote.loid;
     }
 
-    if (newNote.item) {
-      endpoint += `?context[url]=${newNote.item}`;
+    let queries = [];
+
+    Object.keys(newNote.context).forEach((key) => {
+      queries.push(`context[${key}]=${newNote.context[key]}`);
+    });
+
+    if (newNote.portalId) {
+      queries.push(`instance=${newNote.portalId}`);
+    }
+
+    if (queries.length) {
+      endpoint += '?' + queries.join('&');
     }
 
     return endpoint;
