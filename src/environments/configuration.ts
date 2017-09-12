@@ -31,6 +31,7 @@ const configuration = {
     }
   },
   serviceUrls: {
+    notification: 'https://realtime.mygo1.com',
     user: 'user-service/',
     userProfile: 'social-service/profile',
     facebookAuth: 'social-login/fb-login',
@@ -48,6 +49,7 @@ const configuration = {
     fbLogin: '/membership/socialLogin/facebook',
     ggLogin: '/membership/socialLogin/google',
     addToPortal: 'addToPortal',
+    notifications: 'notifications',
     shareLearningItem: 'shareLearningItem',
     scheduleLearningItem: 'scheduleLearningItem',
     discussionsList: 'discussionsList',

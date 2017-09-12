@@ -1,0 +1,10 @@
+@import "variables";
+
+.notification-page {
+  background: $chrome-ext-background;
+  min-height: 100%;
+
+  .notification {
+    padding: 10px;
+  }
+}

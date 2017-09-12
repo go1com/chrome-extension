@@ -40,6 +40,10 @@ let routes: Routes = [
     loadChildren: '../modules/addToPortal#AddToPortalModule'
   },
   {
+    path: configuration.pages.notifications,
+    loadChildren: '../modules/notification#NotificationModule'
+  },
+  {
     path: 'portals',
     component: PortalsComponent
   },

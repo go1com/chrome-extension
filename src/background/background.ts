@@ -7,9 +7,14 @@ import {GetLinkPreviewChromeCommandHandler} from "../commandHandlers/getLinkPrev
 import {GetPortalsChromeCommandHandler} from "../commandHandlers/getPortalsChromeCommandHandler";
 import {ChangeIconBadgeChromeCommandHandler} from "../commandHandlers/changeIconBadgeChromeCommandHandler";
 import {CheckCreateNoteMenuSettingChromeCommandHandler} from "../commandHandlers/checkCreateNoteMenuSettingChromeCommandHandler";
+import {OnUserLoggedInChromeCommandHandler} from "../commandHandlers/onUserLoggedInChromeCommandHandler";
+import {ClearBadgeNotificationChromeCommandHandler} from "../commandHandlers/clearBadgeNotificationChromeCommandHandler";
+import {GetNotificationMessagesChromeCommandHandler} from "../commandHandlers/getNotificationMessagesChromeCommandHandler";
+import {CountNotificationChromeCommandHandler} from "../commandHandlers/countNotificationChromeCommandHandler";
 
 const commandHandlerService = new ChromeCmdHandleService();
 const extensionVersion = '@EXTENSION_VERSION@';
+const onUserLoggedInChromeCommandHandler = new OnUserLoggedInChromeCommandHandler();
 
 commandHandlerService.registerHandler(new StartDiscussionChromeCommandHandler());
 commandHandlerService.registerHandler(new AddToPortalChromeCommandHandler());
@@ -19,6 +24,14 @@ commandHandlerService.registerHandler(new GetLinkPreviewChromeCommandHandler());
 commandHandlerService.registerHandler(new GetPortalsChromeCommandHandler());
 commandHandlerService.registerHandler(new ChangeIconBadgeChromeCommandHandler());
 commandHandlerService.registerHandler(new CheckCreateNoteMenuSettingChromeCommandHandler());
+commandHandlerService.registerHandler(new ClearBadgeNotificationChromeCommandHandler());
+commandHandlerService.registerHandler(new CountNotificationChromeCommandHandler());
+commandHandlerService.registerHandler(new GetNotificationMessagesChromeCommandHandler());
+
+
+commandHandlerService.registerHandler(onUserLoggedInChromeCommandHandler);
+
+onUserLoggedInChromeCommandHandler.initialize();
 
 chrome.runtime.onMessage.addListener(function (msg, sender, sendResponse) {
   if (commandHandlerService.hasHandler(msg.action)) {

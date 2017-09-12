@@ -1,6 +1,6 @@
 {
   "name": "go1-extension",
-  "version": "0.0.9",
+  "version": "0.0.10",
   "description": "GO1 Extension allows users to create notes, discussions and save website pages as learning resources to their GO1 Portal with ease.",
   "productName": "GO1 Extension",
   "keywords": [
@@ -100,6 +100,8 @@
     "lodash": "^4.17.4",
     "reflect-metadata": "^0.1.10",
     "rxjs": "5.1.0",
+    "simple-web-notification": "^1.0.21",
+    "socket.io-client": "^2.0.3",
     "zone.js": "~0.8.5"
   },
   "devDependencies": {

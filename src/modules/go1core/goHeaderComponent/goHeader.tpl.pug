@@ -3,7 +3,11 @@
     li.col-2.text-center
       a([routerLink]="'/discussionsList/'" routerLinkActive="active", *ngIf="canShowBackAndSetting()")
         i.fa.fa-comments
-    li.col-8.text-center.title([innerHtml]="title")
+    li.col-6.text-center.title([innerHtml]="title")
+    li.col-2.text-center
+      a([routerLink]="'/notifications/notifications'" routerLinkActive="active", *ngIf="canShowBackAndSetting()")
+        i.fa.fa-bell
+        span.notification-count.badge.badge-info(*ngIf="notificationUnreadCount > 0") {{ notificationUnreadCount }}
     li.col-2.text-center
       a([routerLink]="'/setting'" routerLinkActive="active", *ngIf="canShowBackAndSetting()")
         i.fa.fa-cog

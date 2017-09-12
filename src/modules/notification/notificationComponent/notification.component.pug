@@ -1,0 +1,14 @@
+.notification-page
+  go-header(activePage="notifications", title="Notifications")
+
+  .no-content([hidden]="!loading")
+    loading-indicator
+
+  .notifications-list([hidden]="loading")
+    .notification(*ngFor="let notification of messages")
+      .row
+        .col-1
+          .fa.fa-flag-o
+        .col-11
+          .content([innerHtml]="notification.message")
+          .time {{ notification?.created | amTimeAgo }}

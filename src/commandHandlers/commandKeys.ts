@@ -6,5 +6,9 @@ export const commandKeys = {
   addToPortal: "ADD_TO_PORTAL",
   addToPortalSchedule: "SCHEDULE_LEARNING_ITEM",
   getLinkPreview: "GET_LINK_PREVIEW",
-  getPortals: "GET_PORTALS"
+  getPortals: "GET_PORTALS",
+  userLoggedIn: "USER_LOGGED_IN",
+  clearChromeBadgeNotification: "CLEAR_CHROME_BADGE_TEXT",
+  getNotificationMessages: "GET_NOTIFICATION_MESSAGES",
+  countNotificationMessages: "GET_NOTIFICATION_MESSAGES_COUNT"
 };
