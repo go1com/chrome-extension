@@ -2,27 +2,27 @@ import io from 'socket.io-client';
 import configuration from "../../environments/configuration";
 import * as _ from 'lodash';
 import {RestClientService} from "../../modules/go1core/services/RestClientService";
+import {Injectable} from "@angular/core";
 
 declare const $: any;
 
+@Injectable()
 export class BackgroundNotificationService {
   private socket;
   private unreadMessages = 0;
   private messages = [];
-  private restClientService: RestClientService;
 
   private static _instance: BackgroundNotificationService;
 
   static singleInstance() {
     if (!BackgroundNotificationService._instance) {
-      BackgroundNotificationService._instance = new BackgroundNotificationService();
+      BackgroundNotificationService._instance = new BackgroundNotificationService(new RestClientService());
     }
 
     return BackgroundNotificationService._instance;
   }
 
-  constructor() {
-    this.restClientService = new RestClientService();
+  constructor(private restClientService: RestClientService) {
   }
 
   initialize(userId: number) {
@@ -30,12 +30,6 @@ export class BackgroundNotificationService {
     this.unreadMessages = 0;
     this.messages = [];
     this.socket.emit('online', userId);
-
-    this.socket.on('old notification', (list) => {
-      this.messages = this.messages.concat(list);
-
-      this.messages = _.sortBy(this.messages, 'created').reverse();
-    });
 
     this.socket.on('notification', (notificationMessage) => {
       if (notificationMessage.is_read)
@@ -55,6 +49,15 @@ export class BackgroundNotificationService {
       this.unreadMessages++;
       chrome.browserAction.setBadgeText({
         text: `${ this.unreadMessages }`
+      });
+    });
+
+    return new Promise((resolve, reject) => {
+      this.socket.on('old notification', (list) => {
+        this.messages = this.messages.concat(list);
+
+        this.messages = _.sortBy(this.messages, 'created').reverse();
+        resolve(this.messages);
       });
     });
   }

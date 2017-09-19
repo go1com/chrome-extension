@@ -4,8 +4,12 @@
   .no-content([hidden]="!loading")
     loading-indicator
 
+
+  .no-content([hidden]="loading || getMessages().length")
+    h4 You have no notification
+
   .notifications-list([hidden]="loading")
-    .notification(*ngFor="let notification of messages")
+    .notification(*ngFor="let notification of getMessages()")
       .row
         .col-1
           .fa.fa-flag-o

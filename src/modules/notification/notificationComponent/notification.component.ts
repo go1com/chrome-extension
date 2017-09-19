@@ -1,5 +1,8 @@
 import {Component} from "@angular/core";
 import {commandKeys} from "../../../commandHandlers/commandKeys";
+import {BackgroundNotificationService} from "../../../sharedComponents/backgrounNotification/backgroundNotification.service";
+import configuration from "../../../environments/configuration";
+import {StorageService} from "../../go1core/services/StorageService";
 
 @Component({
   selector: 'notification-component',
@@ -9,18 +12,20 @@ export class NotificationComponent {
   messages: any[];
   loading: boolean = false;
 
-  constructor() {
+  constructor(private backgroundNotificationService: BackgroundNotificationService,
+              private storageService: StorageService) {
     this.messages = [];
   }
 
-  ngOnInit() {
-    this.loading=  true;
-    chrome.runtime.sendMessage({
-      action: commandKeys.getNotificationMessages
-    }, (response) => {
-      this.messages = response.data;
-      this.loading = false;
-    });
+  async ngOnInit() {
+    this.loading = true;
+    const user = this.storageService.retrieve(configuration.constants.localStorageKeys.user);
+    if (!user || !user.profile_id)
+      return;
+
+    const userProfileId = user.profile_id;
+    await this.backgroundNotificationService.initialize(userProfileId);
+    this.loading = false;
   }
 
   ngAfterViewInit() {
@@ -28,5 +33,9 @@ export class NotificationComponent {
       action: commandKeys.clearChromeBadgeNotification
     }, (response) => {
     });
+  }
+
+  getMessages() {
+    return this.backgroundNotificationService.getMessages();
   }
 }

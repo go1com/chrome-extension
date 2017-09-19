@@ -84,8 +84,14 @@ export class DiscussionsListComponent implements OnInit, OnDestroy {
     this.discussionsList = [];
     const response = await this.discussionService.getUserNotesFromService();
 
+    if (!response.length){
+      this.zone.run(() => this.closeLoading(1000));
+      return;
+    }
+
     for (let i = 0; i < response.length; i++) {
       const noteItem = response[i];
+
       this.discussionService.subscribeUserNote(noteItem.uuid)
         .subscribe((note: any) => {
           if (!note || !note.data) {
@@ -93,15 +99,17 @@ export class DiscussionsListComponent implements OnInit, OnDestroy {
           }
           this.onNoteReceived(noteItem, note);
         });
-    }
 
-    this.zone.run(() => this.closeLoading());
+      if (i === 0) {
+        this.zone.run(() => this.closeLoading(1000));
+      }
+    }
   }
 
-  closeLoading() {
+  closeLoading(timeout = 750) {
     this.loadingTimeout = setTimeout(() => {
       this.loading = false;
-    }, 750);
+    }, timeout);
   }
 
   onNoteReceived(noteItem: any, noteData: any) {

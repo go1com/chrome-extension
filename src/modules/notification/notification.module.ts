@@ -6,6 +6,7 @@ import {RouterModule} from "@angular/router";
 import {NotificationComponent} from "./notificationComponent/notification.component";
 import notificationRoutes from "./notification.routes";
 import {MomentModule} from "angular2-moment";
+import {BackgroundNotificationModule} from "../../sharedComponents/backgrounNotification/backgroundNotification.module";
 
 @NgModule({
   declarations: [
@@ -18,7 +19,8 @@ import {MomentModule} from "angular2-moment";
     MomentModule,
 
     RouterModule.forChild(notificationRoutes),
-    Go1CoreModule
+    Go1CoreModule,
+    BackgroundNotificationModule
   ],
   providers: [
   ],
