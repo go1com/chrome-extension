@@ -4,6 +4,7 @@ import {ActivatedRoute, Router} from "@angular/router";
 import {PortalService} from "../../portal/services/PortalService";
 import configuration from "../../../environments/configuration";
 import {UserService} from "../../membership/services/user.service";
+import * as _ from 'lodash';
 
 @Component({
   selector: 'app-discussions-list',
@@ -76,7 +77,8 @@ export class DiscussionsListComponent implements OnInit, OnDestroy {
   }
 
   notesToShow() {
-    return this.discussionsList.filter(discussionTopic => discussionTopic.item === configuration.currentChromeTab.url);
+    return _.sortBy(this.discussionsList.filter(discussionTopic => discussionTopic.item === configuration.currentChromeTab.url), 'created')
+      .reverse();
   }
 
   private async loadDiscussions() {
