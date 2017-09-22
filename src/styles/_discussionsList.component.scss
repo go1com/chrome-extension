@@ -60,6 +60,28 @@
       border-radius: 3px 3px 0 0;
     }
 
+    .quotation {
+      margin: 16px 10px;
+
+      blockquote {
+        padding: 15px 10px;
+        background-color: #FFF8DC;
+        border-left: 2px solid #ffeb8e;
+        max-height: 80px;
+        color: $go1grey5;
+        font-style: italic;
+        &:before {
+          content: "\“";
+          top: -10px;
+          font-size: 60px;
+          font-weight: bold;
+          position: absolute;
+          color:  #ffeb8e;
+          font-style: normal;
+        }
+      }
+    }
+
     .message {
       border-bottom: 1px solid $go1grey4;
     }
