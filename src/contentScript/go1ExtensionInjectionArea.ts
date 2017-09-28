@@ -1,5 +1,6 @@
 import {ToolTipMenu} from "./toolTipsMenu";
 import {commandKeys} from "../commandHandlers/commandKeys";
+import Util from '../libs/annotation-plugin/util';
 
 declare const $: any;
 
@@ -133,23 +134,19 @@ export class Go1ExtensionInjectionArea {
     if (!this.createNoteEnabled)
       return;
 
-    const selectedText = window.getSelection().toString();
+    let selection = window.getSelection();
+    const selectedText = selection && selection.toString();
 
     if (selectedText) {
-      let selectedTextPosition = window.getSelection().getRangeAt(0).getBoundingClientRect();
-      ToolTipMenu.initializeTooltip(selectedTextPosition, selectedText);
+      let selectedTextPosition = selection.getRangeAt(0).getBoundingClientRect();
+      const xpathFromNode = Util.xpathFromNode($(selection.anchorNode.parentNode));
+      console.log(`selected note xpath: ${xpathFromNode[0]}`);
+      console.log(`selected note in DOM tree: `, Util.nodeFromXPath(xpathFromNode[0]));
 
-      // chrome.runtime.sendMessage({
-      //   from: 'content',
-      //   action: commandKeys.changeBrowserActionBadgeText,
-      //   text: '+quote',
-      //   title: 'GO1 Extension - Click to add new note'
-      // });
+
+
+      ToolTipMenu.initializeTooltip(selectedTextPosition, selectedText);
     } else {
-      // chrome.runtime.sendMessage({
-      //   from: 'content',
-      //   action: commandKeys.changeBrowserActionBadgeText
-      // });
       ToolTipMenu.closeLastTooltip();
     }
   }
