@@ -1,14 +1,18 @@
+import {commandKeys} from "../../commandHandlers/commandKeys";
+
 const cheerio = require('cheerio-without-node-native');
 
 export class LinkPreview {
   getPreview(url) {
     return new Promise((resolve, reject) => {
-      fetch(url)
-        .then(response => response.text())
-        .then(text => {
-          resolve(this._parseResponse(text, url));
-        })
-        .catch(error => reject({error}));
+      chrome.tabs.query({'active': true, 'lastFocusedWindow': true}, function (tabs) {
+        chrome.tabs.sendMessage(tabs[0].id, {
+          name: commandKeys.getLinkPreview
+        }, (response) => {
+          console.log(response);
+          resolve(this._parseResponse(response.data, url));
+        });
+      });
     });
   }
 

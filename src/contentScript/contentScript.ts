@@ -31,6 +31,11 @@ const ignoringDomains = ['mygo1.com', 'go1.com'];
       return true;
     }
 
+    if (msg.name === commandKeys.getLinkPreview) {
+      sendResponse({success: true, data: document.documentElement.innerHTML});
+      return true;
+    }
+
     sendResponse({success: false, message: 'No action handler found'});
     return false;
   });

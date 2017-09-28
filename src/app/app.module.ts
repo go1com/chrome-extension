@@ -22,7 +22,7 @@ import {CommonModule} from "@angular/common";
 import extraProviders from "./extraProviders";
 import {PortalModule} from "../modules/portal/portal.module";
 import {NgbModule} from "@ng-bootstrap/ng-bootstrap";
-import {ModalModule} from "angular2-modal";
+import {ModalModule} from "ngx-modialog";
 import {RedirectingComponent} from "./redirectingComponent/redirecting.component";
 import {TypeAheadModule} from "../sharedComponents/typeahead-plugin/typeahead.module";
 

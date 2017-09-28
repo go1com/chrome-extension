@@ -17,8 +17,9 @@ export class GetLinkPreviewChromeCommandHandler implements IChromeCommandHandler
         const anchor = document.createElement('a');
         anchor.href = request.data;
 
-        if (!response.favicon)
+        if (!response.favicon) {
           response.favicon = `${anchor.protocol}//${anchor.hostname}${anchor.port && anchor.port != '80' ? `:${anchor.port}` : ''}/favicon.ico`;
+        }
 
         if (!response.favicon.startsWith(anchor.protocol)) {
           response.favicon = `${anchor.protocol}//${anchor.hostname}${anchor.port && anchor.port != '80' ? `:${anchor.port}` : ''}${response.favicon}`;

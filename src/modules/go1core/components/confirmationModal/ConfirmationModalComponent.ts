@@ -1,7 +1,7 @@
 import {Inject, Component} from '@angular/core';
 
-import {DialogRef, ModalComponent} from 'angular2-modal';
-import {BSModalContext} from 'angular2-modal/plugins/bootstrap';
+import {DialogRef, ModalComponent} from 'ngx-modialog';
+import {BSModalContext} from 'ngx-modialog/plugins/bootstrap';
 
 export class ConfirmationModalContext extends BSModalContext {
   public title: string;

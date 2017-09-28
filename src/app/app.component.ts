@@ -1,9 +1,7 @@
-import {Component, Inject, OnInit, ViewContainerRef, ViewEncapsulation} from '@angular/core';
-import {Overlay} from "angular2-modal";
-import {ModalDialogService} from "../modules/go1core/services/ModalDialogService";
+import {Component, OnInit, ViewEncapsulation} from '@angular/core';
 import configuration from "../environments/configuration";
 import {UserService} from "../modules/membership/services/user.service";
-import {ActivatedRoute, Router} from "@angular/router";
+import {Router} from "@angular/router";
 import {StorageService} from "../modules/go1core/services/StorageService";
 
 declare const $: any;
@@ -17,14 +15,9 @@ declare const $: any;
 export class AppComponent implements OnInit {
   title = 'GO1 bookmark';
 
-  constructor(@Inject(Overlay) private overlay: Overlay,
-              private vcRef: ViewContainerRef,
-              public modalDialogService: ModalDialogService,
-              private userService: UserService,
+  constructor(private userService: UserService,
               private storageService: StorageService,
               private router: Router) {
-    overlay.defaultViewContainer = vcRef;
-    modalDialogService.setViewContainer(vcRef);
   }
 
   async ngOnInit() {
