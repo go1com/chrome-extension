@@ -54,7 +54,7 @@ export class SettingComponent implements OnInit {
 
     this.storageService.store(configuration.constants.localStorageKeys.quickButtonSetting, this.quickButtonEnabled);
 
-    chrome.tabs.query({currentWindow: true}, function (tabs) {
+    chrome.tabs.query({currentWindow: true}, (tabs) => {
       tabs.forEach(tab => {
         chrome.tabs.sendMessage(tab.id, {
           name: commandKeys.checkQuickButtonSettings
@@ -70,7 +70,7 @@ export class SettingComponent implements OnInit {
 
     this.storageService.store(configuration.constants.localStorageKeys.createNoteSetting, this.createNoteEnabled);
 
-    chrome.tabs.query({currentWindow: true}, function (tabs) {
+    chrome.tabs.query({currentWindow: true}, (tabs) => {
       tabs.forEach(tab => {
         chrome.tabs.sendMessage(tab.id, {
           name: commandKeys.checkCreateNoteSettings

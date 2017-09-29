@@ -2,7 +2,7 @@
   user-profile(*ngIf="discussionItem?.user_id", [userId]="discussionItem?.user_id" externalText="{{ discussionItem?.created | amTimeAgo }}")
   .discussion-content
     .discussion-detail
-      div.quotation(*ngIf="discussionItem?.quote")
+      div.quotation(*ngIf="discussionItem?.quote", role="button", (click)="jumpToQuotedText()")
         blockquote([innerHtml]="discussionItem?.quote")
       div.message([innerHtml]="discussionItem?.message")
       div.actions

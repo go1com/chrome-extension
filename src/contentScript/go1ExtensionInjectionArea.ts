@@ -131,21 +131,22 @@ export class Go1ExtensionInjectionArea {
       return;
     }
 
-    if (!this.createNoteEnabled)
+    if (!this.createNoteEnabled) {
       return;
+    }
 
-    let selection = window.getSelection();
+    const selection = window.getSelection();
     const selectedText = selection && selection.toString();
 
     if (selectedText) {
-      let selectedTextPosition = selection.getRangeAt(0).getBoundingClientRect();
+      const selectedTextPosition = selection.getRangeAt(0).getBoundingClientRect();
       const xpathFromNode = Util.xpathFromNode($(selection.anchorNode.parentNode));
-      console.log(`selected note xpath: ${xpathFromNode[0]}`);
+      console.log(`selected note xpath`);
+      console.log(xpathFromNode);
       console.log(`selected note in DOM tree: `, Util.nodeFromXPath(xpathFromNode[0]));
 
 
-
-      ToolTipMenu.initializeTooltip(selectedTextPosition, selectedText);
+      ToolTipMenu.initializeTooltip(selectedTextPosition, selectedText, xpathFromNode[0]);
     } else {
       ToolTipMenu.closeLastTooltip();
     }

@@ -48,7 +48,7 @@ export class DiscussionService {
 
   async getUserNote(uuid: string) {
     return new Promise((resolve, reject) => {
-      let ref = this.fireBaseDb.ref(configuration.serviceUrls.fireBaseNotePath + uuid);
+      const ref = this.fireBaseDb.ref(configuration.serviceUrls.fireBaseNotePath + uuid);
 
       ref.on('value', (snapshot) => {
         resolve(snapshot.val());
@@ -58,7 +58,7 @@ export class DiscussionService {
 
   subscribeUserNote(uuid: string) {
     return Observable.create((observer) => {
-      let ref = this.fireBaseDb.ref(configuration.serviceUrls.fireBaseNotePath + uuid);
+      const ref = this.fireBaseDb.ref(configuration.serviceUrls.fireBaseNotePath + uuid);
 
       ref.on('value', (snapshot) => {
         observer.next(snapshot.val());
@@ -68,7 +68,7 @@ export class DiscussionService {
 
   async deleteNote(noteUuid: string) {
     try {
-      let endpoint = `${this.baseUrl}/${configuration.serviceUrls.noteService}note/${noteUuid}`;
+      const endpoint = `${this.baseUrl}/${configuration.serviceUrls.noteService}note/${noteUuid}`;
 
       const response = await this.restClientService.delete(endpoint, this.getCustomHeaders());
     } catch (error) {
@@ -83,11 +83,11 @@ export class DiscussionService {
       null,
       this.getCustomHeaders());
 
-    let newNoteFireObject = this.fireBaseDb.ref(configuration.serviceUrls.fireBaseNotePath + response.uuid);
+    const newNoteFireObject = this.fireBaseDb.ref(configuration.serviceUrls.fireBaseNotePath + response.uuid);
 
-    let childData = {};
+    const childData = {};
 
-    let firebaseObject = {
+    const firebaseObject = {
       user_id: newNote.user.id,
       name: newNote.uniqueName,
       data: childData,
@@ -99,6 +99,7 @@ export class DiscussionService {
       message: newNote.body,
       item: newNote.item || '',
       quote: newNote.quote || '',
+      metadata: newNote.context,
       user_id: newNote.user.id,
       created: new Date().getTime()
     });
@@ -151,7 +152,7 @@ export class DiscussionService {
       endpoint += '/' + newNote.loid;
     }
 
-    let queries = [];
+    const queries: string[] = [];
 
     Object.keys(newNote.context).forEach((key) => {
       queries.push(`context[${key}]=${newNote.context[key]}`);

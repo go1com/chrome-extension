@@ -25,12 +25,14 @@ export class NewDiscussionComponent implements OnInit {
               private userService: UserService,
               private storageService: StorageService) {
     let quotation = '';
+    let quotationPosition = null;
 
     if (this.storageService.exists(configuration.constants.localStorageKeys.createNoteParams)) {
       const pageToCreateNote = this.storageService.retrieve(configuration.constants.localStorageKeys.createNoteParams);
       this.pageUrl = pageToCreateNote.url;
       this.noteStatus = pageToCreateNote.lo_status; // public/private;
       quotation = pageToCreateNote.quotation || '';
+      quotationPosition = pageToCreateNote.quotationPosition || null;
       this.storageService.remove(configuration.constants.localStorageKeys.createNoteParams);
       this.newDiscussionFromBackgroundPage = true;
     } else {
@@ -50,6 +52,12 @@ export class NewDiscussionComponent implements OnInit {
         lo_status: this.noteStatus || configuration.constants.noteStatuses.PUBLIC_NOTE
       }
     };
+
+    if (quotation) {
+      this.data.quote = quotation;
+      this.data.context.quotation = quotation;
+      this.data.context.quotationPosition = quotationPosition;
+    }
   }
 
   async ngOnInit() {

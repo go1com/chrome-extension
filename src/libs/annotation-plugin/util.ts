@@ -142,7 +142,6 @@ Util.nodeFromXPath = function(xp, root) {
 
     idx = (idx != null) ? parseInt((idx != null ? idx.split("]") : undefined)[0]) : 1;
 
-    console.log('finding node ', node, ' from index ', idx);
     node = findChild(node, name.toLowerCase(), idx);
   }
 

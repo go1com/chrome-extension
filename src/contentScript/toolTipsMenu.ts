@@ -11,10 +11,11 @@ export class ToolTipMenu {
   left: number;
   elementWidth: number;
   elementHeight: number;
+  quotationPosition: string;
 
   static toolTipMenus: any[] = [];
 
-  static initializeTooltip(boundingRect, selectingText) {
+  static initializeTooltip(boundingRect, selectingText, xpathOfNode) {
     if (!Go1ExtensionInjectionArea.singleInstance)
       throw new Error('Go1 Extension is not initialized');
 
@@ -23,7 +24,7 @@ export class ToolTipMenu {
     const toolTip = new ToolTipMenu();
     ToolTipMenu.toolTipMenus.push(toolTip);
 
-    toolTip.initialize(boundingRect, selectingText);
+    toolTip.initialize(boundingRect, selectingText, xpathOfNode);
   }
 
   static closeLastTooltip(closeImmediately = false) {
@@ -34,9 +35,10 @@ export class ToolTipMenu {
   }
 
 
-  initialize(boundingRect, selectingText) {
+  initialize(boundingRect, selectingText, quotationPosition) {
     this.top = boundingRect.top;
     this.left = boundingRect.left;
+    this.quotationPosition = quotationPosition;
     this.elementWidth = boundingRect.width;
     this.elementHeight = boundingRect.height;
     this.selectingText = selectingText;
@@ -75,7 +77,8 @@ export class ToolTipMenu {
       chrome.runtime.sendMessage({
         from: 'content',
         action: commandKeys.startDiscussion,
-        quotation: this.selectingText
+        quotation: this.selectingText,
+        quotationPosition: this.quotationPosition
       });
       // let newDiscussionWithQuote = new NewDiscussionPopup(this.selectingText);
       // await PopupBaseModel.openPopup(newDiscussionWithQuote);

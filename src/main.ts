@@ -10,5 +10,6 @@ if (configuration.environment.production) {
 
 chrome.tabs.query({active: true, currentWindow: true}, function (tabs) {
   configuration.currentChromeTab = tabs[0];
+  chrome.runtime.connect();
   platformBrowserDynamic().bootstrapModule(AppModule);
 });

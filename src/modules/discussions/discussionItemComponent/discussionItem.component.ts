@@ -4,6 +4,7 @@ import {DiscussionService} from "../services/discussion.service";
 import {Router} from "@angular/router";
 import configuration from "../../../environments/configuration";
 import {UserService} from "../../membership/services/user.service";
+import {commandKeys} from "../../../commandHandlers/commandKeys";
 
 @Component({
   selector: 'discussion-item',
@@ -39,6 +40,23 @@ export class DiscussionItemComponent {
       await this.discussionService.deleteNote(this.discussionItem.noteItem.uuid);
       this.discussionService.onNoteDeleted.emit(this.discussionItem.noteItem.uuid);
     }
+  }
+
+  jumpToQuotedText() {
+    if (!this.discussionItem.noteItem.entities[0].quotation) {
+      return;
+    }
+
+    chrome.tabs.query({active: true, currentWindow: true}, (tabs) => {
+      tabs.forEach(tab => {
+        chrome.tabs.sendMessage(tab.id, {
+          name: commandKeys.jumpToQuotedText,
+          data: this.discussionItem.noteItem.entities[0]
+        }, function (response) {
+
+        });
+      });
+    });
   }
 
   toggleDiscussion() {

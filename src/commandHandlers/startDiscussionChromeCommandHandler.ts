@@ -18,10 +18,11 @@ export class StartDiscussionChromeCommandHandler implements IChromeCommandHandle
   handle(request: any, sender: any, sendResponse: Function) {
     this.storageService.store(configuration.constants.localStorageKeys.createNoteParams, {
       url: sender.tab.url,
-      quotation: request.quotation || ''
+      quotation: request.quotation || '',
+      quotationPosition: request.quotationPosition || ''
     });
 
-    let url = `${configuration.constants.indexPage}`;
+    const url = `${configuration.constants.indexPage}`;
     window.open(url, configuration.constants.popupDefaultName, `height=645px,width=425px,right=10px,top=10px,resizable=0`);
   }
 }

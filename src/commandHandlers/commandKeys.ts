@@ -10,5 +10,7 @@ export const commandKeys = {
   userLoggedIn: "USER_LOGGED_IN",
   clearChromeBadgeNotification: "CLEAR_CHROME_BADGE_TEXT",
   getNotificationMessages: "GET_NOTIFICATION_MESSAGES",
-  countNotificationMessages: "GET_NOTIFICATION_MESSAGES_COUNT"
+  countNotificationMessages: "GET_NOTIFICATION_MESSAGES_COUNT",
+  jumpToQuotedText: "JUMP_TO_QUOTED_TEXT",
+  removeAllHighlight: "REMOVE_ALL_HIGHLIGHT"
 };

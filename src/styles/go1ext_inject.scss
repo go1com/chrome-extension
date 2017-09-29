@@ -1,3 +1,8 @@
+@import "variables";
+
+.go1-annotation-highlight {
+  background: $go1highlight;
+}
 
 .go1-extension-injected {
   @import "bootstrap-reboot";

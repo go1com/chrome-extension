@@ -11,6 +11,7 @@ import {OnUserLoggedInChromeCommandHandler} from "../commandHandlers/onUserLogge
 import {ClearBadgeNotificationChromeCommandHandler} from "../commandHandlers/clearBadgeNotificationChromeCommandHandler";
 import {GetNotificationMessagesChromeCommandHandler} from "../commandHandlers/getNotificationMessagesChromeCommandHandler";
 import {CountNotificationChromeCommandHandler} from "../commandHandlers/countNotificationChromeCommandHandler";
+import {commandKeys} from "../commandHandlers/commandKeys";
 
 const commandHandlerService = new ChromeCmdHandleService();
 const extensionVersion = '@EXTENSION_VERSION@';
@@ -32,6 +33,23 @@ commandHandlerService.registerHandler(new GetNotificationMessagesChromeCommandHa
 commandHandlerService.registerHandler(onUserLoggedInChromeCommandHandler);
 
 onUserLoggedInChromeCommandHandler.initialize();
+
+chrome.runtime.onConnect.addListener(function (externalPort) {
+  externalPort.onDisconnect.addListener(function () {
+    chrome.tabs.query({}, (tabs) => {
+      tabs.forEach(tab => {
+        console.log('removing highlights from tab', tab);
+        
+        chrome.tabs.sendMessage(tab.id, {
+          name: commandKeys.removeAllHighlight
+        }, function (response) {
+
+        });
+      });
+    });
+  });
+});
+
 
 chrome.runtime.onMessage.addListener(function (msg, sender, sendResponse) {
   if (commandHandlerService.hasHandler(msg.action)) {

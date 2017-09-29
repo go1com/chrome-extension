@@ -32,6 +32,7 @@
         "polyfills.js",
         "vendor.js",
         "libs/jquery-3.2.1.min.js",
+        "libs/jquery.highlight/jquery.highlight.js",
         "libs/jquery.dotdotdot.min.js",
         "contentScript.js"
       ],
