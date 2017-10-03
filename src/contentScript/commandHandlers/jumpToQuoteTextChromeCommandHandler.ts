@@ -12,24 +12,36 @@ export class JumpToQuoteTextChromeCommandHandler implements IChromeCommandHandle
 
   handle(request: any, sender: any, sendResponse?: Function) {
     if (request.data.quotation && request.data.quotationPosition) {
+      const quotationNode = Util.nodeFromXPath(request.data.quotationPosition);
+
+      /*$('.go1-annotation-highlight').parent().unmark({
+        className: 'go1-annotation-highlight'
+      });
+
+      $(quotationNode).parent().mark(request.data.quotation, {
+        className: 'go1-annotation-highlight',
+        accuracy: 'exactly',
+        separateWordSearch: false
+      });*/
+
       // remove old highlights
       $('.go1-annotation-highlight').parent().unhighlight({
         className: 'go1-annotation-highlight'
       });
 
-      const quotationNode = Util.nodeFromXPath(request.data.quotationPosition);
+      console.log('Node to highlight', $(quotationNode));
 
       $(quotationNode).highlight(request.data.quotation, {
           className: 'go1-annotation-highlight'
         }, (dom) => {
+          console.log(dom);
           const scrollTo = $(dom);
 
           $('html, body').animate({
             scrollTop: scrollTo.offset().top - 75
           });​
         }
-      )
-      ;
+      );
     }
 
     if (sendResponse) {

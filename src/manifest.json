@@ -33,6 +33,7 @@
         "vendor.js",
         "libs/jquery-3.2.1.min.js",
         "libs/jquery.highlight/jquery.highlight.js",
+        "libs/jquery.highlight/jquery.mark.js",
         "libs/jquery.dotdotdot.min.js",
         "contentScript.js"
       ],
