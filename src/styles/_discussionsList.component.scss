@@ -35,6 +35,12 @@
     .menu {
       float: right;
 
+      &.show {
+        .dropdown-menu {
+          display: block;
+        }
+      }
+
       button.no-border {
         .fa {
           margin-right: 0;
@@ -146,6 +152,8 @@
     border-radius: 0 0 3px 3px;
     z-index: 800;
   }
+
+
 }
 
 .discussions-list-page {

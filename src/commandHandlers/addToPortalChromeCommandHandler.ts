@@ -20,7 +20,7 @@ export class AddToPortalChromeCommandHandler implements IChromeCommandHandler {
       url: sender.tab.url
     });
 
-    let url = `${configuration.constants.indexPage}`;
+    const url = `${configuration.constants.indexPage}`;
     window.open(url, configuration.constants.popupDefaultName, `height=645px,width=425px,right=10px,top=10px,resizable=0`);
   }
 }

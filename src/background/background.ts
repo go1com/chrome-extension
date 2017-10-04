@@ -12,6 +12,8 @@ import {ClearBadgeNotificationChromeCommandHandler} from "../commandHandlers/cle
 import {GetNotificationMessagesChromeCommandHandler} from "../commandHandlers/getNotificationMessagesChromeCommandHandler";
 import {CountNotificationChromeCommandHandler} from "../commandHandlers/countNotificationChromeCommandHandler";
 import {commandKeys} from "../commandHandlers/commandKeys";
+import {LoadNotesForPageChromeCommandHandler} from "../commandHandlers/LoadNotesForPageChromeCommandHandler";
+import {CheckHighlightSettingChromeCommandHandler} from "../commandHandlers/checkHighlightSettingChromeCommandHandler";
 
 const commandHandlerService = new ChromeCmdHandleService();
 const extensionVersion = '@EXTENSION_VERSION@';
@@ -19,15 +21,19 @@ const onUserLoggedInChromeCommandHandler = new OnUserLoggedInChromeCommandHandle
 
 commandHandlerService.registerHandler(new StartDiscussionChromeCommandHandler());
 commandHandlerService.registerHandler(new AddToPortalChromeCommandHandler());
+
 commandHandlerService.registerHandler(new CheckQuickButtonSettingChromeCommandHandler());
+commandHandlerService.registerHandler(new CheckHighlightSettingChromeCommandHandler());
+commandHandlerService.registerHandler(new CheckCreateNoteMenuSettingChromeCommandHandler());
+
 commandHandlerService.registerHandler(new AddToPortalScheduleChromeCommandHandler());
 commandHandlerService.registerHandler(new GetLinkPreviewChromeCommandHandler());
 commandHandlerService.registerHandler(new GetPortalsChromeCommandHandler());
 commandHandlerService.registerHandler(new ChangeIconBadgeChromeCommandHandler());
-commandHandlerService.registerHandler(new CheckCreateNoteMenuSettingChromeCommandHandler());
 commandHandlerService.registerHandler(new ClearBadgeNotificationChromeCommandHandler());
 commandHandlerService.registerHandler(new CountNotificationChromeCommandHandler());
 commandHandlerService.registerHandler(new GetNotificationMessagesChromeCommandHandler());
+commandHandlerService.registerHandler(new LoadNotesForPageChromeCommandHandler());
 
 
 commandHandlerService.registerHandler(onUserLoggedInChromeCommandHandler);
@@ -39,7 +45,7 @@ chrome.runtime.onConnect.addListener(function (externalPort) {
     chrome.tabs.query({}, (tabs) => {
       tabs.forEach(tab => {
         console.log('removing highlights from tab', tab);
-        
+
         chrome.tabs.sendMessage(tab.id, {
           name: commandKeys.removeAllHighlight
         }, function (response) {

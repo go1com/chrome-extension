@@ -5,16 +5,17 @@ import firebase from 'firebase';
 import configuration from "../../../environments/configuration";
 import {Observable} from "rxjs/Observable";
 import * as _ from 'lodash';
+import {DiscussionNoFirebaseServiceService} from "./discussionNoFirebase.service";
 
 @Injectable()
-export class DiscussionService {
-  private baseUrl = configuration.environment.baseApiUrl;
+export class DiscussionService extends DiscussionNoFirebaseServiceService {
   private fireBaseDb: firebase.database.Database;
   public onNoteDeleted: EventEmitter<any> = new EventEmitter<any>();
   public onNoteCreated: EventEmitter<any> = new EventEmitter<any>();
 
-  constructor(private restClientService: RestClientService,
-              private storageService: StorageService) {
+  constructor(protected restClientService: RestClientService,
+              protected storageService: StorageService) {
+    super(restClientService, storageService);
     if (firebase.apps.length === 0) {
       firebase.initializeApp(configuration.environment.firebase);
     }
@@ -22,21 +23,15 @@ export class DiscussionService {
     this.fireBaseDb = firebase.database();
   }
 
-  private getCustomHeaders() {
-    return {
-      'Authorization': `Bearer ${ this.storageService.retrieve(configuration.constants.localStorageKeys.authentication) }`
-    };
-  }
-
   getUserNotesFromService() {
     let url = `${this.baseUrl}/${configuration.serviceUrls.noteService}notes`;
 
-    let queries = [];
+    const queries = [];
 
     queries.push(`type=${configuration.constants.noteChromeExtType}`);
 
     if (configuration.currentChromeTab && configuration.currentChromeTab.url) {
-      queries.push(`context\\[url\\]=${configuration.currentChromeTab.url}`);
+      queries.push(`context[url]=${configuration.currentChromeTab.url}`);
     }
 
     if (queries.length) {
@@ -70,7 +65,7 @@ export class DiscussionService {
     try {
       const endpoint = `${this.baseUrl}/${configuration.serviceUrls.noteService}note/${noteUuid}`;
 
-      const response = await this.restClientService.delete(endpoint, this.getCustomHeaders());
+      await this.restClientService.delete(endpoint, this.getCustomHeaders());
     } catch (error) {
       console.error(error);
       throw error;
@@ -133,7 +128,8 @@ export class DiscussionService {
   }
 
   async addReply(noteUuid: any, messageId: any, messageData: any) {
-    return await this.fireBaseDb.ref(`${configuration.serviceUrls.fireBaseNotePath}${noteUuid}/data/${messageId}`).child('replies')
+    return await this.fireBaseDb.ref(`${configuration.serviceUrls.fireBaseNotePath}${noteUuid}/data/${messageId}`)
+      .child('replies')
       .push(messageData);
   }
 

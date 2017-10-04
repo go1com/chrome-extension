@@ -23,6 +23,7 @@ const configuration = {
       uuid: 'uuid',
       quickButtonSetting: 'Go1.settings.quickButtonEnabled',
       createNoteSetting: 'Go1.settings.createNoteEnabled',
+      highlightNoteSetting: 'Go1.settings.highlightNotesEnabled',
       socialLogin: 'socialLoggingIn',
       createNoteParams: 'GO1.Command.createNoteParams',
       addToPortalParams: 'GO1.Command.addToPortalParams',

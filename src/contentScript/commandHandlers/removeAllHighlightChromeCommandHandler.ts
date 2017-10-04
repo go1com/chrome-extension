@@ -1,6 +1,6 @@
 import {IChromeCommandHandler} from "../../commandHandlers/IChromeCommandHandler";
 import {commandKeys} from "../../commandHandlers/commandKeys";
-import Util from "../../libs/annotation-plugin/util";
+import {Go1ExtensionInjectionArea} from "../go1ExtensionInjectionArea";
 
 declare const $: any;
 
@@ -12,9 +12,11 @@ export class RemoveAllHighlightChromeCommandHandler implements IChromeCommandHan
 
   handle(request: any, sender: any, sendResponse?: Function) {
     // remove old highlights
-    $('.go1-annotation-highlight').parent().unhighlight({
+    $('body').unhighlight({
       className: 'go1-annotation-highlight'
     });
+
+    Go1ExtensionInjectionArea.toggleHighlightArea();
 
     if (sendResponse) {
       sendResponse({success: true});

@@ -1,4 +1,4 @@
-import {Component, Input} from "@angular/core";
+import {Component, Input, OnInit} from "@angular/core";
 import {ModalDialogService} from "../../go1core/services/ModalDialogService";
 import {DiscussionService} from "../services/discussion.service";
 import {Router} from "@angular/router";
@@ -11,12 +11,13 @@ import {commandKeys} from "../../../commandHandlers/commandKeys";
   templateUrl: './discussionItem.component.pug',
   styleUrls: ['./discussionItem.component.scss']
 })
-export class DiscussionItemComponent {
+export class DiscussionItemComponent implements OnInit {
   postingReply: boolean;
   @Input() discussionItem: any;
 
   replyMessage: string = '';
   discussionStarted: boolean = false;
+  quoteTextLimit = 40;
 
   constructor(private modalDialogService: ModalDialogService,
               private userService: UserService,
@@ -40,6 +41,13 @@ export class DiscussionItemComponent {
       await this.discussionService.deleteNote(this.discussionItem.noteItem.uuid);
       this.discussionService.onNoteDeleted.emit(this.discussionItem.noteItem.uuid);
     }
+  }
+
+  getEllipsisQuoteText() {
+    if (this.discussionItem.quote.length < this.quoteTextLimit) {
+      return this.discussionItem.quote;
+    }
+    return this.discussionItem.quote.substr(0, this.quoteTextLimit) + '...';
   }
 
   jumpToQuotedText() {

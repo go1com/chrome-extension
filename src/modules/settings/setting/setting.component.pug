@@ -9,11 +9,6 @@
       p.mail.grey5 {{ user.mail }}
 
   .actions-area
-    //.action-area
-    //  span.action-name Notification
-    //  .switch
-    //    input#cmn-toggle-1.cmn-toggle.cmn-toggle-round(type="checkbox")
-    //    label.label-switch(for="cmn-toggle-1")
     .action-area
       span.action-name Allow quick button
       .switch
@@ -21,7 +16,13 @@
         label.label-switch(for="cmn-toggle-2")
 
     .action-area
-      span.action-name Show 'Create Note' tooltip when I select text on websites
+      span.action-name Show annotation indicators for texts that I quoted on websites
+      .switch
+        input#cmn-toggle-highlight-note.cmn-toggle.cmn-toggle-round(type="checkbox", [(ngModel)]="highlightNotesEnabled", (click)="toggleHighlightNotes()")
+        label.label-switch(for="cmn-toggle-highlight-note")
+
+    .action-area
+      span.action-name Show inline 'Create Note' tooltip when I select text on websites
       .switch
         input#cmn-toggle-create-note.cmn-toggle.cmn-toggle-round(type="checkbox", [(ngModel)]="createNoteEnabled", (click)="toggleCreateNoteToolTip()")
         label.label-switch(for="cmn-toggle-create-note")

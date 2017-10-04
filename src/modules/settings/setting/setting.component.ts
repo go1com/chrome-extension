@@ -18,6 +18,7 @@ export class SettingComponent implements OnInit {
   private userAvatar;
   private quickButtonEnabled: boolean;
   private createNoteEnabled: boolean;
+  private highlightNotesEnabled: boolean;
   private currentYear: number;
 
   constructor(private userService: UserService,
@@ -33,6 +34,7 @@ export class SettingComponent implements OnInit {
   async ngOnInit() {
     this.quickButtonEnabled = this.storageService.retrieve(configuration.constants.localStorageKeys.quickButtonSetting) || false;
     this.createNoteEnabled = this.storageService.retrieve(configuration.constants.localStorageKeys.createNoteSetting) || false;
+    this.highlightNotesEnabled = this.storageService.retrieve(configuration.constants.localStorageKeys.highlightNoteSetting) || false;
 
     this.defaultPortal = this.portalService.getDefaultPortalSetting();
 
@@ -81,8 +83,24 @@ export class SettingComponent implements OnInit {
     });
   }
 
-  signout() {
+  toggleHighlightNotes() {
+    this.highlightNotesEnabled = !this.highlightNotesEnabled;
+
+    this.storageService.store(configuration.constants.localStorageKeys.highlightNoteSetting, this.highlightNotesEnabled);
+
+    chrome.tabs.query({currentWindow: true}, (tabs) => {
+      tabs.forEach(tab => {
+        chrome.tabs.sendMessage(tab.id, {
+          name: commandKeys.checkHighlightNoteSettings
+        }, function (response) {
+
+        });
+      });
+    });
+  }
+
+  async signout() {
     this.userService.logout();
-    this.router.navigate(['/membership/login']);
+    await this.router.navigate(['/membership/login']);
   }
 }

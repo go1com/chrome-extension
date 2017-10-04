@@ -24,14 +24,6 @@ const ignoringDomains = ['mygo1.com', 'go1.com'];
 
   Go1ExtensionInjectionArea.initialize();
 
-  chrome.runtime.onConnect.addListener(function (externalPort) {
-    console.log('port connected', externalPort);
-
-    externalPort.onDisconnect.addListener(function () {
-      console.log('popup closed');
-    });
-  });
-
   chrome.runtime.onMessage.addListener(function (msg, sender, sendResponse) {
     if (commandHandlerService.hasHandler(msg.name)) {
       commandHandlerService.handleCommand(msg.name, msg, sender, sendResponse);
@@ -40,6 +32,12 @@ const ignoringDomains = ['mygo1.com', 'go1.com'];
 
     if (msg.name === commandKeys.checkQuickButtonSettings) {
       Go1ExtensionInjectionArea.toggleQuickButton();
+      sendResponse({success: true});
+      return true;
+    }
+
+    if (msg.name === commandKeys.checkHighlightNoteSettings) {
+      Go1ExtensionInjectionArea.toggleHighlightArea();
       sendResponse({success: true});
       return true;
     }

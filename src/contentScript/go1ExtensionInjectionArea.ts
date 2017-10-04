@@ -1,14 +1,20 @@
 import {ToolTipMenu} from "./toolTipsMenu";
 import {commandKeys} from "../commandHandlers/commandKeys";
 import Util from '../libs/annotation-plugin/util';
+import {HighlightService} from "./services/highlightService";
 
 declare const $: any;
+
+const hiddenClassName = 'highlighting-hidden';
 
 export class Go1ExtensionInjectionArea {
   static singleInstance: Go1ExtensionInjectionArea;
 
   containerArea: any;
   fabArea: any;
+  annotationIndicatorFrame: any;
+  annotationIndicatorArea: any;
+
   createNoteEnabled: boolean;
 
   static appendDOM(dom) {
@@ -28,6 +34,10 @@ export class Go1ExtensionInjectionArea {
     return Go1ExtensionInjectionArea.singleInstance;
   }
 
+  static toggleHighlightArea() {
+    Go1ExtensionInjectionArea.singleInstance.checkShowHighlightSettings();
+  }
+
   static toggleQuickButton() {
     Go1ExtensionInjectionArea.singleInstance.checkQuickButtonSettings();
   }
@@ -38,7 +48,7 @@ export class Go1ExtensionInjectionArea {
 
   constructor() {
     this.createNoteEnabled = false;
-    this.containerArea = $('<div class="go1-extension go1-extension-injected"></div>');
+    this.containerArea = $(`<div class="go1-extension go1-extension-injected"></div>`);
     this.fabArea = $(require('./views/fabButtons.pug'));
   }
 
@@ -55,6 +65,24 @@ export class Go1ExtensionInjectionArea {
         return;
       }
       this.appendQuickButton();
+    });
+  }
+
+  checkShowHighlightSettings(firstTimeInitial = false) {
+    chrome.runtime.sendMessage({
+      from: 'content',
+      action: commandKeys.checkHighlightNoteSettings
+    }, (highlightSettings) => {
+      if (!highlightSettings) {
+        if (firstTimeInitial) {
+          return;
+        }
+        this.removeAnnotationIndicatorArea();
+        return;
+      }
+
+      this.appendAnnotationIndicatorArea();
+      this.checkNotesOnCurrentPage();
     });
   }
 
@@ -80,6 +108,7 @@ export class Go1ExtensionInjectionArea {
     $('body').append(this.containerArea);
     this.checkQuickButtonSettings(true);
     this.checkCreateNoteSettings(true);
+    this.checkShowHighlightSettings(true);
   }
 
   appendQuickButton() {
@@ -114,6 +143,18 @@ export class Go1ExtensionInjectionArea {
     });
   }
 
+  appendAnnotationIndicatorArea() {
+    this.annotationIndicatorFrame = $(require('./views/annotationIndicatorBar.pug'));
+    this.containerArea.append(this.annotationIndicatorFrame);
+    this.annotationIndicatorArea = $('.annotation-indicator-bar', this.annotationIndicatorFrame);
+
+    $(window).on('scroll', () => {
+      this.annotationIndicatorArea.css('top', -($(window).scrollTop()));
+    });
+
+    this.annotationIndicatorArea.css('top', -($(window).scrollTop()));
+  }
+
   addListenerToSelectingText() {
     document.addEventListener('mouseup', event => this.onDocumentMouseUp(event));
   }
@@ -124,6 +165,10 @@ export class Go1ExtensionInjectionArea {
 
   removeQuickButton() {
     this.fabArea.remove();
+  }
+
+  removeAnnotationIndicatorArea() {
+    this.annotationIndicatorFrame.remove();
   }
 
   private onDocumentMouseUp(event: any) {
@@ -141,14 +186,72 @@ export class Go1ExtensionInjectionArea {
     if (selectedText) {
       const selectedTextPosition = selection.getRangeAt(0).getBoundingClientRect();
       const xpathFromNode = Util.xpathFromNode($(selection.anchorNode.parentNode));
-      console.log(`selected note xpath`);
-      console.log(xpathFromNode);
-      console.log(`selected note in DOM tree: `, Util.nodeFromXPath(xpathFromNode[0]));
-
 
       ToolTipMenu.initializeTooltip(selectedTextPosition, selectedText, xpathFromNode[0]);
     } else {
       ToolTipMenu.closeLastTooltip();
     }
+  }
+
+  checkNotesOnCurrentPage() {
+    $('.annotation-indicator').remove();
+    chrome.runtime.sendMessage({
+      action: commandKeys.loadNotesForPage,
+      contextUrl: window.location.href
+    }, (response) => {
+      if (!response.data || !response.data.length) {
+        return;
+      }
+
+      chrome.runtime.sendMessage({
+        action: commandKeys.changeBrowserActionBadgeText,
+        text: response.data.length.toString(),
+        title: `${response.data.length} note${response.data.length > 1 ? 's' : ''} available in this page`
+      });
+
+      response.data.forEach(note => {
+        if (!note.context.quotation || !note.context.quotationPosition) {
+          return;
+        }
+
+        HighlightService.highlight(note.context.quotation, note.context.quotationPosition, hiddenClassName)
+          .then(dom => {
+            this.generateAnnotationIndicator(dom, note.context.quotation);
+          });
+      });
+    });
+  }
+
+  private generateAnnotationIndicator(dom: any, quotationText) {
+    const annotationIndicatorHTML = `<div class="annotation-indicator"></div>`;
+    const annotationIndicator = $(annotationIndicatorHTML);
+
+    const domOffset = $(dom).offset();
+    annotationIndicator.css('top', domOffset.top + ($(dom).height() / 2));
+    annotationIndicator.attr('title', quotationText);
+    annotationIndicator.data('connectedDOM', $(dom));
+    annotationIndicator.appendTo(this.annotationIndicatorArea);
+
+    annotationIndicator.on('click', function () {
+      const connectedDOM = $(this).data('connectedDOM');
+
+      const scrollTo = $(connectedDOM);
+
+      $('html, body').animate({
+        scrollTop: scrollTo.offset().top - 75
+      });​
+    });
+
+    annotationIndicator.on('mouseover', function () {
+      const connectedDOM = $(this).data('connectedDOM');
+
+      connectedDOM.removeClass(hiddenClassName);
+    });
+
+    annotationIndicator.on('mouseout', function () {
+      const connectedDOM = $(this).data('connectedDOM');
+
+      connectedDOM.addClass(hiddenClassName);
+    });
   }
 }
