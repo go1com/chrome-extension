@@ -44,8 +44,6 @@ chrome.runtime.onConnect.addListener(function (externalPort) {
   externalPort.onDisconnect.addListener(function () {
     chrome.tabs.query({}, (tabs) => {
       tabs.forEach(tab => {
-        console.log('removing highlights from tab', tab);
-
         chrome.tabs.sendMessage(tab.id, {
           name: commandKeys.removeAllHighlight
         }, function (response) {
@@ -71,14 +69,16 @@ chrome.runtime.onInstalled.addListener((details) => {
     chrome.notifications.create(`go1-extension-install-notification-${new Date().getTime()}`, {
       iconUrl: '/assets/icon.png',
       type: 'basic',
-      message: `Welcome to GO1 Extension ${extensionVersion}. Please restart Google Chrome to make sure all the functionality works correctly in all opening tabs.`,
+      message: `Welcome to GO1 Extension ${extensionVersion}. 
+      Please restart Google Chrome to make sure all the functionality works correctly in all opening tabs.`,
       title: `GO1 Extension Installed`
     });
   } else if (details.reason === 'update') {
     chrome.notifications.create(`go1-extension-update-notification-${new Date().getTime()}`, {
       iconUrl: '/assets/icon.png',
       type: 'basic',
-      message: `The extension has been updated to version ${extensionVersion}. Please restart Google Chrome to make sure all the functionality works correctly in all opening tabs.`,
+      message: `GO1 Extension has been updated to version ${extensionVersion}. 
+      Please restart Google Chrome to make sure all the functionality works correctly in all opening tabs.`,
       title: `GO1 Extension Updated`
     });
   }

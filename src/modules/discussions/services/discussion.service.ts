@@ -23,24 +23,6 @@ export class DiscussionService extends DiscussionNoFirebaseServiceService {
     this.fireBaseDb = firebase.database();
   }
 
-  getUserNotesFromService() {
-    let url = `${this.baseUrl}/${configuration.serviceUrls.noteService}notes`;
-
-    const queries = [];
-
-    queries.push(`type=${configuration.constants.noteChromeExtType}`);
-
-    if (configuration.currentChromeTab && configuration.currentChromeTab.url) {
-      queries.push(`context[url]=${configuration.currentChromeTab.url}`);
-    }
-
-    if (queries.length) {
-      url += `?${queries.join('&')}`;
-    }
-
-    return this.restClientService.get(url, this.getCustomHeaders());
-  }
-
   async getUserNote(uuid: string) {
     return new Promise((resolve, reject) => {
       const ref = this.fireBaseDb.ref(configuration.serviceUrls.fireBaseNotePath + uuid);
@@ -59,17 +41,6 @@ export class DiscussionService extends DiscussionNoFirebaseServiceService {
         observer.next(snapshot.val());
       });
     });
-  }
-
-  async deleteNote(noteUuid: string) {
-    try {
-      const endpoint = `${this.baseUrl}/${configuration.serviceUrls.noteService}note/${noteUuid}`;
-
-      await this.restClientService.delete(endpoint, this.getCustomHeaders());
-    } catch (error) {
-      console.error(error);
-      throw error;
-    }
   }
 
   async createNote(newNote: any) {

@@ -2,6 +2,7 @@ import {ToolTipMenu} from "./toolTipsMenu";
 import {commandKeys} from "../commandHandlers/commandKeys";
 import Util from '../libs/annotation-plugin/util';
 import {HighlightService} from "./services/highlightService";
+import {checkNoChangesNode} from "@angular/core/src/view/view";
 
 declare const $: any;
 
@@ -14,8 +15,9 @@ export class Go1ExtensionInjectionArea {
   fabArea: any;
   annotationIndicatorFrame: any;
   annotationIndicatorArea: any;
-
   createNoteEnabled: boolean;
+
+  updateAnnotationTimeout: any;
 
   static appendDOM(dom) {
     if (!Go1ExtensionInjectionArea.singleInstance) {
@@ -148,18 +150,49 @@ export class Go1ExtensionInjectionArea {
     this.containerArea.append(this.annotationIndicatorFrame);
     this.annotationIndicatorArea = $('.annotation-indicator-bar', this.annotationIndicatorFrame);
 
-    $(window).on('scroll', () => {
-      this.annotationIndicatorArea.css('top', -($(window).scrollTop()));
+    $(window).on('scroll', () => this.updateAnnotationAreaPosition());
+
+    this.updateAnnotationAreaPosition();
+  }
+
+  updateAnnotationAreaPosition() {
+    const windowScrollTop = $(window).scrollTop();
+    this.annotationIndicatorArea.css('top', -(windowScrollTop));
+
+    let beyondTopAnchors = 0;
+    let beyondBottomAnchors = 0;
+    $('.annotation-indicator', this.annotationIndicatorArea).each(function () {
+      const annotationIndicator = $(this);
+
+      if (windowScrollTop > annotationIndicator.offset().top) {
+        beyondTopAnchors++;
+      } else if (windowScrollTop + window.innerHeight < annotationIndicator.offset().top) {
+        beyondBottomAnchors++;
+      }
     });
 
-    this.annotationIndicatorArea.css('top', -($(window).scrollTop()));
+    if (!beyondTopAnchors) {
+      $('.annotation-indicator-up', this.annotationIndicatorArea).addClass('hidden');
+    } else {
+      $('.annotation-indicator-up', this.annotationIndicatorArea).removeClass('hidden');
+      $('.annotation-indicator-up .label', this.annotationIndicatorArea).text(beyondTopAnchors);
+    }
+
+    if (!beyondBottomAnchors) {
+      $('.annotation-indicator-down', this.annotationIndicatorArea).addClass('hidden');
+    } else {
+      $('.annotation-indicator-down', this.annotationIndicatorArea).removeClass('hidden');
+      $('.annotation-indicator-down .label', this.annotationIndicatorArea).text(beyondBottomAnchors);
+    }
   }
 
   addListenerToSelectingText() {
+    document.addEventListener('click', event => this.onDocumentMouseDown(event));
     document.addEventListener('mouseup', event => this.onDocumentMouseUp(event));
   }
 
   removeListenerToSelectingText() {
+    document.removeEventListener('click', event => this.onDocumentMouseDown(event));
     document.removeEventListener('mouseup', event => this.onDocumentMouseUp(event));
   }
 
@@ -168,15 +201,27 @@ export class Go1ExtensionInjectionArea {
   }
 
   removeAnnotationIndicatorArea() {
-    this.annotationIndicatorFrame.remove();
+    if (this.annotationIndicatorFrame) {
+      this.annotationIndicatorFrame.remove();
+      this.annotationIndicatorFrame = null;
+    }
+  }
+
+  private onDocumentMouseDown(event: any) {
+    if ($(event.target).is('.annotation-indicator') || $(event.target).closest('.annotation-indicator').length) {
+      return;
+    }
+    HighlightService.unhighlight();
   }
 
   private onDocumentMouseUp(event: any) {
     if ($(event.target).closest('.go1-extension-injected').length) {
+      this.checkNotesOnCurrentPage();
       return;
     }
 
     if (!this.createNoteEnabled) {
+      this.checkNotesOnCurrentPage();
       return;
     }
 
@@ -191,6 +236,7 @@ export class Go1ExtensionInjectionArea {
     } else {
       ToolTipMenu.closeLastTooltip();
     }
+    this.checkNotesOnCurrentPage();
   }
 
   checkNotesOnCurrentPage() {
@@ -200,6 +246,7 @@ export class Go1ExtensionInjectionArea {
       contextUrl: window.location.href
     }, (response) => {
       if (!response.data || !response.data.length) {
+        this.annotationIndicatorArea.addClass('no-indicator');
         return;
       }
 
@@ -223,16 +270,29 @@ export class Go1ExtensionInjectionArea {
   }
 
   private generateAnnotationIndicator(dom: any, quotationText) {
+    if (this.updateAnnotationTimeout) {
+      clearTimeout(this.updateAnnotationTimeout);
+    }
+
     const annotationIndicatorHTML = `<div class="annotation-indicator"></div>`;
     const annotationIndicator = $(annotationIndicatorHTML);
 
     const domOffset = $(dom).offset();
-    annotationIndicator.css('top', domOffset.top + ($(dom).height() / 2));
+    console.log(domOffset);
+
+    annotationIndicator.css('top', domOffset.top);
     annotationIndicator.attr('title', quotationText);
     annotationIndicator.data('connectedDOM', $(dom));
     annotationIndicator.appendTo(this.annotationIndicatorArea);
 
-    annotationIndicator.on('click', function () {
+    this.updateAnnotationTimeout = setTimeout(() => this.updateAnnotationAreaPosition(), 300);
+
+    if (this.annotationIndicatorArea.hasClass('no-indicator')) {
+      this.annotationIndicatorArea.removeClass('no-indicator');
+    }
+
+    annotationIndicator.on('click', function (event) {
+      event.stopPropagation();
       const connectedDOM = $(this).data('connectedDOM');
 
       const scrollTo = $(connectedDOM);

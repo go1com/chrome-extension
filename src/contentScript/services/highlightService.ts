@@ -2,15 +2,11 @@ import Util from "../../libs/annotation-plugin/util";
 
 declare const $: any;
 const highlightClassName = 'go1-annotation-highlight';
+const elementName = 'go1-highlight-annotation';
 
 export class HighlightService {
   static async highlight(text, domXpath, specialClass?: string) {
     const quotationNode = Util.nodeFromXPath(domXpath);
-
-    // remove old highlights
-    $(`.${highlightClassName}`).parent().unhighlight({
-      className: highlightClassName
-    });
 
     let effectiveClass = highlightClassName;
     if (specialClass) {
@@ -19,10 +15,18 @@ export class HighlightService {
 
     return new Promise((resolve, reject) => {
       $(quotationNode).highlight(text, {
-        className: effectiveClass
+        className: effectiveClass,
+        element: elementName
       }, (dom) => {
         resolve(dom);
       });
+    });
+  }
+
+  static unhighlight() {
+    $('body').unhighlight({
+      element: elementName,
+      className: highlightClassName
     });
   }
 }
