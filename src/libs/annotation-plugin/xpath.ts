@@ -112,7 +112,7 @@ export function findChild(node, type, index) {
   }
   const children = node.childNodes;
   let found = 0;
-  for (let child of Array.from(children)) {
+  for (const child of Array.from(children)) {
     const name = getNodeName(child);
     if (name === type) {
       found += 1;

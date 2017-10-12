@@ -176,6 +176,11 @@ module.exports = function (options) {
           exclude: ['/node_modules/'],
           use: ['raw-loader', 'pug-html-loader']
         },
+        {
+          test: /\.js$/,
+          exclude: ['/node_modules/'],
+          use: 'babel-loader'
+        },
         /**
          * Json loader support for *.json files.
          *

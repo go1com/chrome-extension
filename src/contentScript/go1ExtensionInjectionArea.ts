@@ -2,7 +2,8 @@ import {ToolTipMenu} from "./toolTipsMenu";
 import {commandKeys} from "../commandHandlers/commandKeys";
 import Util from '../libs/annotation-plugin/util';
 import {HighlightService} from "./services/highlightService";
-import {checkNoChangesNode} from "@angular/core/src/view/view";
+import htmlUtil from '../plugins/annotation-plugin/html';
+import Range from '../plugins/annotation-plugin/range';
 
 declare const $: any;
 
@@ -227,6 +228,7 @@ export class Go1ExtensionInjectionArea {
 
     const selection = window.getSelection();
     const selectedText = selection && selection.toString();
+    this.createAnnotation();
 
     if (selectedText) {
       const selectedTextPosition = selection.getRangeAt(0).getBoundingClientRect();
@@ -237,6 +239,67 @@ export class Go1ExtensionInjectionArea {
       ToolTipMenu.closeLastTooltip();
     }
     this.checkNotesOnCurrentPage();
+  }
+
+  createAnnotation() {
+    const root = $('body');
+
+    const _range = this.selectedRange(document);
+
+    const options = {
+      ignoreSelector: '[class^="annotator-"]'
+    };
+
+    const getSelectors = function (range) {
+      // Returns an array of selectors for the passed range.
+      return htmlUtil.describe(root, range, options);
+    };
+
+    const locate = function (target) {
+      // Check that the anchor has a TextQuoteSelector -- without a
+      // TextQuoteSelector we have no basis on which to verify that we have
+      // reanchored correctly and so we shouldn't even try.
+      //
+      // Returning an anchor without a range will result in this annotation being
+      // treated as an orphan (assuming no other targets anchor).
+      if (!(target.selector != null ? target.selector : []).some(s => s.type === 'TextQuoteSelector')) {
+        return Promise.resolve({annotation, target});
+      }
+
+      htmlUtil.anchor(root, target.selector, options)
+        .then(range => ({annotation, target, range}))
+        .catch(() => ({annotation, target}));
+
+
+      const selectors = getSelectors(_range);
+      console.log(selectors);
+    };
+
+    const highlight = function (anchor) {
+      // Highlight the range for an anchor.
+      if (anchor.range == null) {
+        return anchor;
+      }
+
+      const range = Range.sniff(anchor.range);
+      const normedRange = range.normalize(root);
+      console.log(normedRange);
+
+      // const highlights = highlighter.highlightRange(normedRange);
+
+      // $(highlights).data('annotation', anchor.annotation);
+      // anchor.highlights = highlights;
+      return anchor;
+    };
+  }
+
+  selectedRange(document) {
+    const selection = document.getSelection();
+    if (!selection.rangeCount || selection.getRangeAt(0).collapsed) {
+      return null;
+    } else {
+      return selection.getRangeAt(0);
+    }
   }
 
   checkNotesOnCurrentPage() {
