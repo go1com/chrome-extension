@@ -5,9 +5,12 @@ import {commandKeys} from "../commandHandlers/commandKeys";
 import {ChromeCmdHandleService} from "../commandHandlers/ChromeCmdHandleService";
 import {JumpToQuoteTextChromeCommandHandler} from "./commandHandlers/jumpToQuoteTextChromeCommandHandler";
 import {RemoveAllHighlightChromeCommandHandler} from "./commandHandlers/removeAllHighlightChromeCommandHandler";
+import {GetLinkPreviewChromeCommandHandler} from "./commandHandlers/GetLinkPreviewChromeCommandHandler";
+import configuration from "../environments/configuration";
+import {CloseExtensionPopupChromeCommandHandler} from "./commandHandlers/CloseExtensionPopupChromeCommandHandler";
 
 declare const $: any;
-const ignoringDomains = ['mygo1.com', 'go1.com'];
+const ignoringDomains = ['mygo1.com', 'go1.com', 'www.google.com/maps'];
 
 (function () {
   const shouldIgnore = _.some(ignoringDomains, (domain) => window.location.href.indexOf(domain) > -1);
@@ -21,6 +24,8 @@ const ignoringDomains = ['mygo1.com', 'go1.com'];
   const commandHandlerService = new ChromeCmdHandleService();
   commandHandlerService.registerHandler(new RemoveAllHighlightChromeCommandHandler());
   commandHandlerService.registerHandler(new JumpToQuoteTextChromeCommandHandler());
+  commandHandlerService.registerHandler(new GetLinkPreviewChromeCommandHandler());
+  commandHandlerService.registerHandler(new CloseExtensionPopupChromeCommandHandler());
 
   Go1ExtensionInjectionArea.initialize();
 

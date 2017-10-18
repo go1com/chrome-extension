@@ -73,10 +73,9 @@ export class NewDiscussionComponent implements OnInit {
 
   private async loadPageMetadata(url) {
     return new Promise((resolve, reject) => {
-      chrome.runtime.sendMessage({
-        action: commandKeys.getLinkPreview,
-        data: url
-      }, (response) => {
+      chrome.tabs.sendMessage(configuration.currentChromeTab.id, {
+        name: commandKeys.getLinkPreview
+      }, function (response) {
         resolve(response.data);
       });
     });
@@ -99,12 +98,16 @@ export class NewDiscussionComponent implements OnInit {
     const noteData = await this.discussionService.createNote(this.data);
 
     if (this.mentionedUsers.length) {
-      let mentionedUserIds = this.mentionedUsers.map((user) => user.rootId.toString());
+      const mentionedUserIds = this.mentionedUsers.map((user) => user.rootId.toString());
       await this.discussionService.mentionUsers(noteData.$uuid, mentionedUserIds);
     }
 
     if (this.newDiscussionFromBackgroundPage) {
-      window.close();
+      chrome.tabs.sendMessage(configuration.currentChromeTab.id, {
+        name: commandKeys.closeExtensionPopup
+      }, function (response) {
+
+      });
       return;
     }
 

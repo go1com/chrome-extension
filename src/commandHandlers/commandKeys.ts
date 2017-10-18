@@ -14,5 +14,6 @@ export const commandKeys = {
   countNotificationMessages: "GET_NOTIFICATION_MESSAGES_COUNT",
   jumpToQuotedText: "JUMP_TO_QUOTED_TEXT",
   removeAllHighlight: "REMOVE_ALL_HIGHLIGHT",
-  loadNotesForPage: "LOAD_NOTES_FOR_PAGE"
+  loadNotesForPage: "LOAD_NOTES_FOR_PAGE",
+  closeExtensionPopup: "CLOSE_EXTENSION_POPUP"
 };

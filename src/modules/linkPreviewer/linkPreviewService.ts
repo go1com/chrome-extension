@@ -23,7 +23,7 @@ export class LinkPreview {
     });
   }
 
-  _parseResponse(body, url) {
+  _parseResponse(body, url): any {
     const doc = cheerio.load(body);
 
     return {

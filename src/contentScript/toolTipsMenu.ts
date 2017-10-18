@@ -79,6 +79,8 @@ export class ToolTipMenu {
         action: commandKeys.startDiscussion,
         quotation: this.selectingText,
         quotationPosition: this.quotationPosition
+      }, () => {
+        Go1ExtensionInjectionArea.singleInstance.showPopup('discussionsList/newDiscussion');
       });
       // let newDiscussionWithQuote = new NewDiscussionPopup(this.selectingText);
       // await PopupBaseModel.openPopup(newDiscussionWithQuote);

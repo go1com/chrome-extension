@@ -4,12 +4,14 @@ import Util from '../libs/annotation-plugin/util';
 import {HighlightService} from "./services/highlightService";
 import htmlUtil from '../plugins/annotation-plugin/html';
 import Range from '../plugins/annotation-plugin/range';
+import * as _ from 'lodash';
 
 declare const $: any;
 
 const hiddenClassName = 'highlighting-hidden';
 
 export class Go1ExtensionInjectionArea {
+  go1PopupContainer: any;
   static singleInstance: Go1ExtensionInjectionArea;
 
   containerArea: any;
@@ -51,7 +53,13 @@ export class Go1ExtensionInjectionArea {
 
   constructor() {
     this.createNoteEnabled = false;
-    this.containerArea = $(`<div class="go1-extension go1-extension-injected"></div>`);
+    this.containerArea = $(`
+<div class="go1-extension go1-extension-injected">
+  <div id="go1-popup-frame-container" class="go1-popup-frame-container animated hidden">
+    <button id="go1-popup-close-btn">&times</button>
+    <iframe id="popup-iframe" src=""></iframe>
+  </div>
+</div>`);
     this.fabArea = $(require('./views/fabButtons.pug'));
   }
 
@@ -109,9 +117,41 @@ export class Go1ExtensionInjectionArea {
 
   injectToDocument() {
     $('body').append(this.containerArea);
+
+    this.containerArea.find('button#go1-popup-close-btn').on('click', () => this.closePopup());
+
+    this.go1PopupContainer = this.containerArea.find('#go1-popup-frame-container');
+
+    ['webkitTransitionEnd', 'otransitionend', 'oTransitionEnd', 'msTransitionEnd', 'transitionend'].forEach(event => {
+      this.go1PopupContainer.on(event, _.debounce((e) => this.onPopupAnimationEnded(e), 200));
+    });
+
     this.checkQuickButtonSettings(true);
     this.checkCreateNoteSettings(true);
     this.checkShowHighlightSettings(true);
+  }
+
+  closePopup() {
+    this.go1PopupContainer
+      .removeClass('slideInRight')
+      .addClass('slideOutRight');
+
+    setTimeout(() => {
+      const popupContainer = this.containerArea.find('.go1-popup-frame-container');
+      const popupContent = popupContainer.find('iframe#popup-iframe');
+      popupContent.attr('src', ``);
+    }, 500);
+  }
+
+  showPopup(popupPage) {
+    const popupContainer = this.containerArea.find('.go1-popup-frame-container');
+    const popupContent = popupContainer.find('iframe#popup-iframe');
+    popupContent.attr('src', `chrome-extension://${chrome.runtime.id}/index.html#/${popupPage}`);
+    popupContainer.addClass('slideInRight').removeClass('hidden slideOutRight');
+  }
+
+  onPopupAnimationEnded(e) {
+    console.log('go1 popup animation finished', e);
   }
 
   appendQuickButton() {
@@ -133,7 +173,7 @@ export class Go1ExtensionInjectionArea {
       chrome.runtime.sendMessage({
         from: 'content',
         action: commandKeys.startDiscussion
-      });
+      }, response => this.showPopup('discussionsList/newDiscussion'));
     });
 
     this.fabArea.find('.add-to-portal-btn').on('click', (event) => {
@@ -319,6 +359,10 @@ export class Go1ExtensionInjectionArea {
 
   checkNotesOnCurrentPage() {
     $('.annotation-indicator').remove();
+    if (!this.annotationIndicatorArea) {
+      return;
+    }
+
     chrome.runtime.sendMessage({
       action: commandKeys.loadNotesForPage,
       contextUrl: window.location.href

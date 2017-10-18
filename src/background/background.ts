@@ -56,6 +56,11 @@ chrome.runtime.onConnect.addListener(function (externalPort) {
 
 
 chrome.runtime.onMessage.addListener(function (msg, sender, sendResponse) {
+  if (msg.action === 'getTabId') {
+    sendResponse(sender);
+    return true;
+  }
+
   if (commandHandlerService.hasHandler(msg.action)) {
     commandHandlerService.handleCommand(msg.action, msg, sender, sendResponse);
     return true;

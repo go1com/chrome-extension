@@ -13,6 +13,7 @@ body {
   font-size: 16px;
   font-family: 'Open Sans', sans-serif;
   color: $go1black;
+  overflow-x: hidden;
 
   &.go1-popup {
     overflow: hidden;
