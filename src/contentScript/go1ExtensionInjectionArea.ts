@@ -228,7 +228,6 @@ export class Go1ExtensionInjectionArea {
 
     const selection = window.getSelection();
     const selectedText = selection && selection.toString();
-    this.createAnnotation();
 
     if (selectedText) {
       const selectedTextPosition = selection.getRangeAt(0).getBoundingClientRect();
@@ -255,24 +254,16 @@ export class Go1ExtensionInjectionArea {
       return htmlUtil.describe(root, range, options);
     };
 
+    const annotation: any = {};
+
     const locate = function (target) {
-      // Check that the anchor has a TextQuoteSelector -- without a
-      // TextQuoteSelector we have no basis on which to verify that we have
-      // reanchored correctly and so we shouldn't even try.
-      //
-      // Returning an anchor without a range will result in this annotation being
-      // treated as an orphan (assuming no other targets anchor).
-      if (!(target.selector != null ? target.selector : []).some(s => s.type === 'TextQuoteSelector')) {
-        return Promise.resolve({annotation, target});
-      }
-
-      htmlUtil.anchor(root, target.selector, options)
-        .then(range => ({annotation, target, range}))
-        .catch(() => ({annotation, target}));
-
-
-      const selectors = getSelectors(_range);
-      console.log(selectors);
+      return htmlUtil.anchor(root, target.selector, options)
+        .then(range => {
+          return {target, range};
+        })
+        .catch(() => {
+          return {target};
+        });
     };
 
     const highlight = function (anchor) {
@@ -291,6 +282,30 @@ export class Go1ExtensionInjectionArea {
       // anchor.highlights = highlights;
       return anchor;
     };
+
+    const setTargets = function (...args) {
+      // `selectors` is an array of arrays: each item is an array of selectors
+      // identifying a distinct target.
+      let selectors;
+      [selectors] = Array.from(args[0]);
+      return annotation.target = (Array.from(selectors).map((selector) => ({selector})));
+    };
+
+    const selectors = Promise.all([_range].map(getSelectors));
+    const targets = Promise.all([selectors]).then(setTargets);
+    targets.then(() => {
+      if (annotation.target == null) {
+        annotation.target = [];
+      }
+
+      console.log(annotation.target);
+
+      for (let target of annotation.target) {
+        const anchor = locate(target).then((whatever => {
+          highlight(whatever);
+        }));
+      }
+    });
   }
 
   selectedRange(document) {

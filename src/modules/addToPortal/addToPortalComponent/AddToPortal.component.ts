@@ -75,8 +75,6 @@ export class AddToPortalComponent {
       author: this.storageService.retrieve(configuration.constants.localStorageKeys.user).mail
     };
 
-    this.learningItem = await this.addToPortal();
-
     this.isLoading = false;
   }
 
@@ -87,6 +85,15 @@ export class AddToPortalComponent {
         tags: this.learningItem.tags
       });
     }
+  }
+
+  async onDoneBtnClicked() {
+    this.learningItem = await this.addToPortal();
+    await this.goToSuccess();
+  }
+
+  async onCancelBtnClicked() {
+    await this.goBack();
   }
 
   async shareButtonClicked() {

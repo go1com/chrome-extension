@@ -14,8 +14,10 @@ import {SignUpComponent} from "../modules/membership/signUp/sign-up.component";
 import {SignupSuccessComponent} from "../modules/membership/signUpSuccess/signup-success.component";
 import {SocialLoginComponent} from "../modules/membership/socialLogin/social-login.component";
 import configuration from "../environments/configuration";
+import {NewDiscussionComponent} from "../modules/discussions/newDiscussionComponent/newDiscussion.component";
+import {DiscussionsListComponent} from "../modules/discussions/discussionsListComponent/discussionsList.component";
 
-let routes: Routes = [
+const routes: Routes = [
   {
     path: '',
     component: RedirectingComponent,
@@ -33,7 +35,12 @@ let routes: Routes = [
   },
   {
     path: configuration.pages.discussionsList,
-    loadChildren: '../modules/discussions#DiscussionsModule'
+    // loadChildren: '../modules/discussions#DiscussionsModule'
+    children: [
+      {path: '', component: DiscussionsListComponent},
+      {path: configuration.pages.discussionsList, component: DiscussionsListComponent},
+      {path: 'newDiscussion', component: NewDiscussionComponent},
+    ]
   },
   {
     path: configuration.pages.addToPortal,

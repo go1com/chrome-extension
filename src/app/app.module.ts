@@ -25,6 +25,8 @@ import {NgbModule} from "@ng-bootstrap/ng-bootstrap";
 import {ModalModule} from "ngx-modialog";
 import {RedirectingComponent} from "./redirectingComponent/redirecting.component";
 import {TypeAheadModule} from "../sharedComponents/typeahead-plugin/typeahead.module";
+import {AddToPortalModule} from "../modules/addToPortal/addToPortal.module";
+import {DiscussionsModule} from "../modules/discussions/discussions.module";
 
 
 @NgModule({
@@ -57,7 +59,9 @@ import {TypeAheadModule} from "../sharedComponents/typeahead-plugin/typeahead.mo
     Go1CoreModule,
     SettingsModule,
     MembershipModule,
-    PortalModule
+    PortalModule,
+    AddToPortalModule,
+    DiscussionsModule
   ],
   providers: [
     LearnerService,

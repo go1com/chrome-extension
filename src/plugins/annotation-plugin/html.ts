@@ -6,7 +6,7 @@ import {
 } from "./types";
 
 const querySelector = function (type, root, selector, options) {
-  const doQuery = function (resolve, reject) {
+  return new Promise((resolve, reject) => {
     try {
       const anchor = type.fromSelector(root, selector, options);
       const range = anchor.toRange(options);
@@ -14,8 +14,7 @@ const querySelector = function (type, root, selector, options) {
     } catch (error) {
       return reject(error);
     }
-  };
-  return new Promise(doQuery);
+  });
 };
 
 
@@ -37,7 +36,7 @@ export function anchor(root, selectors, options) {
   if (options === null) {
     options = {};
   }
-  // let fragment = null;
+  let fragment = null;
   let position = null;
   let quote = null;
   let range = null;
@@ -45,9 +44,9 @@ export function anchor(root, selectors, options) {
   // Collect all the selectors
   for (const selector of selectors) {
     switch (selector.type) {
-      // case 'FragmentSelector':
-      //   fragment = selector;
-      //   break;
+      case 'FragmentSelector':
+        fragment = selector;
+        break;
       case 'TextPositionSelector':
         position = selector;
         options.hint = position.start;  // TextQuoteAnchor hint
@@ -74,12 +73,12 @@ export function anchor(root, selectors, options) {
   // order, from simple to complex.
   let promise = Promise.reject('unable to anchor');
 
-  // if (fragment !== null) {
-  //   promise = promise.catch(() =>
-  //     querySelector(FragmentAnchor, root, fragment, options)
-  //       .then(maybeAssertQuote)
-  //   );
-  // }
+  if (fragment !== null) {
+    promise = promise.catch(() =>
+      querySelector(FragmentAnchor, root, fragment, options)
+        .then(maybeAssertQuote)
+    );
+  }
 
   if (range !== null) {
     promise = promise.catch(() =>
@@ -110,21 +109,23 @@ export function describe(root, range, options) {
   if (options === null) {
     options = {};
   }
+
   const types = [FragmentAnchor, RangeAnchor, TextPositionAnchor, TextQuoteAnchor];
 
-  return (() => {
-    const result = [];
-    for (const type of Array.from(types)) {
-      try {
-        let selector;
-        const anchor = type.fromRange(root, range);
-        result.push(selector = anchor.toSelector(options));
-      } catch (error) {
+  const result = [];
+  for (const type of Array.from(types)) {
+    try {
+      let selector;
+      const anchor = type.fromRange(root, range);
+      selector = anchor.toSelector(options);
 
-      }
+      console.log(selector);
+      result.push(selector);
+    } catch (error) {
+
     }
-    return result;
-  })();
+  }
+  return result;
 }
 
 const htmlUtil = {

@@ -22,18 +22,22 @@
     .actions-area
       .row
         .col-6
-          button.btn.btn-primary.btn-block#doneBtn((click)="onDoneBtnClicked()", [disabled]="isLoading", title="Close this page without further action").
+          button.btn.btn-primary.btn-block#doneBtn((click)="onDoneBtnClicked()", [disabled]="isLoading", title="Add this page").
             #[i.fa.fa-check] Done
 
         .col-6
-          button.btn.btn-primary.btn-block#shareBtn((click)="shareButtonClicked()", [disabled]="isLoading", title="Share this page other user").
-            #[i.fa.fa-share] Share
-
-      .row.m-t-10
-        .col-6
-          button.btn.btn-primary.btn-block#markAsComplete((click)="onMarkAsCompleteBtnClicked()", [disabled]="isLoading", title="Mark this page as completed").
-            #[i.fa.fa-check] Mark as Complete
-
-        .col-6
-          button.btn.btn-primary.btn-block#saveForLater((click)="saveForLaterClicked()", [disabled]="isLoading", title="Schedule this page for revisit later").
-            #[i.fa.fa-calendar] Save for Later
+          button.btn.btn-primary.btn-block#cancelBtn((click)="onCancelBtnClicked()", [disabled]="isLoading", title="Close this page without further action").
+            #[i.fa.fa-check] Cancel
+      //
+      //  .col-6
+      //    button.btn.btn-primary.btn-block#shareBtn((click)="shareButtonClicked()", [disabled]="isLoading", title="Share this page other user").
+      //      #[i.fa.fa-share] Share
+      //
+      //.row.m-t-10
+      //  .col-6
+      //    button.btn.btn-primary.btn-block#markAsComplete((click)="onMarkAsCompleteBtnClicked()", [disabled]="isLoading", title="Mark this page as completed").
+      //      #[i.fa.fa-check] Mark as Complete
+      //
+      //  .col-6
+      //    button.btn.btn-primary.btn-block#saveForLater((click)="saveForLaterClicked()", [disabled]="isLoading", title="Schedule this page for revisit later").
+      //      #[i.fa.fa-calendar] Save for Later

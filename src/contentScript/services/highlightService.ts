@@ -24,8 +24,7 @@ export class HighlightService {
   }
 
   static unhighlight() {
-    $('body').unhighlight({
-      element: elementName,
+    $(elementName).unhighlight({
       className: highlightClassName
     });
   }
