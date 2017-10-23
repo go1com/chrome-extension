@@ -42,10 +42,6 @@
     }
   }
 
-  .hidden {
-    display: none;
-  }
-
   .annotation-indicator, .annotation-indicator-up, .annotation-indicator-down {
     box-sizing: border-box;
     background: #fff;
@@ -146,6 +142,10 @@
   @import "animate";
 
   @import "fab";
+
+  .hidden {
+    display: none;
+  }
 
   .row {
     width: 100%;
