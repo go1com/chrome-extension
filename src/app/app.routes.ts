@@ -35,12 +35,7 @@ const routes: Routes = [
   },
   {
     path: configuration.pages.discussionsList,
-    // loadChildren: '../modules/discussions#DiscussionsModule'
-    children: [
-      {path: '', component: DiscussionsListComponent},
-      {path: configuration.pages.discussionsList, component: DiscussionsListComponent},
-      {path: 'newDiscussion', component: NewDiscussionComponent},
-    ]
+    loadChildren: '../modules/discussions#DiscussionsModule'
   },
   {
     path: configuration.pages.addToPortal,
@@ -50,25 +45,25 @@ const routes: Routes = [
     path: configuration.pages.notifications,
     loadChildren: '../modules/notification#NotificationModule'
   },
-  {
-    path: 'portals',
-    component: PortalsComponent
-  },
-  {
-    path: 'learner-dashboard',
-    component: LearnerDashboardComponent,
-  },
-  {
-    path: 'admin-dashboard',
-    component: AdminDashboardComponent,
-    // resolve: {
-    //   user: UserResolve
-    // }
-  },
-  {
-    path: 'complete',
-    component: CompleteComponent,
-  },
+  // {
+  //   path: 'portals',
+  //   component: PortalsComponent
+  // },
+  // {
+  //   path: 'learner-dashboard',
+  //   component: LearnerDashboardComponent,
+  // },
+  // {
+  //   path: 'admin-dashboard',
+  //   component: AdminDashboardComponent,
+  //   // resolve: {
+  //   //   user: UserResolve
+  //   // }
+  // },
+  // {
+  //   path: 'complete',
+  //   component: CompleteComponent,
+  // },
   {
     path: 'setting',
     component: SettingComponent

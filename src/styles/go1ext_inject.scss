@@ -133,8 +133,8 @@
 }
 
 .go1-extension-injected {
-  @import "bootstrap-reboot";
   @import "variables";
+  @import "bootstrap-reboot";
   @import "bootstrap";
   @import "bootstrap-grid";
   @import "common";
@@ -144,7 +144,11 @@
   @import "fab";
 
   .hidden {
-    display: none;
+    visibility: hidden;
+
+    &.force-display {
+      visibility: visible;
+    }
   }
 
   .row {
@@ -154,31 +158,38 @@
   }
 
   > * {
-    z-index: 10000000;
   }
 
   .go1-popup-frame-container {
+    z-index: 10000000;
     position: fixed;
-    top: 10px;
-    right: 10px;
-    width: 415px;
+    right: -200px;
+    top: 0;
+    bottom: 0;
+    width: 0;
     border: none;
     box-shadow: 0 0 3px 1px rgba(0, 0, 0, 0.5);
     min-height: 600px;
 
+    &.finished-loading {
+      width: 415px;
+      right: 0;
+    }
+
     button#go1-popup-close-btn {
       box-shadow: none;
       width: 32px;
-      height: 32px;
+      height: auto;
+      max-height: initial;
+      padding: 10px;
+      line-height: 18px;
+      left: -32px;
+      background: #fff;
+      border-radius: 5px 0 0 5px;
       border: none;
-      background: none;
       position: absolute;
-      right: 0;
       color: black;
       font-size: 30px;
-      padding: 0;
-      max-height: 32px;
-      line-height: 1;
       margin: 0;
       min-height: 32px;
     }
@@ -241,6 +252,7 @@
   @import "link-preview.component";
 
   .go1-tooltip {
+    z-index: 9000000;
     position: absolute;
     background: $go1black;
     font-size: $font-size-base;

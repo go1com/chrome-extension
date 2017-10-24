@@ -5,6 +5,11 @@ import {PortalService} from "../../portal/services/PortalService";
 import configuration from "../../../environments/configuration";
 import {UserService} from "../../membership/services/user.service";
 import * as _ from 'lodash';
+import {StorageService} from "../../go1core/services/StorageService";
+import {ensureChromeTabLoaded} from "../../../environments/ensureChromeTabLoaded";
+
+
+const discussionListKey = 'DISCUSSION_LIST_CACHED';
 
 @Component({
   selector: 'app-discussions-list',
@@ -25,6 +30,7 @@ export class DiscussionsListComponent implements OnInit, OnDestroy {
               private portalService: PortalService,
               private userService: UserService,
               private zone: NgZone,
+              private storageService: StorageService,
               private currentActivatedRoute: ActivatedRoute) {
     this.discussionsList = [];
     this.onNoteCreatedEvent = discussionService.onNoteCreated.subscribe(() => this.loadDiscussions());
@@ -33,6 +39,8 @@ export class DiscussionsListComponent implements OnInit, OnDestroy {
   }
 
   async ngOnInit() {
+    await ensureChromeTabLoaded();
+    this.loading = true;
     await this.loadDiscussions();
     this.portal = await this.portalService.getDefaultPortalInfo();
     this.user = await this.userService.getUser();
@@ -45,16 +53,19 @@ export class DiscussionsListComponent implements OnInit, OnDestroy {
   }
 
   canAddToPortal() {
-    if (!this.portal || !this.user)
+    if (!this.portal || !this.user) {
       return false;
+    }
 
-    if (this.portal.configuration.public_writing)
+    if (this.portal.configuration.public_writing) {
       return true;
+    }
 
     const currentPortalAccount = this.user.accounts.find(acc => acc.instance_name == this.portal.title);
 
-    if (!currentPortalAccount)
+    if (!currentPortalAccount) {
       return false;
+    }
 
     return currentPortalAccount.roles.indexOf('administrator') > -1;
   }
@@ -82,11 +93,14 @@ export class DiscussionsListComponent implements OnInit, OnDestroy {
   }
 
   private async loadDiscussions() {
-    this.loading = true;
-    this.discussionsList = [];
+    if (!this.discussionsList.length) {
+      this.loading = true;
+    }
+
     const response = await this.discussionService.getUserNotesFromService();
 
-    if (!response.length){
+    if (!response.length) {
+      this.discussionsList = [];
       this.zone.run(() => this.closeLoading(1000));
       return;
     }
@@ -110,13 +124,15 @@ export class DiscussionsListComponent implements OnInit, OnDestroy {
 
   closeLoading(timeout = 750) {
     this.loadingTimeout = setTimeout(() => {
+      this.storageService.store(discussionListKey, this.discussionsList);
       this.loading = false;
     }, timeout);
   }
 
   onNoteReceived(noteItem: any, noteData: any) {
-    if (this.loadingTimeout)
+    if (this.loadingTimeout) {
       clearTimeout(this.loadingTimeout);
+    }
 
     let discussionTopic: any = this.discussionsList.find(discussion => discussion.uuid == noteItem.uuid);
     if (discussionTopic == null) {
@@ -135,7 +151,7 @@ export class DiscussionsListComponent implements OnInit, OnDestroy {
       if (foundIndex > -1)
         return;
 
-      let tmpDiscussionTopic = noteData.data[key];
+      const tmpDiscussionTopic = noteData.data[key];
       tmpDiscussionTopic.$id = key;
 
       if (tmpDiscussionTopic.item === configuration.currentChromeTab.url) {

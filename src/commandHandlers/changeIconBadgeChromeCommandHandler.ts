@@ -1,6 +1,5 @@
 import {IChromeCommandHandler} from "./IChromeCommandHandler";
 import {commandKeys} from "./commandKeys";
-import {LinkPreview} from "../modules/linkPreviewer/linkPreviewService";
 
 export class ChangeIconBadgeChromeCommandHandler implements IChromeCommandHandler {
   command = commandKeys.changeBrowserActionBadgeText;

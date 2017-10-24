@@ -5,6 +5,7 @@ import {UserService} from "../../membership/services/user.service";
 import {StorageService} from "../../go1core/services/StorageService";
 import configuration from "../../../environments/configuration";
 import {commandKeys} from "../../../commandHandlers/commandKeys";
+import {ensureChromeTabLoaded} from "../../../environments/ensureChromeTabLoaded";
 
 @Component({
   selector: 'app-new-discussion',
@@ -72,6 +73,8 @@ export class NewDiscussionComponent implements OnInit {
   }
 
   private async loadPageMetadata(url) {
+    await ensureChromeTabLoaded();
+
     return new Promise((resolve, reject) => {
       chrome.tabs.sendMessage(configuration.currentChromeTab.id, {
         name: commandKeys.getLinkPreview
@@ -105,10 +108,8 @@ export class NewDiscussionComponent implements OnInit {
     if (this.newDiscussionFromBackgroundPage) {
       chrome.tabs.sendMessage(configuration.currentChromeTab.id, {
         name: commandKeys.closeExtensionPopup
-      }, function (response) {
-
+      }, async (response) => {
       });
-      return;
     }
 
     await this.goBack();

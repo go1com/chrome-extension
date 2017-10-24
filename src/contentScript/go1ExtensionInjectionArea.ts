@@ -11,14 +11,17 @@ declare const $: any;
 const hiddenClassName = 'highlighting-hidden';
 
 export class Go1ExtensionInjectionArea {
+  popupUrl: string;
   go1PopupContainer: any;
   static singleInstance: Go1ExtensionInjectionArea;
 
   containerArea: any;
+  togglePopupButton: any;
   fabArea: any;
   annotationIndicatorFrame: any;
   annotationIndicatorArea: any;
   createNoteEnabled: boolean;
+  popupClosed: boolean = true;
 
   updateAnnotationTimeout: any;
 
@@ -53,11 +56,12 @@ export class Go1ExtensionInjectionArea {
 
   constructor() {
     this.createNoteEnabled = false;
+    this.popupUrl = `chrome-extension://${chrome.runtime.id}/index.html`;
     this.containerArea = $(`
 <div class="go1-extension go1-extension-injected">
-  <div id="go1-popup-frame-container" class="go1-popup-frame-container animated hidden">
-    <button id="go1-popup-close-btn">&times</button>
-    <iframe id="popup-iframe" src=""></iframe>
+  <div id="go1-popup-frame-container" class="go1-popup-frame-container animated fast slideOutRight">
+    <button id="go1-popup-close-btn"><i class="fa fa-chevron-left"></i></button>
+    <iframe id="popup-iframe" src="${this.popupUrl}"></iframe>
   </div>
 </div>`);
     this.fabArea = $(require('./views/fabButtons.pug'));
@@ -118,9 +122,10 @@ export class Go1ExtensionInjectionArea {
   injectToDocument() {
     $('body').append(this.containerArea);
 
-    this.containerArea.find('button#go1-popup-close-btn').on('click', () => this.closePopup());
+    this.containerArea.find('button#go1-popup-close-btn').on('click', () => this.togglePopup());
 
     this.go1PopupContainer = this.containerArea.find('#go1-popup-frame-container');
+    this.togglePopupButton = this.containerArea.find('button#go1-popup-close-btn');
 
     ['webkitTransitionEnd', 'otransitionend', 'oTransitionEnd', 'msTransitionEnd', 'transitionend'].forEach(event => {
       this.go1PopupContainer.on(event, _.debounce((e) => this.onPopupAnimationEnded(e), 200));
@@ -129,25 +134,45 @@ export class Go1ExtensionInjectionArea {
     this.checkQuickButtonSettings(true);
     this.checkCreateNoteSettings(true);
     this.checkShowHighlightSettings(true);
+
+    const popupContent = this.go1PopupContainer.find('iframe#popup-iframe');
+
+    popupContent.on('load', () => {
+      this.go1PopupContainer.addClass('finished-loading');
+      popupContent.off('load');
+    });
+  }
+
+  togglePopup() {
+    if (this.popupClosed) {
+      this.showPopup();
+    } else {
+      this.closePopup();
+    }
   }
 
   closePopup() {
-    this.go1PopupContainer
-      .removeClass('slideInRight')
-      .addClass('slideOutRight');
-
-    setTimeout(() => {
-      const popupContainer = this.containerArea.find('.go1-popup-frame-container');
-      const popupContent = popupContainer.find('iframe#popup-iframe');
-      popupContent.attr('src', ``);
-    }, 500);
+    this.go1PopupContainer.removeClass('slideInRight').addClass('slideOutRight');
+    this.popupClosed = true;
+    this.togglePopupButton.html(`<i class="fa fa-chevron-left"></i>`);
   }
 
-  showPopup(popupPage) {
+  showPopup(popupPage?) {
     const popupContainer = this.containerArea.find('.go1-popup-frame-container');
     const popupContent = popupContainer.find('iframe#popup-iframe');
-    popupContent.attr('src', `chrome-extension://${chrome.runtime.id}/index.html#/${popupPage}`);
-    popupContainer.addClass('slideInRight').removeClass('hidden slideOutRight');
+
+    if (popupPage) {
+      const url = `${this.popupUrl}#/${popupPage || ''}`;
+      if (popupContent.attr('src') === url) {
+        popupContent.attr('src', `${this.popupUrl}#/`);
+        setTimeout(() => popupContent.attr('src', url), 100);
+      } else {
+        popupContent.attr('src', url);
+      }
+    }
+    popupContainer.addClass('slideInRight fast').removeClass('hidden slideOutRight');
+    this.popupClosed = false;
+    this.togglePopupButton.html(`<i class="fa fa-chevron-right"></i>`);
   }
 
   onPopupAnimationEnded(e) {

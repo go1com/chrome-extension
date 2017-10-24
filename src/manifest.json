@@ -3,9 +3,12 @@
   "name": "${PRODUCT_NAME}",
   "description": "${PRODUCT_DESCRIPTION}",
   "version": "${PRODUCT_VERSION}",
-  "browser_action": {
+  "backup_browser_action": {
     "default_icon": "assets/icon.png",
     "default_popup": "index.html"
+  },
+  "browser_action": {
+    "title": "${PRODUCT_NAME}"
   },
   "icons": {
     "48": "assets/icon_48.png",
@@ -38,6 +41,9 @@
         "libs/jquery.dotdotdot.min.js",
         "contentScript.js"
       ],
+      "html": [
+        "index.html"
+      ],
       "css": [
         "styles/go1ext_inject.css"
       ],
@@ -51,6 +57,7 @@
     "injects/*",
     "assets/fontawesome/*",
     "assets/*",
+    "styles/*",
     "libs/*",
     "index.html"
   ]

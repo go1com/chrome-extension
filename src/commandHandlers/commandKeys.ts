@@ -5,6 +5,7 @@ export const commandKeys = {
   changeBrowserActionBadgeText: "CHANGE_BROWSER_ICON_BADGE",
   startDiscussion: "START_DISCUSSION",
   addToPortal: "ADD_TO_PORTAL",
+  getCurrentTab: "GET_CURRENT_CHROME_TAB",
   addToPortalSchedule: "SCHEDULE_LEARNING_ITEM",
   getLinkPreview: "GET_LINK_PREVIEW",
   getPortals: "GET_PORTALS",
@@ -15,5 +16,7 @@ export const commandKeys = {
   jumpToQuotedText: "JUMP_TO_QUOTED_TEXT",
   removeAllHighlight: "REMOVE_ALL_HIGHLIGHT",
   loadNotesForPage: "LOAD_NOTES_FOR_PAGE",
+  showExtensionPopup: "SHOW_EXTENSION_POPUP",
+  toggleExtensionPopup: "TOGGLE_EXTENSION_POPUP",
   closeExtensionPopup: "CLOSE_EXTENSION_POPUP"
 };

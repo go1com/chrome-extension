@@ -14,6 +14,7 @@ import {CountNotificationChromeCommandHandler} from "../commandHandlers/countNot
 import {commandKeys} from "../commandHandlers/commandKeys";
 import {LoadNotesForPageChromeCommandHandler} from "../commandHandlers/LoadNotesForPageChromeCommandHandler";
 import {CheckHighlightSettingChromeCommandHandler} from "../commandHandlers/checkHighlightSettingChromeCommandHandler";
+import {GetCurrentTabChromeCommandHandler} from "../commandHandlers/getCurrentTabChromeCommandHandler";
 
 const commandHandlerService = new ChromeCmdHandleService();
 const extensionVersion = '@EXTENSION_VERSION@';
@@ -34,11 +35,20 @@ commandHandlerService.registerHandler(new ClearBadgeNotificationChromeCommandHan
 commandHandlerService.registerHandler(new CountNotificationChromeCommandHandler());
 commandHandlerService.registerHandler(new GetNotificationMessagesChromeCommandHandler());
 commandHandlerService.registerHandler(new LoadNotesForPageChromeCommandHandler());
+commandHandlerService.registerHandler(new GetCurrentTabChromeCommandHandler());
 
 
 commandHandlerService.registerHandler(onUserLoggedInChromeCommandHandler);
 
 onUserLoggedInChromeCommandHandler.initialize();
+
+chrome.browserAction.onClicked.addListener((tab) => {
+  chrome.tabs.sendMessage(tab.id, {
+    name: commandKeys.toggleExtensionPopup
+  }, function (response) {
+
+  });
+});
 
 chrome.runtime.onConnect.addListener(function (externalPort) {
   externalPort.onDisconnect.addListener(function () {

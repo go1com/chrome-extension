@@ -4,8 +4,7 @@ import {commandKeys} from "../../../commandHandlers/commandKeys";
 
 @Component({
   selector: 'go-header',
-  templateUrl: './goHeader.tpl.pug',
-  styleUrls: ['./go1header.component.scss']
+  templateUrl: './goHeader.tpl.pug'
 })
 export class Go1HeaderComponent {
   @Input() activePage: string;

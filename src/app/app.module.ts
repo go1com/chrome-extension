@@ -33,13 +33,13 @@ import {DiscussionsModule} from "../modules/discussions/discussions.module";
   declarations: [
     AppComponent,
     RedirectingComponent,
-    HeaderComponent,
-    LearnerDashboardComponent,
-    PortalsComponent,
-    AdminDashboardComponent,
-    CompleteComponent,
-    ClickOutsideDirective,
-    AutocompleteComponent
+    // HeaderComponent,
+    // LearnerDashboardComponent,
+    // PortalsComponent,
+    // AdminDashboardComponent,
+    // CompleteComponent,
+    // ClickOutsideDirective,
+    // AutocompleteComponent
   ],
   imports: [
     BrowserModule,
@@ -48,8 +48,8 @@ import {DiscussionsModule} from "../modules/discussions/discussions.module";
     HttpModule,
     RouterModule.forRoot(routes, {
       useHash: true,
-      preloadingStrategy: NoPreloading
-      // preloadingStrategy: PreloadAllModules
+      // preloadingStrategy: NoPreloading
+      preloadingStrategy: PreloadAllModules
     }),
     NgbModule.forRoot(),
     ModalModule.forRoot(),

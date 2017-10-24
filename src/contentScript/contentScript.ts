@@ -8,24 +8,29 @@ import {RemoveAllHighlightChromeCommandHandler} from "./commandHandlers/removeAl
 import {GetLinkPreviewChromeCommandHandler} from "./commandHandlers/GetLinkPreviewChromeCommandHandler";
 import configuration from "../environments/configuration";
 import {CloseExtensionPopupChromeCommandHandler} from "./commandHandlers/CloseExtensionPopupChromeCommandHandler";
+import {ShowExtensionPopupChromeCommandHandler} from "./commandHandlers/ShowExtensionPopupChromeCommandHandler";
+import {ToggleExtensionPopupChromeCommandHandler} from "./commandHandlers/ToggleExtensionPopupChromeCommandHandler";
 
 declare const $: any;
 const ignoringDomains = ['mygo1.com', 'go1.com', 'www.google.com/maps'];
 
 (function () {
+  console.log('go1-extension loaded');
   const shouldIgnore = _.some(ignoringDomains, (domain) => window.location.href.indexOf(domain) > -1);
 
   if (shouldIgnore) {
     return;
   }
 
-  $('head').append('<link href="https://maxcdn.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css" rel="stylesheet" />');
+  $('head').append('<link href="chrome-extension://' + chrome.runtime.id + '/styles/fontawesome.css" rel="stylesheet" />');
 
   const commandHandlerService = new ChromeCmdHandleService();
   commandHandlerService.registerHandler(new RemoveAllHighlightChromeCommandHandler());
   commandHandlerService.registerHandler(new JumpToQuoteTextChromeCommandHandler());
   commandHandlerService.registerHandler(new GetLinkPreviewChromeCommandHandler());
   commandHandlerService.registerHandler(new CloseExtensionPopupChromeCommandHandler());
+  commandHandlerService.registerHandler(new ToggleExtensionPopupChromeCommandHandler());
+  commandHandlerService.registerHandler(new ShowExtensionPopupChromeCommandHandler());
 
   Go1ExtensionInjectionArea.initialize();
 

@@ -4,13 +4,13 @@ import {Go1ExtensionInjectionArea} from "../go1ExtensionInjectionArea";
 
 declare const $: any;
 
-export class CloseExtensionPopupChromeCommandHandler implements IChromeCommandHandler {
-  command = commandKeys.closeExtensionPopup;
+export class ShowExtensionPopupChromeCommandHandler implements IChromeCommandHandler {
+  command = commandKeys.showExtensionPopup;
 
   constructor() {
   }
 
   handle(request: any, sender: any, sendResponse?: Function) {
-    Go1ExtensionInjectionArea.singleInstance.closePopup();
+    Go1ExtensionInjectionArea.singleInstance.showPopup();
   }
 }
