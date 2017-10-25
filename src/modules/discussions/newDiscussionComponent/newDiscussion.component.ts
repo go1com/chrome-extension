@@ -4,7 +4,7 @@ import {DiscussionService} from "../services/discussion.service";
 import {UserService} from "../../membership/services/user.service";
 import {StorageService} from "../../go1core/services/StorageService";
 import configuration from "../../../environments/configuration";
-import {commandKeys} from "../../../commandHandlers/commandKeys";
+import {commandKeys} from "../../../environments/commandKeys";
 import {ensureChromeTabLoaded} from "../../../environments/ensureChromeTabLoaded";
 
 @Component({

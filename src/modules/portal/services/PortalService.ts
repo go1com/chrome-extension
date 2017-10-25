@@ -13,11 +13,11 @@ export class PortalService {
   async getPortalForUser() {
     const uuid = this.storageService.retrieve(configuration.constants.localStorageKeys.uuid);
 
-    let response = await this.restClientService.get(`${configuration.environment.baseApiUrl}/${configuration.serviceUrls.portal}public-key/${uuid}`);
+    const response = await this.restClientService.get(`${configuration.environment.baseApiUrl}/${configuration.serviceUrls.portal}public-key/${uuid}`);
   }
 
   async getPortal(id: string | number) {
-    let response = await this.restClientService.get(`${configuration.environment.baseApiUrl}/${configuration.serviceUrls.portal}${id}`);
+    const response = await this.restClientService.get(`${configuration.environment.baseApiUrl}/${configuration.serviceUrls.portal}${id}`);
     return response;
   }
 

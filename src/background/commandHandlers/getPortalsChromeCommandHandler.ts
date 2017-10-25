@@ -1,8 +1,8 @@
-import {IChromeCommandHandler} from "./IChromeCommandHandler";
-import {StorageService} from "../modules/go1core/services/StorageService";
-import {commandKeys} from "./commandKeys";
-import {PortalService} from "../modules/portal/services/PortalService";
-import configuration from "../environments/configuration";
+import {IChromeCommandHandler} from "../../services/chromeCommandHandlerService/IChromeCommandHandler";
+import {StorageService} from "../../modules/go1core/services/StorageService";
+import {commandKeys} from "../../environments/commandKeys";
+import {PortalService} from "../../modules/portal/services/PortalService";
+import configuration from "../../environments/configuration";
 
 export class GetPortalsChromeCommandHandler implements IChromeCommandHandler {
   command = commandKeys.getPortals;

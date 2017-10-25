@@ -1,9 +1,9 @@
-import {IChromeCommandHandler} from "./IChromeCommandHandler";
-import {StorageService} from "../modules/go1core/services/StorageService";
-import {RestClientService} from "../modules/go1core/services/RestClientService";
-import {commandKeys} from "./commandKeys";
-import {BackgroundNotificationService} from "../sharedComponents/backgrounNotification/backgroundNotification.service";
-import configuration from "../environments/configuration";
+import {IChromeCommandHandler} from "../../services/chromeCommandHandlerService/IChromeCommandHandler";
+import {StorageService} from "../../modules/go1core/services/StorageService";
+import {RestClientService} from "../../modules/go1core/services/RestClientService";
+import {commandKeys} from "../../environments/commandKeys";
+import {BackgroundNotificationService} from "../../sharedComponents/backgrounNotification/backgroundNotification.service";
+import configuration from "../../environments/configuration";
 
 export class OnUserLoggedInChromeCommandHandler implements IChromeCommandHandler {
   command = commandKeys.userLoggedIn;
@@ -19,13 +19,16 @@ export class OnUserLoggedInChromeCommandHandler implements IChromeCommandHandler
 
   handle(request: any, sender: any, sendResponse: Function) {
     this.initialize();
-    sendResponse && sendResponse({success: true});
+    if (sendResponse) {
+      sendResponse({success: true});
+    }
   }
 
   initialize() {
     const user = this.storageService.retrieve(configuration.constants.localStorageKeys.user);
-    if (!user || !user.profile_id)
+    if (!user || !user.profile_id) {
       return;
+    }
 
     const userProfileId = user.profile_id;
 

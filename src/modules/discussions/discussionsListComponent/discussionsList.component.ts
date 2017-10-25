@@ -19,9 +19,9 @@ export class DiscussionsListComponent implements OnInit, OnDestroy {
   onNoteDeletedEvent: any;
   onNoteCreatedEvent: any;
   discussionsList: any[];
-  loading: boolean = false;
+  loading = false;
   portal: any;
-  changePortalId: string = '';
+  changePortalId = '';
   private user: any;
   private loadingTimeout: any;
 
@@ -41,9 +41,14 @@ export class DiscussionsListComponent implements OnInit, OnDestroy {
   async ngOnInit() {
     await ensureChromeTabLoaded();
     this.loading = true;
+    this.discussionsList = [];
     await this.loadDiscussions();
-    this.portal = await this.portalService.getDefaultPortalInfo();
-    this.user = await this.userService.getUser();
+    this.portalService.getDefaultPortalInfo().then(portal => {
+      this.portal = portal;
+    });
+    this.userService.getUser().then(user => {
+      this.user = user;
+    });
     this.changePortalId = '';
   }
 
@@ -61,7 +66,7 @@ export class DiscussionsListComponent implements OnInit, OnDestroy {
       return true;
     }
 
-    const currentPortalAccount = this.user.accounts.find(acc => acc.instance_name == this.portal.title);
+    const currentPortalAccount = this.user.accounts.find(acc => acc.instance_name === this.portal.title);
 
     if (!currentPortalAccount) {
       return false;
@@ -134,7 +139,7 @@ export class DiscussionsListComponent implements OnInit, OnDestroy {
       clearTimeout(this.loadingTimeout);
     }
 
-    let discussionTopic: any = this.discussionsList.find(discussion => discussion.uuid == noteItem.uuid);
+    let discussionTopic: any = this.discussionsList.find(discussion => discussion.uuid === noteItem.uuid);
     if (discussionTopic == null) {
       discussionTopic = {
         uuid: noteItem.uuid,
@@ -148,8 +153,9 @@ export class DiscussionsListComponent implements OnInit, OnDestroy {
 
     let foundIndex: any = -1;
     keys.forEach((key, index) => {
-      if (foundIndex > -1)
+      if (foundIndex > -1) {
         return;
+      }
 
       const tmpDiscussionTopic = noteData.data[key];
       tmpDiscussionTopic.$id = key;
@@ -168,8 +174,8 @@ export class DiscussionsListComponent implements OnInit, OnDestroy {
     discussionTopic.messages = [];
 
     for (let index = 0; index < keys.length; index++) {
-      if (index != foundIndex) {
-        let messageData = noteData.data[keys[index]];
+      if (index !== foundIndex) {
+        const messageData = noteData.data[keys[index]];
         messageData.$id = keys[index];
 
         discussionTopic.messages.push(messageData);

@@ -1,9 +1,11 @@
-import {IChromeCommandHandler} from "./IChromeCommandHandler";
-import {StorageService} from "../modules/go1core/services/StorageService";
-import {RestClientService} from "../modules/go1core/services/RestClientService";
-import {commandKeys} from "./commandKeys";
-import {DiscussionNoFirebaseServiceService} from "../modules/discussions/services/discussionNoFirebase.service";
+import {IChromeCommandHandler} from "../../services/chromeCommandHandlerService/IChromeCommandHandler";
+import {StorageService} from "../../modules/go1core/services/StorageService";
+import {RestClientService} from "../../modules/go1core/services/RestClientService";
+import {commandKeys} from "../../environments/commandKeys";
+import {DiscussionNoFirebaseServiceService} from "../../modules/discussions/services/discussionNoFirebase.service";
+import {injectable} from "inversify";
 
+@injectable()
 export class LoadNotesForPageChromeCommandHandler implements IChromeCommandHandler {
   command = commandKeys.loadNotesForPage;
 

@@ -3,7 +3,7 @@ import {Router} from '@angular/router';
 import {UserService} from '../../membership/services/user.service';
 import {StorageService} from "../../go1core/services/StorageService";
 import configuration from "../../../environments/configuration";
-import {commandKeys} from "../../../commandHandlers/commandKeys";
+import {commandKeys} from "../../../environments/commandKeys";
 import {PortalService} from "../../portal/services/PortalService";
 
 @Component({

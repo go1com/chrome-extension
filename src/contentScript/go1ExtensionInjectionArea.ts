@@ -1,5 +1,5 @@
 import {ToolTipMenu} from "./toolTipsMenu";
-import {commandKeys} from "../commandHandlers/commandKeys";
+import {commandKeys} from "../environments/commandKeys";
 import Util from '../libs/annotation-plugin/util';
 import {HighlightService} from "./services/highlightService";
 import htmlUtil from '../plugins/annotation-plugin/html';
@@ -21,7 +21,7 @@ export class Go1ExtensionInjectionArea {
   annotationIndicatorFrame: any;
   annotationIndicatorArea: any;
   createNoteEnabled: boolean;
-  popupClosed: boolean = true;
+  popupClosed = true;
 
   updateAnnotationTimeout: any;
 

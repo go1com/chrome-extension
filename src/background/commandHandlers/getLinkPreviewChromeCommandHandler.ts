@@ -1,6 +1,6 @@
-import {IChromeCommandHandler} from "./IChromeCommandHandler";
-import {commandKeys} from "./commandKeys";
-import {LinkPreview} from "../modules/linkPreviewer/linkPreviewService";
+import {IChromeCommandHandler} from "../../services/chromeCommandHandlerService/IChromeCommandHandler";
+import {commandKeys} from "../../environments/commandKeys";
+import {LinkPreview} from "../../modules/linkPreviewer/linkPreviewService";
 
 export class GetLinkPreviewChromeCommandHandler implements IChromeCommandHandler {
   command = commandKeys.getLinkPreview;

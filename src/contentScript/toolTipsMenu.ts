@@ -1,5 +1,5 @@
 import {Go1ExtensionInjectionArea} from "./go1ExtensionInjectionArea";
-import {commandKeys} from "../commandHandlers/commandKeys";
+import {commandKeys} from "../environments/commandKeys";
 
 declare const $: any;
 

@@ -1,6 +1,6 @@
 import {Component, Input} from "@angular/core";
 import configuration from "../../../environments/configuration";
-import {commandKeys} from "../../../commandHandlers/commandKeys";
+import {commandKeys} from "../../../environments/commandKeys";
 
 @Component({
   selector: 'go-header',

@@ -1,10 +1,12 @@
-import {IChromeCommandHandler} from "../../commandHandlers/IChromeCommandHandler";
-import {commandKeys} from "../../commandHandlers/commandKeys";
+import {IChromeCommandHandler} from "../../services/chromeCommandHandlerService/IChromeCommandHandler";
+import {commandKeys} from "../../environments/commandKeys";
 import {Go1ExtensionInjectionArea} from "../go1ExtensionInjectionArea";
 import {HighlightService} from "../services/highlightService";
+import {injectable} from "inversify";
 
 declare const $: any;
 
+@injectable()
 export class RemoveAllHighlightChromeCommandHandler implements IChromeCommandHandler {
   command = commandKeys.removeAllHighlight;
 

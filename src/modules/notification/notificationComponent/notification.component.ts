@@ -1,5 +1,5 @@
 import {Component} from "@angular/core";
-import {commandKeys} from "../../../commandHandlers/commandKeys";
+import {commandKeys} from "../../../environments/commandKeys";
 import {BackgroundNotificationService} from "../../../sharedComponents/backgrounNotification/backgroundNotification.service";
 import configuration from "../../../environments/configuration";
 import {StorageService} from "../../go1core/services/StorageService";

@@ -5,7 +5,7 @@ import configuration from "../../../environments/configuration";
 import {routeNames} from "../addToPortal.routes";
 import {EnrollmentService} from "../../enrollment/services/enrollment.service";
 import * as moment from 'moment';
-import {commandKeys} from "../../../commandHandlers/commandKeys";
+import {commandKeys} from "../../../environments/commandKeys";
 
 @Component({
   selector: 'learning-item-schedule',

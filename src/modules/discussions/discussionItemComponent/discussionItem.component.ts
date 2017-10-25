@@ -4,7 +4,7 @@ import {DiscussionService} from "../services/discussion.service";
 import {Router} from "@angular/router";
 import configuration from "../../../environments/configuration";
 import {UserService} from "../../membership/services/user.service";
-import {commandKeys} from "../../../commandHandlers/commandKeys";
+import {commandKeys} from "../../../environments/commandKeys";
 
 @Component({
   selector: 'discussion-item',

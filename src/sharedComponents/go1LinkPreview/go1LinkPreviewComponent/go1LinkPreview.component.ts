@@ -1,5 +1,5 @@
 import {Component, EventEmitter, Input, NgZone, Output} from "@angular/core";
-import {commandKeys} from "../../../commandHandlers/commandKeys";
+import {commandKeys} from "../../../environments/commandKeys";
 
 @Component({
   selector: 'go1-link-preview',

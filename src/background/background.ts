@@ -1,46 +1,17 @@
-import {ChromeCmdHandleService} from "../commandHandlers/ChromeCmdHandleService";
-import {AddToPortalChromeCommandHandler} from "../commandHandlers/addToPortalChromeCommandHandler";
-import {CheckQuickButtonSettingChromeCommandHandler} from "../commandHandlers/checkQuickButtonSettingChromeCommandHandler";
-import {StartDiscussionChromeCommandHandler} from "../commandHandlers/startDiscussionChromeCommandHandler";
-import {AddToPortalScheduleChromeCommandHandler} from "../commandHandlers/addToPortalScheduleChromeCommandHandler";
-import {GetLinkPreviewChromeCommandHandler} from "../commandHandlers/getLinkPreviewChromeCommandHandler";
-import {GetPortalsChromeCommandHandler} from "../commandHandlers/getPortalsChromeCommandHandler";
-import {ChangeIconBadgeChromeCommandHandler} from "../commandHandlers/changeIconBadgeChromeCommandHandler";
-import {CheckCreateNoteMenuSettingChromeCommandHandler} from "../commandHandlers/checkCreateNoteMenuSettingChromeCommandHandler";
-import {OnUserLoggedInChromeCommandHandler} from "../commandHandlers/onUserLoggedInChromeCommandHandler";
-import {ClearBadgeNotificationChromeCommandHandler} from "../commandHandlers/clearBadgeNotificationChromeCommandHandler";
-import {GetNotificationMessagesChromeCommandHandler} from "../commandHandlers/getNotificationMessagesChromeCommandHandler";
-import {CountNotificationChromeCommandHandler} from "../commandHandlers/countNotificationChromeCommandHandler";
-import {commandKeys} from "../commandHandlers/commandKeys";
-import {LoadNotesForPageChromeCommandHandler} from "../commandHandlers/LoadNotesForPageChromeCommandHandler";
-import {CheckHighlightSettingChromeCommandHandler} from "../commandHandlers/checkHighlightSettingChromeCommandHandler";
-import {GetCurrentTabChromeCommandHandler} from "../commandHandlers/getCurrentTabChromeCommandHandler";
+import iocContainer from "../ioc/ioc.config";
+import backgroundScriptContainer from "./ioc.background.config";
 
-const commandHandlerService = new ChromeCmdHandleService();
+import {commandKeys} from "../environments/commandKeys";
+import {
+  IChromeCmdHandleService,
+  IChromeCmdHandleServiceSymbol
+} from "../services/chromeCommandHandlerService/IChromeCmdHandleService";
+
+iocContainer.load(backgroundScriptContainer);
+
+const commandHandlerService = iocContainer.get<IChromeCmdHandleService>(IChromeCmdHandleServiceSymbol);
+
 const extensionVersion = '@EXTENSION_VERSION@';
-const onUserLoggedInChromeCommandHandler = new OnUserLoggedInChromeCommandHandler();
-
-commandHandlerService.registerHandler(new StartDiscussionChromeCommandHandler());
-commandHandlerService.registerHandler(new AddToPortalChromeCommandHandler());
-
-commandHandlerService.registerHandler(new CheckQuickButtonSettingChromeCommandHandler());
-commandHandlerService.registerHandler(new CheckHighlightSettingChromeCommandHandler());
-commandHandlerService.registerHandler(new CheckCreateNoteMenuSettingChromeCommandHandler());
-
-commandHandlerService.registerHandler(new AddToPortalScheduleChromeCommandHandler());
-commandHandlerService.registerHandler(new GetLinkPreviewChromeCommandHandler());
-commandHandlerService.registerHandler(new GetPortalsChromeCommandHandler());
-commandHandlerService.registerHandler(new ChangeIconBadgeChromeCommandHandler());
-commandHandlerService.registerHandler(new ClearBadgeNotificationChromeCommandHandler());
-commandHandlerService.registerHandler(new CountNotificationChromeCommandHandler());
-commandHandlerService.registerHandler(new GetNotificationMessagesChromeCommandHandler());
-commandHandlerService.registerHandler(new LoadNotesForPageChromeCommandHandler());
-commandHandlerService.registerHandler(new GetCurrentTabChromeCommandHandler());
-
-
-commandHandlerService.registerHandler(onUserLoggedInChromeCommandHandler);
-
-onUserLoggedInChromeCommandHandler.initialize();
 
 chrome.browserAction.onClicked.addListener((tab) => {
   chrome.tabs.sendMessage(tab.id, {
@@ -49,21 +20,6 @@ chrome.browserAction.onClicked.addListener((tab) => {
 
   });
 });
-
-chrome.runtime.onConnect.addListener(function (externalPort) {
-  externalPort.onDisconnect.addListener(function () {
-    chrome.tabs.query({}, (tabs) => {
-      tabs.forEach(tab => {
-        chrome.tabs.sendMessage(tab.id, {
-          name: commandKeys.removeAllHighlight
-        }, function (response) {
-
-        });
-      });
-    });
-  });
-});
-
 
 chrome.runtime.onMessage.addListener(function (msg, sender, sendResponse) {
   if (msg.action === 'getTabId') {
@@ -77,7 +33,6 @@ chrome.runtime.onMessage.addListener(function (msg, sender, sendResponse) {
   }
   sendResponse({success: false, error: new Error('No command handler found for request action'), errorData: msg});
 });
-
 
 chrome.runtime.onInstalled.addListener((details) => {
   if (details.reason === 'install') {

@@ -1,92 +1,61 @@
-import {commandKeys} from "../../commandHandlers/commandKeys";
+import {injectable} from "inversify";
 
-const cheerio = require('cheerio-without-node-native');
+declare const $: any;
 
+@injectable()
 export class LinkPreview {
-  getPreview(url) {
-    return new Promise((resolve, reject) => {
-      /*chrome.tabs.query({'active': true, 'lastFocusedWindow': true}, function (tabs) {
-        chrome.tabs.sendMessage(tabs[0].id, {
-          name: commandKeys.getLinkPreview
-        }, (response) => {
-          console.log(response);
-          resolve(this._parseResponse(response.data, url));
-        });
-      });*/
+  static Symbol = Symbol("LinkPreview");
 
-      fetch(url)
-        .then(response => response.text())
-        .then(text => {
-          resolve(this._parseResponse(text, url));
-        })
-        .catch(error => reject({error}));
-    });
-  }
 
-  _parseResponse(body, url): any {
-    const doc = cheerio.load(body);
-
-    return {
-      url,
-      title: this._getTitle(doc),
-      description: this._getDescription(doc) || '',
-      mediaType: this._getMediaType(doc) || 'website',
-      images: this._getImages(doc, url),
-      favicon: this._getFavicon(doc)
-    };
-  }
-
-  _getTitle(doc) {
-    let title = doc('title').text();
+  getTitle(doc) {
+    let title = $(doc).find('title').text();
 
     if (!title) {
-      title = doc('meta[property=\'og:title\']').attr('content');
+      title = $(doc).find('meta[property=\'og:title\']').attr('content');
     }
 
     return title;
   }
 
-  _getFavicon(doc) {
-    return doc('link[rel=\'apple-touch-icon-precomposed\']').attr('href') ||
-      doc('link[rel=\'shortcut icon\']').attr('href') ||
-      doc('link[rel=\'icon\']').attr('href') ||
+  getFavicon(doc) {
+    return $(doc).find('link[rel=\'apple-touch-icon-precomposed\']').attr('href') ||
+      $(doc).find('link[rel=\'shortcut icon\']').attr('href') ||
+      $(doc).find('link[rel=\'icon\']').attr('href') ||
       "";
   }
 
-  _getDescription(doc) {
-    let description = doc('meta[name=description]').attr('content');
+  getDescription(doc) {
+    let description = $(doc).find('meta[name=description]').attr('content');
 
     if (description === undefined) {
-      description = doc('meta[name=Description]').attr('content');
+      description = $(doc).find('meta[name=Description]').attr('content');
     }
 
     if (description === undefined) {
-      description = doc('meta[property=\'og:description\']').attr('content');
+      description = $(doc).find('meta[property=\'og:description\']').attr('content');
     }
 
     return description;
   }
 
-  _getMediaType(doc) {
-    const node = doc('meta[name=medium]');
+  getMediaType(doc) {
+    const node = $(doc).find('meta[name=medium]');
 
     if (node.length) {
       const content = node.attr('content');
       return content === 'image' ? 'photo' : content;
     } else {
-      return doc('meta[property=\'og:type\']').attr('content');
+      return $(doc).find('meta[property=\'og:type\']').attr('content');
     }
   }
 
-  _getImages(doc, rootUrl) {
+  getImages(doc, rootUrl) {
     const images = [];
-    const nodes = doc('meta[property=\'og:image\']');
+    const nodes = $(doc).find('meta[property=\'og:image\']');
 
-    if (nodes.length > 0) {
-      nodes.each((index, node) => {
-        images.push(node.attribs.content);
-      });
-    }
+    nodes.each(function () {
+      images.push($(this).attr('content'));
+    });
 
     return images;
   }

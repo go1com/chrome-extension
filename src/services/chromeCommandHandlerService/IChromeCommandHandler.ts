@@ -1,4 +1,4 @@
-
+export const IChromeCommandHandlerSymbol = Symbol("IChromeCommandHandler");
 export interface IChromeCommandHandler {
   command: string;
 

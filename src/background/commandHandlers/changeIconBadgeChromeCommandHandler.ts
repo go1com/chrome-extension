@@ -1,5 +1,5 @@
-import {IChromeCommandHandler} from "./IChromeCommandHandler";
-import {commandKeys} from "./commandKeys";
+import {IChromeCommandHandler} from "../../services/chromeCommandHandlerService/IChromeCommandHandler";
+import {commandKeys} from "../../environments/commandKeys";
 
 export class ChangeIconBadgeChromeCommandHandler implements IChromeCommandHandler {
   command = commandKeys.changeBrowserActionBadgeText;

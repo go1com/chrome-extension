@@ -1,17 +1,17 @@
-import {IChromeCommandHandler} from "../../commandHandlers/IChromeCommandHandler";
-import {commandKeys} from "../../commandHandlers/commandKeys";
-import {HighlightService} from "../services/highlightService";
-import {LinkPreview} from "../../modules/linkPreviewer/linkPreviewService";
+import {IChromeCommandHandler} from "../../services/chromeCommandHandlerService/IChromeCommandHandler";
+import {commandKeys} from "../../environments/commandKeys";
 import configuration from "../../environments/configuration";
+import {inject, injectable} from "inversify";
+import {LinkPreview} from "../../modules/linkPreviewer/linkPreviewService";
 
 declare const $: any;
 
+@injectable()
 export class GetLinkPreviewChromeCommandHandler implements IChromeCommandHandler {
   command = commandKeys.getLinkPreview;
-  linkPreviewService: LinkPreview;
 
-  constructor() {
-    this.linkPreviewService = new LinkPreview();
+  constructor(@inject(LinkPreview) private linkPreviewService: LinkPreview) {
+
   }
 
   DOMtoString(document_root) {
@@ -41,8 +41,12 @@ export class GetLinkPreviewChromeCommandHandler implements IChromeCommandHandler
   }
 
   handle(request: any, sender: any, sendResponse?: Function) {
-    const pageHtml = this.DOMtoString(document);
-    const pageMetadataInfo = this.linkPreviewService._parseResponse(pageHtml, document.location.href);
+    const pageMetadataInfo: any = {
+      url: document.location.href,
+      title: this.linkPreviewService.getTitle(document),
+      description: this.linkPreviewService.getDescription(document),
+      images: this.linkPreviewService.getImages(document, document.location.href),
+    };
 
     chrome.runtime.sendMessage({
       from: 'content',

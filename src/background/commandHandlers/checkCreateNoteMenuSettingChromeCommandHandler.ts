@@ -1,15 +1,14 @@
-import {IChromeCommandHandler} from "./IChromeCommandHandler";
-import {StorageService} from "../modules/go1core/services/StorageService";
-import {commandKeys} from "./commandKeys";
-import configuration from "../environments/configuration";
+import {IChromeCommandHandler} from "../../services/chromeCommandHandlerService/IChromeCommandHandler";
+import {commandKeys} from "../../environments/commandKeys";
+import configuration from "../../environments/configuration";
+import {inject, injectable} from "inversify";
+import {IStorageService, IStorageServiceSymbol} from "../../services/storageService/IStorageService";
 
+@injectable()
 export class CheckCreateNoteMenuSettingChromeCommandHandler implements IChromeCommandHandler {
   command = commandKeys.checkCreateNoteSettings;
 
-  private storageService: StorageService;
-
-  constructor() {
-    this.storageService = new StorageService();
+  constructor(@inject(IStorageServiceSymbol) private storageService: IStorageService) {
   }
 
   handle(request: any, sender: any, sendResponse: Function) {

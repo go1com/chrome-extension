@@ -4,7 +4,7 @@ import {StorageService} from "../../go1core/services/StorageService";
 import configuration from "../../../environments/configuration";
 import {routeNames} from "../addToPortal.routes";
 import {AddToPortalService} from "../services/AddToPortalService";
-import {commandKeys} from "../../../commandHandlers/commandKeys";
+import {commandKeys} from "../../../environments/commandKeys";
 import {EnrollmentService} from "../../enrollment/services/enrollment.service";
 import {UserService} from "../../membership/services/user.service";
 import * as _ from 'lodash';

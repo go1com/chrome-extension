@@ -21,6 +21,7 @@
     ],
     "types": [
       "hammerjs",
+      "reflect-metadata",
       "node"
     ]
   },
