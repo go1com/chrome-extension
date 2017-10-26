@@ -186,12 +186,16 @@
       left: -32px;
       background: #fff;
       border-radius: 5px 0 0 5px;
+      -webkit-box-shadow: rgba(0, 0, 0, 0.5) 0px 0px 3px 1px;
+      -moz-box-shadow: rgba(0, 0, 0, 0.5) 0px 0px 3px 1px;
+      box-shadow: rgba(0, 0, 0, 0.5) 0px 0px 3px 1px;
       border: none;
       position: absolute;
       color: black;
       font-size: 30px;
       margin: 0;
       min-height: 32px;
+      z-index: -1;
     }
 
     iframe#popup-iframe {

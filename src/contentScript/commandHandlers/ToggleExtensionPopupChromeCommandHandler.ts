@@ -1,7 +1,8 @@
 import {IChromeCommandHandler} from "../../services/chromeCommandHandlerService/IChromeCommandHandler";
 import {commandKeys} from "../../environments/commandKeys";
 import {Go1ExtensionInjectionArea} from "../go1ExtensionInjectionArea";
-import {injectable} from "inversify";
+import {inject, injectable} from "inversify";
+import {PopupContainer} from "../components/popupContainerComponent/popupContainer";
 
 declare const $: any;
 
@@ -9,10 +10,10 @@ declare const $: any;
 export class ToggleExtensionPopupChromeCommandHandler implements IChromeCommandHandler {
   command = commandKeys.toggleExtensionPopup;
 
-  constructor() {
+  constructor(@inject(PopupContainer) private popupContainer: PopupContainer) {
   }
 
   handle(request: any, sender: any, sendResponse?: Function) {
-    Go1ExtensionInjectionArea.singleInstance.togglePopup();
+    this.popupContainer.togglePopup();
   }
 }

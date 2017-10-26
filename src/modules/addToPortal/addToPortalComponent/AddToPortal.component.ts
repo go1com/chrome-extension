@@ -8,6 +8,7 @@ import {commandKeys} from "../../../environments/commandKeys";
 import {EnrollmentService} from "../../enrollment/services/enrollment.service";
 import {UserService} from "../../membership/services/user.service";
 import * as _ from 'lodash';
+import {ensureChromeTabLoaded} from "../../../environments/ensureChromeTabLoaded";
 
 @Component({
   selector: 'add-to-portal',
@@ -118,11 +119,12 @@ export class AddToPortalComponent {
   }
 
   private async loadPageMetadata(url) {
+    await ensureChromeTabLoaded();
+
     return new Promise((resolve, reject) => {
-      chrome.runtime.sendMessage({
-        action: commandKeys.getLinkPreview,
-        data: url
-      }, (response) => {
+      chrome.tabs.sendMessage(configuration.currentChromeTab.id, {
+        name: commandKeys.getLinkPreview
+      }, function (response) {
         resolve(response.data);
       });
     });

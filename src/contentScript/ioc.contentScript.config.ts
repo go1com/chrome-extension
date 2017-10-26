@@ -1,5 +1,5 @@
 import {ContainerModule, interfaces} from "inversify";
-import {PopupContainer} from "./popupContainer";
+import {PopupContainer} from "./components/popupContainerComponent/popupContainer";
 import {IChromeCommandHandler, IChromeCommandHandlerSymbol} from "../services/chromeCommandHandlerService/IChromeCommandHandler";
 import {CloseExtensionPopupChromeCommandHandler} from "./commandHandlers/CloseExtensionPopupChromeCommandHandler";
 import {GetLinkPreviewChromeCommandHandler} from "./commandHandlers/GetLinkPreviewChromeCommandHandler";
@@ -8,6 +8,8 @@ import {RemoveAllHighlightChromeCommandHandler} from "./commandHandlers/removeAl
 import {ShowExtensionPopupChromeCommandHandler} from "./commandHandlers/ShowExtensionPopupChromeCommandHandler";
 import {ToggleExtensionPopupChromeCommandHandler} from "./commandHandlers/ToggleExtensionPopupChromeCommandHandler";
 import {LinkPreview} from "../modules/linkPreviewer/linkPreviewService";
+import {FabButtonsComponent} from "./components/fabButtonsComponent/fabButtonsComponent";
+import {Go1ExtensionInjectionArea} from "./go1ExtensionInjectionArea";
 
 const contentScriptContainer = new ContainerModule(
   (bind: interfaces.Bind,
@@ -15,7 +17,9 @@ const contentScriptContainer = new ContainerModule(
    isBound: interfaces.IsBound,
    rebind: interfaces.Rebind) => {
 
-    bind<PopupContainer>(PopupContainer).toSelf();
+    bind<PopupContainer>(PopupContainer).toSelf().inSingletonScope();
+    bind<Go1ExtensionInjectionArea>(Go1ExtensionInjectionArea).toSelf().inSingletonScope();
+    bind<FabButtonsComponent>(FabButtonsComponent).toSelf().inSingletonScope();
     bind<LinkPreview>(LinkPreview).toSelf();
 
     bind<IChromeCommandHandler>(IChromeCommandHandlerSymbol).to(CloseExtensionPopupChromeCommandHandler);

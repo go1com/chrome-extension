@@ -25,9 +25,10 @@ const ignoringDomains = ['mygo1.com', 'go1.com', 'www.google.com/maps'];
 
   $('head').append('<link href="chrome-extension://' + chrome.runtime.id + '/styles/fontawesome.css" rel="stylesheet" />');
 
-  Go1ExtensionInjectionArea.initialize();
+  const injectionArea = iocContainer.get<Go1ExtensionInjectionArea>(Go1ExtensionInjectionArea);
+  injectionArea.injectToDocument();
 
-  console.log('chrome tab', chrome.tabs);
+  // Go1ExtensionInjectionArea.initialize(iocContainer);
 
   chrome.runtime.onMessage.addListener(function (msg, sender, sendResponse) {
     if (commandHandlerService.hasHandler(msg.name)) {

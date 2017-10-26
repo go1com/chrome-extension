@@ -25,7 +25,6 @@ export class DiscussionItemComponent implements OnInit {
   }
 
   ngOnInit() {
-    console.log(this.discussionItem);
   }
 
   async deleteItem() {
