@@ -1,10 +1,11 @@
 import {IStorageService, IStorageServiceSymbol} from "../../../services/storageService/IStorageService";
 import {inject, injectable} from "inversify";
+import {IContentScriptComponent} from "../IContentScriptComponent";
 
 declare const $: any;
 
 @injectable()
-export class PopupContainer {
+export class PopupContainer implements IContentScriptComponent {
   togglePopupButton: any;
   view: any;
   popupUrl: string;
@@ -20,8 +21,8 @@ export class PopupContainer {
     this.popupContentIframe.attr('src', this.popupUrl);
   }
 
-  initialize(parentComponent) {
-    this.view.prependTo(parentComponent);
+  initialize(parentComponent: IContentScriptComponent) {
+    this.view.prependTo(parentComponent.view);
 
     this.popupContentIframe.on('load', () => {
       this.view.addClass('finished-loading');
@@ -63,9 +64,5 @@ export class PopupContainer {
     this.view.addClass('slideInRight fast').removeClass('hidden slideOutRight');
     this.popupClosed = false;
     this.togglePopupButton.html(`<i class="fa fa-chevron-right"></i>`);
-  }
-
-  onPopupAnimationEnded(e) {
-    console.log('go1 popup animation finished', e);
   }
 }

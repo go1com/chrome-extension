@@ -1,154 +1,103 @@
-import {ToolTipMenu} from "./toolTipsMenu";
-import {commandKeys} from "../environments/commandKeys";
-import Util from '../libs/annotation-plugin/util';
-import {HighlightService} from "./services/highlightService";
-import htmlUtil from '../plugins/annotation-plugin/html';
-import Range from '../plugins/annotation-plugin/range';
-import * as _ from 'lodash';
-import {PopupContainer} from "./components/popupContainerComponent/popupContainer";
-import {Container, inject, injectable} from "inversify";
+import {ToolTipMenu} from "../tooltipComponent/toolTipsMenu";
+import {commandKeys} from "../../../environments/commandKeys";
+import Util from '../../../libs/annotation-plugin/util';
+import {HighlightService} from "../../services/highlightService";
+import htmlUtil from '../../../plugins/annotation-plugin/html';
+import {PopupContainer} from "../popupContainerComponent/popupContainer";
+import {inject, injectable} from "inversify";
+import {IContentScriptComponent} from "../IContentScriptComponent";
+import {FabButtonsComponent} from "../fabButtonsComponent/fabButtonsComponent";
+import {
+  IBrowserMessagingService,
+  IBrowserMessagingServiceSymbol
+} from "../../../services/browserMessagingService/IBrowserMessagingService";
 
 declare const $: any;
 
 const hiddenClassName = 'highlighting-hidden';
 
 @injectable()
-export class Go1ExtensionInjectionArea {
-  static singleInstance: Go1ExtensionInjectionArea;
+export class InjectionAreaComponent implements IContentScriptComponent {
+  public view: any;
 
-  containerArea: any;
-
-  fabArea: any;
   annotationIndicatorFrame: any;
   annotationIndicatorArea: any;
   createNoteEnabled: boolean;
 
   updateAnnotationTimeout: any;
 
-  static appendDOM(dom) {
-    Go1ExtensionInjectionArea.singleInstance.containerArea.append(dom);
-  }
-
-  static toggleHighlightArea() {
-    Go1ExtensionInjectionArea.singleInstance.checkShowHighlightSettings();
-  }
-
-  static toggleQuickButton() {
-    Go1ExtensionInjectionArea.singleInstance.checkQuickButtonSettings();
-  }
-
-  static toggleCreateNote() {
-    Go1ExtensionInjectionArea.singleInstance.checkCreateNoteSettings();
-  }
-
-  constructor(@inject(PopupContainer) private popupContainer: PopupContainer) {
+  constructor(@inject(PopupContainer) private popupContainer: PopupContainer,
+              @inject(FabButtonsComponent) private fabButtonComponent: FabButtonsComponent,
+              @inject(IBrowserMessagingServiceSymbol) private chromeMessagingService: IBrowserMessagingService) {
     this.createNoteEnabled = false;
 
-    this.containerArea = $(`
-<div class="go1-extension go1-extension-injected">  
-</div>`);
-    this.fabArea = $(require('./views/fabButtons.pug'));
+    this.view = $(require('./injectionArea.pug'));
   }
 
-  checkQuickButtonSettings(firstTimeInitial = false) {
-    chrome.runtime.sendMessage({
-      from: 'content',
-      action: commandKeys.checkQuickButtonSettings
-    }, (quickButtonSetting) => {
-      if (!quickButtonSetting) {
-        if (firstTimeInitial) {
-          return;
-        }
-        this.removeQuickButton();
-        return;
-      }
-      this.appendQuickButton();
-    });
-  }
+  async initialize(parentComponent: IContentScriptComponent) {
+    this.view.appendTo($('body'));
 
-  checkShowHighlightSettings(firstTimeInitial = false) {
-    chrome.runtime.sendMessage({
-      from: 'content',
-      action: commandKeys.checkHighlightNoteSettings
-    }, (highlightSettings) => {
-      if (!highlightSettings) {
-        if (firstTimeInitial) {
-          return;
-        }
-        this.removeAnnotationIndicatorArea();
-        return;
-      }
-
-      this.appendAnnotationIndicatorArea();
-      this.checkNotesOnCurrentPage();
-    });
-  }
-
-  checkCreateNoteSettings(firstTimeInitial = false) {
-    chrome.runtime.sendMessage({
-      from: 'content',
-      action: commandKeys.checkCreateNoteSettings
-    }, (createNoteEnabled) => {
-      this.createNoteEnabled = createNoteEnabled;
-
-      if (!createNoteEnabled) {
-        if (firstTimeInitial) {
-          return;
-        }
-        this.removeListenerToSelectingText();
-        return;
-      }
-      this.addListenerToSelectingText();
-    });
-  }
-
-  injectToDocument() {
-    $('body').append(this.containerArea);
-
-    this.popupContainer.initialize(this.containerArea);
+    this.popupContainer.initialize(this);
 
     this.checkQuickButtonSettings(true);
     this.checkCreateNoteSettings(true);
     this.checkShowHighlightSettings(true);
   }
 
+  async checkQuickButtonSettings(firstTimeInitial = false) {
+    const quickButtonSetting = await this.chromeMessagingService.requestToBackground(commandKeys.checkQuickButtonSettings);
+
+    if (!quickButtonSetting) {
+      if (firstTimeInitial) {
+        return;
+      }
+      this.removeQuickButton();
+      return;
+    }
+    this.appendQuickButton();
+  }
+
+  async checkShowHighlightSettings(firstTimeInitial = false) {
+    const highlightSettings = await this.chromeMessagingService.requestToBackground(commandKeys.checkHighlightNoteSettings);
+
+    if (!highlightSettings) {
+      if (firstTimeInitial) {
+        return;
+      }
+      this.removeAnnotationIndicatorArea();
+      return;
+    }
+
+    this.appendAnnotationIndicatorArea();
+    this.checkNotesOnCurrentPage();
+  }
+
+  async checkCreateNoteSettings(firstTimeInitial = false) {
+    const createNoteEnabled = await this.chromeMessagingService.requestToBackground(commandKeys.checkCreateNoteSettings);
+
+    this.createNoteEnabled = createNoteEnabled;
+
+    if (!createNoteEnabled) {
+      if (firstTimeInitial) {
+        return;
+      }
+      this.removeListenerToSelectingText();
+      return;
+    }
+    this.addListenerToSelectingText();
+  }
+
   appendQuickButton() {
-    this.containerArea.append(this.fabArea);
-    const thisComponent = this;
-    $(thisComponent.fabArea).mouseleave(function (event) {
-      setTimeout(() => {
-        thisComponent.fabArea.removeClass('active');
-      }, 3000);
-    });
+    this.fabButtonComponent.initialize(this);
+  }
 
-    this.fabArea.find('.trigger-fab').on('click', (event) => {
-      thisComponent.fabArea.addClass('active');
-    });
-
-    this.fabArea.find('.start-discussion-btn').on('click', (event) => {
-      thisComponent.fabArea.removeClass('active');
-
-      chrome.runtime.sendMessage({
-        from: 'content',
-        action: commandKeys.startDiscussion
-      }, response => this.popupContainer.showPopup('discussionsList/newDiscussion'));
-    });
-
-    this.fabArea.find('.add-to-portal-btn').on('click', (event) => {
-      thisComponent.fabArea.removeClass('active');
-
-      this.popupContainer.showPopup('addToPortal');
-      //
-      // chrome.runtime.sendMessage({
-      //   from: 'content',
-      //   action: commandKeys.addToPortal
-      // });
-    });
+  removeQuickButton() {
+    this.fabButtonComponent.removeComponent();
   }
 
   appendAnnotationIndicatorArea() {
-    this.annotationIndicatorFrame = $(require('./views/annotationIndicatorBar.pug'));
-    this.containerArea.append(this.annotationIndicatorFrame);
+    this.annotationIndicatorFrame = $(require('../../views/annotationIndicatorBar.pug'));
+    this.view.append(this.annotationIndicatorFrame);
     this.annotationIndicatorArea = $('.annotation-indicator-bar', this.annotationIndicatorFrame);
 
     $(window).on('scroll', () => this.updateAnnotationAreaPosition());
@@ -197,10 +146,6 @@ export class Go1ExtensionInjectionArea {
     document.removeEventListener('mouseup', event => this.onDocumentMouseUp(event));
   }
 
-  removeQuickButton() {
-    this.fabArea.remove();
-  }
-
   removeAnnotationIndicatorArea() {
     if (this.annotationIndicatorFrame) {
       this.annotationIndicatorFrame.remove();
@@ -233,7 +178,7 @@ export class Go1ExtensionInjectionArea {
       const selectedTextPosition = selection.getRangeAt(0).getBoundingClientRect();
       const xpathFromNode = Util.xpathFromNode($(selection.anchorNode.parentNode));
 
-      ToolTipMenu.initializeTooltip(selectedTextPosition, selectedText, xpathFromNode[0]);
+      ToolTipMenu.initializeTooltip(this, selectedTextPosition, selectedText, xpathFromNode[0]);
     } else {
       ToolTipMenu.closeLastTooltip();
     }

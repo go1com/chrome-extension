@@ -1,14 +1,14 @@
-import {Injectable} from "@angular/core";
-import {RestClientService} from "../../go1core/services/RestClientService";
-import {StorageService} from "../../go1core/services/StorageService";
 import configuration from "../../../environments/configuration";
+import {inject, injectable} from "inversify";
+import {IRestClientService, IRestClientServiceSymbol} from "../../../services/restClientService/IRestClientService";
+import {IStorageService, IStorageServiceSymbol} from "../../../services/storageService/IStorageService";
 
-@Injectable()
+@injectable()
 export class DiscussionNoFirebaseServiceService {
   protected baseUrl = configuration.environment.baseApiUrl;
 
-  constructor(protected restClientService: RestClientService,
-              protected storageService: StorageService) {
+  constructor(@inject(IRestClientServiceSymbol) protected restClientService: IRestClientService,
+              @inject(IStorageServiceSymbol) protected storageService: IStorageService) {
   }
 
   protected getCustomHeaders() {

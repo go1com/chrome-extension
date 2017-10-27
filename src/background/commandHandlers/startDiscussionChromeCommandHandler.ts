@@ -14,8 +14,8 @@ export class StartDiscussionChromeCommandHandler implements IChromeCommandHandle
   handle(request: any, sender: any, sendResponse: Function) {
     this.storageService.store(configuration.constants.localStorageKeys.createNoteParams, {
       url: sender.tab.url,
-      quotation: request.quotation || '',
-      quotationPosition: request.quotationPosition || ''
+      quotation: request.data && request.data.quotation || '',
+      quotationPosition: request.data && request.data.quotationPosition || ''
     });
 
     sendResponse(true);

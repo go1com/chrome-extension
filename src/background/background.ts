@@ -15,7 +15,7 @@ const extensionVersion = '@EXTENSION_VERSION@';
 
 chrome.browserAction.onClicked.addListener((tab) => {
   chrome.tabs.sendMessage(tab.id, {
-    name: commandKeys.toggleExtensionPopup
+    action: commandKeys.toggleExtensionPopup
   }, function (response) {
 
   });

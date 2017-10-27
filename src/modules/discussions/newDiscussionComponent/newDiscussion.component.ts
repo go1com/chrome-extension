@@ -77,7 +77,7 @@ export class NewDiscussionComponent implements OnInit {
 
     return new Promise((resolve, reject) => {
       chrome.tabs.sendMessage(configuration.currentChromeTab.id, {
-        name: commandKeys.getLinkPreview
+        action: commandKeys.getLinkPreview
       }, function (response) {
         resolve(response.data);
       });
@@ -107,7 +107,7 @@ export class NewDiscussionComponent implements OnInit {
 
     if (this.newDiscussionFromBackgroundPage) {
       chrome.tabs.sendMessage(configuration.currentChromeTab.id, {
-        name: commandKeys.closeExtensionPopup
+        action: commandKeys.closeExtensionPopup
       }, async (response) => {
       });
     }

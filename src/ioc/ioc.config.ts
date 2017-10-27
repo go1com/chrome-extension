@@ -9,10 +9,20 @@ import {
 } from "../services/chromeCommandHandlerService/IChromeCmdHandleService";
 import {IRestClientService, IRestClientServiceSymbol} from "../services/restClientService/IRestClientService";
 import {ChromeCmdHandleService} from "../services/chromeCommandHandlerService/ChromeCmdHandleService";
+import {
+  IBrowserMessagingService,
+  IBrowserMessagingServiceSymbol
+} from "../services/browserMessagingService/IBrowserMessagingService";
+import {ChromeMessagingService} from "../services/browserMessagingService/chromeMessagingService";
 
 const container = new Container();
+
 container.bind<IStorageService>(IStorageServiceSymbol).to(DefaultStorageService);
+
 container.bind<IRestClientService>(IRestClientServiceSymbol).to(DefaultRestClientService);
+
 container.bind<IChromeCmdHandleService>(IChromeCmdHandleServiceSymbol).to(ChromeCmdHandleService);
+
+container.bind<IBrowserMessagingService>(IBrowserMessagingServiceSymbol).to(ChromeMessagingService);
 
 export default container;

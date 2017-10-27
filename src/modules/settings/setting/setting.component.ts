@@ -59,7 +59,7 @@ export class SettingComponent implements OnInit {
     chrome.tabs.query({currentWindow: true}, (tabs) => {
       tabs.forEach(tab => {
         chrome.tabs.sendMessage(tab.id, {
-          name: commandKeys.checkQuickButtonSettings
+          action: commandKeys.checkQuickButtonSettings
         }, function (response) {
 
         });
@@ -75,7 +75,7 @@ export class SettingComponent implements OnInit {
     chrome.tabs.query({currentWindow: true}, (tabs) => {
       tabs.forEach(tab => {
         chrome.tabs.sendMessage(tab.id, {
-          name: commandKeys.checkCreateNoteSettings
+          action: commandKeys.checkCreateNoteSettings
         }, function (response) {
 
         });
@@ -91,7 +91,7 @@ export class SettingComponent implements OnInit {
     chrome.tabs.query({currentWindow: true}, (tabs) => {
       tabs.forEach(tab => {
         chrome.tabs.sendMessage(tab.id, {
-          name: commandKeys.checkHighlightNoteSettings
+          action: commandKeys.checkHighlightNoteSettings
         }, function (response) {
 
         });

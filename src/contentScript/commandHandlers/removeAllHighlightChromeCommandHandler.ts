@@ -1,8 +1,8 @@
 import {IChromeCommandHandler} from "../../services/chromeCommandHandlerService/IChromeCommandHandler";
 import {commandKeys} from "../../environments/commandKeys";
-import {Go1ExtensionInjectionArea} from "../go1ExtensionInjectionArea";
 import {HighlightService} from "../services/highlightService";
-import {injectable} from "inversify";
+import {inject, injectable} from "inversify";
+import {InjectionAreaComponent} from "../components/injectionAreaComponent/injectionAreaComponent";
 
 declare const $: any;
 
@@ -10,14 +10,14 @@ declare const $: any;
 export class RemoveAllHighlightChromeCommandHandler implements IChromeCommandHandler {
   command = commandKeys.removeAllHighlight;
 
-  constructor() {
+  constructor(@inject(InjectionAreaComponent) private injectionArea: InjectionAreaComponent) {
   }
 
   handle(request: any, sender: any, sendResponse?: Function) {
     // remove old highlights
     HighlightService.unhighlight();
 
-    Go1ExtensionInjectionArea.toggleHighlightArea();
+    this.injectionArea.checkNotesOnCurrentPage();
 
     if (sendResponse) {
       sendResponse({success: true});

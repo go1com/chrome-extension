@@ -57,7 +57,7 @@ export class DiscussionItemComponent implements OnInit {
     chrome.tabs.query({active: true, currentWindow: true}, (tabs) => {
       tabs.forEach(tab => {
         chrome.tabs.sendMessage(tab.id, {
-          name: commandKeys.jumpToQuotedText,
+          action: commandKeys.jumpToQuotedText,
           data: this.discussionItem.noteItem.entities[0]
         }, function (response) {
 

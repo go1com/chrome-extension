@@ -1,22 +1,13 @@
 import {IChromeCommandHandler} from "../../services/chromeCommandHandlerService/IChromeCommandHandler";
-import {StorageService} from "../../modules/go1core/services/StorageService";
-import {RestClientService} from "../../modules/go1core/services/RestClientService";
 import {commandKeys} from "../../environments/commandKeys";
 import {DiscussionNoFirebaseServiceService} from "../../modules/discussions/services/discussionNoFirebase.service";
-import {injectable} from "inversify";
+import {inject, injectable} from "inversify";
 
 @injectable()
 export class LoadNotesForPageChromeCommandHandler implements IChromeCommandHandler {
   command = commandKeys.loadNotesForPage;
 
-  private restClientService: RestClientService;
-  private storageService: StorageService;
-  private discussionService: DiscussionNoFirebaseServiceService;
-
-  constructor() {
-    this.storageService = new StorageService();
-    this.restClientService = new RestClientService();
-    this.discussionService = new DiscussionNoFirebaseServiceService(this.restClientService, this.storageService);
+  constructor(@inject(DiscussionNoFirebaseServiceService) private discussionService: DiscussionNoFirebaseServiceService) {
   }
 
   handle(request: any, sender: any, sendResponse: Function) {

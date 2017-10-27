@@ -123,7 +123,7 @@ export class AddToPortalComponent {
 
     return new Promise((resolve, reject) => {
       chrome.tabs.sendMessage(configuration.currentChromeTab.id, {
-        name: commandKeys.getLinkPreview
+        action: commandKeys.getLinkPreview
       }, function (response) {
         resolve(response.data);
       });

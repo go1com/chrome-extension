@@ -4,6 +4,9 @@ import {
   IChromeCommandHandler,
   IChromeCommandHandlerSymbol
 } from "../services/chromeCommandHandlerService/IChromeCommandHandler";
+import {CheckQuickButtonSettingChromeCommandHandler} from "./commandHandlers/checkQuickButtonSettingChromeCommandHandler";
+import {StartDiscussionChromeCommandHandler} from "./commandHandlers/startDiscussionChromeCommandHandler";
+import {DiscussionNoFirebaseServiceService} from "../modules/discussions/services/discussionNoFirebase.service";
 
 
 const backgroundScriptContainer = new ContainerModule(
@@ -12,7 +15,11 @@ const backgroundScriptContainer = new ContainerModule(
    isBound: interfaces.IsBound,
    rebind: interfaces.Rebind) => {
 
+    bind<DiscussionNoFirebaseServiceService>(DiscussionNoFirebaseServiceService).toSelf();
+
     bind<IChromeCommandHandler>(IChromeCommandHandlerSymbol).to(LoadNotesForPageChromeCommandHandler);
+    bind<IChromeCommandHandler>(IChromeCommandHandlerSymbol).to(CheckQuickButtonSettingChromeCommandHandler);
+    bind<IChromeCommandHandler>(IChromeCommandHandlerSymbol).to(StartDiscussionChromeCommandHandler);
   }
 );
 

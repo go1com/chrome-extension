@@ -1,6 +1,5 @@
 import {IChromeCommandHandler} from "../../services/chromeCommandHandlerService/IChromeCommandHandler";
 import {commandKeys} from "../../environments/commandKeys";
-import {Go1ExtensionInjectionArea} from "../go1ExtensionInjectionArea";
 import {inject, injectable} from "inversify";
 import {PopupContainer} from "../components/popupContainerComponent/popupContainer";
 
