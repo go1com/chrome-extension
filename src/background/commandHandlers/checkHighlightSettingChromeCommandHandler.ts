@@ -1,11 +1,11 @@
-import {IChromeCommandHandler} from "../../services/chromeCommandHandlerService/IChromeCommandHandler";
+import {ICommandHandler} from "../../services/commandHandlerService/ICommandHandler";
 import {commandKeys} from "../../environments/commandKeys";
 import configuration from "../../environments/configuration";
 import {IStorageService, IStorageServiceSymbol} from "../../services/storageService/IStorageService";
 import {inject, injectable} from "inversify";
 
 @injectable()
-export class CheckHighlightSettingChromeCommandHandler implements IChromeCommandHandler {
+export class CheckHighlightSettingChromeCommandHandler implements ICommandHandler {
   command = commandKeys.checkHighlightNoteSettings;
 
   constructor(@inject(IStorageServiceSymbol) private storageService: IStorageService) {

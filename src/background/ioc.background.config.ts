@@ -1,12 +1,10 @@
 import {ContainerModule, interfaces} from "inversify";
 import {LoadNotesForPageChromeCommandHandler} from "./commandHandlers/LoadNotesForPageChromeCommandHandler";
-import {
-  IChromeCommandHandler,
-  IChromeCommandHandlerSymbol
-} from "../services/chromeCommandHandlerService/IChromeCommandHandler";
+
 import {CheckQuickButtonSettingChromeCommandHandler} from "./commandHandlers/checkQuickButtonSettingChromeCommandHandler";
 import {StartDiscussionChromeCommandHandler} from "./commandHandlers/startDiscussionChromeCommandHandler";
 import {DiscussionNoFirebaseServiceService} from "../modules/discussions/services/discussionNoFirebase.service";
+import {ICommandHandler, ICommandHandlerSymbol} from "../services/commandHandlerService/ICommandHandler";
 
 
 const backgroundScriptContainer = new ContainerModule(
@@ -17,9 +15,9 @@ const backgroundScriptContainer = new ContainerModule(
 
     bind<DiscussionNoFirebaseServiceService>(DiscussionNoFirebaseServiceService).toSelf();
 
-    bind<IChromeCommandHandler>(IChromeCommandHandlerSymbol).to(LoadNotesForPageChromeCommandHandler);
-    bind<IChromeCommandHandler>(IChromeCommandHandlerSymbol).to(CheckQuickButtonSettingChromeCommandHandler);
-    bind<IChromeCommandHandler>(IChromeCommandHandlerSymbol).to(StartDiscussionChromeCommandHandler);
+    bind<ICommandHandler>(ICommandHandlerSymbol).to(LoadNotesForPageChromeCommandHandler);
+    bind<ICommandHandler>(ICommandHandlerSymbol).to(CheckQuickButtonSettingChromeCommandHandler);
+    bind<ICommandHandler>(ICommandHandlerSymbol).to(StartDiscussionChromeCommandHandler);
   }
 );
 

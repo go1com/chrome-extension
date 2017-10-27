@@ -1,11 +1,11 @@
-import {IChromeCommandHandler} from "../../services/chromeCommandHandlerService/IChromeCommandHandler";
+import {ICommandHandler} from "../../services/commandHandlerService/ICommandHandler";
 import {StorageService} from "../../modules/go1core/services/StorageService";
 import {RestClientService} from "../../modules/go1core/services/RestClientService";
 import {commandKeys} from "../../environments/commandKeys";
 import {BackgroundNotificationService} from "../../sharedComponents/backgrounNotification/backgroundNotification.service";
 import configuration from "../../environments/configuration";
 
-export class OnUserLoggedInChromeCommandHandler implements IChromeCommandHandler {
+export class OnUserLoggedInChromeCommandHandler implements ICommandHandler {
   command = commandKeys.userLoggedIn;
 
   private restClientService: RestClientService;

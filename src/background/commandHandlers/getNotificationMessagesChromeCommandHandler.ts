@@ -1,8 +1,8 @@
-import {IChromeCommandHandler} from "../../services/chromeCommandHandlerService/IChromeCommandHandler";
+import {ICommandHandler} from "../../services/commandHandlerService/ICommandHandler";
 import {commandKeys} from "../../environments/commandKeys";
 import {BackgroundNotificationService} from "../../sharedComponents/backgrounNotification/backgroundNotification.service";
 
-export class GetNotificationMessagesChromeCommandHandler implements IChromeCommandHandler {
+export class GetNotificationMessagesChromeCommandHandler implements ICommandHandler {
   command = commandKeys.getNotificationMessages;
 
   constructor() {

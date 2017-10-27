@@ -1,4 +1,4 @@
-import {IChromeCommandHandler} from "../../services/chromeCommandHandlerService/IChromeCommandHandler";
+import {ICommandHandler} from "../../services/commandHandlerService/ICommandHandler";
 import {commandKeys} from "../../environments/commandKeys";
 import {inject, injectable} from "inversify";
 import {PopupContainer} from "../components/popupContainerComponent/popupContainer";
@@ -6,7 +6,7 @@ import {PopupContainer} from "../components/popupContainerComponent/popupContain
 declare const $: any;
 
 @injectable()
-export class ToggleExtensionPopupChromeCommandHandler implements IChromeCommandHandler {
+export class ToggleExtensionPopupCommandHandler implements ICommandHandler {
   command = commandKeys.toggleExtensionPopup;
 
   constructor(@inject(PopupContainer) private popupContainer: PopupContainer) {

@@ -9,6 +9,7 @@ import {EnrollmentService} from "../../enrollment/services/enrollment.service";
 import {UserService} from "../../membership/services/user.service";
 import * as _ from 'lodash';
 import {ensureChromeTabLoaded} from "../../../environments/ensureChromeTabLoaded";
+import {BrowserMessagingService} from "../../go1core/services/BrowserMessagingService";
 
 @Component({
   selector: 'add-to-portal',
@@ -29,7 +30,8 @@ export class AddToPortalComponent {
               private currentActiveRoute: ActivatedRoute,
               private enrollmentService: EnrollmentService,
               private userService: UserService,
-              private storageService: StorageService) {
+              private storageService: StorageService,
+              private browserMessagingService: BrowserMessagingService) {
 
     if (this.storageService.exists(configuration.constants.localStorageKeys.addToPortalParams)) {
       const pageToCreateNote = this.storageService.retrieve(configuration.constants.localStorageKeys.addToPortalParams);
@@ -121,13 +123,9 @@ export class AddToPortalComponent {
   private async loadPageMetadata(url) {
     await ensureChromeTabLoaded();
 
-    return new Promise((resolve, reject) => {
-      chrome.tabs.sendMessage(configuration.currentChromeTab.id, {
-        action: commandKeys.getLinkPreview
-      }, function (response) {
-        resolve(response.data);
-      });
-    });
+    const response = await this.browserMessagingService.requestToTab(configuration.currentChromeTab.id, commandKeys.getLinkPreview);
+
+    return response.data;
   }
 
   async addToPortal() {

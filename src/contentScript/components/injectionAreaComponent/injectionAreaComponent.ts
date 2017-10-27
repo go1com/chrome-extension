@@ -1,4 +1,4 @@
-import {ToolTipMenu} from "../tooltipComponent/toolTipsMenu";
+import {ToolTipMenuComponent} from "../tooltipComponent/toolTipsMenu";
 import {commandKeys} from "../../../environments/commandKeys";
 import Util from '../../../libs/annotation-plugin/util';
 import {HighlightService} from "../../services/highlightService";
@@ -28,6 +28,7 @@ export class InjectionAreaComponent implements IContentScriptComponent {
 
   constructor(@inject(PopupContainer) private popupContainer: PopupContainer,
               @inject(FabButtonsComponent) private fabButtonComponent: FabButtonsComponent,
+              @inject(HighlightService) private highlightService: HighlightService,
               @inject(IBrowserMessagingServiceSymbol) private chromeMessagingService: IBrowserMessagingService) {
     this.createNoteEnabled = false;
 
@@ -157,7 +158,7 @@ export class InjectionAreaComponent implements IContentScriptComponent {
     if ($(event.target).is('.annotation-indicator') || $(event.target).closest('.annotation-indicator').length) {
       return;
     }
-    HighlightService.unhighlight();
+    this.highlightService.unhighlight();
   }
 
   private onDocumentMouseUp(event: any) {
@@ -178,88 +179,11 @@ export class InjectionAreaComponent implements IContentScriptComponent {
       const selectedTextPosition = selection.getRangeAt(0).getBoundingClientRect();
       const xpathFromNode = Util.xpathFromNode($(selection.anchorNode.parentNode));
 
-      ToolTipMenu.initializeTooltip(this, selectedTextPosition, selectedText, xpathFromNode[0]);
+      ToolTipMenuComponent.initializeTooltip(this, selectedTextPosition, selectedText, xpathFromNode[0]);
     } else {
-      ToolTipMenu.closeLastTooltip();
+      ToolTipMenuComponent.closeLastTooltip();
     }
     this.checkNotesOnCurrentPage();
-  }
-
-  createAnnotation() {
-    const root = $('body');
-
-    const _range = this.selectedRange(document);
-
-    const options = {
-      ignoreSelector: '[class^="annotator-"]'
-    };
-
-    const getSelectors = function (range) {
-      // Returns an array of selectors for the passed range.
-      return htmlUtil.describe(root, range, options);
-    };
-
-    const annotation: any = {};
-
-    const locate = function (target) {
-      return htmlUtil.anchor(root, target.selector, options)
-        .then(range => {
-          return {target, range};
-        })
-        .catch(() => {
-          return {target};
-        });
-    };
-
-    const highlight = function (anchor) {
-      // Highlight the range for an anchor.
-      if (anchor.range == null) {
-        return anchor;
-      }
-
-      const range = Range.sniff(anchor.range);
-      const normedRange = range.normalize(root);
-      console.log(normedRange);
-
-      // const highlights = highlighter.highlightRange(normedRange);
-
-      // $(highlights).data('annotation', anchor.annotation);
-      // anchor.highlights = highlights;
-      return anchor;
-    };
-
-    const setTargets = function (...args) {
-      // `selectors` is an array of arrays: each item is an array of selectors
-      // identifying a distinct target.
-      let selectors;
-      [selectors] = Array.from(args[0]);
-      return annotation.target = (Array.from(selectors).map((selector) => ({selector})));
-    };
-
-    const selectors = Promise.all([_range].map(getSelectors));
-    const targets = Promise.all([selectors]).then(setTargets);
-    targets.then(() => {
-      if (annotation.target == null) {
-        annotation.target = [];
-      }
-
-      console.log(annotation.target);
-
-      for (let target of annotation.target) {
-        const anchor = locate(target).then((whatever => {
-          highlight(whatever);
-        }));
-      }
-    });
-  }
-
-  selectedRange(document) {
-    const selection = document.getSelection();
-    if (!selection.rangeCount || selection.getRangeAt(0).collapsed) {
-      return null;
-    } else {
-      return selection.getRangeAt(0);
-    }
   }
 
   checkNotesOnCurrentPage() {
@@ -288,7 +212,7 @@ export class InjectionAreaComponent implements IContentScriptComponent {
           return;
         }
 
-        HighlightService.highlight(note.context.quotation, note.context.quotationPosition, hiddenClassName)
+        this.highlightService.highlight(note.context.quotation, note.context.quotationPosition, hiddenClassName)
           .then(dom => {
             this.generateAnnotationIndicator(dom, note.context.quotation);
           });

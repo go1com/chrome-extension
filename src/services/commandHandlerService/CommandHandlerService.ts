@@ -1,17 +1,10 @@
-import {IChromeCommandHandler, IChromeCommandHandlerSymbol} from "./IChromeCommandHandler";
 import {injectable, multiInject} from "inversify";
+import {ICommandHandlerService} from "./ICommandHandlerService";
+import {ICommandHandler, ICommandHandlerSymbol} from "./ICommandHandler";
 
 @injectable()
-export class ChromeCmdHandleService {
-  constructor(@multiInject(IChromeCommandHandlerSymbol) private handlers: IChromeCommandHandler[]) {
-  }
-
-  registerHandler(handler: IChromeCommandHandler) {
-    if (this.handlers.indexOf(handler) >= 0) {
-      throw new Error(`You already register the handler ${typeof handler}`)
-    }
-
-    this.handlers.push(handler);
+export class CommandHandlerService implements ICommandHandlerService {
+  constructor(@multiInject(ICommandHandlerSymbol) private handlers: ICommandHandler[]) {
   }
 
   hasHandler(command: string) {

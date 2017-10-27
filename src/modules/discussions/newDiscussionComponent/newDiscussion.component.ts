@@ -1,4 +1,4 @@
-import {Component, OnInit} from "@angular/core";
+import {Component, OnDestroy, OnInit} from "@angular/core";
 import {ActivatedRoute, Router} from "@angular/router";
 import {DiscussionService} from "../services/discussion.service";
 import {UserService} from "../../membership/services/user.service";
@@ -6,24 +6,26 @@ import {StorageService} from "../../go1core/services/StorageService";
 import configuration from "../../../environments/configuration";
 import {commandKeys} from "../../../environments/commandKeys";
 import {ensureChromeTabLoaded} from "../../../environments/ensureChromeTabLoaded";
+import {BrowserMessagingService} from "../../go1core/services/BrowserMessagingService";
 
 @Component({
   selector: 'app-new-discussion',
   templateUrl: './newDiscussionComponent.tpl.pug'
 })
-export class NewDiscussionComponent implements OnInit {
+export class NewDiscussionComponent implements OnInit, OnDestroy {
   noteStatus: any = configuration.constants.noteStatuses.PUBLIC_NOTE;
   isLoading: boolean;
   linkPreview: any;
   data: any;
   private pageUrl: any | string;
-  newDiscussionFromBackgroundPage: boolean = false;
+  newDiscussionFromBackgroundPage = false;
   mentionedUsers: any[] = [];
 
   constructor(private router: Router,
               private discussionService: DiscussionService,
               private currentActivatedRoute: ActivatedRoute,
               private userService: UserService,
+              private browserMessagingService: BrowserMessagingService,
               private storageService: StorageService) {
     let quotation = '';
     let quotationPosition = null;
@@ -75,13 +77,9 @@ export class NewDiscussionComponent implements OnInit {
   private async loadPageMetadata(url) {
     await ensureChromeTabLoaded();
 
-    return new Promise((resolve, reject) => {
-      chrome.tabs.sendMessage(configuration.currentChromeTab.id, {
-        action: commandKeys.getLinkPreview
-      }, function (response) {
-        resolve(response.data);
-      });
-    });
+    const response = await this.browserMessagingService.requestToTab(configuration.currentChromeTab.id, commandKeys.getLinkPreview);
+
+    return response.data;
   }
 
   async goBack() {

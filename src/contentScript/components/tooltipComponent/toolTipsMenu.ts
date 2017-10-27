@@ -11,7 +11,7 @@ import {
 declare const $: any;
 
 @injectable()
-export class ToolTipMenu implements IContentScriptComponent {
+export class ToolTipMenuComponent implements IContentScriptComponent {
   static toolTipMenus: any[] = [];
 
   selectingText: any;
@@ -27,17 +27,17 @@ export class ToolTipMenu implements IContentScriptComponent {
 
   static initializeTooltip(parentComponent: IContentScriptComponent, boundingRect, selectingText, xpathOfNode) {
 
-    ToolTipMenu.closeLastTooltip(true);
+    ToolTipMenuComponent.closeLastTooltip(true);
 
-    const toolTip = iocContainer.get<ToolTipMenu>(ToolTipMenu);
+    const toolTip = iocContainer.get<ToolTipMenuComponent>(ToolTipMenuComponent);
 
-    ToolTipMenu.toolTipMenus.push(toolTip);
+    ToolTipMenuComponent.toolTipMenus.push(toolTip);
 
     toolTip.initialize(parentComponent, boundingRect, selectingText, xpathOfNode);
   }
 
   static closeLastTooltip(closeImmediately = false) {
-    const currentTooltip = ToolTipMenu.toolTipMenus.pop();
+    const currentTooltip = ToolTipMenuComponent.toolTipMenus.pop();
     if (currentTooltip) {
       currentTooltip.dismiss(closeImmediately);
     }

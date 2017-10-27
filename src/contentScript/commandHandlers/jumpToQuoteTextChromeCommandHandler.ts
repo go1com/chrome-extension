@@ -1,20 +1,20 @@
-import {IChromeCommandHandler} from "../../services/chromeCommandHandlerService/IChromeCommandHandler";
 import {commandKeys} from "../../environments/commandKeys";
 import {HighlightService} from "../services/highlightService";
-import {injectable} from "inversify";
+import {inject, injectable} from "inversify";
+import {ICommandHandler} from "../../services/commandHandlerService/ICommandHandler";
 
 declare const $: any;
 
 @injectable()
-export class JumpToQuoteTextChromeCommandHandler implements IChromeCommandHandler {
+export class JumpToQuoteTextCommandHandler implements ICommandHandler {
   command = commandKeys.jumpToQuotedText;
 
-  constructor() {
+  constructor(@inject(HighlightService) private highlightService: HighlightService) {
   }
 
   handle(request: any, sender: any, sendResponse?: Function) {
     if (request.data.quotation && request.data.quotationPosition) {
-      HighlightService.highlight(request.data.quotation, request.data.quotationPosition)
+      this.highlightService.highlight(request.data.quotation, request.data.quotationPosition)
         .then(dom => {
           const scrollTo = $(dom);
 

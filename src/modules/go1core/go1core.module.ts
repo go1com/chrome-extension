@@ -17,6 +17,7 @@ import {ModalModule} from "ngx-modialog";
 import {AutofocusDirective} from "./autofocus-directive/autofocus.directive";
 import {EllipsisPipe} from "./ellipsis-pipe/ellipsis.pipe";
 import {ImageFallbackDirective} from "./imageFallbackDirective/imageFallback.directive";
+import {BrowserMessagingService} from "./services/BrowserMessagingService";
 
 @NgModule({
   declarations: [
@@ -44,7 +45,8 @@ import {ImageFallbackDirective} from "./imageFallbackDirective/imageFallback.dir
   providers: [
     RestClientService,
     StorageService,
-    ModalDialogService
+    ModalDialogService,
+    BrowserMessagingService
   ],
   exports: [
     Go1HeaderComponent,

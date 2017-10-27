@@ -1,8 +1,3 @@
-import {CompleteComponent} from "./complete/complete.component";
-import {AdminDashboardComponent} from "./admin-dashboard/admin-dashboard.component";
-import {LearnerDashboardComponent} from "./learner-dashboard/learner-dashboard.component";
-import {PortalsComponent} from "./portals/portals.component";
-
 import {SettingComponent} from "../modules/settings/setting/setting.component";
 
 import {RedirectingComponent} from "./redirectingComponent/redirecting.component";
@@ -14,8 +9,6 @@ import {SignUpComponent} from "../modules/membership/signUp/sign-up.component";
 import {SignupSuccessComponent} from "../modules/membership/signUpSuccess/signup-success.component";
 import {SocialLoginComponent} from "../modules/membership/socialLogin/social-login.component";
 import configuration from "../environments/configuration";
-import {NewDiscussionComponent} from "../modules/discussions/newDiscussionComponent/newDiscussion.component";
-import {DiscussionsListComponent} from "../modules/discussions/discussionsListComponent/discussionsList.component";
 
 const routes: Routes = [
   {
@@ -45,25 +38,6 @@ const routes: Routes = [
     path: configuration.pages.notifications,
     loadChildren: '../modules/notification#NotificationModule'
   },
-  // {
-  //   path: 'portals',
-  //   component: PortalsComponent
-  // },
-  // {
-  //   path: 'learner-dashboard',
-  //   component: LearnerDashboardComponent,
-  // },
-  // {
-  //   path: 'admin-dashboard',
-  //   component: AdminDashboardComponent,
-  //   // resolve: {
-  //   //   user: UserResolve
-  //   // }
-  // },
-  // {
-  //   path: 'complete',
-  //   component: CompleteComponent,
-  // },
   {
     path: 'setting',
     component: SettingComponent

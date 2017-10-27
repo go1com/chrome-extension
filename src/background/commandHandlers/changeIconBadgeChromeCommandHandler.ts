@@ -1,7 +1,7 @@
-import {IChromeCommandHandler} from "../../services/chromeCommandHandlerService/IChromeCommandHandler";
+import {ICommandHandler} from "../../services/commandHandlerService/ICommandHandler";
 import {commandKeys} from "../../environments/commandKeys";
 
-export class ChangeIconBadgeChromeCommandHandler implements IChromeCommandHandler {
+export class ChangeIconBadgeChromeCommandHandler implements ICommandHandler {
   command = commandKeys.changeBrowserActionBadgeText;
 
   constructor() {

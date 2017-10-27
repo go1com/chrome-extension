@@ -1,8 +1,8 @@
-import {IChromeCommandHandler} from "../../services/chromeCommandHandlerService/IChromeCommandHandler";
+import {ICommandHandler} from "../../services/commandHandlerService/ICommandHandler";
 import {commandKeys} from "../../environments/commandKeys";
 import {BackgroundNotificationService} from "../../sharedComponents/backgrounNotification/backgroundNotification.service";
 
-export class ClearBadgeNotificationChromeCommandHandler implements IChromeCommandHandler {
+export class ClearBadgeNotificationChromeCommandHandler implements ICommandHandler {
   command = commandKeys.clearChromeBadgeNotification;
 
   constructor() {

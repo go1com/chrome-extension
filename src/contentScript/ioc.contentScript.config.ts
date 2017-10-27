@@ -1,22 +1,22 @@
 import {ContainerModule, interfaces} from "inversify";
 import {PopupContainer} from "./components/popupContainerComponent/popupContainer";
-import {
-  IChromeCommandHandler,
-  IChromeCommandHandlerSymbol
-} from "../services/chromeCommandHandlerService/IChromeCommandHandler";
-import {GetLinkPreviewChromeCommandHandler} from "./commandHandlers/GetLinkPreviewChromeCommandHandler";
-import {JumpToQuoteTextChromeCommandHandler} from "./commandHandlers/jumpToQuoteTextChromeCommandHandler";
-import {RemoveAllHighlightChromeCommandHandler} from "./commandHandlers/removeAllHighlightChromeCommandHandler";
-import {ToggleExtensionPopupChromeCommandHandler} from "./commandHandlers/ToggleExtensionPopupChromeCommandHandler";
+
+import {GetLinkPreviewCommandHandler} from "./commandHandlers/GetLinkPreviewChromeCommandHandler";
+import {JumpToQuoteTextCommandHandler} from "./commandHandlers/jumpToQuoteTextChromeCommandHandler";
+import {RemoveAllHighlightCommandHandler} from "./commandHandlers/removeAllHighlightChromeCommandHandler";
+import {ToggleExtensionPopupCommandHandler} from "./commandHandlers/ToggleExtensionPopupChromeCommandHandler";
+import {CheckQuickButtonSettingCommandHandler} from "./commandHandlers/checkQuickButtonSettingChromeCommandHandler";
+import {CheckCreateNoteSettingCommandHandler} from "./commandHandlers/checkCreateNoteSettingChromeCommandHandler";
+import {CheckHighlightSettingCommandHandler} from "./commandHandlers/checkHighlightSettingChromeCommandHandler";
+
 import {LinkPreview} from "../modules/linkPreviewer/linkPreviewService";
 import {FabButtonsComponent} from "./components/fabButtonsComponent/fabButtonsComponent";
-import {ChromeMessagingService} from "../services/browserMessagingService/chromeMessagingService";
 import {DocumentComponent} from "./components/injectionAreaComponent/documentComponent";
 import {InjectionAreaComponent} from "./components/injectionAreaComponent/injectionAreaComponent";
-import {CheckQuickButtonSettingChromeCommandHandler} from "./commandHandlers/checkQuickButtonSettingChromeCommandHandler";
-import {CheckCreateNoteSettingChromeCommandHandler} from "./commandHandlers/checkCreateNoteSettingChromeCommandHandler";
-import {CheckHighlightSettingChromeCommandHandler} from "./commandHandlers/checkHighlightSettingChromeCommandHandler";
-import {ToolTipMenu} from "./components/tooltipComponent/toolTipsMenu";
+import {ToolTipMenuComponent} from "./components/tooltipComponent/toolTipsMenu";
+import {ICommandHandler, ICommandHandlerSymbol} from "../services/commandHandlerService/ICommandHandler";
+import {ChromeMessagingService} from "../services/browserMessagingService/chromeMessagingService";
+import {HighlightService} from "./services/highlightService";
 
 const contentScriptContainer = new ContainerModule(
   (bind: interfaces.Bind,
@@ -29,20 +29,22 @@ const contentScriptContainer = new ContainerModule(
     bind<InjectionAreaComponent>(InjectionAreaComponent).toSelf().inSingletonScope();
     bind<FabButtonsComponent>(FabButtonsComponent).toSelf().inSingletonScope();
 
-    bind<ToolTipMenu>(ToolTipMenu).toSelf().inTransientScope();
+    bind<HighlightService>(HighlightService).toSelf().inSingletonScope();
+
+    bind<ToolTipMenuComponent>(ToolTipMenuComponent).toSelf().inTransientScope();
 
     bind<LinkPreview>(LinkPreview).toSelf();
 
     bind<ChromeMessagingService>(ChromeMessagingService).toSelf();
 
-    bind<IChromeCommandHandler>(IChromeCommandHandlerSymbol).to(CheckQuickButtonSettingChromeCommandHandler);
-    bind<IChromeCommandHandler>(IChromeCommandHandlerSymbol).to(CheckHighlightSettingChromeCommandHandler);
-    bind<IChromeCommandHandler>(IChromeCommandHandlerSymbol).to(CheckCreateNoteSettingChromeCommandHandler);
+    bind<ICommandHandler>(ICommandHandlerSymbol).to(CheckQuickButtonSettingCommandHandler);
+    bind<ICommandHandler>(ICommandHandlerSymbol).to(CheckHighlightSettingCommandHandler);
+    bind<ICommandHandler>(ICommandHandlerSymbol).to(CheckCreateNoteSettingCommandHandler);
 
-    bind<IChromeCommandHandler>(IChromeCommandHandlerSymbol).to(GetLinkPreviewChromeCommandHandler);
-    bind<IChromeCommandHandler>(IChromeCommandHandlerSymbol).to(JumpToQuoteTextChromeCommandHandler);
-    bind<IChromeCommandHandler>(IChromeCommandHandlerSymbol).to(RemoveAllHighlightChromeCommandHandler);
-    bind<IChromeCommandHandler>(IChromeCommandHandlerSymbol).to(ToggleExtensionPopupChromeCommandHandler);
+    bind<ICommandHandler>(ICommandHandlerSymbol).to(GetLinkPreviewCommandHandler);
+    bind<ICommandHandler>(ICommandHandlerSymbol).to(JumpToQuoteTextCommandHandler);
+    bind<ICommandHandler>(ICommandHandlerSymbol).to(RemoveAllHighlightCommandHandler);
+    bind<ICommandHandler>(ICommandHandlerSymbol).to(ToggleExtensionPopupCommandHandler);
   }
 );
 

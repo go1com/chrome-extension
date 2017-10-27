@@ -1,10 +1,10 @@
-import {IChromeCommandHandler} from "../../services/chromeCommandHandlerService/IChromeCommandHandler";
+import {ICommandHandler} from "../../services/commandHandlerService/ICommandHandler";
 import {StorageService} from "../../modules/go1core/services/StorageService";
 import {commandKeys} from "../../environments/commandKeys";
 import {PortalService} from "../../modules/portal/services/PortalService";
 import configuration from "../../environments/configuration";
 
-export class GetPortalsChromeCommandHandler implements IChromeCommandHandler {
+export class GetPortalsChromeCommandHandler implements ICommandHandler {
   command = commandKeys.getPortals;
 
   private storageService: StorageService;

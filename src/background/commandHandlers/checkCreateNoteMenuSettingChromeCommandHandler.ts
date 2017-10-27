@@ -1,11 +1,11 @@
-import {IChromeCommandHandler} from "../../services/chromeCommandHandlerService/IChromeCommandHandler";
+import {ICommandHandler} from "../../services/commandHandlerService/ICommandHandler";
 import {commandKeys} from "../../environments/commandKeys";
 import configuration from "../../environments/configuration";
 import {inject, injectable} from "inversify";
 import {IStorageService, IStorageServiceSymbol} from "../../services/storageService/IStorageService";
 
 @injectable()
-export class CheckCreateNoteMenuSettingChromeCommandHandler implements IChromeCommandHandler {
+export class CheckCreateNoteMenuSettingChromeCommandHandler implements ICommandHandler {
   command = commandKeys.checkCreateNoteSettings;
 
   constructor(@inject(IStorageServiceSymbol) private storageService: IStorageService) {

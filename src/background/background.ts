@@ -2,14 +2,11 @@ import iocContainer from "../ioc/ioc.config";
 import backgroundScriptContainer from "./ioc.background.config";
 
 import {commandKeys} from "../environments/commandKeys";
-import {
-  IChromeCmdHandleService,
-  IChromeCmdHandleServiceSymbol
-} from "../services/chromeCommandHandlerService/IChromeCmdHandleService";
+import {ICommandHandlerService, ICommandHandlerServiceSymbol} from "../services/commandHandlerService/ICommandHandlerService";
 
 iocContainer.load(backgroundScriptContainer);
 
-const commandHandlerService = iocContainer.get<IChromeCmdHandleService>(IChromeCmdHandleServiceSymbol);
+const commandHandlerService = iocContainer.get<ICommandHandlerService>(ICommandHandlerServiceSymbol);
 
 const extensionVersion = '@EXTENSION_VERSION@';
 
