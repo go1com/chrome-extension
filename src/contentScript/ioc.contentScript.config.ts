@@ -17,6 +17,8 @@ import {ToolTipMenuComponent} from "./components/tooltipComponent/toolTipsMenu";
 import {ICommandHandler, ICommandHandlerSymbol} from "../services/commandHandlerService/ICommandHandler";
 import {ChromeMessagingService} from "../services/browserMessagingService/chromeMessagingService";
 import {HighlightService} from "./services/highlightService";
+import {StartDiscussionFromContextMenuCommandHandler} from "./commandHandlers/startDiscussionFromContextMenuCommandHandler";
+import {AddToPortalFromContextMenuCommandHandler} from "./commandHandlers/addToPortalFromContextMenuCommandHandler";
 
 const contentScriptContainer = new ContainerModule(
   (bind: interfaces.Bind,
@@ -42,6 +44,8 @@ const contentScriptContainer = new ContainerModule(
     bind<ICommandHandler>(ICommandHandlerSymbol).to(CheckCreateNoteSettingCommandHandler);
 
     bind<ICommandHandler>(ICommandHandlerSymbol).to(GetLinkPreviewCommandHandler);
+    bind<ICommandHandler>(ICommandHandlerSymbol).to(AddToPortalFromContextMenuCommandHandler);
+    bind<ICommandHandler>(ICommandHandlerSymbol).to(StartDiscussionFromContextMenuCommandHandler);
     bind<ICommandHandler>(ICommandHandlerSymbol).to(JumpToQuoteTextCommandHandler);
     bind<ICommandHandler>(ICommandHandlerSymbol).to(RemoveAllHighlightCommandHandler);
     bind<ICommandHandler>(ICommandHandlerSymbol).to(ToggleExtensionPopupCommandHandler);

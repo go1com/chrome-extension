@@ -53,7 +53,7 @@ export class FabButtonsComponent implements IContentScriptComponent {
   private async _onAddToPortalBtnClicked(event) {
     this.view.removeClass('active');
 
-    this.popupContainer.showPopup('addToPortal');
+    this.popupContainer.showPopup('addToPortal/addToPortal');
   }
 
   private async _onStartDiscussionBtnClicked(event) {

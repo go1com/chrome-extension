@@ -11,6 +11,7 @@
     "title": "${PRODUCT_NAME}"
   },
   "icons": {
+    "32": "assets/icon_32.png",
     "48": "assets/icon_48.png",
     "128": "assets/icon.png"
   },
@@ -22,7 +23,8 @@
   "permissions": [
     "activeTab",
     "tabs",
-    "notifications"
+    "notifications",
+    "contextMenus"
   ],
   "options_page": "index.html",
   "content_scripts": [

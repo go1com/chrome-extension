@@ -25,17 +25,11 @@ export class LinkPreview {
   }
 
   getDescription(doc) {
-    let description = $(doc).find('meta[name=description]').attr('content');
+    const description = $(doc).find('meta[name=description]').attr('content') ||
+      $(doc).find('meta[name=Description]').attr('content') ||
+      $(doc).find('meta[property=\'og:description\']').attr('content');
 
-    if (description === undefined) {
-      description = $(doc).find('meta[name=Description]').attr('content');
-    }
-
-    if (description === undefined) {
-      description = $(doc).find('meta[property=\'og:description\']').attr('content');
-    }
-
-    return description;
+    return description || "";
   }
 
   getMediaType(doc) {

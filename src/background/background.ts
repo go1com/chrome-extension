@@ -2,13 +2,54 @@ import iocContainer from "../ioc/ioc.config";
 import backgroundScriptContainer from "./ioc.background.config";
 
 import {commandKeys} from "../environments/commandKeys";
-import {ICommandHandlerService, ICommandHandlerServiceSymbol} from "../services/commandHandlerService/ICommandHandlerService";
+import {
+  ICommandHandlerService,
+  ICommandHandlerServiceSymbol
+} from "../services/commandHandlerService/ICommandHandlerService";
 
 iocContainer.load(backgroundScriptContainer);
 
 const commandHandlerService = iocContainer.get<ICommandHandlerService>(ICommandHandlerServiceSymbol);
 
 const extensionVersion = '@EXTENSION_VERSION@';
+
+chrome.contextMenus.create({
+  "title": "Add Page to Portal",
+  "contexts": ['page'],
+  "onclick": (info, tab) => {
+    chrome.tabs.sendMessage(tab.id, {
+      action: commandKeys.addToPortal
+    }, (response) => {
+
+    });
+  }
+});
+
+chrome.contextMenus.create({
+  "title": "Add Note",
+  "contexts": ['page'],
+  "onclick": (info, tab) => {
+    chrome.tabs.sendMessage(tab.id, {
+      action: commandKeys.startDiscussion
+    }, (response) => {
+
+    });
+  }
+});
+
+chrome.contextMenus.create({
+  "title": "Save to Note",
+  "contexts": ['selection'],
+  "onclick": (info, tab) => onSaveToNoteMenuContextClicked(info, tab)
+});
+
+function onSaveToNoteMenuContextClicked(info, tab) {
+  chrome.tabs.sendMessage(tab.id, {
+    action: commandKeys.startDiscussion
+  }, (response) => {
+
+  });
+}
 
 chrome.browserAction.onClicked.addListener((tab) => {
   chrome.tabs.sendMessage(tab.id, {

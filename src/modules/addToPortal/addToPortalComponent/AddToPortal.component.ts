@@ -64,6 +64,7 @@ export class AddToPortalComponent {
 
     this.linkPreview = await this.loadPageMetadata(this.pageUrl);
 
+    console.log(this.linkPreview);
     this.data = {
       title: this.linkPreview.title,
       description: this.linkPreview.description,
@@ -82,12 +83,12 @@ export class AddToPortalComponent {
   }
 
   async ngOnDestroy() {
-    if (!_.isEqual(this.learningItem.tags, this.data.tags)) {
-      await this.addToPortalService.updateLearningItem({
-        id: this.learningItem.id,
-        tags: this.learningItem.tags
-      });
-    }
+    // if (!_.isEqual(this.learningItem.tags, this.data.tags)) {
+    //   await this.addToPortalService.updateLearningItem({
+    //     id: this.learningItem.id,
+    //     tags: this.learningItem.tags
+    //   });
+    // }
   }
 
   async onDoneBtnClicked() {

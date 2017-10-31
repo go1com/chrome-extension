@@ -74,18 +74,17 @@ export class InjectionAreaComponent implements IContentScriptComponent {
   }
 
   async checkCreateNoteSettings(firstTimeInitial = false) {
-    const createNoteEnabled = await this.chromeMessagingService.requestToBackground(commandKeys.checkCreateNoteSettings);
+    this.createNoteEnabled = await this.chromeMessagingService.requestToBackground(commandKeys.checkCreateNoteSettings);
 
-    this.createNoteEnabled = createNoteEnabled;
-
-    if (!createNoteEnabled) {
+    if (!this.createNoteEnabled) {
       if (firstTimeInitial) {
         return;
       }
       this.removeListenerToSelectingText();
       return;
+    } else {
+      this.addListenerToSelectingText();
     }
-    this.addListenerToSelectingText();
   }
 
   appendQuickButton() {
