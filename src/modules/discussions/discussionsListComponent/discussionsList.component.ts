@@ -102,7 +102,7 @@ export class DiscussionsListComponent implements OnInit, OnDestroy {
       this.loading = true;
     }
 
-    const response = await this.discussionService.getUserNotesFromService();
+    const response = await this.discussionService.getUserNotesFromService(configuration.currentChromeTab.url);
 
     if (!response.length) {
       this.discussionsList = [];

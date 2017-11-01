@@ -17,24 +17,56 @@ export class DiscussionNoFirebaseServiceService {
     };
   }
 
-  getUserNotesFromService(contextUrl?: string) {
+  async getUserNotesFromService(contextUrl?: string) {
     let url = `${this.baseUrl}/${configuration.serviceUrls.noteService}notes`;
 
     const queries = [];
 
     queries.push(`type=${configuration.constants.noteChromeExtType}`);
 
+    if (!contextUrl && configuration.currentChromeTab && configuration.currentChromeTab.url) {
+      contextUrl = configuration.currentChromeTab.url
+    }
+
     if (contextUrl) {
       queries.push(`context[url]=${contextUrl}`);
-    } else if (configuration.currentChromeTab && configuration.currentChromeTab.url) {
-      queries.push(`context[url]=${configuration.currentChromeTab.url}`);
     }
 
     if (queries.length) {
       url += `?${queries.join('&')}`;
     }
 
-    return this.restClientService.get(url, this.getCustomHeaders());
+    const response = await this.restClientService.get(url, this.getCustomHeaders());
+    const publicNoteResponse = await this.getPublicNotesFromService(contextUrl);
+    // console.log(publicNoteResponse.concat(response));
+
+    return publicNoteResponse.concat(response);
+  }
+
+  async getPublicNotesFromService(contextUrl: string) {
+    let url = `${this.baseUrl}/${configuration.serviceUrls.noteService}notes`;
+
+    const queries = [];
+
+    const currentPortalId = this.storageService.retrieve(configuration.constants.localStorageKeys.currentActivePortalId);
+
+    queries.push(`instance=${currentPortalId}`);
+
+    if (!contextUrl && configuration.currentChromeTab && configuration.currentChromeTab.url) {
+      contextUrl = configuration.currentChromeTab.url
+    }
+
+    if (contextUrl) {
+      queries.push(`context[url]=${contextUrl}`);
+    }
+
+    if (queries.length) {
+      url += `?${queries.join('&')}`;
+    }
+
+    const response = await this.restClientService.get(url, this.getCustomHeaders());
+
+    return response;
   }
 
   async deleteNote(noteUuid: string) {

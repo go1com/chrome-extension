@@ -10,6 +10,7 @@ const configuration = {
     popupDefaultName: 'GO1_EXTENSION_POPUP',
     momentISOFormat: 'YYYY-MM-DD[T]HH:mm:ssZZ',
     noteChromeExtType: 'chromeext',
+    notePortalType: 'portal',
     noteStatuses: {
       PUBLIC_NOTE: 2,
       PRIVATE_NOTE: 0

@@ -125,6 +125,10 @@ export class DiscussionService extends DiscussionNoFirebaseServiceService {
       queries.push(`context[${key}]=${newNote.context[key]}`);
     });
 
+    if (newNote.private) {
+      queries.push(`private=${newNote.private}`);
+    }
+
     if (newNote.portalId) {
       queries.push(`instance=${newNote.portalId}`);
     }

@@ -17,15 +17,12 @@ export class SocialLoginComponent {
   constructor(private currentRoute: ActivatedRoute,
               private userService: UserService,
               private storageService: StorageService,
-              private modalDialogService: ModalDialogService) {
+              private modalDialogService: ModalDialogService,
+              private router: Router) {
 
   }
 
   async ngOnInit() {
-    window.onbeforeunload = () => {
-      this.storageService.remove(configuration.constants.localStorageKeys.socialLogin);
-    };
-
     this.currentRoute.params.subscribe(async params => {
       this.provider = params['oauthProvider'];
 
@@ -77,6 +74,7 @@ export class SocialLoginComponent {
 
     this.loggedInSuccess = true;
     this.storageService.remove(configuration.constants.localStorageKeys.socialLogin);
+    this.router.navigate(['/' + configuration.defaultPage]);
   }
 
   close() {

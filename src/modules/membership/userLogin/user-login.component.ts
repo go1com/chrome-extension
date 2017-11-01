@@ -46,15 +46,11 @@ export class UserLoginComponent implements OnInit {
   }
 
   async facebookLogIn() {
-    this.storageService.store(configuration.constants.localStorageKeys.socialLogin, true);
-
-    window.open(`${configuration.constants.indexPage}#${configuration.pages.fbLogin}`, `social_login`, `height=620px,width=430px`);
+    this.router.navigate(['/' + configuration.pages.fbLogin]);
   }
 
   async googleLogin() {
-    this.storageService.store(configuration.constants.localStorageKeys.socialLogin, true);
-
-    window.open(`${configuration.constants.indexPage}#${configuration.pages.ggLogin}`, `social_login`, `height=620px,width=430px,`);
+    this.router.navigate(['/' + configuration.pages.ggLogin]);
   }
 
   redirect(user): void {

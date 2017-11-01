@@ -26,7 +26,17 @@
     .text-editor(rich-text-editor [(ngModel)]="data.body" placeholder="Add your notes...", autofocus, [(mentionedUsers)]="mentionedUsers")
 
   .actions-area
-    .col-7.p-l-0
-      portal-selection([(portal)]="data.portalId")
-    .col-5.text-align-right.p-r-0
-      button.btn.btn-primary.add-note-btn((click)="addNote()") Add Note
+    .row
+      .col-7
+        portal-selection([(portal)]="data.portalId")
+    .row.m-t-10
+      .col-7
+        .select-privacy
+          span Who can see this note?
+          select.form-control([(ngModel)]="privacySetting", (ngModelChange)="onPrivacyChange()", placeholder="Who can see this note?")
+            option(value="PUBLIC") Everyone
+            option(value="MENTIONED") Share with people I mentioned
+            option(value="ONLYME") Only me
+    .row.m-t-10
+      .col-12
+        button.btn.btn-primary.add-note-btn((click)="addNote()") Add Note

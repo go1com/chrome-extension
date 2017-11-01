@@ -13,6 +13,7 @@ import {BrowserMessagingService} from "../../go1core/services/BrowserMessagingSe
   templateUrl: './newDiscussionComponent.tpl.pug'
 })
 export class NewDiscussionComponent implements OnInit, OnDestroy {
+  currentPortalId: any;
   noteStatus: any = configuration.constants.noteStatuses.PUBLIC_NOTE;
   isLoading: boolean;
   linkPreview: any;
@@ -20,6 +21,7 @@ export class NewDiscussionComponent implements OnInit, OnDestroy {
   private pageUrl: any | string;
   newDiscussionFromBackgroundPage = false;
   mentionedUsers: any[] = [];
+  privacySetting = 'ONLYME';
 
   constructor(private router: Router,
               private discussionService: DiscussionService,
@@ -42,6 +44,7 @@ export class NewDiscussionComponent implements OnInit, OnDestroy {
       this.pageUrl = configuration.currentChromeTab && configuration.currentChromeTab.url || '';
     }
 
+    this.currentPortalId = storageService.retrieve(configuration.constants.localStorageKeys.currentActivePortalId);
     this.data = {
       title: '',
       body: '',
@@ -49,11 +52,12 @@ export class NewDiscussionComponent implements OnInit, OnDestroy {
       item: this.pageUrl,
       entityType: configuration.constants.noteChromeExtType,
       entityId: Math.floor(new Date().getTime() / 1000),
-      portalId: storageService.retrieve(configuration.constants.localStorageKeys.currentActivePortalId),
+      portalId: this.currentPortalId,
       context: {
         url: this.pageUrl,
         lo_status: this.noteStatus || configuration.constants.noteStatuses.PUBLIC_NOTE
-      }
+      },
+      private: 1
     };
 
     if (quotation) {
@@ -72,6 +76,21 @@ export class NewDiscussionComponent implements OnInit, OnDestroy {
   }
 
   async ngOnDestroy() {
+  }
+
+  onPrivacyChange() {
+    if (this.privacySetting === 'ONLYME' || this.privacySetting === 'MENTIONED') {
+      this.data.entityType = configuration.constants.noteChromeExtType;
+      this.data.entityId = Math.floor(new Date().getTime() / 1000);
+      this.data.private = 1;
+      return;
+    }
+
+    if (this.privacySetting === 'PUBLIC') {
+      this.data.entityType = configuration.constants.notePortalType;
+      this.data.entityId = this.currentPortalId;
+      this.data.private = 0;
+    }
   }
 
   private async loadPageMetadata(url) {
