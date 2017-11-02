@@ -1,8 +1,6 @@
 @import "variables";
 
 .discussion-detail-page {
-  height: $chrome-ext-max-height;
-  background: $chrome-ext-background;
 }
 
 .discussion-item {
@@ -157,8 +155,6 @@
 }
 
 .discussions-list-page {
-  height: $chrome-ext-max-height;
-  background: $chrome-ext-background;
 
   .no-content {
     h4 {

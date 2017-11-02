@@ -6,6 +6,11 @@
 @import "common";
 @import "loadingIndicator";
 
+html {
+  background: $chrome-ext-background;
+  height: 100%;
+}
+
 body {
   width: 415px;
   font-size: 16px;
@@ -13,6 +18,7 @@ body {
   color: $go1black;
   overflow-x: hidden;
   background: $chrome-ext-background;
+  //background: linear-gradient(to bottom, #f1f6f9 0%,#f4f4f4 100%);
 
   &.go1-popup {
     overflow: hidden;

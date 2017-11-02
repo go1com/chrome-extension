@@ -23,14 +23,15 @@
     .quotation(*ngIf="data.quote")
       blockquote {{ data.quote | ellipsis:88 }}
 
-    .text-editor(rich-text-editor [(ngModel)]="data.body" placeholder="Add your notes...", autofocus, [(mentionedUsers)]="mentionedUsers")
+    .text-editor(rich-text-editor [(ngModel)]="data.body", (ngModelChange)="onTextChanged()", placeholder="Add your notes...", autofocus, [(mentionedUsers)]="mentionedUsers")
 
   .actions-area
     .row
-      .col-7
-        portal-selection([(portal)]="data.portalId")
-    .row.m-t-10
-      .col-7
+      .col-6
+        .portal-selection
+          span Select Portal
+          portal-selection([(portal)]="data.portalId")
+      .col-6
         .select-privacy
           span Who can see this note?
           select.form-control([(ngModel)]="privacySetting", (ngModelChange)="onPrivacyChange()", placeholder="Who can see this note?")
@@ -39,4 +40,6 @@
             option(value="ONLYME") Only me
     .row.m-t-10
       .col-12
-        button.btn.btn-primary.add-note-btn((click)="addNote()") Add Note
+        button.btn.btn-sm.btn-primary.add-note-btn((click)="addNote()") Add Note
+
+        button.btn.btn-sm.btn-default.m-l-10((click)="goBack()") Cancel

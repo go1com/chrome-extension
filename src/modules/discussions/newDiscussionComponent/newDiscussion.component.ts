@@ -105,6 +105,12 @@ export class NewDiscussionComponent implements OnInit, OnDestroy {
     this.router.navigate(['../'], {relativeTo: this.currentActivatedRoute});
   }
 
+  onTextChanged() {
+    if (this.mentionedUsers.length) {
+      this.privacySetting = 'MENTIONED';
+    }
+  }
+
   async addNote() {
     if (!this.data.title) {
       this.data.title = 'Note from ' + this.linkPreview.title;
@@ -118,6 +124,7 @@ export class NewDiscussionComponent implements OnInit, OnDestroy {
     const noteData = await this.discussionService.createNote(this.data);
 
     if (this.mentionedUsers.length) {
+      this.privacySetting = 'MENTIONED';
       const mentionedUserIds = this.mentionedUsers.map((user) => user.rootId.toString());
       await this.discussionService.mentionUsers(noteData.$uuid, mentionedUserIds);
     }

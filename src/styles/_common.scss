@@ -11,7 +11,7 @@
   font-size: 18px;
 }
 
-body {
+body, html {
   background: $go1bodyBackground;
 }
 
@@ -116,6 +116,10 @@ header.extension-header {
 
 .p-l-0 {
   padding-left: 0;
+}
+
+.m-l-10 {
+  margin-left: 10px;
 }
 
 .m-r-10 {
