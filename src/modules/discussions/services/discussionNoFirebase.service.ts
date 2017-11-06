@@ -51,6 +51,7 @@ export class DiscussionNoFirebaseServiceService {
     const currentPortalId = this.storageService.retrieve(configuration.constants.localStorageKeys.currentActivePortalId);
 
     queries.push(`instance=${currentPortalId}`);
+    queries.push(`public=1`);
 
     if (!contextUrl && configuration.currentChromeTab && configuration.currentChromeTab.url) {
       contextUrl = configuration.currentChromeTab.url

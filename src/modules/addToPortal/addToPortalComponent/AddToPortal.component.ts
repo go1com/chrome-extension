@@ -93,32 +93,12 @@ export class AddToPortalComponent {
 
   async onDoneBtnClicked() {
     this.learningItem = await this.addToPortal();
-    await this.goToSuccess();
+    this.storageService.store(configuration.constants.localStorageKeys.cacheLearningItem + this.learningItem.id, this.learningItem);
+    await this.goToSuccess(this.learningItem.id);
   }
 
   async onCancelBtnClicked() {
     await this.goBack();
-  }
-
-  async shareButtonClicked() {
-    this.storageService.store(configuration.constants.localStorageKeys.cacheLearningItem + this.learningItem.id, this.learningItem);
-    await this.router.navigate(['./', configuration.pages.addToPortal, configuration.pages.shareLearningItem, this.learningItem.id]);
-  }
-
-  async onMarkAsCompleteBtnClicked() {
-    await this.markAsComplete(this.learningItem);
-    await this.goToSuccess();
-  }
-
-  async saveForLaterClicked() {
-    this.storageService.store(configuration.constants.localStorageKeys.cacheLearningItem + this.learningItem.id, this.learningItem);
-    await this.router.navigate(['./', configuration.pages.addToPortal, configuration.pages.scheduleLearningItem, this.learningItem.id]);
-  }
-
-  async markAsComplete(learningItem) {
-    const enrollmentResponse: any = await this.enrollToItem(learningItem.id);
-
-    const markAsCompleteEnrollment = await this.enrollmentService.markEnrollmentAsCompleted(enrollmentResponse.id);
   }
 
   private async loadPageMetadata(url) {
@@ -133,12 +113,8 @@ export class AddToPortalComponent {
     return await this.addToPortalService.addToPortal(this.data);
   }
 
-  async enrollToItem(learningItemId) {
-    return await this.enrollmentService.enrollToLearningItem(learningItemId, this.data.instance);
-  }
-
-  async goToSuccess() {
-    await this.router.navigate(['./', configuration.pages.addToPortal, routeNames.success]);
+  async goToSuccess(learningItemId) {
+    await this.router.navigate(['./', configuration.pages.addToPortal, routeNames.success, learningItemId]);
   }
 
   goBack() {

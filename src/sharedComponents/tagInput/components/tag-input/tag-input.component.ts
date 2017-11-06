@@ -11,10 +11,10 @@ import {
   Output,
   ViewChild, ViewEncapsulation
 } from '@angular/core';
-import { AbstractControl, ControlValueAccessor, NG_VALUE_ACCESSOR, FormBuilder, FormGroup } from '@angular/forms';
-import { Subscription } from 'rxjs';
+import {AbstractControl, ControlValueAccessor, NG_VALUE_ACCESSOR, FormBuilder, FormGroup} from '@angular/forms';
+import {Subscription} from 'rxjs';
 
-import { KEYS } from '../../shared/tag-input-keys';
+import {KEYS} from '../../shared/tag-input-keys';
 
 /**
  * Taken from @angular/common/src/facade/lang
@@ -38,29 +38,31 @@ export interface AutoCompleteItem {
 })
 export class TagInputComponent implements ControlValueAccessor, OnDestroy, OnInit {
   @HostBinding('class.ng2-tag-input-focus') isFocused;
-  @Input() addOnBlur: boolean = true;
-  @Input() addOnComma: boolean = true;
-  @Input() addOnEnter: boolean = true;
-  @Input() addOnPaste: boolean = true;
-  @Input() addOnSpace: boolean = false;
-  @Input() allowDuplicates: boolean = false;
+  @Input() addOnBlur = true;
+  @Input() addOnComma = true;
+  @Input() addOnEnter = true;
+  @Input() addOnPaste = true;
+  @Input() addOnSpace = false;
+  @Input() allowDuplicates = false;
   @Input() allowedTagsPattern: RegExp = /.+/;
-  @Input() autocomplete: boolean = false;
+  @Input() autocomplete = false;
   @Input() autocompleteItems: string[] = [];
-  @Input() autocompleteMustMatch: boolean = true;
-  @Input() autocompleteSelectFirstItem: boolean = true;
-  @Input() pasteSplitPattern: string = ',';
-  @Input() placeholder: string = 'Add a tag';
+  @Input() autocompleteMustMatch = true;
+  @Input() autocompleteSelectFirstItem = true;
+  @Input() pasteSplitPattern = ',';
+  @Input() placeholder = 'Add a tag';
   @Output('addTag') addTag: EventEmitter<string> = new EventEmitter<string>();
   @Output('removeTag') removeTag: EventEmitter<string> = new EventEmitter<string>();
   @ViewChild('tagInputElement') tagInputElement: ElementRef;
 
-  private canShowAutoComplete: boolean = false;
+  private canShowAutoComplete = false;
   private tagInputSubscription: Subscription;
   private splitRegExp: RegExp;
+
   private get tagInputField(): AbstractControl {
     return this.tagInputForm.get('tagInputField');
   }
+
   private get inputValue(): string {
     return this.tagInputField.value;
   }
@@ -70,7 +72,8 @@ export class TagInputComponent implements ControlValueAccessor, OnDestroy, OnIni
   public tagsList: string[] = [];
   public selectedTag: number;
 
-  @HostListener('document:click', ['$event', '$event.target']) onDocumentClick(event: MouseEvent, target: HTMLElement) {
+  @HostListener('document:click', ['$event', '$event.target'])
+  onDocumentClick(event: MouseEvent, target: HTMLElement) {
     if (!target) {
       return;
     }
@@ -80,9 +83,9 @@ export class TagInputComponent implements ControlValueAccessor, OnDestroy, OnIni
     }
   }
 
-  constructor(
-    private fb: FormBuilder,
-    private elementRef: ElementRef) {}
+  constructor(private fb: FormBuilder,
+              private elementRef: ElementRef) {
+  }
 
   ngOnInit() {
     this.splitRegExp = new RegExp(this.pasteSplitPattern);
@@ -92,20 +95,20 @@ export class TagInputComponent implements ControlValueAccessor, OnDestroy, OnIni
     });
 
     this.tagInputSubscription = this.tagInputField.valueChanges
-    .do(value => {
-      this.autocompleteResults = this.autocompleteItems.filter(item => {
-        /**
-         * _isTagUnique makes sure to remove items from the autocompelte dropdown if they have
-         * already been added to the model, and allowDuplicates is false
-         */
-        return item.toLowerCase().indexOf(value.toLowerCase()) > -1 && this._isTagUnique(item);
-      });
-    })
-    .subscribe();
+      .do(value => {
+        this.autocompleteResults = this.autocompleteItems.filter(item => {
+          /**
+           * _isTagUnique makes sure to remove items from the autocompelte dropdown if they have
+           * already been added to the model, and allowDuplicates is false
+           */
+          return item.toLowerCase().indexOf(value.toLowerCase()) > -1 && this._isTagUnique(item);
+        });
+      })
+      .subscribe();
   }
 
   onKeydown(event: KeyboardEvent): void {
-    let key = event.keyCode;
+    const key = event.keyCode;
     switch (key) {
       case KEYS.backspace:
         this._handleBackspace();
@@ -138,7 +141,9 @@ export class TagInputComponent implements ControlValueAccessor, OnDestroy, OnIni
   }
 
   onInputBlurred(event): void {
-    if (this.addOnBlur) { this._addTags([this.inputValue]); }
+    if (this.addOnBlur) {
+      this._addTags([this.inputValue]);
+    }
     this.isFocused = false;
   }
 
@@ -148,9 +153,9 @@ export class TagInputComponent implements ControlValueAccessor, OnDestroy, OnIni
   }
 
   onInputPaste(event): void {
-    let clipboardData = event.clipboardData || (event.originalEvent && event.originalEvent.clipboardData);
-    let pastedString = clipboardData.getData('text/plain');
-    let tags = this._splitString(pastedString);
+    const clipboardData = event.clipboardData || (event.originalEvent && event.originalEvent.clipboardData);
+    const pastedString = clipboardData.getData('text/plain');
+    const tags = this._splitString(pastedString);
     this._addTags(tags);
     setTimeout(() => this._resetInput());
   }
@@ -178,13 +183,13 @@ export class TagInputComponent implements ControlValueAccessor, OnDestroy, OnIni
 
   private _splitString(tagString: string): string[] {
     tagString = tagString.trim();
-    let tags = tagString.split(this.splitRegExp);
+    const tags = tagString.split(this.splitRegExp);
     return tags.filter((tag) => !!tag);
   }
 
   private _isTagValid(tagString: string): boolean {
     return this.allowedTagsPattern.test(tagString) &&
-           this._isTagUnique(tagString);
+      this._isTagUnique(tagString);
   }
 
   private _isTagUnique(tagString: string): boolean {
@@ -204,10 +209,10 @@ export class TagInputComponent implements ControlValueAccessor, OnDestroy, OnIni
   }
 
   private _addTags(tags: string[]): void {
-    let validTags = tags.map(tag => tag.trim())
-                        .filter(tag => this._isTagValid(tag))
-                        .filter((tag, index, tagArray) => tagArray.indexOf(tag) === index)
-                        .filter(tag => (this.showAutocomplete() && this.autocompleteMustMatch) ? this._isTagAutocompleteItem(tag) : true);
+    const validTags = tags.map(tag => tag.trim())
+      .filter(tag => this._isTagValid(tag))
+      .filter((tag, index, tagArray) => tagArray.indexOf(tag) === index)
+      .filter(tag => (this.showAutocomplete() && this.autocompleteMustMatch) ? this._isTagAutocompleteItem(tag) : true);
 
     this.tagsList = this.tagsList.concat(validTags);
     this._resetSelected();
@@ -217,7 +222,7 @@ export class TagInputComponent implements ControlValueAccessor, OnDestroy, OnIni
   }
 
   private _removeTag(tagIndexToRemove: number): void {
-    let removedTag = this.tagsList[tagIndexToRemove];
+    const removedTag = this.tagsList[tagIndexToRemove];
     this.tagsList.splice(tagIndexToRemove, 1);
     this._resetSelected();
     this.onChange(this.tagsList);
@@ -243,9 +248,11 @@ export class TagInputComponent implements ControlValueAccessor, OnDestroy, OnIni
   }
 
   /** Implemented as part of ControlValueAccessor. */
-  onChange: (value: any) => any = () => { };
+  onChange: (value: any) => any = () => {
+  };
 
-  onTouched: () => any = () => { };
+  onTouched: () => any = () => {
+  };
 
   writeValue(value: any) {
     this.tagsList = value;
@@ -260,6 +267,6 @@ export class TagInputComponent implements ControlValueAccessor, OnDestroy, OnIni
   }
 
   ngOnDestroy() {
-    this.tagInputSubscription.unsubscribe();
+    this.tagInputSubscription && this.tagInputSubscription.unsubscribe();
   }
 }

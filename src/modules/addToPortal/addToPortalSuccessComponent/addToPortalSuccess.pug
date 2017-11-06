@@ -12,10 +12,11 @@
     h5.sub-header This page has been successfully added to {{ currentPortal?.title }} as new Learning Item and assigned to #[a(href='mailto:{{sharedToUser.mail}}') {{ sharedToUser.name }} ]
 
 
-  .actions-area
-    .row
-      .col-6.mr-auto.ml-auto
-        button.btn.btn-primary((click)="viewPageOnPortal()") View on your Portal
-    .row
-      .col-6.mr-auto.ml-auto
-        button.btn.btn-primary((click)="viewPageOnPortal()") View on your Portal
+  .actions-area.row-flex(*ngIf="!sharedToUser")
+    .col-6
+      button.btn.btn-primary.btn-block((click)="shareButtonClicked()") Assign
+    .col-6
+      button.btn.btn-primary.btn-block((click)="saveForLaterClicked()") Schedule
+
+  .actions-area.row-flex.m-t-10
+      button.btn.btn-link.ml-auto.mr-auto((click)="goBack()") Back to Discussion List

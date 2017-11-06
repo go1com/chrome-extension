@@ -1,4 +1,4 @@
-import {Component} from "@angular/core";
+import {Component, OnDestroy, OnInit} from "@angular/core";
 import {ActivatedRoute, Router} from "@angular/router";
 import {StorageService} from "../../go1core/services/StorageService";
 import configuration from "../../../environments/configuration";
@@ -12,7 +12,7 @@ import {UserService} from "../../membership/services/user.service";
   selector: 'share-learning-item',
   templateUrl: './shareLearningItem.pug'
 })
-export class ShareLearningItemComponent {
+export class ShareLearningItemComponent implements OnInit, OnDestroy {
   shareToUser: any;
   data: any;
   tabUrl: string = '';
