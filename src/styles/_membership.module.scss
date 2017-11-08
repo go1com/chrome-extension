@@ -1,6 +1,6 @@
 @import "variables";
 
-user-login {
+app-user-login {
   .imgcontainer {
     padding: 10px 10px;
     position: absolute;
@@ -9,7 +9,7 @@ user-login {
   }
 }
 
-social-login, social-login-success {
+app-social-login, app-social-login-success {
   width: initial;
 
   .imgcontainer {
@@ -59,7 +59,7 @@ forgot-password-success {
   }
 }
 
-user-login, forgot-password, user-sign-up, forgot-password-success, signup-success, social-login, social-login-success {
+app-user-login, forgot-password, user-sign-up, forgot-password-success, signup-success, app-social-login, app-social-login-success {
   height: $chrome-ext-max-height;
 
   form {

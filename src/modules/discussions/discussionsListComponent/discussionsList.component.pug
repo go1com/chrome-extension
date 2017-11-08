@@ -21,7 +21,7 @@
         portal-selection(placeholder="Change Portal", [(portal)]="changePortalId", (portalChange)="onPortalChanged(changePortalId)")
 
   .discussions-list([hidden]="loading || !notesToShow().length")
-    discussion-item(*ngFor="let discussionItem of notesToShow()", [discussionItem]="discussionItem")
+    app-discussion-item(*ngFor="let discussionItem of notesToShow()", [discussionItem]="discussionItem")
 
 
   .actions-area.row([hidden]="loading || !notesToShow().length")

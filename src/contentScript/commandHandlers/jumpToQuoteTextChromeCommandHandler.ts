@@ -7,21 +7,29 @@ declare const $: any;
 
 @injectable()
 export class JumpToQuoteTextCommandHandler implements ICommandHandler {
+  static quotations = {};
   command = commandKeys.jumpToQuotedText;
 
   constructor(@inject(HighlightService) private highlightService: HighlightService) {
   }
 
-  handle(request: any, sender: any, sendResponse?: Function) {
+  async handle(request: any, sender: any, sendResponse?: Function) {
     if (request.data.quotation && request.data.quotationPosition) {
-      this.highlightService.highlight(request.data.quotation, request.data.quotationPosition)
-        .then(dom => {
-          const scrollTo = $(dom);
+      try {
+        let existingDom = JumpToQuoteTextCommandHandler.quotations[request.data.quotationPosition];
 
-          $('html, body').animate({
-            scrollTop: scrollTo.offset().top - 75
-          });​
-        });
+        if (!existingDom) {
+          const dom = await this.highlightService.highlight(request.data.quotation, request.data.quotationPosition);
+          existingDom = $(dom);
+          JumpToQuoteTextCommandHandler.quotations[request.data.quotationPosition] = existingDom;
+        }
+
+        $('html, body').animate({
+          scrollTop: existingDom.offset().top - 75
+        });​
+      } catch (error) {
+        console.error(error);
+      }
     }
 
     if (sendResponse) {

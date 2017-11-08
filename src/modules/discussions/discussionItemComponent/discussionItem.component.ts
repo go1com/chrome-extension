@@ -7,7 +7,7 @@ import {UserService} from "../../membership/services/user.service";
 import {commandKeys} from "../../../environments/commandKeys";
 
 @Component({
-  selector: 'discussion-item',
+  selector: 'app-discussion-item',
   templateUrl: './discussionItem.component.pug',
   styleUrls: ['./discussionItem.component.scss']
 })

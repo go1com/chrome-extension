@@ -16,12 +16,16 @@ export class HighlightService {
     }
 
     return new Promise((resolve, reject) => {
-      $(quotationNode).highlight(text, {
-        className: effectiveClass,
-        element: elementName
-      }, (dom) => {
-        resolve(dom);
-      });
+      try {
+        $(quotationNode).highlight(text, {
+          className: effectiveClass,
+          element: elementName
+        }, (dom) => {
+          resolve(dom);
+        });
+      } catch (error) {
+        reject(error);
+      }
     });
   }
 
