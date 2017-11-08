@@ -11,9 +11,9 @@ export class AddToPortalService {
               private storageService: StorageService) {
   }
 
-  private getCustomHeaders() {
+  private async getCustomHeaders() {
     return {
-      'Authorization': `Bearer ${ this.storageService.retrieve(configuration.constants.localStorageKeys.authentication) }`
+      'Authorization': `Bearer ${ await this.storageService.retrieve(configuration.constants.localStorageKeys.authentication) }`
     };
   }
 
@@ -21,13 +21,13 @@ export class AddToPortalService {
     return this.restClient.post(
       `${configuration.environment.baseApiUrl}/${configuration.serviceUrls.lo}li`,
       data,
-      this.getCustomHeaders());
+      await this.getCustomHeaders());
   }
 
   async updateLearningItem(data: any) {
     return this.restClient.put(
       `${configuration.environment.baseApiUrl}/${configuration.serviceUrls.lo}li/${data.id}`,
       data,
-      this.getCustomHeaders());
+      await this.getCustomHeaders());
   }
 }

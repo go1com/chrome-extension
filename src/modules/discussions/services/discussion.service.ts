@@ -47,7 +47,7 @@ export class DiscussionService extends DiscussionNoFirebaseServiceService {
     const response = await this.restClientService.post(
       `${this.makeNoteRequestUrl(newNote)}`,
       null,
-      this.getCustomHeaders());
+      await this.getCustomHeaders());
 
     const newNoteFireObject = this.fireBaseDb.ref(configuration.serviceUrls.fireBaseNotePath + response.uuid);
 
@@ -95,7 +95,7 @@ export class DiscussionService extends DiscussionNoFirebaseServiceService {
     return await this.restClientService.post(
       `${this.baseUrl}/${configuration.serviceUrls.noteService}share/user/${uuid}`,
       payloadBody,
-      this.getCustomHeaders());
+      await this.getCustomHeaders());
   }
 
   async addReply(noteUuid: any, messageId: any, messageData: any) {

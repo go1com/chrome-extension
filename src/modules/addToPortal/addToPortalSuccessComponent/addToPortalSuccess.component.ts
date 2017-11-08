@@ -27,16 +27,16 @@ export class AddToPortalSuccessComponent implements OnInit, OnDestroy {
       this.learningItem = params['learningItemId'];
     });
 
-    if (this.storageService.exists(configuration.constants.localStorageKeys.sharedLiToUser)) {
-      this.sharedToUser = this.storageService.retrieve(configuration.constants.localStorageKeys.sharedLiToUser);
-      this.storageService.remove(configuration.constants.localStorageKeys.sharedLiToUser);
+    if (await this.storageService.exists(configuration.constants.localStorageKeys.sharedLiToUser)) {
+      this.sharedToUser = await this.storageService.retrieve(configuration.constants.localStorageKeys.sharedLiToUser);
+      await this.storageService.remove(configuration.constants.localStorageKeys.sharedLiToUser);
     }
 
-    this.currentPortal = this.storageService.retrieve(configuration.constants.localStorageKeys.currentActivePortal);
+    this.currentPortal = await this.storageService.retrieve(configuration.constants.localStorageKeys.currentActivePortal);
   }
 
-  ngOnDestroy() {
-    this.storageService.remove(configuration.constants.localStorageKeys.sharedLiToUser);
+  async ngOnDestroy() {
+    await this.storageService.remove(configuration.constants.localStorageKeys.sharedLiToUser);
   }
 
   viewPageOnPortal() {

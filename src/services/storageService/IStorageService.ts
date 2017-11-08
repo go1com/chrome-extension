@@ -1,13 +1,13 @@
 export const IStorageServiceSymbol = Symbol("IStorageService");
 
 export interface IStorageService {
-  exists(key: string): boolean;
+  exists(key: string): Promise<boolean>;
 
-  retrieve(key: string);
+  retrieve(key: string): Promise<any>;
 
-  store(key: string, value: any);
+  store(key: string, value: any): Promise<any>;
 
-  remove(key: string);
+  remove(key: string): Promise<any>;
 
-  clear();
+  clear(): Promise<any>;
 }

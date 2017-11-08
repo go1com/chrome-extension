@@ -129,7 +129,6 @@ export class DiscussionsListComponent implements OnInit, OnDestroy {
 
   closeLoading(timeout = 750) {
     this.loadingTimeout = setTimeout(() => {
-      this.storageService.store(discussionListKey, this.discussionsList);
       this.loading = false;
     }, timeout);
   }

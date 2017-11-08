@@ -1,4 +1,4 @@
-import {Component} from "@angular/core";
+import {Component, OnDestroy, OnInit} from "@angular/core";
 import {ActivatedRoute, Router} from "@angular/router";
 import {UserService} from "../services/user.service";
 import {ModalDialogService} from "../../go1core/services/ModalDialogService";
@@ -6,10 +6,10 @@ import configuration from "../../../environments/configuration";
 import {StorageService} from "../../go1core/services/StorageService";
 
 @Component({
-  selector: 'social-login',
+  selector: 'app-social-login',
   templateUrl: './social-login.component.pug'
 })
-export class SocialLoginComponent {
+export class SocialLoginComponent implements OnInit, OnDestroy {
   provider: any;
   loggingIn: boolean;
   loggedInSuccess: boolean;
@@ -42,8 +42,8 @@ export class SocialLoginComponent {
     });
   }
 
-  ngOnDestroy() {
-    this.storageService.remove(configuration.constants.localStorageKeys.socialLogin);
+  async ngOnDestroy() {
+    await this.storageService.remove(configuration.constants.localStorageKeys.socialLogin);
   }
 
   loginWithFacebook() {
@@ -61,20 +61,28 @@ export class SocialLoginComponent {
   }
 
   async onResponse(message) {
-    if (!message.data)
+    if (!message.data) {
       return;
+    }
 
     const data = JSON.parse(message.data);
-    if (!data)
+    if (!data) {
       return;
+    }
+
     window.removeEventListener('message', (response) => this.onResponse(response));
 
     await this.userService.getAuthenticatedUserInfo(data.uuid);
     this.loggingIn = false;
 
     this.loggedInSuccess = true;
-    this.storageService.remove(configuration.constants.localStorageKeys.socialLogin);
-    this.router.navigate(['/' + configuration.defaultPage]);
+    await this.storageService.remove(configuration.constants.localStorageKeys.socialLogin);
+
+    const pageToNavigate = await this.storageService.retrieve('redirectAfterLoggedIn') || '/' + configuration.defaultPage;
+
+    await this.router.navigate([pageToNavigate]);
+
+    await this.storageService.remove('redirectAfterLoggedIn');
   }
 
   close() {

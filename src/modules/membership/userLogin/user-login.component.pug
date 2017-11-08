@@ -11,16 +11,16 @@ form((submit)="login()", [hidden]="loading")
 
     .group.m-t-25
       label Your Email
-      input#email.form-control(type="email", tabindex="0", autofocus, name="email", [(ngModel)]="user.username", placeholder="E-mail", [disabled]="loggingIn")
+      input#email.form-control(type="email", tabindex="0", autofocus, name="email", (keydown)="onInputKeyDown($event)", [(ngModel)]="user.username", placeholder="E-mail", [disabled]="loggingIn")
 
     .group.m-t-25
       div
         label Your Password
-        a.pull-right.small.grey6.m-t-5(routerLink="/membership/forgotPassword" tabindex="2") Forgot it?
-      input#password.form-control(type="password", tabindex="1", name="password", [(ngModel)]="user.password", placeholder="Password", [disabled]="loggingIn")
+        a.pull-right.small.grey6.m-t-5(routerLink="/membership/forgotPassword" tabindex="1") Forgot it?
+      input#password.form-control(type="password", tabindex="1", name="password", (keydown)="onInputKeyDown($event)", [(ngModel)]="user.password", placeholder="Password", [disabled]="loggingIn")
 
     .group.m-t-25
-      button.btn.btn-primary.btn-block#login-btn([disabled]="loggingIn" tabindex="3").
+      button.btn.btn-primary.btn-block#login-btn([disabled]="loggingIn" tabindex="2").
         #[div([hidden]="loggingIn") Log In]
         #[loading-indicator(colorScheme="white", [hidden]="!loggingIn") ]
 
@@ -30,12 +30,12 @@ form((submit)="login()", [hidden]="loading")
 
     .social-login-section.row
       .col-6
-        button.btn.btn-default.btn-google.btn-block((click)="googleLogin()", tabindex="4", [disabled]="loggingIn") #[.icon] Google
+        button.btn.btn-default.btn-google.btn-block((click)="googleLogin()", tabindex="3", [disabled]="loggingIn") #[.icon] Google
       .col-6
-        button.btn.btn-default.btn-facebook.btn-block((click)="facebookLogIn()", tabindex="5", [disabled]="loggingIn") #[.icon] Facebook
+        button.btn.btn-default.btn-facebook.btn-block((click)="facebookLogIn()", tabindex="4", [disabled]="loggingIn") #[.icon] Facebook
 
     div.sign-up-section
-      a(routerLink="/membership/signUp", tabindex="6") Or sign up using email
+      a(routerLink="/membership/signUp", tabindex="5") Or sign up using email
 
 
 

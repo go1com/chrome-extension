@@ -12,33 +12,38 @@ export class DefaultStorageService implements IStorageService {
     this.localStorage = localStorage;
   }
 
-  exists(key: string): boolean {
-    return !!this.localStorage.getItem(key);
+  exists(key: string): Promise<boolean> {
+    return new Promise((resolve, reject) => {
+      resolve(!!this.localStorage.getItem(key));
+    });
   }
 
-  retrieve(key: string) {
+  retrieve(key: string): Promise<any> {
     const result = this.localStorage.getItem(key);
     if (result === undefined || result == null) {
-      return null;
+      return Promise.resolve(null);
     }
 
     try {
       const output = JSON.parse(result);
-      return output;
+      return Promise.resolve(output);
     } catch (e) {
-      return result;
+      return Promise.resolve(result);
     }
   }
 
-  store(key: string, value: any) {
+  store(key: string, value: any): Promise<any> {
     this.localStorage.setItem(key, JSON.stringify(value));
+    return Promise.resolve();
   }
 
-  remove(key: string) {
+  remove(key: string): Promise<any> {
     this.localStorage.removeItem(key);
+    return Promise.resolve();
   }
 
-  clear() {
+  clear(): Promise<any> {
     this.localStorage.clear();
+    return Promise.resolve();
   }
 }

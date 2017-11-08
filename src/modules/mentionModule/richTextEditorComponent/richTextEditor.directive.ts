@@ -23,15 +23,7 @@ export class RichTextEditorDirective implements ControlValueAccessor, AfterViewI
   autoCompleteString: any;
   autoCompleteStarted: any;
 
-  writeValue(obj: any): void {
-    this._value = obj;
-  }
-
-  setDisabledState(isDisabled: boolean): void {
-
-  }
-
-  @Input() placeholder: string = '';
+  @Input() placeholder = '';
 
   @Input() mentionedUsers: any[] = [];
   @Output() mentionedUsersChanged: EventEmitter<any[]> = new EventEmitter<any[]>();
@@ -39,6 +31,8 @@ export class RichTextEditorDirective implements ControlValueAccessor, AfterViewI
   editor: any;
 
   element: any;
+
+  getUserAutoCompleteTimeout: any;
 
   private _value: string;
 
@@ -50,6 +44,14 @@ export class RichTextEditorDirective implements ControlValueAccessor, AfterViewI
     this._value = value;
     this.onChange(value);
     this.onTouched();
+  }
+
+  writeValue(obj: any): void {
+    this._value = obj;
+  }
+
+  setDisabledState(isDisabled: boolean): void {
+
   }
 
   constructor(private elementRef: ElementRef,
@@ -75,25 +77,34 @@ export class RichTextEditorDirective implements ControlValueAccessor, AfterViewI
       extensions: {
         mention: new TCMention({
           async renderPanelContent(panelEl, currentMentionText, selectMentionCallback) {
-            let query = currentMentionText.replace(/@/g, '');
-            const availableUsers = await component.userService.getUserAutoComplete(query);
+            if (this.getUserAutoCompleteTimeout) {
+              clearTimeout(this.getUserAutoCompleteTimeout);
+            }
 
-            const listElem = $('<ul class="mention-list"></ul>');
+            this.getUserAutoCompleteTimeout = setTimeout(async () => {
+              const query = currentMentionText.replace(/@/g, '');
 
-            availableUsers.forEach(user => {
-              const item = $(`<li data-user-id="${user.rootId}">${user.name} <em>${user.mail}</em></li>`);
-              item.data('user', user);
-              item.on('click', function () {
-                let userData = $(this).data('user');
-                selectMentionCallback(`${userData.name.replace(' ', '')}`);
-                component.onUserMentioned(user);
-                component.value = component.editor.getContent();
+              const availableUsers = await component.userService.getUserAutoComplete(query);
+
+              const listElem = $('<ul class="mention-list"></ul>');
+
+              availableUsers.forEach(user => {
+                const item = $(`<li data-user-id="${user.rootId}">${user.name} <em>${user.mail}</em></li>`);
+                item.data('user', user);
+                item.on('click', function () {
+                  const userData = $(this).data('user');
+                  selectMentionCallback(`${userData.name.replace(' ', '')}`);
+                  component.onUserMentioned(user);
+                  component.value = component.editor.getContent();
+                });
+                listElem.append(item);
               });
-              listElem.append(item);
-            });
 
-            $(panelEl).empty();
-            $(panelEl).append(listElem);
+              $(panelEl).empty();
+              $(panelEl).append(listElem);
+
+              clearTimeout(this.getUserAutoCompleteTimeout);
+            });
           }
         })
       }
@@ -108,7 +119,7 @@ export class RichTextEditorDirective implements ControlValueAccessor, AfterViewI
     });
   }
 
-  onUserMentioned(user){
+  onUserMentioned(user) {
     this.mentionedUsers.push(user);
     this.mentionedUsersChanged.emit(this.mentionedUsers);
   }

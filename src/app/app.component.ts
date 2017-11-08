@@ -25,17 +25,17 @@ export class AppComponent implements OnInit {
       $('body').addClass('go1-popup');
     }
 
-    if (this.storageService.retrieve(configuration.constants.localStorageKeys.socialLogin)) {
+    if (await this.storageService.exists(configuration.constants.localStorageKeys.socialLogin)) {
       return;
     }
 
-    if (this.userService.isLoggedIn()) {
-      if (this.storageService.exists(configuration.constants.localStorageKeys.createNoteParams)) {
+    if (await this.userService.isLoggedIn()) {
+      if (await this.storageService.exists(configuration.constants.localStorageKeys.createNoteParams)) {
         this.router.navigate([configuration.pages.discussionModule, configuration.pages.newDiscussion]);
         return;
       }
 
-      if (this.storageService.exists(configuration.constants.localStorageKeys.addToPortalParams)) {
+      if (await this.storageService.exists(configuration.constants.localStorageKeys.addToPortalParams)) {
         this.router.navigate([configuration.pages.addToPortalModule, configuration.pages.addToPortal]);
         return;
       }

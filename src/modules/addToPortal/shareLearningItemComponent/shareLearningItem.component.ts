@@ -9,7 +9,7 @@ import {EnrollmentService} from "../../enrollment/services/enrollment.service";
 import {UserService} from "../../membership/services/user.service";
 
 @Component({
-  selector: 'share-learning-item',
+  selector: 'app-share-learning-item',
   templateUrl: './shareLearningItem.pug'
 })
 export class ShareLearningItemComponent implements OnInit, OnDestroy {
@@ -56,19 +56,19 @@ export class ShareLearningItemComponent implements OnInit, OnDestroy {
 
   async ngOnInit() {
     this.isLoading = true;
-    this.currentActiveRoute.params.subscribe(params => {
+    this.currentActiveRoute.params.subscribe(async (params) => {
       this.learningItem = params['learningItemId'];
 
-      if (this.storageService.exists(configuration.constants.localStorageKeys.cacheLearningItem + this.learningItem)) {
-        const pageToCreateNote = this.storageService.retrieve(configuration.constants.localStorageKeys.cacheLearningItem + this.learningItem);
+      if (await this.storageService.exists(configuration.constants.localStorageKeys.cacheLearningItem + this.learningItem)) {
+        const pageToCreateNote = await this.storageService.retrieve(configuration.constants.localStorageKeys.cacheLearningItem + this.learningItem);
         this.pageUrl = pageToCreateNote.data.path;
-        this.storageService.remove(configuration.constants.localStorageKeys.cacheLearningItem + this.learningItem);
+        await this.storageService.remove(configuration.constants.localStorageKeys.cacheLearningItem + this.learningItem);
       } else {
         this.pageUrl = configuration.currentChromeTab && configuration.currentChromeTab.url || '';
       }
     });
 
-    this.portalId = this.storageService.retrieve(configuration.constants.localStorageKeys.currentActivePortalId);
+    this.portalId = await this.storageService.retrieve(configuration.constants.localStorageKeys.currentActivePortalId);
 
     this.tabUrl = this.pageUrl;
 
@@ -80,7 +80,7 @@ export class ShareLearningItemComponent implements OnInit, OnDestroy {
   }
 
   async ngOnDestroy() {
-    this.storageService.remove(configuration.constants.localStorageKeys.cacheLearningItem + this.learningItem);
+    await this.storageService.remove(configuration.constants.localStorageKeys.cacheLearningItem + this.learningItem);
   }
 
   async shareBtnClicked() {

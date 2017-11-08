@@ -3,10 +3,6 @@
   "name": "${PRODUCT_NAME}",
   "description": "${PRODUCT_DESCRIPTION}",
   "version": "${PRODUCT_VERSION}",
-  "backup_browser_action": {
-    "default_icon": "assets/icon.png",
-    "default_popup": "index.html"
-  },
   "browser_action": {
     "title": "${PRODUCT_NAME}"
   },
@@ -22,6 +18,8 @@
   "content_security_policy": "script-src 'self' 'unsafe-eval' https://cdn.firebase.com https://*.firebaseio.com; object-src 'self'",
   "permissions": [
     "activeTab",
+    "storage",
+    "unlimitedStorage",
     "tabs",
     "notifications",
     "contextMenus"

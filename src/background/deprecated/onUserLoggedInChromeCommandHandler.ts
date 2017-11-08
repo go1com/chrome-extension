@@ -25,7 +25,7 @@ export class OnUserLoggedInChromeCommandHandler implements ICommandHandler {
   }
 
   initialize() {
-    const user = this.storageService.retrieve(configuration.constants.localStorageKeys.user);
+    const user = await this.storageService.retrieve(configuration.constants.localStorageKeys.user);
     if (!user || !user.profile_id) {
       return;
     }

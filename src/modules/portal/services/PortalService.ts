@@ -11,7 +11,7 @@ export class PortalService {
   }
 
   async getPortalForUser() {
-    const uuid = this.storageService.retrieve(configuration.constants.localStorageKeys.uuid);
+    const uuid = await this.storageService.retrieve(configuration.constants.localStorageKeys.uuid);
 
     const response = await this.restClientService.get(`${configuration.environment.baseApiUrl}/${configuration.serviceUrls.portal}public-key/${uuid}`);
   }
@@ -26,15 +26,15 @@ export class PortalService {
     this.storageService.store(configuration.constants.localStorageKeys.currentActivePortal, portal);
   }
 
-  getDefaultPortalSetting() {
-    return this.storageService.retrieve(configuration.constants.localStorageKeys.currentActivePortalId);
+  async getDefaultPortalSetting() {
+    return await this.storageService.retrieve(configuration.constants.localStorageKeys.currentActivePortalId);
   }
 
   async getDefaultPortalInfo() {
-    return this.getPortal(this.getDefaultPortalSetting() || configuration.environment.defaultPortal);
+    return this.getPortal(await this.getDefaultPortalSetting() || configuration.environment.defaultPortal);
   }
 
   async getPortals() {
-    return this.storageService.retrieve(configuration.constants.localStorageKeys.portalInstances);
+    return await this.storageService.retrieve(configuration.constants.localStorageKeys.portalInstances);
   }
 }

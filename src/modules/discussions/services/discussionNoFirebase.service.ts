@@ -11,9 +11,9 @@ export class DiscussionNoFirebaseServiceService {
               @inject(IStorageServiceSymbol) protected storageService: IStorageService) {
   }
 
-  protected getCustomHeaders() {
+  protected async getCustomHeaders() {
     return {
-      'Authorization': `Bearer ${ this.storageService.retrieve(configuration.constants.localStorageKeys.authentication) }`
+      'Authorization': `Bearer ${ await this.storageService.retrieve(configuration.constants.localStorageKeys.authentication) }`
     };
   }
 
@@ -36,7 +36,7 @@ export class DiscussionNoFirebaseServiceService {
       url += `?${queries.join('&')}`;
     }
 
-    const response = await this.restClientService.get(url, this.getCustomHeaders());
+    const response = await this.restClientService.get(url, await this.getCustomHeaders());
     const publicNoteResponse = await this.getPublicNotesFromService(contextUrl);
     // console.log(publicNoteResponse.concat(response));
 
@@ -48,7 +48,7 @@ export class DiscussionNoFirebaseServiceService {
 
     const queries = [];
 
-    const currentPortalId = this.storageService.retrieve(configuration.constants.localStorageKeys.currentActivePortalId);
+    const currentPortalId = await this.storageService.retrieve(configuration.constants.localStorageKeys.currentActivePortalId);
 
     queries.push(`instance=${currentPortalId}`);
     queries.push(`public=1`);
@@ -65,7 +65,7 @@ export class DiscussionNoFirebaseServiceService {
       url += `?${queries.join('&')}`;
     }
 
-    const response = await this.restClientService.get(url, this.getCustomHeaders());
+    const response = await this.restClientService.get(url, await this.getCustomHeaders());
 
     return response;
   }
@@ -74,7 +74,7 @@ export class DiscussionNoFirebaseServiceService {
     try {
       const endpoint = `${this.baseUrl}/${configuration.serviceUrls.noteService}note/${noteUuid}`;
 
-      await this.restClientService.delete(endpoint, this.getCustomHeaders());
+      await this.restClientService.delete(endpoint, await this.getCustomHeaders());
     } catch (error) {
       console.error(error);
       throw error;

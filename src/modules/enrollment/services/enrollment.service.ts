@@ -10,7 +10,7 @@ const ASSIGNED = -2; // # Learner self-assigned, or by someone.
 const ENQUIRED = -1; // # Learner interesting in the object, enquired.
 const PENDING = 0; // # The object is not yet available.
 const LATE = 4; // # Learning was assigned & was not able to complete the plan ontime.
-const EXPIRED = 5; //# The object is expired.
+const EXPIRED = 5; // # The object is expired.
 
 @Injectable()
 export class EnrollmentService {
@@ -21,9 +21,9 @@ export class EnrollmentService {
 
   }
 
-  private getCustomHeaders() {
+  private async getCustomHeaders() {
     return {
-      'Authorization': `Bearer ${ this.storageService.retrieve(configuration.constants.localStorageKeys.authentication) }`
+      'Authorization': `Bearer ${ await this.storageService.retrieve(configuration.constants.localStorageKeys.authentication) }`
     };
   }
 
@@ -31,7 +31,7 @@ export class EnrollmentService {
     return this.restClientService.post(
       `${this.baseUrl}/${configuration.serviceUrls.enrollment}${portalId}/${learningItemId}/enrolment`,
       null,
-      this.getCustomHeaders()
+      await this.getCustomHeaders()
     );
   }
 
@@ -41,7 +41,7 @@ export class EnrollmentService {
       {
         status: ASSIGNED
       },
-      this.getCustomHeaders()
+      await this.getCustomHeaders()
     );
   }
 

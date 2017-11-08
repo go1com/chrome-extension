@@ -15,12 +15,12 @@ export class GetPortalsChromeCommandHandler implements ICommandHandler {
     this.portalService = new PortalService(null, this.storageService);
   }
 
-  handle(request: any, sender: any, sendResponse: Function) {
+  async handle(request: any, sender: any, sendResponse: Function) {
     this.portalService.getPortals()
-      .then(portals => {
+      .then(async (portals) => {
         sendResponse({
           portals: portals,
-          defaultPortal: this.storageService.retrieve(configuration.constants.localStorageKeys.currentActivePortalId)
+          defaultPortal: await this.storageService.retrieve(configuration.constants.localStorageKeys.currentActivePortalId)
         });
       });
   }

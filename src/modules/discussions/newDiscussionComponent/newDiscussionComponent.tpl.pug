@@ -19,13 +19,13 @@
           h5
             | {{ linkPreview && linkPreview.title | ellipsis:60 }}
 
-  .description
-    .quotation(*ngIf="data.quote")
+  .description(*ngIf="data")
+    .quotation(*ngIf="data && data.quote")
       blockquote {{ data.quote | ellipsis:88 }}
 
     .text-editor(rich-text-editor [(ngModel)]="data.body", (ngModelChange)="onTextChanged()", placeholder="Add your notes...", autofocus, [(mentionedUsers)]="mentionedUsers")
 
-  .actions-area
+  .actions-area(*ngIf="data")
     .row
       .col-12
         .portal-selection

@@ -32,9 +32,9 @@ export class SettingComponent implements OnInit {
   }
 
   async ngOnInit() {
-    this.quickButtonEnabled = this.storageService.retrieve(configuration.constants.localStorageKeys.quickButtonSetting) || false;
-    this.createNoteEnabled = this.storageService.retrieve(configuration.constants.localStorageKeys.createNoteSetting) || false;
-    this.highlightNotesEnabled = this.storageService.retrieve(configuration.constants.localStorageKeys.highlightNoteSetting) || false;
+    this.quickButtonEnabled = await this.storageService.retrieve(configuration.constants.localStorageKeys.quickButtonSetting) || false;
+    this.createNoteEnabled = await this.storageService.retrieve(configuration.constants.localStorageKeys.createNoteSetting) || false;
+    this.highlightNotesEnabled = await this.storageService.retrieve(configuration.constants.localStorageKeys.highlightNoteSetting) || false;
 
     this.defaultPortal = this.portalService.getDefaultPortalSetting();
 

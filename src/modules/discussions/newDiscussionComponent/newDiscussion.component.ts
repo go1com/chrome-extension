@@ -29,22 +29,36 @@ export class NewDiscussionComponent implements OnInit, OnDestroy {
               private userService: UserService,
               private browserMessagingService: BrowserMessagingService,
               private storageService: StorageService) {
+  }
+
+  async ngOnInit() {
+    this.isLoading = true;
+    const user = await this.userService.getUser();
+
+    if (!user) {
+      await this.storageService.store('redirectAfterLoggedIn', this.router.url);
+      await this.router.navigate(['membership/login']);
+      return;
+    }
+
     let quotation = '';
     let quotationPosition = null;
 
-    if (this.storageService.exists(configuration.constants.localStorageKeys.createNoteParams)) {
-      const pageToCreateNote = this.storageService.retrieve(configuration.constants.localStorageKeys.createNoteParams);
+    const hasCreateNoteParams = await this.storageService.exists(configuration.constants.localStorageKeys.createNoteParams);
+
+    if (hasCreateNoteParams) {
+      const pageToCreateNote = await this.storageService.retrieve(configuration.constants.localStorageKeys.createNoteParams);
       this.pageUrl = pageToCreateNote.url;
       this.noteStatus = pageToCreateNote.lo_status; // public/private;
       quotation = pageToCreateNote.quotation || '';
       quotationPosition = pageToCreateNote.quotationPosition || null;
-      this.storageService.remove(configuration.constants.localStorageKeys.createNoteParams);
+      await this.storageService.remove(configuration.constants.localStorageKeys.createNoteParams);
       this.newDiscussionFromBackgroundPage = true;
     } else {
       this.pageUrl = configuration.currentChromeTab && configuration.currentChromeTab.url || '';
     }
 
-    this.currentPortalId = storageService.retrieve(configuration.constants.localStorageKeys.currentActivePortalId);
+    this.currentPortalId = await this.storageService.retrieve(configuration.constants.localStorageKeys.currentActivePortalId);
     this.data = {
       title: '',
       body: '',
@@ -57,7 +71,8 @@ export class NewDiscussionComponent implements OnInit, OnDestroy {
         url: this.pageUrl,
         lo_status: this.noteStatus || configuration.constants.noteStatuses.PUBLIC_NOTE
       },
-      private: 1
+      private: 1,
+      user: user
     };
 
     if (quotation) {
@@ -65,11 +80,6 @@ export class NewDiscussionComponent implements OnInit, OnDestroy {
       this.data.context.quotation = quotation;
       this.data.context.quotationPosition = quotationPosition;
     }
-  }
-
-  async ngOnInit() {
-    this.isLoading = true;
-    this.data.user = await this.userService.getUser();
 
     this.linkPreview = await this.loadPageMetadata(this.pageUrl);
     this.isLoading = false;
@@ -102,7 +112,7 @@ export class NewDiscussionComponent implements OnInit, OnDestroy {
   }
 
   async goBack() {
-    this.router.navigate(['../'], {relativeTo: this.currentActivatedRoute});
+    await this.router.navigate(['../'], {relativeTo: this.currentActivatedRoute});
   }
 
   onTextChanged() {

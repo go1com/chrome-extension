@@ -19,7 +19,7 @@ export class NotificationComponent {
 
   async ngOnInit() {
     this.loading = true;
-    const user = this.storageService.retrieve(configuration.constants.localStorageKeys.user);
+    const user = await this.storageService.retrieve(configuration.constants.localStorageKeys.user);
     if (!user || !user.profile_id)
       return;
 

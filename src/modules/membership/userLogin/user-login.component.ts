@@ -6,8 +6,10 @@ import {StorageService} from "../../go1core/services/StorageService";
 import configuration from "../../../environments/configuration";
 import {ModalDialogService} from "../../go1core/services/ModalDialogService";
 
+declare const $: any;
+
 @Component({
-  selector: 'user-login',
+  selector: 'app-user-login',
   templateUrl: './user-login.component.pug'
 })
 
@@ -33,7 +35,7 @@ export class UserLoginComponent implements OnInit {
     try {
       this.loggingIn = true;
       const user: any = await this.userService.login(this.user);
-      this.redirect(user);
+      await this.redirect(user);
     } catch (error) {
       await this.modalDialogService.showAlert(
         error.message,
@@ -45,6 +47,16 @@ export class UserLoginComponent implements OnInit {
     }
   }
 
+  onInputKeyDown(event) {
+    if (event.code === 'Tab') {
+      const tabIndex = parseInt(($(event.target).attr('tabindex')), 10);
+      if ($(`[tabindex="${tabIndex + 1}"]`).length) {
+        $(`[tabindex="${tabIndex + 1}"]`).focus();
+        event.preventDefault();
+      }
+    }
+  }
+
   async facebookLogIn() {
     this.router.navigate(['/' + configuration.pages.fbLogin]);
   }
@@ -53,12 +65,15 @@ export class UserLoginComponent implements OnInit {
     this.router.navigate(['/' + configuration.pages.ggLogin]);
   }
 
-  redirect(user): void {
+  async redirect(user): Promise<void> {
     if (user.id) {
-      const activeInstanceId = this.storageService.retrieve(configuration.constants.localStorageKeys.currentActivePortalId);
+      const activeInstanceId = await this.storageService.retrieve(configuration.constants.localStorageKeys.currentActivePortalId);
       const activeAccount = user.accounts.find(account => account.instance.id === activeInstanceId);
 
-      this.router.navigate(['/' + configuration.defaultPage]);
+      const pageToNavigate = await this.storageService.retrieve('redirectAfterLoggedIn') || '/' + configuration.defaultPage;
+
+      await this.router.navigate([pageToNavigate]);
+      await this.storageService.remove('redirectAfterLoggedIn');
     }
   }
 }

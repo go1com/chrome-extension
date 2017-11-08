@@ -16,8 +16,8 @@ export class UserService {
   public currentUser = this.currentUserSubject.asObservable();
   private currentUserObject: any = null;
 
-  private isRefreshing: boolean = false;
-  private isUserRefreshed: boolean = false;
+  private isRefreshing = false;
+  private isUserRefreshed = false;
 
   constructor(private restClientService: RestClientService,
               private storageService: StorageService) {
@@ -57,23 +57,23 @@ export class UserService {
     );
   }
 
-  isLoggedIn() {
-    return !!this.storageService.retrieve(configuration.constants.localStorageKeys.uuid);
+  async isLoggedIn() {
+    return !!await this.storageService.retrieve(configuration.constants.localStorageKeys.uuid);
   }
 
   async refresh() {
     this.isRefreshing = true;
-    const currentUuid = this.storageService.retrieve(configuration.constants.localStorageKeys.uuid);
+    const currentUuid = await this.storageService.retrieve(configuration.constants.localStorageKeys.uuid);
 
     if (currentUuid) {
       try {
         const response = await this.getAuthenticatedUserInfo(currentUuid);
         this.currentUserSubject.next(response);
       } catch (e) {
-        this.cleanAuth();
+        await this.cleanAuth();
       }
     } else {
-      this.cleanAuth();
+      await this.cleanAuth();
     }
     this.isRefreshing = false;
     this.isUserRefreshed = true;
@@ -81,15 +81,15 @@ export class UserService {
 
   async getAuthenticatedUserInfo(userUUID) {
     const response = await this.restClientService.get(`${ this.apiUrl }/${configuration.serviceUrls.user}account/current/${ userUUID }`);
-    this.setAuth(response);
-    this.storageService.store(configuration.constants.localStorageKeys.portalInstances, response.accounts.map(account => account.instance));
+    await this.setAuth(response);
+    await this.storageService.store(configuration.constants.localStorageKeys.portalInstances, response.accounts.map(account => account.instance));
     return response;
   }
 
   async getUserProfile(userId) {
     const response = await this.restClientService.singleGet(
       `${ this.apiUrl }/${configuration.serviceUrls.userProfile}/${ userId }`,
-      this.getCustomHeaders());
+      await this.getCustomHeaders());
 
     if (response.avatar && response.avatar.startsWith('//')) {
       response.avatar = 'https://' + response.avatar;
@@ -103,26 +103,26 @@ export class UserService {
     this.storageService.store(configuration.constants.localStorageKeys.currentActivePortal, portal);
   }
 
-  getInstanceId(): string {
-    return this.storageService.retrieve(configuration.constants.localStorageKeys.currentActivePortalId);
+  async getInstanceId() {
+    return await this.storageService.retrieve(configuration.constants.localStorageKeys.currentActivePortalId);
   }
 
-  private getCustomHeaders() {
+  private async getCustomHeaders() {
     return {
-      'Authorization': `Bearer ${ this.storageService.retrieve(configuration.constants.localStorageKeys.authentication) }`
+      'Authorization': `Bearer ${ await this.storageService.retrieve(configuration.constants.localStorageKeys.authentication) }`
     };
   }
 
   async getUserAutoComplete(query) {
-    const currentPortal = this.storageService.retrieve(configuration.constants.localStorageKeys.currentActivePortal).title;
+    const currentPortal = await this.storageService.retrieve(configuration.constants.localStorageKeys.currentActivePortal);
     return this.restClientService.get(
-      `${ this.apiUrl }/${configuration.serviceUrls.user}account/chipscontact/${currentPortal}/${query}`,
-      this.getCustomHeaders()
+      `${ this.apiUrl }/${configuration.serviceUrls.user}account/chipscontact/${currentPortal.title}/${query}`,
+      await this.getCustomHeaders()
     );
   }
 
-  logout() {
-    this.cleanAuth();
+  async logout() {
+    await this.cleanAuth();
     this.currentUserSubject.next({});
   }
 
@@ -131,29 +131,29 @@ export class UserService {
       await this.refresh();
     }
 
-    if (this.currentUserObject)
-      return this.currentUserObject;
-
-    this.currentUserObject = this.storageService.retrieve(configuration.constants.localStorageKeys.user) || null;
+    this.currentUserObject = await this.storageService.retrieve(configuration.constants.localStorageKeys.user) || null;
     return this.currentUserObject;
   }
 
-  private setAuth(user) {
-    this.storageService.store(configuration.constants.localStorageKeys.authentication, user.jwt);
-    this.storageService.store(configuration.constants.localStorageKeys.user, user);
-    this.storageService.store(configuration.constants.localStorageKeys.uuid, user.uuid);
-    this.storageService.store(configuration.constants.localStorageKeys.portalInstances, user.accounts.map(account => account.instance));
-
-    if (!this.storageService.retrieve(configuration.constants.localStorageKeys.currentActivePortalId)) {
+  private async setAuth(user) {
+    if (!await this.storageService.retrieve(configuration.constants.localStorageKeys.currentActivePortalId)) {
       this.storageService.store(configuration.constants.localStorageKeys.currentActivePortalId, user.accounts[0].instance.id);
     }
+
+    return Promise.all([
+      this.storageService.store(configuration.constants.localStorageKeys.authentication, user.jwt),
+      this.storageService.store(configuration.constants.localStorageKeys.user, user),
+      this.storageService.store(configuration.constants.localStorageKeys.uuid, user.uuid),
+      this.storageService.store(configuration.constants.localStorageKeys.portalInstances, user.accounts.map(account => account.instance)),
+    ]);
   }
 
-  private cleanAuth() {
-    this.storageService.remove(configuration.constants.localStorageKeys.currentActivePortalId);
-    this.storageService.remove(configuration.constants.localStorageKeys.user);
-    this.storageService.remove(configuration.constants.localStorageKeys.authentication);
-    this.storageService.remove(configuration.constants.localStorageKeys.uuid);
-    this.storageService.remove(configuration.constants.localStorageKeys.portalInstances);
+  private async cleanAuth() {
+    await this.storageService.remove(configuration.constants.localStorageKeys.currentActivePortalId);
+    await this.storageService.remove(configuration.constants.localStorageKeys.currentActivePortal);
+    await this.storageService.remove(configuration.constants.localStorageKeys.user);
+    await this.storageService.remove(configuration.constants.localStorageKeys.authentication);
+    await this.storageService.remove(configuration.constants.localStorageKeys.uuid);
+    await this.storageService.remove(configuration.constants.localStorageKeys.portalInstances);
   }
 }

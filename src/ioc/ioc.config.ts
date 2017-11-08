@@ -2,7 +2,7 @@ import Reflect from "reflect-metadata/Reflect";
 
 import {Container} from "inversify";
 import {IStorageService, IStorageServiceSymbol} from "../services/storageService/IStorageService";
-import {DefaultStorageService} from "../services/storageService/StorageService";
+// import {DefaultStorageService} from "../services/storageService/StorageService";
 import {DefaultRestClientService} from "../services/restClientService/RestClientService";
 import {IRestClientService, IRestClientServiceSymbol} from "../services/restClientService/IRestClientService";
 import {
@@ -15,10 +15,11 @@ import {
   ICommandHandlerServiceSymbol
 } from "../services/commandHandlerService/ICommandHandlerService";
 import {CommandHandlerService} from "../services/commandHandlerService/CommandHandlerService";
+import {ChromeLocalStorageService} from "../services/storageService/ChromeLocalStorageService";
 
 const container = new Container();
 
-container.bind<IStorageService>(IStorageServiceSymbol).to(DefaultStorageService);
+container.bind<IStorageService>(IStorageServiceSymbol).to(ChromeLocalStorageService);
 
 container.bind<IRestClientService>(IRestClientServiceSymbol).to(DefaultRestClientService);
 

@@ -11,8 +11,8 @@ export class StartDiscussionChromeCommandHandler implements ICommandHandler {
   constructor(@inject(IStorageServiceSymbol) private storageService: IStorageService) {
   }
 
-  handle(request: any, sender: any, sendResponse: Function) {
-    this.storageService.store(configuration.constants.localStorageKeys.createNoteParams, {
+  async handle(request: any, sender: any, sendResponse: Function) {
+    await this.storageService.store(configuration.constants.localStorageKeys.createNoteParams, {
       url: sender.tab.url,
       quotation: request.data && request.data.quotation || '',
       quotationPosition: request.data && request.data.quotationPosition || ''

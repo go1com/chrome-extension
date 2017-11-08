@@ -1,4 +1,4 @@
-import {Component} from "@angular/core";
+import {Component, OnDestroy, OnInit} from "@angular/core";
 import {ActivatedRoute, Router} from "@angular/router";
 import {StorageService} from "../../go1core/services/StorageService";
 import configuration from "../../../environments/configuration";
@@ -15,13 +15,13 @@ import {BrowserMessagingService} from "../../go1core/services/BrowserMessagingSe
   selector: 'add-to-portal',
   templateUrl: './addToPortal.pug'
 })
-export class AddToPortalComponent {
+export class AddToPortalComponent implements OnInit, OnDestroy {
   noteData: any;
   data: any;
-  tabUrl: string = '';
-  isLoading: boolean = false;
+  tabUrl = '';
+  isLoading = false;
   linkPreview: any = null;
-  addToPortalFromBackground: boolean = false;
+  addToPortalFromBackground = false;
   private pageUrl: any;
   learningItem: any;
 
@@ -33,14 +33,21 @@ export class AddToPortalComponent {
               private storageService: StorageService,
               private browserMessagingService: BrowserMessagingService) {
 
-    if (this.storageService.exists(configuration.constants.localStorageKeys.addToPortalParams)) {
-      const pageToCreateNote = this.storageService.retrieve(configuration.constants.localStorageKeys.addToPortalParams);
+  }
+
+  async ngOnInit() {
+    this.isLoading = true;
+
+    if (await this.storageService.exists(configuration.constants.localStorageKeys.addToPortalParams)) {
+      const pageToCreateNote = await this.storageService.retrieve(configuration.constants.localStorageKeys.addToPortalParams);
       this.pageUrl = pageToCreateNote.url;
       this.addToPortalFromBackground = true;
-      this.storageService.remove(configuration.constants.localStorageKeys.addToPortalParams);
+      await this.storageService.remove(configuration.constants.localStorageKeys.addToPortalParams);
     } else {
       this.pageUrl = configuration.currentChromeTab && configuration.currentChromeTab.url || '';
     }
+
+    const user = await this.storageService.retrieve(configuration.constants.localStorageKeys.user);
 
     this.data = {
       title: '',
@@ -52,13 +59,9 @@ export class AddToPortalComponent {
       },
       single_li: true,
       published: 1,
-      instance: this.storageService.retrieve(configuration.constants.localStorageKeys.currentActivePortalId),
-      author: this.storageService.retrieve(configuration.constants.localStorageKeys.user).mail
+      instance: await this.storageService.retrieve(configuration.constants.localStorageKeys.currentActivePortalId),
+      author: user.mail
     };
-  }
-
-  async ngOnInit() {
-    this.isLoading = true;
 
     this.tabUrl = this.pageUrl;
 
@@ -75,8 +78,8 @@ export class AddToPortalComponent {
       },
       single_li: true,
       published: 1,
-      instance: this.storageService.retrieve(configuration.constants.localStorageKeys.currentActivePortalId),
-      author: this.storageService.retrieve(configuration.constants.localStorageKeys.user).mail
+      instance: await this.storageService.retrieve(configuration.constants.localStorageKeys.currentActivePortalId),
+      author: (await this.storageService.retrieve(configuration.constants.localStorageKeys.user)).mail
     };
 
     this.isLoading = false;

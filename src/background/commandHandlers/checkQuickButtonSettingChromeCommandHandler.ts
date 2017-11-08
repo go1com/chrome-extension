@@ -12,15 +12,15 @@ export class CheckQuickButtonSettingChromeCommandHandler implements ICommandHand
   }
 
 
-  handle(request: any, sender: any, sendResponse: Function) {
-    if (!this.storageService.retrieve(configuration.constants.localStorageKeys.authentication)) {
+  async handle(request: any, sender: any, sendResponse: Function) {
+    if (!await this.storageService.retrieve(configuration.constants.localStorageKeys.authentication)) {
       if (sendResponse) {
         sendResponse(false);
       }
       return;
     }
 
-    const quickButtonSetting = this.storageService.retrieve(configuration.constants.localStorageKeys.quickButtonSetting) || false;
+    const quickButtonSetting = (await this.storageService.retrieve(configuration.constants.localStorageKeys.quickButtonSetting)) || false;
     if (sendResponse) {
       sendResponse(quickButtonSetting);
     }

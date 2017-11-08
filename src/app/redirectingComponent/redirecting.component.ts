@@ -2,7 +2,7 @@ import {Component, OnInit} from "@angular/core";
 import {ActivatedRoute} from "@angular/router";
 
 @Component({
-  selector: 'redirecting',
+  selector: 'app-redirecting',
   templateUrl: './redirecting.component.pug'
 })
 export class RedirectingComponent implements OnInit {
@@ -11,6 +11,5 @@ export class RedirectingComponent implements OnInit {
   }
 
   async ngOnInit() {
-    console.log('activatedRoute', this.activatedRoute);
   }
 }
