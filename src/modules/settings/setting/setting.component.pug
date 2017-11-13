@@ -22,7 +22,9 @@
     //    label.label-switch(for="cmn-toggle-highlight-note")
 
     .action-area
-      span.action-name Show inline 'Create Note' tooltip when I select text on websites
+      div.action-name 
+        div Show inline 'Create Note' tooltip 
+        div when I select text on websites
       .switch
         input#cmn-toggle-create-note.cmn-toggle.cmn-toggle-round(type="checkbox", [(ngModel)]="createNoteEnabled", (click)="toggleCreateNoteToolTip()")
         label.label-switch(for="cmn-toggle-create-note")
