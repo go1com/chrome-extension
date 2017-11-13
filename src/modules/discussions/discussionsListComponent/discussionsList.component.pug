@@ -26,11 +26,11 @@
 
   .actions-area.row([hidden]="loading || !notesToShow().length")
     .col-6
-      button.btn.btn-block((click)="addDiscussion()")
+      button.btn.btn-block.btn-primary((click)="addDiscussion()")
         | #[i.fa.fa-comment ] Add Note
 
     .col-6(*ngIf="canAddToPortal()")
-      button.btn.btn-block((click)="addToPortal()")
+      button.btn.btn-block.btn-primary((click)="addToPortal()")
         | #[i.fa.fa-sign-in] Add this page
     //
     //.col-4

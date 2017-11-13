@@ -106,8 +106,17 @@ button, [role='button'] {
 .list-group-item.active,
 .list-group-item.active:focus,
 .list-group-item.active:hover {
-  background-color: $go1brandColor;
-  border-color: $go1brandColor;
+  background-color: $btn-primary-bg;
+  border: none;
+}
+
+.btn-block {
+  font-weight: $semi-bold;
+}
+
+.btn-primary:hover{
+  background-color: #48A0C8;
+  color: white;
 }
 
 .text-primary,
@@ -117,4 +126,8 @@ button, [role='button'] {
 
 .form-group {
   padding: 5px 20px;
+}
+
+[semi-bold] {
+  font-weight: $semi-bold;
 }

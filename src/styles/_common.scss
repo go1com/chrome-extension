@@ -171,8 +171,8 @@ header.extension-header {
 }
 
 label {
+  font-weight: $semi-bold;
   font-size: 16px;
-  font-weight: bold;
   color: $go1black;
 }
 
@@ -183,13 +183,13 @@ h4 {
 }
 
 h5 {
-  font-weight: bold;
+  font-weight: $semi-bold;
   font-size: 18px;
   line-height: 28px;
 }
 
 h6 {
-  font-weight: bold;
+  font-weight: $semi-bold;
   font-size: 15px;
   line-height: 25px;
 }

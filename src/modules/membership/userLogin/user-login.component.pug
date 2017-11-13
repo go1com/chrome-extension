@@ -7,15 +7,15 @@ form((submit)="login()", [hidden]="loading")
 
   .container
     h4.text-align-left Login now!
-    h5.sub-header.text-align-left.grey6.m-t-10 to start your learning journey
+    h5.sub-header.text-align-left.grey6.m-t-5 to start your learning journey
 
     .group.m-t-25
-      label Your Email
+      label Your email
       input#email.form-control(type="email", tabindex="0", autofocus, name="email", (keydown)="onInputKeyDown($event)", [(ngModel)]="user.username", placeholder="E-mail", [disabled]="loggingIn")
 
     .group.m-t-25
       div
-        label Your Password
+        label Your password
         a.pull-right.small.grey6.m-t-5(routerLink="/membership/forgotPassword" tabindex="1") Forgot it?
       input#password.form-control(type="password", tabindex="1", name="password", (keydown)="onInputKeyDown($event)", [(ngModel)]="user.password", placeholder="Password", [disabled]="loggingIn")
 
