@@ -106,8 +106,13 @@ button, [role='button'] {
 .list-group-item.active,
 .list-group-item.active:focus,
 .list-group-item.active:hover {
-  background-color: $go1brandColor;
-  border-color: $go1brandColor;
+  background-color: $btn-primary-bg;
+  border: none;
+}
+
+.btn-primary:hover{
+  background-color: #48A0C8;
+  color: white;
 }
 
 .text-primary,

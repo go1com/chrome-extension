@@ -188,7 +188,7 @@
 
   .actions-area {
     margin: 0;
-    padding: 10px 0;
+    padding: 10px 15px;
     bottom: 0;
     position: fixed;
     width: 100%;
@@ -212,9 +212,6 @@
       font-size: 12px;
       font-weight: bold;
       min-height: 42px;
-      border: 1px solid $go1black;
-      color: $go1black;
-      background: #fff;
 
       .fa {
         margin-right: 10px;
