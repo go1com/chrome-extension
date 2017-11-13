@@ -7,6 +7,10 @@ import {AddToPortalService} from "../services/AddToPortalService";
 import {commandKeys} from "../../../environments/commandKeys";
 import {EnrollmentService} from "../../enrollment/services/enrollment.service";
 import {UserService} from "../../membership/services/user.service";
+import * as moment from 'moment';
+import {ensureChromeTabLoaded} from "../../../environments/ensureChromeTabLoaded";
+import {BrowserMessagingService} from "../../go1core/services/BrowserMessagingService";
+
 
 @Component({
   selector: 'app-share-learning-item',
@@ -22,6 +26,9 @@ export class ShareLearningItemComponent implements OnInit, OnDestroy {
   learningItem: any;
 
   autoCompleteTimeout: any;
+  private scheduleDate: any;
+  private scheduleTime: any;
+  private scheduleDateTime = new Date();
 
   typeAheadSetup: any = {
     customTemplate: '<div> {{ item.name }} ({{ item.mail }})</div>',
@@ -50,7 +57,8 @@ export class ShareLearningItemComponent implements OnInit, OnDestroy {
               private addToPortalService: AddToPortalService,
               private enrollmentService: EnrollmentService,
               private userService: UserService,
-              private storageService: StorageService) {
+              private storageService: StorageService,
+              private browserMessagingService: BrowserMessagingService) {
 
   }
 
@@ -59,32 +67,23 @@ export class ShareLearningItemComponent implements OnInit, OnDestroy {
     this.currentActiveRoute.params.subscribe(async (params) => {
       this.learningItem = params['learningItemId'];
 
-      if (await this.storageService.exists(configuration.constants.localStorageKeys.cacheLearningItem + this.learningItem)) {
-        const pageToCreateNote = await this.storageService.retrieve(configuration.constants.localStorageKeys.cacheLearningItem + this.learningItem);
-        this.pageUrl = pageToCreateNote.data.path;
-        await this.storageService.remove(configuration.constants.localStorageKeys.cacheLearningItem + this.learningItem);
-      } else {
-        this.pageUrl = configuration.currentChromeTab && configuration.currentChromeTab.url || '';
-      }
+      this.portalId = await this.storageService.retrieve(configuration.constants.localStorageKeys.currentActivePortalId);
+
+      this.linkPreview = await this.loadPageMetadata();
+
+      this.shareToUser = null;
+
+      this.isLoading = false;
     });
-
-    this.portalId = await this.storageService.retrieve(configuration.constants.localStorageKeys.currentActivePortalId);
-
-    this.tabUrl = this.pageUrl;
-
-    this.linkPreview = await this.loadPageMetadata(this.pageUrl);
-
-    this.shareToUser = null;
-
-    this.isLoading = false;
   }
 
   async ngOnDestroy() {
-    await this.storageService.remove(configuration.constants.localStorageKeys.cacheLearningItem + this.learningItem);
   }
 
   async shareBtnClicked() {
     await this.enrollmentService.assignToUser(this.learningItem, this.portalId, this.shareToUser.rootId);
+    await this.enrollmentService.scheduleLearningItem(this.learningItem, this.portalId, moment(this.scheduleDateTime).format(configuration.constants.momentISOFormat));
+
     await this.goToSuccess();
   }
 
@@ -92,15 +91,36 @@ export class ShareLearningItemComponent implements OnInit, OnDestroy {
     this.goBack();
   }
 
-  private async loadPageMetadata(url) {
-    return new Promise((resolve, reject) => {
-      chrome.runtime.sendMessage({
-        action: commandKeys.getLinkPreview,
-        data: url
-      }, (response) => {
-        resolve(response.data);
-      });
-    });
+  onDateChanged() {
+    this.updateScheduleDateTime();
+  }
+
+  onTimeChanged() {
+    this.updateScheduleDateTime();
+  }
+
+  private async loadPageMetadata() {
+    await ensureChromeTabLoaded();
+
+    const response = await this.browserMessagingService.requestToTab(configuration.currentChromeTab.id, commandKeys.getLinkPreview);
+
+    return response.data;
+  }
+
+  private updateScheduleDateTime() {
+    this.scheduleDate = this.scheduleDate || {
+      year: new Date().getFullYear(),
+      month: new Date().getMonth() + 1,
+      day: new Date().getDay()
+    };
+
+    this.scheduleTime = this.scheduleTime || {
+      hour: new Date().getHours(),
+      minute: new Date().getMinutes(),
+      second: 0
+    };
+
+    this.scheduleDateTime = moment(`${this.scheduleDate.year}/${this.scheduleDate.month}/${this.scheduleDate.day} ${this.scheduleTime.hour}:${this.scheduleTime.minute}:${this.scheduleTime.second}`).toDate();
   }
 
   async goToSuccess() {

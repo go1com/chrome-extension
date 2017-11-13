@@ -49,25 +49,10 @@ export class AddToPortalComponent implements OnInit, OnDestroy {
 
     const user = await this.storageService.retrieve(configuration.constants.localStorageKeys.user);
 
-    this.data = {
-      title: '',
-      description: '',
-      type: 'iframe',
-      tags: [],
-      data: {
-        path: ''
-      },
-      single_li: true,
-      published: 1,
-      instance: await this.storageService.retrieve(configuration.constants.localStorageKeys.currentActivePortalId),
-      author: user.mail
-    };
-
     this.tabUrl = this.pageUrl;
 
     this.linkPreview = await this.loadPageMetadata(this.pageUrl);
 
-    console.log(this.linkPreview);
     this.data = {
       title: this.linkPreview.title,
       description: this.linkPreview.description,
@@ -79,7 +64,7 @@ export class AddToPortalComponent implements OnInit, OnDestroy {
       single_li: true,
       published: 1,
       instance: await this.storageService.retrieve(configuration.constants.localStorageKeys.currentActivePortalId),
-      author: (await this.storageService.retrieve(configuration.constants.localStorageKeys.user)).mail
+      author: user.mail
     };
 
     this.isLoading = false;
@@ -96,7 +81,6 @@ export class AddToPortalComponent implements OnInit, OnDestroy {
 
   async onDoneBtnClicked() {
     this.learningItem = await this.addToPortal();
-    this.storageService.store(configuration.constants.localStorageKeys.cacheLearningItem + this.learningItem.id, this.learningItem);
     await this.goToSuccess(this.learningItem.id);
   }
 

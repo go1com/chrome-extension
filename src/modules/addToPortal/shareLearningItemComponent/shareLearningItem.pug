@@ -18,6 +18,19 @@
       div.grey5.related-to-title Share to user:
 
       typeahead([(ngModel)]="shareToUser", [typeAheadSetup]="typeAheadSetup")
+
+    .form-group.row
+      label.col-3.p-l-0 Date
+      .input-group.col-9
+        input.form-control([(ngModel)]="scheduleDate", (ngModelChange)="onDateChanged()", placeholder="mm/dd/yyyy", ngbDatepicker, #d="ngbDatepicker")
+        button.input-group-addon((click)="d.toggle()")
+          i.fa.fa-calendar
+
+    .form-group.row
+      label.col-3.p-l-0 Time
+      .col-9
+        ngb-timepicker([(ngModel)]="scheduleTime", (ngModelChange)="onTimeChanged()", type="time", placeholder="Time", [seconds]="false")
+
     .actions-area
       .row
         .col-6

@@ -53,7 +53,7 @@ export class EnrollmentService {
         due_date: dueDate,
         status: SCHEDULED
       },
-      this.getCustomHeaders()
+      await this.getCustomHeaders()
     );
   }
 
@@ -65,7 +65,7 @@ export class EnrollmentService {
         result: 100,
         status: "completed"
       },
-      this.getCustomHeaders()
+      await this.getCustomHeaders()
     );
   }
 }

@@ -13,8 +13,8 @@
           h5
             | {{ linkPreview && linkPreview.title | ellipsis:60 }}
 
-  .note-detail-section
-    .form-group
+  .note-detail-section(*ngIf="!loading")
+    .form-group(*ngIf="!loading && data && data.tags")
       div.grey5 Add Tags:
 
       tag-input([(ngModel)]="data.tags", autofocus, placeholder="Add tags")

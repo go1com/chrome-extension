@@ -15,8 +15,9 @@
   .actions-area.row-flex(*ngIf="!sharedToUser")
     .col-6
       button.btn.btn-primary.btn-block((click)="shareButtonClicked()") Assign
+
     .col-6
-      button.btn.btn-primary.btn-block((click)="saveForLaterClicked()") Schedule
+      button.btn.btn-primary.btn-block((click)="viewPageOnPortal()") View on Portal
 
   .actions-area.row-flex.m-t-10
       button.btn.btn-link.ml-auto.mr-auto((click)="goBack()") Back to Discussion List

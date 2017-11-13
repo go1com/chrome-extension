@@ -48,10 +48,6 @@ export class AddToPortalSuccessComponent implements OnInit, OnDestroy {
     await this.router.navigate(['./', configuration.pages.addToPortal, configuration.pages.shareLearningItem, this.learningItem]);
   }
 
-  async saveForLaterClicked() {
-    await this.router.navigate(['./', configuration.pages.addToPortal, configuration.pages.scheduleLearningItem, this.learningItem]);
-  }
-
   async goBack() {
     await this.router.navigate(['/' + configuration.defaultPage]);
   }
