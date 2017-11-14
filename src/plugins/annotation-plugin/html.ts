@@ -116,7 +116,7 @@ export function describe(root, range, options) {
   for (const type of Array.from(types)) {
     try {
       let selector;
-      const anchor = type.fromRange(root, range);
+      const anchor: any = type.fromRange(root, range);
       selector = anchor.toSelector(options);
 
       console.log(selector);

@@ -138,11 +138,13 @@ Util.nodeFromXPath = function(xp, root) {
   let node = root || document.body;
   for (const step of steps) {
 
-    let [name, idx] = Array.from(step.split("["));
+    const name = step.split("[")[0];
 
-    idx = (idx != null) ? parseInt((idx != null ? idx.split("]") : undefined)[0]) : 1;
+    let idx = step.split('[')[1];
 
-    node = findChild(node, name.toLowerCase(), idx);
+    idx = (idx != null) ? parseInt((idx != null ? idx.split("]") : undefined)[0], 10) : 1;
+
+    node = findChild(node, (<any>name).toLowerCase(), idx);
   }
 
   return node;

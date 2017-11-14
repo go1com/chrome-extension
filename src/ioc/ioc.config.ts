@@ -1,4 +1,4 @@
-import Reflect from "reflect-metadata/Reflect";
+import "reflect-metadata";
 
 import {Container} from "inversify";
 import {IStorageService, IStorageServiceSymbol} from "../services/storageService/IStorageService";
