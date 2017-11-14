@@ -18,6 +18,7 @@ import {MembershipModule} from "../membership/membership.module";
 import {ShareLearningItemComponent} from "./shareLearningItemComponent/shareLearningItem.component";
 import {TypeAheadModule} from "../../sharedComponents/typeahead-plugin/typeahead.module";
 import {NgbModule} from "@ng-bootstrap/ng-bootstrap";
+import {MentionModule} from "../mentionModule/mention.module";
 
 
 @NgModule({
@@ -37,7 +38,8 @@ import {NgbModule} from "@ng-bootstrap/ng-bootstrap";
     MembershipModule,
     PortalModule,
     EnrollmentModule,
-    Go1LinkPreviewModule
+    Go1LinkPreviewModule,
+    MentionModule
   ],
   declarations: [
     AddToPortalComponent,

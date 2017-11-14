@@ -11,6 +11,7 @@ const configuration = {
     momentISOFormat: 'YYYY-MM-DD[T]HH:mm:ssZZ',
     noteChromeExtType: 'chromeext',
     notePortalType: 'portal',
+    noteLiType: 'li',
     noteStatuses: {
       PUBLIC_NOTE: 2,
       PRIVATE_NOTE: 0

@@ -1,30 +1,42 @@
 .add-to-portal.animated
   go-header([title]="'Add to Portal'")
 
-  .related-to
-    .link-preview-frame
-      .is-loading([hidden]="!isLoading")
-        .col Loading Preview...
-      .loading-completed([hidden]="isLoading")
-        .site-info-container
-          img.favicon([src]="linkPreview?.favicon")
-          .site-domain.grey5 {{ linkPreview?.hostname }}
-        .site-detail-container
-          h5
-            | {{ linkPreview && linkPreview.title | ellipsis:60 }}
+  .cannot-add-to-portal(*ngIf="!isLoading && !canAddToPortal()")
+    .alert.alert-warning Sorry you do not have permission to add to portal. Please contact our system administrator.
 
-  .note-detail-section(*ngIf="!loading")
-    .form-group(*ngIf="!loading && data && data.tags")
-      div.grey5 Add Tags:
+  .add-to-portal-body(*ngIf="canAddToPortal()")
+    .related-to
+      .link-preview-frame
+        .is-loading([hidden]="!isLoading")
+          .col Loading Preview...
+        .loading-completed([hidden]="isLoading")
+          .site-info-container
+            img.favicon([src]="linkPreview?.favicon")
+            .site-domain.grey5 {{ linkPreview?.hostname }}
+          .site-detail-container
+            h5
+              | {{ linkPreview && linkPreview.title | ellipsis:60 }}
 
-      tag-input([(ngModel)]="data.tags", autofocus, placeholder="Add tags")
+    .note-detail-section(*ngIf="!loading")
+      .form-group(*ngIf="!loading && data && data.tags")
+        div.grey5 Add Tags:
 
-    .actions-area
-      .row
-        .col-6
-          button.btn.btn-primary.btn-block#doneBtn((click)="onDoneBtnClicked()", [disabled]="isLoading", title="Add this page").
-            Done
+        tag-input([(ngModel)]="data.tags", autofocus, placeholder="Add tags")
 
-        .col-6
-          button.btn.btn-default.btn-block#cancelBtn((click)="onCancelBtnClicked()", [disabled]="isLoading", title="Close this page without further action").
-            Cancel
+      //.form-group
+      //  .description(*ngIf="data")
+      //    .quotation(*ngIf="data && data.quote")
+      //      blockquote {{ data.quote | ellipsis:88 }}
+      //
+      //    div.grey5 Add Your Notes:
+      //    .text-editor(rich-text-editor [(ngModel)]="data.body", (ngModelChange)="onTextChanged()", placeholder="Add your notes...", autofocus, [(mentionedUsers)]="mentionedUsers")
+
+      .actions-area
+        .row
+          .col-6
+            button.btn.btn-primary.btn-block#doneBtn((click)="onDoneBtnClicked()", [disabled]="isLoading", title="Add this page").
+              Done
+
+          .col-6
+            button.btn.btn-default.btn-block#cancelBtn((click)="onCancelBtnClicked()", [disabled]="isLoading", title="Close this page without further action").
+              Cancel
