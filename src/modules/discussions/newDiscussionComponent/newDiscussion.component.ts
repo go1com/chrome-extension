@@ -130,7 +130,7 @@ export class NewDiscussionComponent implements OnInit, OnDestroy {
       this.data.body = this.data.quote || 'Note from ' + this.linkPreview.title;
     }
 
-    this.data.uniqueName = `${this.pageUrl}__`;
+    this.data.uniqueName = `${this.pageUrl}__${Math.floor(new Date().getTime() / 1000)}`;
     const noteData = await this.discussionService.createNote(this.data);
 
     if (this.mentionedUsers.length) {
@@ -140,10 +140,7 @@ export class NewDiscussionComponent implements OnInit, OnDestroy {
     }
 
     if (this.newDiscussionFromBackgroundPage) {
-      chrome.tabs.sendMessage(configuration.currentChromeTab.id, {
-        action: commandKeys.closeExtensionPopup
-      }, async (response) => {
-      });
+      await this.browserMessagingService.requestToTab(configuration.currentChromeTab.id, commandKeys.closeExtensionPopup);
     }
 
     await this.goBack();

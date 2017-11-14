@@ -32,13 +32,14 @@ export class SettingComponent implements OnInit {
   }
 
   async ngOnInit() {
-    this.quickButtonEnabled = await this.storageService.retrieve(configuration.constants.localStorageKeys.quickButtonSetting) || false;
-    this.createNoteEnabled = await this.storageService.retrieve(configuration.constants.localStorageKeys.createNoteSetting) || false;
-    this.highlightNotesEnabled = await this.storageService.retrieve(configuration.constants.localStorageKeys.highlightNoteSetting) || false;
+    await Promise.all([
+      this.quickButtonEnabled = await this.storageService.retrieve(configuration.constants.localStorageKeys.quickButtonSetting) || false,
+      this.createNoteEnabled = await this.storageService.retrieve(configuration.constants.localStorageKeys.createNoteSetting) || false,
+      this.highlightNotesEnabled = await this.storageService.retrieve(configuration.constants.localStorageKeys.highlightNoteSetting) || false,
+      this.defaultPortal = await this.portalService.getDefaultPortalSetting(),
+      this.user = await this.userService.getUser()
+    ]);
 
-    this.defaultPortal = this.portalService.getDefaultPortalSetting();
-
-    this.user = await this.userService.getUser();
     this.userAvatar = this.user.avatar && this.user.avatar.uri;
 
     if (this.userAvatar && !this.userAvatar.startsWith('https') && !this.userAvatar.startsWith('http:')) {
@@ -48,13 +49,13 @@ export class SettingComponent implements OnInit {
 
   async changeDefaultPortal(defaultPortal) {
     const portal = await this.portalService.getPortal(defaultPortal);
-    this.portalService.setDefaultPortal(portal);
+    await this.portalService.setDefaultPortal(portal);
   }
 
-  toggleQuickButton() {
+  async toggleQuickButton() {
     this.quickButtonEnabled = !this.quickButtonEnabled;
 
-    this.storageService.store(configuration.constants.localStorageKeys.quickButtonSetting, this.quickButtonEnabled);
+    await this.storageService.store(configuration.constants.localStorageKeys.quickButtonSetting, this.quickButtonEnabled);
 
     chrome.tabs.query({currentWindow: true}, (tabs) => {
       tabs.forEach(tab => {

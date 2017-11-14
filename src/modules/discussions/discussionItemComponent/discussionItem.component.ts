@@ -50,15 +50,17 @@ export class DiscussionItemComponent implements OnInit {
   }
 
   jumpToQuotedText() {
-    if (!this.discussionItem.noteItem.entities[0].quotation) {
+    if (!this.discussionItem.noteItem.context.quotation) {
       return;
     }
+
+    console.log(this.discussionItem);
 
     chrome.tabs.query({active: true, currentWindow: true}, (tabs) => {
       tabs.forEach(tab => {
         chrome.tabs.sendMessage(tab.id, {
           action: commandKeys.jumpToQuotedText,
-          data: this.discussionItem.noteItem.entities[0]
+          data: this.discussionItem.noteItem.context
         }, function (response) {
 
         });
