@@ -32,7 +32,7 @@ export class ShareLearningItemComponent implements OnInit, OnDestroy {
 
   typeAheadSetup: any = {
     customTemplate: '<div> {{ item.name }} ({{ item.mail }})</div>',
-    placeHolder: 'Select User',
+    placeHolder: 'user name',
     textProperty: 'name',
     valueProperty: 'rootId',
     searchProperty: 'name',

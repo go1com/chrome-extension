@@ -1,7 +1,7 @@
 @import "variables";
 
 .add-to-portal {
-  background: #fff;
+  background: $go1grey1;
 
   .actions-area {
     margin-top: 15px;
@@ -9,7 +9,7 @@
 
   .related-to {
     background: $chrome-ext-background;
-    padding: 20px;
+    padding: 20px 20px 0px;
     .related-to-title {
       margin-bottom: 15px;
       font-weight: lighter;
@@ -40,4 +40,45 @@
       height: 42px;
     }
   }
+
+  .note-detail-section{
+    margin: 15px 20px;
+    border: 1px solid $go1grey3;
+    border-radius: 2%;
+    position: relative;
+
+    &:after, &:before {
+      position: absolute;
+      display: block;
+      width: 0;
+      height: 0;
+      border-color: transparent;
+      border-style: solid;
+      border-width: 6px;
+      content: "";
+    }
+
+    &:before {
+      border-bottom-color: #b9c8cf;
+      border-top-width: 0;
+      left: 39px;
+      top: -7px;
+    }
+  
+    &:after {
+      left: 39px;
+      top: -12px;
+      border-top-color: transparent;
+      border-right-color: transparent;
+      border-bottom-color: #fff;
+      border-left-color: transparent;
+      border-top-width: 0;
+      border-width: 6px;
+    }
+  }
+
+  .link-preview-frame {
+      border-radius: 2%;
+   }
+
 }

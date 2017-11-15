@@ -1,8 +1,9 @@
 .add-to-portal.animated
   go-header([title]="'Share Item'")
 
-  .related-to
-    .link-preview-frame
+  .related-to 
+    .label Related to
+    .link-preview-frame.m-t-5
       .is-loading([hidden]="!isLoading")
         .col Loading Preview...
       .loading-completed([hidden]="isLoading")
@@ -10,32 +11,25 @@
           img.favicon([src]="linkPreview?.favicon")
           .site-domain.grey5 {{ linkPreview?.hostname }}
         .site-detail-container
-          h5
+          label
             | {{ linkPreview && linkPreview.title }}
 
   .note-detail-section
-    .form-group
-      div.grey5.related-to-title Share to user:
+    .form-group.m-t-20
 
       typeahead([(ngModel)]="shareToUser", [typeAheadSetup]="typeAheadSetup")
 
-    .form-group.row
-      label.col-3.p-l-0 Date
-      .input-group.col-9
+    .form-group
+      .input-group
         input.form-control([(ngModel)]="scheduleDate", (ngModelChange)="onDateChanged()", placeholder="mm/dd/yyyy", ngbDatepicker, #d="ngbDatepicker")
         button.input-group-addon((click)="d.toggle()")
           i.fa.fa-calendar
-
-    .form-group.row
-      label.col-3.p-l-0 Time
-      .col-9
-        ngb-timepicker([(ngModel)]="scheduleTime", (ngModelChange)="onTimeChanged()", type="time", placeholder="Time", [seconds]="false")
 
     .actions-area
       .row
         .col-6
           button.btn.btn-primary.btn-block#shareBtn((click)="shareBtnClicked()").
-            Share
+            Assign
 
         .col-6
           button.btn.btn-default.btn-block#cancelBtn((click)="cancelBtnClicked()").
