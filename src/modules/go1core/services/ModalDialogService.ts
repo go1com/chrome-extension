@@ -1,6 +1,5 @@
 import {Inject, Injectable} from "@angular/core";
-import {Modal} from "ngx-modialog/plugins/bootstrap";
-import {overlayConfigFactory, Overlay} from "ngx-modialog";
+import {overlayConfigFactory, Overlay, Modal} from "ngx-modialog";
 import {AlertModalComponent, AlertModalContext} from "../components/alertModal/AlertModalComponent";
 import {
   ConfirmationModalComponent,

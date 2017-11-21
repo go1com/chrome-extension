@@ -9,8 +9,15 @@ import {SignUpComponent} from "../modules/membership/signUp/sign-up.component";
 import {SignupSuccessComponent} from "../modules/membership/signUpSuccess/signup-success.component";
 import {SocialLoginComponent} from "../modules/membership/socialLogin/social-login.component";
 import configuration from "../environments/configuration";
+import {DiscussionsListComponent} from "../modules/discussions/discussionsListComponent/discussionsList.component";
+import {NewDiscussionComponent} from "../modules/discussions/newDiscussionComponent/newDiscussion.component";
+import {AddToPortalSuccessComponent} from "../modules/addToPortal/addToPortalSuccessComponent/addToPortalSuccess.component";
+import {routeNames} from "../modules/addToPortal/addToPortal.routes";
+import {LearningItemScheduleComponent} from "../modules/addToPortal/saveForLaterComponent/learningItemSchedule.component";
+import {ShareLearningItemComponent} from "../modules/addToPortal/shareLearningItemComponent/shareLearningItem.component";
+import {AddToPortalComponent} from "../modules/addToPortal/addToPortalComponent/AddToPortal.component";
 
-const routes: Routes = [
+export const routes: Routes = [
   {
     path: '',
     component: RedirectingComponent,
@@ -28,20 +35,32 @@ const routes: Routes = [
   },
   {
     path: configuration.pages.discussionsList,
-    loadChildren: '../modules/discussions#DiscussionsModule'
+    // loadChildren: '../modules/discussions#DiscussionsModule'
+    children: [
+      {path: '', component: DiscussionsListComponent},
+      {path: configuration.pages.discussionsList, component: DiscussionsListComponent},
+      {path: 'newDiscussion', component: NewDiscussionComponent},
+    ]
+
   },
   {
     path: configuration.pages.addToPortal,
-    loadChildren: '../modules/addToPortal#AddToPortalModule'
+    // loadChildren: '../modules/addToPortal#AddToPortalModule'
+    children: [
+      {path: '', component: AddToPortalComponent},
+      {path: configuration.pages.addToPortal, component: AddToPortalComponent},
+      {path: `${configuration.pages.shareLearningItem}/:learningItemId`, component: ShareLearningItemComponent},
+      {path: `${configuration.pages.scheduleLearningItem}/:learningItemId`, component: LearningItemScheduleComponent},
+      {path: routeNames.success, component: AddToPortalSuccessComponent},
+      {path: `${routeNames.success}/:learningItemId`, component: AddToPortalSuccessComponent}
+    ]
   },
-  {
-    path: configuration.pages.notifications,
-    loadChildren: '../modules/notification#NotificationModule'
-  },
+  // {
+  //   path: configuration.pages.notifications,
+  //   loadChildren: '../modules/notification#NotificationModule'
+  // },
   {
     path: 'setting',
     component: SettingComponent
   }
 ];
-
-export default routes;

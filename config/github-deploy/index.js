@@ -83,7 +83,7 @@ function replaceHtmlWebpackPlugin(plugins, ghRepoName) {
         title: htmlPlug.options.title,
         chunksSortMode: htmlPlug.options.chunksSortMode,
         metadata: METADATA,
-        inject: htmlPlug.options.injectToDocument
+        inject: htmlPlug.options.inject
       }));
       return;
     }

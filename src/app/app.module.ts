@@ -1,12 +1,13 @@
-import {BrowserModule} from '@angular/platform-browser';
 import {NgModule} from '@angular/core';
+import {BrowserModule} from '@angular/platform-browser';
 import {FormsModule} from '@angular/forms';
 import {HttpModule} from '@angular/http';
-import {PreloadAllModules, RouterModule} from '@angular/router';
+import {RouterModule, PreloadAllModules} from '@angular/router';
+import {BrowserAnimationsModule} from '@angular/platform-browser/animations';
 
 import {AppComponent} from './app.component';
 import {LearnerService} from './learner-dashboard/learner.service';
-import routes from "./app.routes";
+import {routes} from "./app.routes";
 import {Go1CoreModule} from "../modules/go1core/go1core.module";
 import {SettingsModule} from "../modules/settings/settings.module";
 import {MembershipModule} from "../modules/membership/membership.module";
@@ -17,6 +18,8 @@ import {NgbModule} from "@ng-bootstrap/ng-bootstrap";
 import {ModalModule} from "ngx-modialog";
 import {RedirectingComponent} from "./redirectingComponent/redirecting.component";
 import {TypeAheadModule} from "../sharedComponents/typeahead-plugin/typeahead.module";
+import {AddToPortalModule} from "../modules/addToPortal/addToPortal.module";
+import {DiscussionsModule} from "../modules/discussions/discussions.module";
 
 @NgModule({
   declarations: [
@@ -25,11 +28,12 @@ import {TypeAheadModule} from "../sharedComponents/typeahead-plugin/typeahead.mo
   ],
   imports: [
     BrowserModule,
+    BrowserAnimationsModule,
     CommonModule,
     FormsModule,
     HttpModule,
     RouterModule.forRoot(routes, {
-      useHash: true,
+      useHash: Boolean(history.pushState) === false,
       preloadingStrategy: PreloadAllModules
     }),
     NgbModule.forRoot(),
@@ -41,6 +45,8 @@ import {TypeAheadModule} from "../sharedComponents/typeahead-plugin/typeahead.mo
     SettingsModule,
     MembershipModule,
     PortalModule,
+    AddToPortalModule,
+    DiscussionsModule
   ],
   providers: [
     LearnerService,

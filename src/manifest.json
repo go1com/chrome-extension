@@ -29,11 +29,8 @@
     {
       "all_frames": false,
       "js": [
-        "polyfills.dll.js",
-        "vendor.dll.js",
         "manifest.js",
         "polyfills.js",
-        "vendor.js",
         "libs/jquery-3.2.1.min.js",
         "libs/jquery-ui.js",
         "libs/jquery.highlight/jquery.highlight.js",

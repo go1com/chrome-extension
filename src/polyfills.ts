@@ -18,7 +18,10 @@
  * BROWSER POLYFILLS
  */
 
-/** IE9, IE10 and IE11 requires all of the following polyfills. **/
+// Internet Explorer 9 support
+// import 'ie-shim';
+
+// IE9, IE10 and IE11 requires all of the following polyfills.
 // import 'core-js/es6/symbol';
 // import 'core-js/es6/object';
 // import 'core-js/es6/function';
@@ -37,26 +40,22 @@
 /** IE10 and IE11 requires the following for NgClass support on SVG elements */
 // import 'classlist.js';  // Run `npm install --save classlist.js`.
 
-/** IE10 and IE11 requires the following to support `@angular/animation`. */
-// import 'web-animations-js';  // Run `npm install --save web-animations-js`.
-
-
-/** Evergreen browsers require these. **/
+// Evergreen browsers require these.
 import 'core-js/es6/reflect';
 import 'core-js/es7/reflect';
 
+/**
+ * Required to support Web Animations `@angular/animation`.
+ * Needed for: All but Chrome, Firefox and Opera. http://caniuse.com/#feat=web-animation
+ */
 
-/** ALL Firefox browsers require the following to support `@angular/animation`. **/
 // import 'web-animations-js';  // Run `npm install --save web-animations-js`.
-
-
 
 /***************************************************************************************************
  * Zone JS is required by Angular itself.
  */
-import 'zone.js/dist/zone';  // Included with Angular CLI.
-
-
+import 'zone.js/dist/zone';
+// import 'zone.js/dist/long-stack-trace-zone' // async stack traces with zone.js included for dev
 
 /***************************************************************************************************
  * APPLICATION IMPORTS
@@ -71,3 +70,10 @@ import 'zone.js/dist/zone';  // Included with Angular CLI.
  * Need to import at least one locale-data with intl.
  */
 // import 'intl/locale-data/jsonp/en';
+if ('production' === ENV) {
+  // Production
+
+} else {
+
+  // Development
+}

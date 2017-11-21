@@ -1,9 +1,16 @@
-import {environment} from "./index";
-
 const configuration = {
   version: '@EXTENSION_VERSION@',
   defaultPage: 'discussionsList/',
-  environment: environment,
+  environment: {
+    authBackend: 'accounts.gocatalyze.com',
+    baseApiUrl: 'https://api.mygo1.com/v3',
+    defaultPortal: "public.mygo1.com",
+    firebase: {
+      apiKey: 'AIzaSyD1ZxCmbiqgizgZOefDAn56YMb99A8CspM',
+      authDomain: 'notes-c4d57.firebaseapp.com',
+      databaseURL: 'https://notes-c4d57.firebaseio.com'
+    }
+  },
   currentChromeTab: null,
   constants: {
     indexPage: `chrome-extension://${chrome.runtime.id}/index.html`,
