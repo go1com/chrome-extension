@@ -16,6 +16,7 @@ const discussionListKey = 'DISCUSSION_LIST_CACHED';
   templateUrl: './discussionsList.component.pug'
 })
 export class DiscussionsListComponent implements OnInit, OnDestroy {
+  contextUrl: any;
   onNoteDeletedEvent: any;
   onNoteCreatedEvent: any;
   discussionsList: any[];
@@ -93,7 +94,7 @@ export class DiscussionsListComponent implements OnInit, OnDestroy {
   }
 
   notesToShow() {
-    return _.sortBy(this.discussionsList.filter(discussionTopic => discussionTopic.item === configuration.currentChromeTab.url), 'created')
+    return _.sortBy(this.discussionsList, 'created')
       .reverse();
   }
 
@@ -130,6 +131,7 @@ export class DiscussionsListComponent implements OnInit, OnDestroy {
   closeLoading(timeout = 750) {
     this.loadingTimeout = setTimeout(() => {
       this.loading = false;
+      console.log(this.discussionsList);
     }, timeout);
   }
 
@@ -149,6 +151,11 @@ export class DiscussionsListComponent implements OnInit, OnDestroy {
     }
 
     const keys = Object.keys(noteData.data);
+    this.contextUrl = configuration.currentChromeTab.url;
+
+    if (this.contextUrl.indexOf('#') > -1) {
+      this.contextUrl = this.contextUrl.substr(0, this.contextUrl.indexOf('#'));
+    }
 
     let foundIndex: any = -1;
     keys.forEach((key, index) => {
@@ -159,7 +166,7 @@ export class DiscussionsListComponent implements OnInit, OnDestroy {
       const tmpDiscussionTopic = noteData.data[key];
       tmpDiscussionTopic.$id = key;
 
-      if (tmpDiscussionTopic.item === configuration.currentChromeTab.url) {
+      if (tmpDiscussionTopic.item === this.contextUrl) {
         discussionTopic.item = tmpDiscussionTopic.item;
         discussionTopic.quote = tmpDiscussionTopic.quote;
         discussionTopic.user_id = tmpDiscussionTopic.user_id;

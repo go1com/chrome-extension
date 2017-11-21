@@ -42,12 +42,12 @@ export class RichTextEditorDirective implements ControlValueAccessor, AfterViewI
 
   set value(value) {
     this._value = value;
-    this.onChange(value);
+    this.onChange(this._value);
     this.onTouched();
   }
 
   writeValue(obj: any): void {
-    this._value = obj;
+    this.value = obj;
   }
 
   setDisabledState(isDisabled: boolean): void {
@@ -68,7 +68,8 @@ export class RichTextEditorDirective implements ControlValueAccessor, AfterViewI
         buttons: [
           'bold',
           'italic',
-          'underline'
+          'underline',
+          'quote'
         ]
       },
       placeholder: {
@@ -117,6 +118,11 @@ export class RichTextEditorDirective implements ControlValueAccessor, AfterViewI
     this.element.addEventListener('blur', () => {
       this.value = this.editor.getContent();
     });
+
+    setTimeout(() => {
+      this.editor.pasteHTML(this.value);
+      this.value = this.editor.getContent();
+    }, 200);
   }
 
   onUserMentioned(user) {
@@ -135,7 +141,7 @@ export class RichTextEditorDirective implements ControlValueAccessor, AfterViewI
     }
   }
 
-  onChange(_) {
+  onChange(text) {
   }
 
   onTouched() {

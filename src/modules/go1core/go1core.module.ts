@@ -15,7 +15,7 @@ import {AlertModalComponent} from "./components/alertModal/AlertModalComponent";
 import {BootstrapModalModule} from "ngx-modialog/plugins/bootstrap";
 import {ModalModule} from "ngx-modialog";
 import {AutofocusDirective} from "./autofocus-directive/autofocus.directive";
-import {EllipsisPipe} from "./ellipsis-pipe/ellipsis.pipe";
+import {EllipsisPipe, EllipsisService} from "./ellipsis-pipe/ellipsis.pipe";
 import {ImageFallbackDirective} from "./imageFallbackDirective/imageFallback.directive";
 import {BrowserMessagingService} from "./services/BrowserMessagingService";
 
@@ -46,7 +46,8 @@ import {BrowserMessagingService} from "./services/BrowserMessagingService";
     RestClientService,
     StorageService,
     ModalDialogService,
-    BrowserMessagingService
+    BrowserMessagingService,
+    EllipsisService
   ],
   exports: [
     Go1HeaderComponent,
@@ -72,7 +73,9 @@ export class Go1CoreModule {
       providers: [
         RestClientService,
         StorageService,
-        ModalDialogService
+        ModalDialogService,
+        BrowserMessagingService,
+        EllipsisService
       ]
     }
   }

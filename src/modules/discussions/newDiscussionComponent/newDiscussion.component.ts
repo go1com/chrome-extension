@@ -7,6 +7,7 @@ import configuration from "../../../environments/configuration";
 import {commandKeys} from "../../../environments/commandKeys";
 import {ensureChromeTabLoaded} from "../../../environments/ensureChromeTabLoaded";
 import {BrowserMessagingService} from "../../go1core/services/BrowserMessagingService";
+import {EllipsisService} from "../../go1core/ellipsis-pipe/ellipsis.pipe";
 
 @Component({
   selector: 'app-new-discussion',
@@ -28,6 +29,7 @@ export class NewDiscussionComponent implements OnInit, OnDestroy {
               private currentActivatedRoute: ActivatedRoute,
               private userService: UserService,
               private browserMessagingService: BrowserMessagingService,
+              private ellipsisService: EllipsisService,
               private storageService: StorageService) {
   }
 
@@ -59,9 +61,14 @@ export class NewDiscussionComponent implements OnInit, OnDestroy {
     }
 
     this.currentPortalId = await this.storageService.retrieve(configuration.constants.localStorageKeys.currentActivePortalId);
+
+    if (this.pageUrl.indexOf('#') > -1) {
+      this.pageUrl = this.pageUrl.substr(0, this.pageUrl.indexOf('#'));
+    }
+
     this.data = {
       title: '',
-      body: '',
+      body: quotation ? `<blockquote>${this.ellipsisService.transform(quotation, 60)}</blockquote>` : '',
       quote: quotation,
       item: this.pageUrl,
       entityType: configuration.constants.noteChromeExtType,
@@ -83,6 +90,7 @@ export class NewDiscussionComponent implements OnInit, OnDestroy {
 
     this.linkPreview = await this.loadPageMetadata(this.pageUrl);
     this.isLoading = false;
+    console.log(this.data);
   }
 
   async ngOnDestroy() {

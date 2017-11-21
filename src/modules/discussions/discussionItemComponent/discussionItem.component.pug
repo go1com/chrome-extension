@@ -1,9 +1,9 @@
 .discussion-item(*ngIf="discussionItem")
   user-profile(*ngIf="discussionItem?.user_id", [userId]="discussionItem?.user_id" externalText="{{ discussionItem?.created | amTimeAgo }}")
   .discussion-content
-    .discussion-detail
-      div.quotation(*ngIf="discussionItem?.quote", role="button", (click)="jumpToQuotedText()")
-        blockquote([innerHtml]="getEllipsisQuoteText()", [attr.title]="discussionItem?.quote")
+    .discussion-detail((click)="jumpToQuotedText()", [class.has-quotation]="discussionItem?.quote")
+      //div.quotation(*ngIf="discussionItem?.quote", role="button", (click)="jumpToQuotedText()")
+      //  blockquote([innerHtml]="getEllipsisQuoteText()", [attr.title]="discussionItem?.quote")
       div.message([innerHtml]="discussionItem?.message")
       div.actions
         button.no-border((click)="toggleDiscussion()")

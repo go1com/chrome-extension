@@ -54,8 +54,6 @@ export class DiscussionItemComponent implements OnInit {
       return;
     }
 
-    console.log(this.discussionItem);
-
     chrome.tabs.query({active: true, currentWindow: true}, (tabs) => {
       tabs.forEach(tab => {
         chrome.tabs.sendMessage(tab.id, {

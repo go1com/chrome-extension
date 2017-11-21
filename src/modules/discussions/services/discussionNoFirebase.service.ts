@@ -33,6 +33,11 @@ export class DiscussionNoFirebaseServiceService {
       contextUrl = configuration.currentChromeTab.url
     }
 
+    if (contextUrl.indexOf('#') > -1) {
+      contextUrl = contextUrl.substr(0, contextUrl.indexOf('#'));
+    }
+
+
     if (contextUrl) {
       queries.push(`context[url]=${contextUrl}`);
     }

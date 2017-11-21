@@ -1,9 +1,7 @@
-import {Pipe} from '@angular/core';
+import {Injectable, Pipe} from '@angular/core';
 
-@Pipe({
-  name: 'ellipsis'
-})
-export class EllipsisPipe {
+@Injectable()
+export class EllipsisService {
   transform(val, args) {
     if (!val || args === undefined) {
       return val;
@@ -14,5 +12,18 @@ export class EllipsisPipe {
     } else {
       return val;
     }
+  }
+}
+
+@Pipe({
+  name: 'ellipsis'
+})
+export class EllipsisPipe {
+  constructor(private ellipsisService: EllipsisService) {
+
+  }
+
+  transform(val, args) {
+    return this.ellipsisService.transform(val, args);
   }
 }

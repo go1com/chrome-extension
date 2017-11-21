@@ -19,9 +19,9 @@
           label
             | {{ linkPreview && linkPreview.title | ellipsis:60 }}
 
-  .description(*ngIf="data")
-    .quotation(*ngIf="data && data.quote")
-      blockquote {{ data.quote | ellipsis:88 }}
+  .description(*ngIf="data && !isLoading")
+    //.quotation(*ngIf="data && data.quote")
+    //  blockquote {{ data.quote | ellipsis:88 }}
 
     .text-editor(rich-text-editor [(ngModel)]="data.body", (ngModelChange)="onTextChanged()", placeholder="Add your notes...", autofocus, [(mentionedUsers)]="mentionedUsers")
 
