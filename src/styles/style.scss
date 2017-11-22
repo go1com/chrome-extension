@@ -114,6 +114,10 @@ button, [role='button'] {
   font-weight: $semi-bold;
 }
 
+.btn-cancel {
+  background-color: $go1grey3;
+}
+
 .btn-primary:hover{
   background-color: #48A0C8;
   color: white;

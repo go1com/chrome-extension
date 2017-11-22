@@ -39,6 +39,14 @@
     text-align: center;
     display: flex;
     flex-wrap: wrap;
+
+    .go-back-btn {
+      color: $go1grey6;
+    }
+
+    .go-back-btn:hover {
+      opacity: 0.8;
+    }
   }
 
   footer {
