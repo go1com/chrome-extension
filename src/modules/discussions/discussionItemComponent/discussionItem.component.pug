@@ -22,7 +22,7 @@
 
     .discussion-thread.animated.fast([class.fadeInDown]="discussionStarted", [class.fadeOutUp]="!discussionStarted", [hidden]="!discussionStarted")
       textarea.form-control([(ngModel)]="replyMessage" name="noteBody", autofocus, placeholder="Share your thoughts..." rows="4", [disabled]="postingReply")
-      .form-actions.pull-right
+      .form-actions.pull-left
         button.btn.btn-sm.btn-primary((click)="addReply()") Post
       .clearfix
 
