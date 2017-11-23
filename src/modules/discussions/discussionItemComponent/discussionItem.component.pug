@@ -21,7 +21,7 @@
             button.dropdown-item((click)="deleteItem()") #[i.fa.fa-trash.m-r-10] Delete
 
     .discussion-thread.animated.fast([class.fadeInDown]="discussionStarted", [class.fadeOutUp]="!discussionStarted", [hidden]="!discussionStarted")
-      textarea.form-control([(ngModel)]="replyMessage" name="noteBody", autofocus, placeholder="Share your thoughts..." rows="4", [disabled]="postingReply")
+      textarea.form-control([(ngModel)]="replyMessage" name="noteBody", autofocus, placeholder="What's your thinking..." rows="4", [disabled]="postingReply")
       .form-actions.pull-left
         button.btn.btn-sm.btn-primary((click)="addReply()") Post
       .clearfix
