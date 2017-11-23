@@ -16,16 +16,6 @@
     }
   }
 
-  .note-detail-section {
-    background: #fff;
-
-    .text-editor {
-      border: 1px solid #cddbe2;
-      height: 150px;
-      padding: 10px;
-    }
-  }
-
   .add-tags {
     h6 {
       text-transform: initial;
@@ -38,42 +28,6 @@
     .btn-block {
       line-height: 1;
       height: 42px;
-    }
-  }
-
-  .note-detail-section{
-    margin: 15px 20px;
-    border: 1px solid $go1grey3;
-    border-radius: 2%;
-    position: relative;
-
-    &:after, &:before {
-      position: absolute;
-      display: block;
-      width: 0;
-      height: 0;
-      border-color: transparent;
-      border-style: solid;
-      border-width: 6px;
-      content: "";
-    }
-
-    &:before {
-      border-bottom-color: #b9c8cf;
-      border-top-width: 0;
-      left: 39px;
-      top: -7px;
-    }
-  
-    &:after {
-      left: 39px;
-      top: -12px;
-      border-top-color: transparent;
-      border-right-color: transparent;
-      border-bottom-color: #fff;
-      border-left-color: transparent;
-      border-top-width: 0;
-      border-width: 6px;
     }
   }
 

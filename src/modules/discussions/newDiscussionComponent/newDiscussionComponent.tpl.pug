@@ -19,27 +19,28 @@
           label
             | {{ linkPreview && linkPreview.title | ellipsis:60 }}
 
-  .description(*ngIf="data && !isLoading")
-    //.quotation(*ngIf="data && data.quote")
-    //  blockquote {{ data.quote | ellipsis:88 }}
+  .note-detail-section
+    .description(*ngIf="data && !isLoading")
+      //.quotation(*ngIf="data && data.quote")
+      //  blockquote {{ data.quote | ellipsis:88 }}
 
-    .text-editor(rich-text-editor [(ngModel)]="data.body", (ngModelChange)="onTextChanged()", placeholder="Add your notes...", autofocus, [(mentionedUsers)]="mentionedUsers")
+      .text-editor(rich-text-editor [(ngModel)]="data.body", (ngModelChange)="onTextChanged()", placeholder="Add your notes...", autofocus, [(mentionedUsers)]="mentionedUsers")
 
-  .actions-area(*ngIf="data")
-    .row
-      .col-12
-        .portal-selection
-          portal-selection([(portal)]="data.portalId")
-    .row.m-t-15
-      .col-6
-        .select-privacy
-          span Who can see this note?
-          select.form-control.m-t-10([(ngModel)]="privacySetting", (ngModelChange)="onPrivacyChange()", placeholder="Who can see this note?")
-            option(value="PUBLIC") Everyone
-            // option(value="MENTIONED") Share with people I mentioned
-            option(value="ONLYME") Only me
-    .row.m-t-20
-      .col-6.mr-auto
-        button.btn.btn-sm.btn-primary.btn-block.add-note-btn((click)="addNote()") Add Note
-      .col-6.ml-auto
-        button.btn.btn-sm.btn-default.btn-block.btn-cancel((click)="goBack()") Cancel
+    .actions-area(*ngIf="data")
+      .row
+        .col-12
+          .portal-selection
+            portal-selection([(portal)]="data.portalId")
+      .row.m-t-15
+        .col-12
+          .select-privacy
+            span Who can see this note?
+            select.form-control.col-6.m-t-10([(ngModel)]="privacySetting", (ngModelChange)="onPrivacyChange()", placeholder="Who can see this note?")
+              option(value="PUBLIC") Everyone
+              // option(value="MENTIONED") Share with people I mentioned
+              option(value="ONLYME") Only me
+      .row.m-t-20
+        .col-6.mr-auto
+          button.btn.btn-sm.btn-primary.btn-block.add-note-btn((click)="addNote()") Add Note
+        .col-6.ml-auto
+          button.btn.btn-sm.btn-default.btn-block.btn-cancel((click)="goBack()") Cancel
