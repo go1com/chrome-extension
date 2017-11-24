@@ -1,13 +1,13 @@
-import {Component, OnDestroy, OnInit} from "@angular/core";
-import {ActivatedRoute, Router} from "@angular/router";
-import {DiscussionService} from "../services/discussion.service";
-import {UserService} from "../../membership/services/user.service";
-import {StorageService} from "../../go1core/services/StorageService";
+import { Component, OnDestroy, OnInit } from "@angular/core";
+import { ActivatedRoute, Router } from "@angular/router";
+import { DiscussionService } from "../services/discussion.service";
+import { UserService } from "../../membership/services/user.service";
+import { StorageService } from "../../go1core/services/StorageService";
 import configuration from "../../../environments/configuration";
-import {commandKeys} from "../../../environments/commandKeys";
-import {ensureChromeTabLoaded} from "../../../environments/ensureChromeTabLoaded";
-import {BrowserMessagingService} from "../../go1core/services/BrowserMessagingService";
-import {EllipsisService} from "../../go1core/ellipsis-pipe/ellipsis.pipe";
+import { commandKeys } from "../../../environments/commandKeys";
+import { ensureChromeTabLoaded } from "../../../environments/ensureChromeTabLoaded";
+import { BrowserMessagingService } from "../../go1core/services/BrowserMessagingService";
+import { EllipsisService } from "../../go1core/ellipsis-pipe/ellipsis.pipe";
 
 @Component({
   selector: 'app-new-discussion',
@@ -25,12 +25,12 @@ export class NewDiscussionComponent implements OnInit, OnDestroy {
   privacySetting = 'ONLYME';
 
   constructor(private router: Router,
-              private discussionService: DiscussionService,
-              private currentActivatedRoute: ActivatedRoute,
-              private userService: UserService,
-              private browserMessagingService: BrowserMessagingService,
-              private ellipsisService: EllipsisService,
-              private storageService: StorageService) {
+    private discussionService: DiscussionService,
+    private currentActivatedRoute: ActivatedRoute,
+    private userService: UserService,
+    private browserMessagingService: BrowserMessagingService,
+    private ellipsisService: EllipsisService,
+    private storageService: StorageService) {
   }
 
   async ngOnInit() {
@@ -68,7 +68,7 @@ export class NewDiscussionComponent implements OnInit, OnDestroy {
 
     this.data = {
       title: '',
-      body: quotation ? `<blockquote>${this.ellipsisService.transform(quotation, 60)}</blockquote>` : '',
+      body: '',
       quote: quotation,
       item: this.pageUrl,
       entityType: configuration.constants.noteChromeExtType,
@@ -120,7 +120,7 @@ export class NewDiscussionComponent implements OnInit, OnDestroy {
   }
 
   async goBack() {
-    await this.router.navigate(['../'], {relativeTo: this.currentActivatedRoute});
+    await this.router.navigate(['../'], { relativeTo: this.currentActivatedRoute });
   }
 
   onTextChanged() {
@@ -136,6 +136,10 @@ export class NewDiscussionComponent implements OnInit, OnDestroy {
 
     if (!this.data.body) {
       this.data.body = this.data.quote || 'Note from ' + this.linkPreview.title;
+    }
+
+    if (this.data.quotation) {
+      this.data.body = `<blockquote>${this.data.quotation}</blockquote>` + this.data.body;
     }
 
     this.data.uniqueName = `${this.pageUrl}__${Math.floor(new Date().getTime() / 1000)}`;

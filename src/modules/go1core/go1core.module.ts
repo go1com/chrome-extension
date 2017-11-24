@@ -18,6 +18,7 @@ import {AutofocusDirective} from "./autofocus-directive/autofocus.directive";
 import {EllipsisPipe, EllipsisService} from "./ellipsis-pipe/ellipsis.pipe";
 import {ImageFallbackDirective} from "./imageFallbackDirective/imageFallback.directive";
 import {BrowserMessagingService} from "./services/BrowserMessagingService";
+import { ReadMoreDirective } from "./readmore-directive/readmore.directive.js";
 
 @NgModule({
   declarations: [
@@ -29,6 +30,8 @@ import {BrowserMessagingService} from "./services/BrowserMessagingService";
     ImageSvgDirective,
     AutofocusDirective,
     ImageFallbackDirective,
+
+    ReadMoreDirective,
 
     EllipsisPipe
   ],
@@ -58,6 +61,8 @@ import {BrowserMessagingService} from "./services/BrowserMessagingService";
     ImageSvgDirective,
     AutofocusDirective,
     ImageFallbackDirective,
+
+    ReadMoreDirective,
 
     EllipsisPipe
   ],

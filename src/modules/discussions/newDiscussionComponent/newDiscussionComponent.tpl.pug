@@ -21,8 +21,12 @@
 
   .note-detail-section
     .description(*ngIf="data && !isLoading")
-      //.quotation(*ngIf="data && data.quote")
-      //  blockquote {{ data.quote | ellipsis:88 }}
+      .quotation(*ngIf="data && data.quote")
+        blockquote
+          #quotation(#quotation="") {{ data.quote }}
+          a(readMore [readMore-length]="75", [readMore-element]="quotation")
+            span.more more
+            span.less less
 
       .text-editor(rich-text-editor [(ngModel)]="data.body", (ngModelChange)="onTextChanged()", placeholder="Add your notes...", autofocus, [(mentionedUsers)]="mentionedUsers")
 

@@ -62,6 +62,15 @@
       color:  #ffeb8e;
       font-style: normal;
     }
+
+    a[readMore] {
+      cursor: pointer;
+      font-style: italic;
+      color: $go1brandColor;
+      margin-top: -24px;
+      position: absolute;
+      right: 20px;
+    }
   }
 
   > .description {
