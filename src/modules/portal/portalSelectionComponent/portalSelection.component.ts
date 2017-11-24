@@ -1,16 +1,16 @@
-import {Component, EventEmitter, Input, Output} from "@angular/core";
+import { Component, EventEmitter, Input, OnInit, Output } from "@angular/core";
 import {PortalService} from "../services/PortalService";
 
 @Component({
   selector: 'portal-selection',
   templateUrl: './portalSelection.component.pug'
 })
-export class PortalSelectionComponent {
+export class PortalSelectionComponent implements OnInit {
   availablePortals: any[];
   @Input() portal: any;
   @Output() portalChange: EventEmitter<any> = new EventEmitter<any>();
 
-  @Input() placeholder?: string = "Select Portal";
+  @Input() placeholder = "Select Portal";
 
   constructor(private portalService: PortalService) {
     this.availablePortals = [];

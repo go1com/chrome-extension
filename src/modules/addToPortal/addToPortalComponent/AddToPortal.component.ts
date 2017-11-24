@@ -1,21 +1,24 @@
-import {Component, OnDestroy, OnInit} from "@angular/core";
-import {Router} from "@angular/router";
-import {StorageService} from "../../go1core/services/StorageService";
+import { Component, OnDestroy, OnInit } from "@angular/core";
+import { Router } from "@angular/router";
+import { StorageService } from "../../go1core/services/StorageService";
 import configuration from "../../../environments/configuration";
-import {routeNames} from "../addToPortal.routes";
-import {AddToPortalService} from "../services/AddToPortalService";
-import {commandKeys} from "../../../environments/commandKeys";
-import {ensureChromeTabLoaded} from "../../../environments/ensureChromeTabLoaded";
-import {BrowserMessagingService} from "../../go1core/services/BrowserMessagingService";
-import {DiscussionService} from "../../discussions/services/discussion.service";
-import {UserService} from "../../membership/services/user.service";
-import {PortalService} from "../../portal/services/PortalService";
+import { routeNames } from "../addToPortal.routes";
+import { AddToPortalService } from "../services/AddToPortalService";
+import { commandKeys } from "../../../environments/commandKeys";
+import { ensureChromeTabLoaded } from "../../../environments/ensureChromeTabLoaded";
+import { BrowserMessagingService } from "../../go1core/services/BrowserMessagingService";
+import { DiscussionService } from "../../discussions/services/discussion.service";
+import { UserService } from "../../membership/services/user.service";
+import { PortalService } from "../../portal/services/PortalService";
+import { ModalDialogService } from "../../go1core/services/ModalDialogService";
 
 @Component({
   selector: 'add-to-portal',
   templateUrl: './addToPortal.pug'
 })
 export class AddToPortalComponent implements OnInit, OnDestroy {
+  originalPortalId: any;
+  __canAddToPortal: boolean;
   user: any;
   portal: any;
   mentionedUsers: any[] = [];
@@ -30,12 +33,13 @@ export class AddToPortalComponent implements OnInit, OnDestroy {
   private currentPortalId: any;
 
   constructor(private router: Router,
-              private addToPortalService: AddToPortalService,
-              private discussionService: DiscussionService,
-              private storageService: StorageService,
-              private portalService: PortalService,
-              private userService: UserService,
-              private browserMessagingService: BrowserMessagingService) {
+    private addToPortalService: AddToPortalService,
+    private discussionService: DiscussionService,
+    private storageService: StorageService,
+    private portalService: PortalService,
+    private userService: UserService,
+    private modalDialogService: ModalDialogService,
+    private browserMessagingService: BrowserMessagingService) {
 
   }
 
@@ -48,10 +52,12 @@ export class AddToPortalComponent implements OnInit, OnDestroy {
     ]);
 
     if (!this.canAddToPortal()) {
+      this.__canAddToPortal = false;
       this.isLoading = false;
       return;
     }
 
+    this.__canAddToPortal = true;
     if (await this.storageService.exists(configuration.constants.localStorageKeys.addToPortalParams)) {
       const pageToCreateNote = await this.storageService.retrieve(configuration.constants.localStorageKeys.addToPortalParams);
       this.pageUrl = pageToCreateNote.url;
@@ -62,8 +68,9 @@ export class AddToPortalComponent implements OnInit, OnDestroy {
     }
 
     const user = await this.storageService.retrieve(configuration.constants.localStorageKeys.user);
-    this.currentPortalId = await this.storageService.retrieve(configuration.constants.localStorageKeys.currentActivePortalId)
+    this.currentPortalId = await this.storageService.retrieve(configuration.constants.localStorageKeys.currentActivePortalId);
     this.tabUrl = this.pageUrl;
+    this.originalPortalId = this.currentPortalId;
 
     this.linkPreview = await this.loadPageMetadata(this.pageUrl);
 
@@ -81,22 +88,30 @@ export class AddToPortalComponent implements OnInit, OnDestroy {
       author: user.mail
     };
 
-    this.noteData = {
-      title: '',
-      body: '',
-      quote: '',
-      item: this.pageUrl,
-      entityType: configuration.constants.noteLiType,
-      portalId: this.currentPortalId,
-      context: {
-        url: this.pageUrl,
-        lo_status: configuration.constants.noteStatuses.PUBLIC_NOTE
-      },
-      private: 0,
-      user: user
-    };
+    // this.noteData = {
+    //   title: '',
+    //   body: '',
+    //   quote: '',
+    //   item: this.pageUrl,
+    //   entityType: configuration.constants.noteLiType,
+    //   portalId: this.currentPortalId,
+    //   context: {
+    //     url: this.pageUrl,
+    //     lo_status: configuration.constants.noteStatuses.PUBLIC_NOTE
+    //   },
+    //   private: 0,
+    //   user: user
+    // };
 
     this.isLoading = false;
+  }
+
+  async onPortalChanged() {
+    this.portal = this.user.accounts.find(acc => acc.id === this.data.instance);
+    if (!this.canAddToPortal()) {
+      await this.modalDialogService.showAlert(`You do not have permission to perform this action.`, `Cannot Add To Portal`, 'Close', 'btn-warning');
+      this.data.instance = this.originalPortalId;
+    }
   }
 
   canAddToPortal() {

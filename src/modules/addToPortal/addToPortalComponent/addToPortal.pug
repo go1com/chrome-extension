@@ -1,10 +1,10 @@
 .add-to-portal.animated
   go-header([title]="'Add to Portal'")
 
-  .cannot-add-to-portal(*ngIf="!isLoading && !canAddToPortal()")
+  .cannot-add-to-portal(*ngIf="!isLoading && !__canAddToPortal")
     .alert.alert-warning Sorry you do not have permission to add to portal. Please contact our system administrator.
 
-  .add-to-portal-body(*ngIf="canAddToPortal()")
+  .add-to-portal-body(*ngIf="__canAddToPortal")
     .related-to
       .link-preview-frame
         .is-loading([hidden]="!isLoading")
@@ -30,6 +30,9 @@
       //
       //    div.grey5 Add Your Notes:
       //    .text-editor(rich-text-editor [(ngModel)]="data.body", (ngModelChange)="onTextChanged()", placeholder="Add your notes...", autofocus, [(mentionedUsers)]="mentionedUsers")
+      .form-group(*ngIf="!loading && data")
+        div.grey5 Select Portal:
+        portal-selection([(portal)]="data.instance", (portalChange)="onPortalChanged()")
 
       .actions-area
         .row
