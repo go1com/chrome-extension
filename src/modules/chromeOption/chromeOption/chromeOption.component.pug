@@ -3,7 +3,7 @@
 
   .action-area
     .form-group
-      label Ignore the Following Domains #[a.btn.btn-link((click)="addDomain()") #[i.fa.fa-plus] Add Domain]
+      label Ignore GCE on the Following Domains/Websites
 
       .row.m-t-10(*ngFor="let item of ignoredDomains")
         .col-11
@@ -11,10 +11,15 @@
         .col-1
           button.btn.btn-sm.btn-block.btn-danger((click)="removeDomain(item)") Remove
 
+  .action-area.m-t-10
+    .form-group
+      fieldset
+          a.btn.btn-outline-info.btn-sm((click)="addDomain()" tabindex="1") #[i.fa.fa-plus] Add Domain
+
   .action-area
     .form-group
       fieldset
-        a.btn.btn-primary.btn-sm((click)="save()" tabindex="1") Save
+        a.btn.btn-primary.btn-sm((click)="save()" tabindex="2") Save
 
   .copyright.text-center.
     GO1 Extension v{{ versionInfo }}. Copyright &copy; {{ currentYear }} GO1 Pty.
