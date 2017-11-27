@@ -22,9 +22,10 @@
     "unlimitedStorage",
     "tabs",
     "notifications",
-    "contextMenus"
+    "contextMenus",
+    "webNavigation"
   ],
-  "options_page": "index.html",
+  "options_page": "index.html#/chromeOption",
   "content_scripts": [
     {
       "all_frames": false,

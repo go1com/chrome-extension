@@ -30,7 +30,8 @@ const configuration = {
       createNoteParams: 'GO1.Command.createNoteParams',
       addToPortalParams: 'GO1.Command.addToPortalParams',
       cacheLearningItem: 'GO1.shareLearning.learningItemId_',
-      sharedLiToUser: 'GO1.shareLearning.sharedLiToUser'
+      sharedLiToUser: 'GO1.shareLearning.sharedLiToUser',
+      ignoredDomains: 'IGNORED_DOMAINS'
     }
   },
   serviceUrls: {
@@ -53,6 +54,7 @@ const configuration = {
     ggLogin: '/membership/socialLogin/google',
     addToPortal: 'addToPortal',
     notifications: 'notifications',
+    chromeOption: 'chromeOption',
     shareLearningItem: 'shareLearningItem',
     scheduleLearningItem: 'scheduleLearningItem',
     discussionsList: 'discussionsList',

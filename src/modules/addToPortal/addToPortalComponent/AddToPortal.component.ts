@@ -88,20 +88,20 @@ export class AddToPortalComponent implements OnInit, OnDestroy {
       author: user.mail
     };
 
-    // this.noteData = {
-    //   title: '',
-    //   body: '',
-    //   quote: '',
-    //   item: this.pageUrl,
-    //   entityType: configuration.constants.noteLiType,
-    //   portalId: this.currentPortalId,
-    //   context: {
-    //     url: this.pageUrl,
-    //     lo_status: configuration.constants.noteStatuses.PUBLIC_NOTE
-    //   },
-    //   private: 0,
-    //   user: user
-    // };
+    this.noteData = {
+      title: '',
+      body: '',
+      quote: '',
+      item: this.pageUrl,
+      entityType: configuration.constants.noteLiType,
+      portalId: this.currentPortalId,
+      context: {
+        url: this.pageUrl,
+        lo_status: configuration.constants.noteStatuses.PUBLIC_NOTE
+      },
+      private: 0,
+      user: user
+    };
 
     this.isLoading = false;
   }
@@ -142,17 +142,29 @@ export class AddToPortalComponent implements OnInit, OnDestroy {
   }
 
   async onDoneBtnClicked() {
-    this.learningItem = await this.addToPortal();
+    try {
+      this.learningItem = await this.addToPortal();
 
-    if (this.noteData.body) {
-      await this.addNote(this.learningItem.id);
+      if (this.noteData && this.noteData.body) {
+        try {
+          await this.addNote(this.learningItem.id);
+        } catch (err) {
+          await this.modalDialogService.showAlert(`Error while adding note to LI. ${err.message}`);
+        }
+      }
+
+      await this.goToSuccess(this.learningItem.id);
+    } catch (error) {
+      await this.modalDialogService.showAlert(`Error while adding to portal. ${error.message}`);
     }
-
-    await this.goToSuccess(this.learningItem.id);
   }
 
 
   async addNote(learningItemId: any) {
+    if (!this.noteData) {
+      return;
+    }
+
     if (!this.noteData.title) {
       this.noteData.title = 'Note from ' + this.linkPreview.title;
     }
@@ -161,6 +173,7 @@ export class AddToPortalComponent implements OnInit, OnDestroy {
       this.noteData.body = this.noteData.quote || 'Note from ' + this.linkPreview.title;
     }
 
+    this.noteData.portalId = this.data.instance;
     this.noteData.uniqueName = `${this.pageUrl}__${Math.floor(new Date().getTime() / 1000)}`;
     this.noteData.entityId = learningItemId;
     const noteData = await this.discussionService.createNote(this.noteData);

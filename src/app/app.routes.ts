@@ -39,6 +39,10 @@ const routes: Routes = [
     loadChildren: '../modules/notification#NotificationModule'
   },
   {
+    path: configuration.pages.chromeOption,
+    loadChildren: '../modules/chromeOption#ChromeOptionModule'
+  },
+  {
     path: 'setting',
     component: SettingComponent
   }

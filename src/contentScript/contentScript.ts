@@ -7,12 +7,22 @@ import {
   ICommandHandlerService,
   ICommandHandlerServiceSymbol
 } from "../services/commandHandlerService/ICommandHandlerService";
+import { IStorageService, IStorageServiceSymbol } from "../services/storageService/IStorageService";
+import configuration from "../environments/configuration";
 
 declare const $: any;
 const ignoringDomains = ['mygo1.com', 'go1.com', 'www.google.com/maps'];
 
 (async function () {
-  const shouldIgnore = ignoringDomains.some((domain) => window.location.href.indexOf(domain) > -1);
+  iocContainer.load(contentScriptContainer);
+
+  const storageService = iocContainer.get<IStorageService>(IStorageServiceSymbol);
+
+  let configuredIgnoredDomains = await storageService.retrieve(configuration.constants.localStorageKeys.ignoredDomains) || [];
+
+  configuredIgnoredDomains = configuredIgnoredDomains.concat(ignoringDomains);
+
+  const shouldIgnore = configuredIgnoredDomains.some((domain) => window.location.href.indexOf(domain) > -1);
 
   if (shouldIgnore) {
     return;
@@ -20,7 +30,6 @@ const ignoringDomains = ['mygo1.com', 'go1.com', 'www.google.com/maps'];
 
   $('head').append('<link href="chrome-extension://' + chrome.runtime.id + '/styles/fontawesome.css" rel="stylesheet" />');
 
-  iocContainer.load(contentScriptContainer);
   const commandHandlerService = iocContainer.get<ICommandHandlerService>(ICommandHandlerServiceSymbol);
 
   chrome.runtime.onMessage.addListener(function (msg, sender, sendResponse) {

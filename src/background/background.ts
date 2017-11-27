@@ -6,6 +6,8 @@ import {
   ICommandHandlerService,
   ICommandHandlerServiceSymbol
 } from "../services/commandHandlerService/ICommandHandlerService";
+import { IStorageService, IStorageServiceSymbol } from "../services/storageService/IStorageService";
+import configuration from "../environments/configuration";
 
 iocContainer.load(backgroundScriptContainer);
 
@@ -50,6 +52,25 @@ function onSaveToNoteMenuContextClicked(info, tab) {
 
   });
 }
+
+chrome.webNavigation.onCompleted.addListener(async function(details) {
+  console.log(details);
+
+  const ignoringDomains = ['mygo1.com', 'go1.com', 'www.google.com/maps'];
+  const storageService = iocContainer.get<IStorageService>(IStorageServiceSymbol);
+
+  let configuredIgnoredDomains = await storageService.retrieve(configuration.constants.localStorageKeys.ignoredDomains) || [];
+
+  configuredIgnoredDomains = configuredIgnoredDomains.concat(ignoringDomains);
+
+  const shouldIgnore = configuredIgnoredDomains.some((domain) => details.url.indexOf(domain) > -1);
+
+  if (shouldIgnore) {
+    console.log('should ignore the site');
+    chrome.browserAction.disable(details.tabId);
+  }
+});
+
 
 chrome.browserAction.onClicked.addListener((tab) => {
   chrome.tabs.sendMessage(tab.id, {

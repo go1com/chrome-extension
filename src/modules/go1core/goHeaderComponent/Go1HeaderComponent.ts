@@ -1,4 +1,4 @@
-import {Component, Input} from "@angular/core";
+import { Component, Input, OnInit } from "@angular/core";
 import configuration from "../../../environments/configuration";
 import {commandKeys} from "../../../environments/commandKeys";
 
@@ -6,17 +6,19 @@ import {commandKeys} from "../../../environments/commandKeys";
   selector: 'go-header',
   templateUrl: './goHeader.tpl.pug'
 })
-export class Go1HeaderComponent {
+export class Go1HeaderComponent implements OnInit{
   @Input() activePage: string;
   @Input() title: string;
 
-  notificationUnreadCount: number = 0;
+  notificationUnreadCount = 0;
 
   constructor() {
   }
 
   canShowBackAndSetting() {
-    return window.name !== configuration.constants.popupDefaultName;
+    const canShowBackAndSettings = window.name === configuration.constants.popupDefaultName;
+
+    return canShowBackAndSettings;
   }
 
   ngOnInit() {

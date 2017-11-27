@@ -1,12 +1,12 @@
-import {ToolTipMenuComponent} from "../tooltipComponent/toolTipsMenu";
-import {commandKeys} from "../../../environments/commandKeys";
+import { ToolTipMenuComponent } from "../tooltipComponent/toolTipsMenu";
+import { commandKeys } from "../../../environments/commandKeys";
 import Util from '../../../libs/annotation-plugin/util';
-import {HighlightService} from "../../services/highlightService";
+import { HighlightService } from "../../services/highlightService";
 import htmlUtil from '../../../plugins/annotation-plugin/html';
-import {PopupContainer} from "../popupContainerComponent/popupContainer";
-import {inject, injectable} from "inversify";
-import {IContentScriptComponent} from "../IContentScriptComponent";
-import {FabButtonsComponent} from "../fabButtonsComponent/fabButtonsComponent";
+import { PopupContainer } from "../popupContainerComponent/popupContainer";
+import { inject, injectable } from "inversify";
+import { IContentScriptComponent } from "../IContentScriptComponent";
+import { FabButtonsComponent } from "../fabButtonsComponent/fabButtonsComponent";
 import {
   IBrowserMessagingService,
   IBrowserMessagingServiceSymbol
@@ -27,9 +27,9 @@ export class InjectionAreaComponent implements IContentScriptComponent {
   updateAnnotationTimeout: any;
 
   constructor(@inject(PopupContainer) private popupContainer: PopupContainer,
-              @inject(FabButtonsComponent) private fabButtonComponent: FabButtonsComponent,
-              @inject(HighlightService) private highlightService: HighlightService,
-              @inject(IBrowserMessagingServiceSymbol) private chromeMessagingService: IBrowserMessagingService) {
+    @inject(FabButtonsComponent) private fabButtonComponent: FabButtonsComponent,
+    @inject(HighlightService) private highlightService: HighlightService,
+    @inject(IBrowserMessagingServiceSymbol) private chromeMessagingService: IBrowserMessagingService) {
     this.createNoteEnabled = false;
 
     this.view = $(require('./injectionArea.pug'));
@@ -40,9 +40,11 @@ export class InjectionAreaComponent implements IContentScriptComponent {
 
     this.popupContainer.initialize(this);
 
-    this.checkQuickButtonSettings(true);
-    this.checkCreateNoteSettings(true);
-    this.checkShowHighlightSettings(true);
+    await Promise.all([
+      this.checkQuickButtonSettings(true),
+      this.checkCreateNoteSettings(true),
+      this.checkShowHighlightSettings(true)
+    ]);
   }
 
   async checkQuickButtonSettings(firstTimeInitial = false) {
@@ -212,9 +214,9 @@ export class InjectionAreaComponent implements IContentScriptComponent {
         }
 
         this.highlightService.highlight(note.context.quotation, note.context.quotationPosition, hiddenClassName)
-          .then(dom => {
-            this.generateAnnotationIndicator(dom, note.context.quotation);
-          });
+            .then(dom => {
+              this.generateAnnotationIndicator(dom, note.context.quotation);
+            });
       });
     });
   }
@@ -228,12 +230,11 @@ export class InjectionAreaComponent implements IContentScriptComponent {
     const annotationIndicator = $(annotationIndicatorHTML);
 
     const domOffset = $(dom).offset();
-    console.log(domOffset);
 
-    annotationIndicator.css('top', domOffset.top);
-    annotationIndicator.attr('title', quotationText);
-    annotationIndicator.data('connectedDOM', $(dom));
-    annotationIndicator.appendTo(this.annotationIndicatorArea);
+    annotationIndicator.css('top', domOffset.top)
+                       .attr('title', quotationText)
+                       .data('connectedDOM', $(dom))
+                       .appendTo(this.annotationIndicatorArea);
 
     this.updateAnnotationTimeout = setTimeout(() => this.updateAnnotationAreaPosition(), 300);
 
@@ -248,8 +249,9 @@ export class InjectionAreaComponent implements IContentScriptComponent {
       const scrollTo = $(connectedDOM);
 
       $('html, body').animate({
-        scrollTop: scrollTo.offset().top - 75
+        scrollTop: scrollTo.offset().top - 75,
       });​
+
     });
 
     annotationIndicator.on('mouseover', function () {

@@ -1,15 +1,16 @@
-import {Component, OnDestroy, OnInit} from "@angular/core";
-import {ActivatedRoute, Router} from "@angular/router";
-import {StorageService} from "../../go1core/services/StorageService";
+import { Component, OnDestroy, OnInit } from "@angular/core";
+import { ActivatedRoute, Router } from "@angular/router";
+import { StorageService } from "../../go1core/services/StorageService";
 import configuration from "../../../environments/configuration";
-import {routeNames} from "../addToPortal.routes";
-import {AddToPortalService} from "../services/AddToPortalService";
-import {commandKeys} from "../../../environments/commandKeys";
-import {EnrollmentService} from "../../enrollment/services/enrollment.service";
-import {UserService} from "../../membership/services/user.service";
+import { routeNames } from "../addToPortal.routes";
+import { AddToPortalService } from "../services/AddToPortalService";
+import { commandKeys } from "../../../environments/commandKeys";
+import { EnrollmentService } from "../../enrollment/services/enrollment.service";
+import { UserService } from "../../membership/services/user.service";
 import * as moment from 'moment';
-import {ensureChromeTabLoaded} from "../../../environments/ensureChromeTabLoaded";
-import {BrowserMessagingService} from "../../go1core/services/BrowserMessagingService";
+import { ensureChromeTabLoaded } from "../../../environments/ensureChromeTabLoaded";
+import { BrowserMessagingService } from "../../go1core/services/BrowserMessagingService";
+import { ModalDialogService } from "../../go1core/services/ModalDialogService";
 
 
 @Component({
@@ -19,8 +20,8 @@ import {BrowserMessagingService} from "../../go1core/services/BrowserMessagingSe
 export class ShareLearningItemComponent implements OnInit, OnDestroy {
   shareToUser: any;
   data: any;
-  tabUrl: string = '';
-  isLoading: boolean = false;
+  tabUrl = '';
+  isLoading = false;
   linkPreview: any = null;
   private pageUrl: any;
   learningItem: any;
@@ -40,8 +41,9 @@ export class ShareLearningItemComponent implements OnInit, OnDestroy {
       this.shareToUser = selectedItem;
     },
     asynchDataCall: async (value: string, cb: any) => {
-      if (this.autoCompleteTimeout)
+      if (this.autoCompleteTimeout) {
         clearTimeout(this.autoCompleteTimeout);
+      }
 
       this.autoCompleteTimeout = setTimeout(async () => {
         const response = await this.userService.getUserAutoComplete(value);
@@ -53,12 +55,13 @@ export class ShareLearningItemComponent implements OnInit, OnDestroy {
   private portalId: any | any | string;
 
   constructor(private router: Router,
-              private currentActiveRoute: ActivatedRoute,
-              private addToPortalService: AddToPortalService,
-              private enrollmentService: EnrollmentService,
-              private userService: UserService,
-              private storageService: StorageService,
-              private browserMessagingService: BrowserMessagingService) {
+    private currentActiveRoute: ActivatedRoute,
+    private addToPortalService: AddToPortalService,
+    private enrollmentService: EnrollmentService,
+    private userService: UserService,
+    private storageService: StorageService,
+    private modalDialogService: ModalDialogService,
+    private browserMessagingService: BrowserMessagingService) {
 
   }
 
@@ -81,9 +84,20 @@ export class ShareLearningItemComponent implements OnInit, OnDestroy {
   }
 
   async shareBtnClicked() {
-    await this.enrollmentService.assignToUser(this.learningItem, this.portalId, this.shareToUser.rootId);
-    await this.enrollmentService.scheduleLearningItem(this.learningItem, this.portalId, moment(this.scheduleDateTime).format(configuration.constants.momentISOFormat));
+    if (!this.shareToUser || !this.shareToUser.rootId) {
+      await this.modalDialogService.showAlert(`Please select User to continue`, `User not selected`);
+      return;
+    }
+    try {
+      await this.enrollmentService.assignToUser(this.learningItem, this.portalId, this.shareToUser.rootId);
+    } catch (error) {
+      await this.modalDialogService.showAlert(`Error while assigning learning item to user`, `Error`);
+      return;
+    }
 
+    if (this.scheduleDateTime) {
+      await this.enrollmentService.scheduleLearningItem(this.learningItem, this.portalId, moment(this.scheduleDateTime).format(configuration.constants.momentISOFormat));
+    }
     await this.goToSuccess();
   }
 
@@ -124,11 +138,11 @@ export class ShareLearningItemComponent implements OnInit, OnDestroy {
   }
 
   async goToSuccess() {
-    this.storageService.store(configuration.constants.localStorageKeys.sharedLiToUser, this.shareToUser);
+    await this.storageService.store(configuration.constants.localStorageKeys.sharedLiToUser, this.shareToUser);
     await this.router.navigate(['./', configuration.pages.addToPortal, routeNames.success]);
   }
 
   goBack() {
-    this.router.navigate(['/' + configuration.defaultPage]);
+    this.router.navigate(['/', configuration.defaultPage]);
   }
 }
