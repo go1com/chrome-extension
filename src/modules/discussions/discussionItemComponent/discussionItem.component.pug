@@ -1,11 +1,11 @@
 .discussion-item(*ngIf="discussionItem")
   user-profile(*ngIf="discussionItem?.user_id", [userId]="discussionItem?.user_id" externalText="{{ discussionItem?.created | amTimeAgo }}")
   .discussion-content
-    .discussion-detail((click)="jumpToQuotedText()", (mouseleave)="removeQuoteHighlight()", [class.has-quotation]="discussionItem?.quote")
+    .discussion-detail((mouseleave)="removeQuoteHighlight()", [class.has-quotation]="discussionItem?.quote")
       div.quotation(*ngIf="discussionItem?.quote", role="button", (click)="jumpToQuotedText()")
         blockquote
           #quotation(#quotation="") {{ discussionItem?.quote }}
-          a(readMore [readMore-length]="75", [readMore-element]="quotation")
+          a(readMore, [readMore-length]="75", [readMore-element]="quotation")
             span.more more
             span.less less
 

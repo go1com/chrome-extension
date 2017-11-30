@@ -1,7 +1,7 @@
 import { ToolTipMenuComponent } from "../tooltipComponent/toolTipsMenu";
 import { commandKeys } from "../../../environments/commandKeys";
 import Util from '../../../libs/annotation-plugin/util';
-import { HighlightService } from "../../services/highlightService";
+import { highlightClassName, HighlightService } from "../../services/highlightService";
 import htmlUtil from '../../../plugins/annotation-plugin/html';
 import { PopupContainer } from "../popupContainerComponent/popupContainer";
 import { inject, injectable } from "inversify";
@@ -11,13 +11,51 @@ import {
   IBrowserMessagingService,
   IBrowserMessagingServiceSymbol
 } from "../../../services/browserMessagingService/IBrowserMessagingService";
+import { TextSelector } from "../../../libs/annotator/textselector";
+import { Highlighter } from "../../../libs/annotator/highlighter";
 
 declare const $: any;
 
 const hiddenClassName = 'highlighting-hidden';
 
+
+// trim strips whitespace from either end of a string.
+//
+// This usually exists in native code, but not in IE8.
+function trim(s) {
+  if (typeof String.prototype.trim === 'function') {
+    return String.prototype.trim.call(s);
+  } else {
+    return s.replace(/^[\s\xA0]+|[\s\xA0]+$/g, '');
+  }
+}
+
+// annotationFactory returns a function that can be used to construct an
+// annotation from a list of selected ranges.
+function annotationFactory(contextEl, ignoreSelector) {
+  return function (ranges) {
+    const text = [],
+      serializedRanges = [];
+
+    for (let i = 0, len = ranges.length; i < len; i++) {
+      const r = ranges[i];
+      text.push(trim(r.text()));
+      serializedRanges.push(r.serialize(contextEl, ignoreSelector));
+    }
+
+    return {
+      quote: text.join(' / '),
+      ranges: serializedRanges
+    };
+  };
+}
+
+const makeAnnotation = annotationFactory(document.body, '.annotator-hl');
+
 @injectable()
 export class InjectionAreaComponent implements IContentScriptComponent {
+  currentAnnotation: any;
+  highlighter: Highlighter;
   public view: any;
 
   annotationIndicatorFrame: any;
@@ -25,11 +63,12 @@ export class InjectionAreaComponent implements IContentScriptComponent {
   createNoteEnabled: boolean;
 
   updateAnnotationTimeout: any;
+  textSelector: TextSelector;
 
   constructor(@inject(PopupContainer) private popupContainer: PopupContainer,
-    @inject(FabButtonsComponent) private fabButtonComponent: FabButtonsComponent,
-    @inject(HighlightService) private highlightService: HighlightService,
-    @inject(IBrowserMessagingServiceSymbol) private chromeMessagingService: IBrowserMessagingService) {
+              @inject(FabButtonsComponent) private fabButtonComponent: FabButtonsComponent,
+              @inject(HighlightService) private highlightService: HighlightService,
+              @inject(IBrowserMessagingServiceSymbol) private chromeMessagingService: IBrowserMessagingService) {
     this.createNoteEnabled = false;
 
     this.view = $(require('./injectionArea.pug'));
@@ -40,11 +79,48 @@ export class InjectionAreaComponent implements IContentScriptComponent {
 
     this.popupContainer.initialize(this);
 
+    this.highlighter = new Highlighter(document.body, {
+      highlightingClass: highlightClassName
+    });
+
     await Promise.all([
-      this.checkQuickButtonSettings(true),
-      this.checkCreateNoteSettings(true),
-      this.checkShowHighlightSettings(true)
-    ]);
+                        this.checkQuickButtonSettings(true),
+                        this.checkCreateNoteSettings(true),
+                        this.checkShowHighlightSettings(true)
+                      ]);
+  }
+
+  addListenerToSelectingText() {
+    this.textSelector = new TextSelector(document.body, {
+      highlightingClass: highlightClassName,
+      onSelection: (ranges, event) => this.onTextSelected(ranges, event)
+    });
+  }
+
+  removeListenerToSelectingText() {
+    this.textSelector.destroy();
+    this.textSelector = null;
+  }
+
+  onTextSelected(ranges, event) {
+    if (ranges.length > 0) {
+      const selection = window.getSelection();
+      const selectedTextPosition = selection.getRangeAt(0).getBoundingClientRect();
+      const annotation = JSON.stringify(makeAnnotation(ranges));
+
+      this.currentAnnotation = JSON.parse(annotation);
+
+      if (this.createNoteEnabled) {
+        ToolTipMenuComponent.initializeTooltip(this, selectedTextPosition, JSON.parse(annotation));
+      }
+
+    } else {
+      this.currentAnnotation = null;
+
+      if (this.createNoteEnabled) {
+        ToolTipMenuComponent.closeLastTooltip();
+      }
+    }
   }
 
   async checkQuickButtonSettings(firstTimeInitial = false) {
@@ -138,16 +214,6 @@ export class InjectionAreaComponent implements IContentScriptComponent {
     }
   }
 
-  addListenerToSelectingText() {
-    document.addEventListener('click', event => this.onDocumentMouseDown(event));
-    document.addEventListener('mouseup', event => this.onDocumentMouseUp(event));
-  }
-
-  removeListenerToSelectingText() {
-    document.removeEventListener('click', event => this.onDocumentMouseDown(event));
-    document.removeEventListener('mouseup', event => this.onDocumentMouseUp(event));
-  }
-
   removeAnnotationIndicatorArea() {
     if (this.annotationIndicatorFrame) {
       this.annotationIndicatorFrame.remove();
@@ -162,31 +228,6 @@ export class InjectionAreaComponent implements IContentScriptComponent {
     this.highlightService.unhighlight();
   }
 
-  private onDocumentMouseUp(event: any) {
-    if ($(event.target).closest('.go1-extension-injected').length) {
-      this.checkNotesOnCurrentPage();
-      return;
-    }
-
-    if (!this.createNoteEnabled) {
-      this.checkNotesOnCurrentPage();
-      return;
-    }
-
-    const selection = window.getSelection();
-    const selectedText = selection && selection.toString();
-
-    if (selectedText) {
-      const selectedTextPosition = selection.getRangeAt(0).getBoundingClientRect();
-      const xpathFromNode = Util.xpathFromNode($(selection.anchorNode.parentNode));
-
-      ToolTipMenuComponent.initializeTooltip(this, selectedTextPosition, selectedText, xpathFromNode[0]);
-    } else {
-      ToolTipMenuComponent.closeLastTooltip();
-    }
-    this.checkNotesOnCurrentPage();
-  }
-
   checkNotesOnCurrentPage() {
     $('.annotation-indicator').remove();
     if (!this.annotationIndicatorArea) {
@@ -194,19 +235,19 @@ export class InjectionAreaComponent implements IContentScriptComponent {
     }
 
     chrome.runtime.sendMessage({
-      action: commandKeys.loadNotesForPage,
-      contextUrl: window.location.href
-    }, (response) => {
+                                 action: commandKeys.loadNotesForPage,
+                                 contextUrl: window.location.href
+                               }, (response) => {
       if (!response.data || !response.data.length) {
         this.annotationIndicatorArea.addClass('no-indicator');
         return;
       }
 
       chrome.runtime.sendMessage({
-        action: commandKeys.changeBrowserActionBadgeText,
-        text: response.data.length.toString(),
-        title: `${response.data.length} note${response.data.length > 1 ? 's' : ''} available in this page`
-      });
+                                   action: commandKeys.changeBrowserActionBadgeText,
+                                   text: response.data.length.toString(),
+                                   title: `${response.data.length} note${response.data.length > 1 ? 's' : ''} available in this page`
+                                 });
 
       response.data.forEach(note => {
         if (!note.context.quotation || !note.context.quotationPosition) {
@@ -249,8 +290,8 @@ export class InjectionAreaComponent implements IContentScriptComponent {
       const scrollTo = $(connectedDOM);
 
       $('html, body').animate({
-        scrollTop: scrollTo.offset().top - 75,
-      });​
+                                scrollTop: scrollTo.offset().top - 75,
+                              });​
 
     });
 

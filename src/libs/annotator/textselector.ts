@@ -1,19 +1,8 @@
-import xpathRange from 'xpath-range';
+import xpathRange from './xpath-range/lib';
 
 declare const $: any;
 
 const TEXTSELECTOR_NS = 'annotator-textselector';
-
-// isAnnotator determines if the provided element is part of Annotator. Useful
-// for ignoring mouse actions on the annotator elements.
-//
-// element - An Element or TextNode to check.
-//
-// Returns true if the element is a child of an annotator element.
-function isAnnotator(element) {
-  const elAndParents = $(element).parents().addBack();
-  return (elAndParents.filter('[class^=annotator-]').length !== 0);
-}
 
 
 // TextSelector monitors a document (or a specific element) for text selections
@@ -24,7 +13,8 @@ export class TextSelector {
     // Callback, called when the user makes a selection.
     // Receives the list of selected ranges (may be empty) and  the DOM Event
     // that was detected as a selection.
-    onSelection: null
+    onSelection: null,
+    highlightClass: 'annotator-hl'
   };
 
   document: any;
@@ -79,7 +69,7 @@ export class TextSelector {
     for (i = 0; i < selection.rangeCount; i++) {
       const r = selection.getRangeAt(i),
         browserRange = new xpathRange.Range.BrowserRange(r),
-        normedRange = browserRange.normalize().limit(this.element);
+        normedRange = browserRange.normalize();//.limit(this.element);
 
       // If the new range falls fully outside our this.element, we should
       // add it back to the document but not return it from this method.
@@ -138,10 +128,11 @@ export class TextSelector {
     // Don't show the adder if the selection was of a part of Annotator itself.
     for (let i = 0, len = selectedRanges.length; i < len; i++) {
       let container = selectedRanges[i].commonAncestor;
-      if ($(container).hasClass('annotator-hl')) {
-        container = $(container).parents('[class!=annotator-hl]')[0];
+      if ($(container).hasClass(this.options.highlightClass)) {
+        container = $(container).parents(`[class!=${this.options.highlightClass}]`)[0];
       }
-      if (isAnnotator(container)) {
+
+      if (this.isAnnotator(container)) {
         _nullSelection();
         return;
       }
@@ -150,5 +141,16 @@ export class TextSelector {
     if (typeof this.onSelection === 'function') {
       this.onSelection(selectedRanges, event);
     }
+  }
+
+  // isAnnotator determines if the provided element is part of Annotator. Useful
+  // for ignoring mouse actions on the annotator elements.
+  //
+  // element - An Element or TextNode to check.
+  //
+  // Returns true if the element is a child of an annotator element.
+  private isAnnotator(element) {
+    const elAndParents = $(element).parents().addBack();
+    return (elAndParents.filter(`[class^=${this.options.highlightClass}]`).length !== 0);
   }
 }

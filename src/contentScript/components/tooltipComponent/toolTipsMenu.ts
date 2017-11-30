@@ -25,7 +25,7 @@ export class ToolTipMenuComponent implements IContentScriptComponent {
   quotationPosition: string;
 
 
-  static initializeTooltip(parentComponent: IContentScriptComponent, boundingRect, selectingText, xpathOfNode) {
+  static initializeTooltip(parentComponent: IContentScriptComponent, boundingRect, annotationSerializedData) {
 
     ToolTipMenuComponent.closeLastTooltip(true);
 
@@ -33,7 +33,7 @@ export class ToolTipMenuComponent implements IContentScriptComponent {
 
     ToolTipMenuComponent.toolTipMenus.push(toolTip);
 
-    toolTip.initialize(parentComponent, boundingRect, selectingText, xpathOfNode);
+    toolTip.initialize(parentComponent, boundingRect, annotationSerializedData);
   }
 
   static closeLastTooltip(closeImmediately = false) {
@@ -49,14 +49,14 @@ export class ToolTipMenuComponent implements IContentScriptComponent {
     this.createNoteCmd = $(this.view).find('a.create-note-cmd');
   }
 
-  initialize(parentComponent: IContentScriptComponent, boundingRect, selectingText, quotationPosition) {
+  initialize(parentComponent: IContentScriptComponent, boundingRect, annotationSerializedData) {
     this.top = boundingRect.top;
     this.left = boundingRect.left;
     this.elementWidth = boundingRect.width;
     this.elementHeight = boundingRect.height;
 
-    this.selectingText = selectingText;
-    this.quotationPosition = quotationPosition;
+    this.selectingText = annotationSerializedData.quote;
+    this.quotationPosition = JSON.stringify(annotationSerializedData.ranges);
 
     this.view.appendTo(parentComponent.view);
 

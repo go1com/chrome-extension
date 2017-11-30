@@ -12,22 +12,14 @@ export class RemoveAllHighlightCommandHandler implements ICommandHandler {
   command = commandKeys.removeAllHighlight;
 
   constructor(@inject(InjectionAreaComponent) private injectionArea: InjectionAreaComponent,
-    @inject(HighlightService) private highlightService: HighlightService) {
+              @inject(HighlightService) private highlightService: HighlightService) {
   }
 
   handle(request: any, sender: any, sendResponse?: Function) {
-    console.log(`removing highlight for dom ${JumpToQuoteTextCommandHandler.quotations[`${request.data.id}`]}`);
-
-    const existingDom = JumpToQuoteTextCommandHandler.quotations[`${request.data.id}`];
-
-    if ($(existingDom).hasClass(highlightClassName)) {
-      $(existingDom).removeClass(highlightClassName);
+    if (JumpToQuoteTextCommandHandler.quotations[`${request.data.id}`]) {
+      this.injectionArea.highlighter.undraw(JumpToQuoteTextCommandHandler.quotations[`${request.data.id}`]);
+      JumpToQuoteTextCommandHandler.quotations[`${request.data.id}`] = null;
     }
-    //
-    // // remove old highlights
-    // this.highlightService.unhighlight();
-    //
-    // this.injectionArea.checkNotesOnCurrentPage();
 
     if (sendResponse) {
       sendResponse({ success: true });

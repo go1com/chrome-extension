@@ -2,6 +2,7 @@ import { commandKeys } from "../../environments/commandKeys";
 import { highlightClassName, HighlightService } from "../services/highlightService";
 import { inject, injectable } from "inversify";
 import { ICommandHandler } from "../../services/commandHandlerService/ICommandHandler";
+import { InjectionAreaComponent } from "../components/injectionAreaComponent/injectionAreaComponent";
 
 declare const $: any;
 
@@ -10,27 +11,28 @@ export class JumpToQuoteTextCommandHandler implements ICommandHandler {
   static quotations = {};
   command = commandKeys.jumpToQuotedText;
 
-  constructor(@inject(HighlightService) private highlightService: HighlightService) {
+  constructor(@inject(InjectionAreaComponent) private injectionAreaComponent: InjectionAreaComponent,) {
   }
 
   async handle(request: any, sender: any, sendResponse?: Function) {
     if (request.data.quotation && request.data.quotationPosition) {
       try {
-        let existingDom = JumpToQuoteTextCommandHandler.quotations[`${request.data.id}`];
+        const quotation = {
+          quote: request.data.quotation,
+          ranges: JSON.parse(request.data.quotationPosition)
+        };
 
-        if (!existingDom) {
-          const dom = await this.highlightService.highlight(request.data.quotation, request.data.quotationPosition, request.data.id);
-          existingDom = $(dom);
-          JumpToQuoteTextCommandHandler.quotations[`${request.data.id}`] = existingDom;
+        const highlightedDOMs = this.injectionAreaComponent.highlighter.draw(quotation);
+
+        if (!JumpToQuoteTextCommandHandler.quotations[`${request.data.id}`]) {
+          JumpToQuoteTextCommandHandler.quotations[`${request.data.id}`] = quotation;
         }
 
-        if (!$(existingDom).hasClass(highlightClassName)) {
-          $(existingDom).addClass(highlightClassName);
-        }
+        console.log(JumpToQuoteTextCommandHandler.quotations[`${request.data.id}`]);
 
         $('html, body').animate({
-          scrollTop: existingDom.offset().top - 75
-        });​
+                                  scrollTop: $(highlightedDOMs[0]).offset().top - 75
+                                });​
       } catch (error) {
         console.error(error);
       }

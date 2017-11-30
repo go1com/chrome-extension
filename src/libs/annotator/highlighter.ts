@@ -1,4 +1,4 @@
-import xpathRange from 'xpath-range';
+import xpathRange from './xpath-range/lib';
 
 declare const $: any;
 
@@ -34,7 +34,6 @@ function highlightRange(normedRange, cssClass) {
   }
   return results;
 }
-
 
 // reanchorRange will attempt to normalize a range, swallowing Range.RangeErrors
 // for those ranges which are not reanchorable in the current document.
@@ -74,7 +73,7 @@ export class Highlighter {
   options: any;
   element: any;
 
-  constructor(element, options) {
+  constructor(element, options?: any) {
     this.element = element;
     this.options = $.extend(true, {}, Highlighter.options, options);
   }
@@ -133,7 +132,7 @@ export class Highlighter {
   // annotation - An annotation Object for which to draw highlights.
   //
   // Returns an Array of drawn highlight elements.
-  draw = function (annotation) {
+  draw(annotation) {
     const normedRanges = [];
 
     for (let i = 0, ilen = annotation.ranges.length; i < ilen; i++) {

@@ -18,17 +18,16 @@ export class StartDiscussionFromContextMenuCommandHandler implements ICommandHan
               @inject(IBrowserMessagingServiceSymbol) private browserMessagingService: IBrowserMessagingService) {
   }
 
-
   async handle(request: any, sender: any, sendResponse: Function) {
-    const selection = window.getSelection();
-    const selectedText = selection && selection.toString();
+    const annotationSerializedData = this.injectionAreaComponent.currentAnnotation;
 
-    if (selectedText) {
-      const xpathFromNode = Util.xpathFromNode($(selection.anchorNode.parentNode));
+    if (annotationSerializedData) {
+      const selectingText = annotationSerializedData.quote;
+      const quotationPosition = JSON.stringify(annotationSerializedData.ranges);
 
       await this.browserMessagingService.requestToBackground(commandKeys.startDiscussion, {
-        quotation: selectedText,
-        quotationPosition: xpathFromNode[0]
+        quotation: selectingText,
+        quotationPosition: quotationPosition
       });
     }
 
