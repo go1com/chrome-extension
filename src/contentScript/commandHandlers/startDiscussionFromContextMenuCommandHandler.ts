@@ -2,7 +2,7 @@ import {ICommandHandler} from "../../services/commandHandlerService/ICommandHand
 import {commandKeys} from "../../environments/commandKeys";
 import {inject, injectable} from "inversify";
 import {InjectionAreaComponent} from "../components/injectionAreaComponent/injectionAreaComponent";
-import Util from "../../libs/annotation-plugin/util";
+
 import {
   IBrowserMessagingService,
   IBrowserMessagingServiceSymbol
@@ -20,6 +20,8 @@ export class StartDiscussionFromContextMenuCommandHandler implements ICommandHan
 
   async handle(request: any, sender: any, sendResponse: Function) {
     const annotationSerializedData = this.injectionAreaComponent.currentAnnotation;
+
+    console.log(this.injectionAreaComponent.currentAnnotation);
 
     if (annotationSerializedData) {
       const selectingText = annotationSerializedData.quote;

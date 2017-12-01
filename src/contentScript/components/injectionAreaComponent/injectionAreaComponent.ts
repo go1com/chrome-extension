@@ -54,7 +54,7 @@ const makeAnnotation = annotationFactory(document.body, '.annotator-hl');
 
 @injectable()
 export class InjectionAreaComponent implements IContentScriptComponent {
-  currentAnnotation: any;
+  currentAnnotation: any = null;
   highlighter: Highlighter;
   public view: any;
 
@@ -83,23 +83,16 @@ export class InjectionAreaComponent implements IContentScriptComponent {
       highlightingClass: highlightClassName
     });
 
-    await Promise.all([
-                        this.checkQuickButtonSettings(true),
-                        this.checkCreateNoteSettings(true),
-                        this.checkShowHighlightSettings(true)
-                      ]);
-  }
-
-  addListenerToSelectingText() {
     this.textSelector = new TextSelector(document.body, {
       highlightingClass: highlightClassName,
       onSelection: (ranges, event) => this.onTextSelected(ranges, event)
     });
-  }
 
-  removeListenerToSelectingText() {
-    this.textSelector.destroy();
-    this.textSelector = null;
+    await Promise.all([
+                        this.checkQuickButtonSettings(true),
+                        this.checkCreateNoteSettings(),
+                        this.checkShowHighlightSettings(true)
+                      ]);
   }
 
   onTextSelected(ranges, event) {
@@ -113,10 +106,7 @@ export class InjectionAreaComponent implements IContentScriptComponent {
       if (this.createNoteEnabled) {
         ToolTipMenuComponent.initializeTooltip(this, selectedTextPosition, JSON.parse(annotation));
       }
-
     } else {
-      this.currentAnnotation = null;
-
       if (this.createNoteEnabled) {
         ToolTipMenuComponent.closeLastTooltip();
       }
@@ -151,18 +141,8 @@ export class InjectionAreaComponent implements IContentScriptComponent {
     this.checkNotesOnCurrentPage();
   }
 
-  async checkCreateNoteSettings(firstTimeInitial = false) {
+  async checkCreateNoteSettings() {
     this.createNoteEnabled = await this.chromeMessagingService.requestToBackground(commandKeys.checkCreateNoteSettings);
-
-    if (!this.createNoteEnabled) {
-      if (firstTimeInitial) {
-        return;
-      }
-      this.removeListenerToSelectingText();
-      return;
-    } else {
-      this.addListenerToSelectingText();
-    }
   }
 
   appendQuickButton() {
