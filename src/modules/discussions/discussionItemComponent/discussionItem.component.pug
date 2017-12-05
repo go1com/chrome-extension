@@ -4,7 +4,7 @@
     .discussion-detail((mouseleave)="removeQuoteHighlight()", [class.has-quotation]="discussionItem?.quote")
       div.quotation(*ngIf="discussionItem?.quote", role="button", (click)="jumpToQuotedText()")
         blockquote
-          #quotation(#quotation="") {{ discussionItem?.quote }}
+          div(id="quotation-{{discussionItem.noteItem.uuid}}", #quotation="") {{ discussionItem?.quote }}
           a(readMore, [readMore-length]="75", [readMore-element]="quotation")
             span.more more
             span.less less

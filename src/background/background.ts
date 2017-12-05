@@ -1,59 +1,54 @@
 import iocContainer from "../ioc/ioc.config";
 import backgroundScriptContainer from "./ioc.background.config";
 
-import {commandKeys} from "../environments/commandKeys";
+import { commandKeys } from "../environments/commandKeys";
 import {
   ICommandHandlerService,
   ICommandHandlerServiceSymbol
 } from "../services/commandHandlerService/ICommandHandlerService";
 import { IStorageService, IStorageServiceSymbol } from "../services/storageService/IStorageService";
 import configuration from "../environments/configuration";
+import { SharedPortalService } from "../services/portalService/PortalService";
+import {
+  IBrowserMessagingService,
+  IBrowserMessagingServiceSymbol
+} from "../services/browserMessagingService/IBrowserMessagingService";
 
 iocContainer.load(backgroundScriptContainer);
 
 const commandHandlerService = iocContainer.get<ICommandHandlerService>(ICommandHandlerServiceSymbol);
+const browserMessagingService = iocContainer.get<IBrowserMessagingService>(IBrowserMessagingServiceSymbol);
 
 const extensionVersion = '@EXTENSION_VERSION@';
 
-chrome.contextMenus.create({
-  "title": "Add Page to Portal",
-  "contexts": ['page'],
-  "onclick": (info, tab) => {
-    chrome.tabs.sendMessage(tab.id, {
-      action: commandKeys.addToPortal
-    }, (response) => {
-
-    });
-  }
-});
+const menuIds = {
+  AddToPortal: 'add-to-portal-menu',
+  AddNote: 'add-note-menu',
+  SaveQuotationToNote: 'save-quotation-to-note'
+};
 
 chrome.contextMenus.create({
-  "title": "Add Note",
-  "contexts": ['page'],
-  "onclick": (info, tab) => {
-    chrome.tabs.sendMessage(tab.id, {
-      action: commandKeys.startDiscussion
-    }, (response) => {
-
-    });
-  }
-});
+                             id: menuIds.AddToPortal,
+                             title: "Add Page to Portal",
+                             contexts: ['page'],
+                             onclick: (info, tab) => browserMessagingService.requestToTab(tab.id, commandKeys.addToPortal)
+                           });
 
 chrome.contextMenus.create({
-  "title": "Save to Note",
-  "contexts": ['selection'],
-  "onclick": (info, tab) => onSaveToNoteMenuContextClicked(info, tab)
-});
+                             id: menuIds.AddNote,
+                             "title": "Add Note",
+                             "contexts": ['page'],
+                             "onclick": (info, tab) => browserMessagingService.requestToTab(tab.id, commandKeys.startDiscussion)
+                           });
 
-function onSaveToNoteMenuContextClicked(info, tab) {
-  chrome.tabs.sendMessage(tab.id, {
-    action: commandKeys.startDiscussion
-  }, (response) => {
+chrome.contextMenus.create({
+                             id: menuIds.SaveQuotationToNote,
+                             "title": "Save to Note",
+                             "contexts": ['selection'],
+                             "onclick": (info, tab) => browserMessagingService.requestToTab(tab.id, commandKeys.startDiscussion)
+                           });
 
-  });
-}
-
-chrome.webNavigation.onCompleted.addListener(async function(details) {
+chrome.webNavigation.onCompleted.addListener(async function (details) {
   console.log(details);
 
   const ignoringDomains = ['mygo1.com', 'go1.com', 'www.google.com/maps'];
@@ -66,19 +61,33 @@ chrome.webNavigation.onCompleted.addListener(async function(details) {
   const shouldIgnore = configuredIgnoredDomains.some((domain) => details.url.indexOf(domain) > -1);
 
   if (shouldIgnore) {
-    console.log('should ignore the site');
     chrome.browserAction.disable(details.tabId);
+
+    chrome.contextMenus.update(menuIds.AddNote, {
+      enabled: false
+    });
+    chrome.contextMenus.update(menuIds.AddToPortal, {
+      enabled: false
+    });
+    chrome.contextMenus.update(menuIds.SaveQuotationToNote, {
+      enabled: false
+    });
+    return;
+  }
+
+  const portalService = iocContainer.get<SharedPortalService>(SharedPortalService);
+  const portal = await portalService.getDefaultPortalInfo();
+  const user = await storageService.retrieve(configuration.constants.localStorageKeys.user);
+
+  if (!portalService.canAddToPortal(portal, user)) {
+    chrome.contextMenus.update('add-to-portal-menu', {
+      enabled: false
+    });
   }
 });
 
 
-chrome.browserAction.onClicked.addListener((tab) => {
-  chrome.tabs.sendMessage(tab.id, {
-    action: commandKeys.toggleExtensionPopup
-  }, function (response) {
-
-  });
-});
+chrome.browserAction.onClicked.addListener(async (tab) => browserMessagingService.requestToTab(tab.id, commandKeys.toggleExtensionPopup));
 
 chrome.runtime.onMessage.addListener(function (msg, sender, sendResponse) {
   if (msg.action === 'getTabId') {
@@ -90,7 +99,7 @@ chrome.runtime.onMessage.addListener(function (msg, sender, sendResponse) {
     commandHandlerService.handleCommand(msg.action, msg, sender, sendResponse);
     return true;
   }
-  sendResponse({success: false, error: new Error('No command handler found for request action'), errorData: msg});
+  sendResponse({ success: false, error: new Error('No command handler found for request action'), errorData: msg });
 });
 
 chrome.runtime.onInstalled.addListener((details) => {

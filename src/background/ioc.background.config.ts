@@ -7,6 +7,7 @@ import {DiscussionNoFirebaseServiceService} from "../modules/discussions/service
 import {ICommandHandler, ICommandHandlerSymbol} from "../services/commandHandlerService/ICommandHandler";
 import {CheckHighlightSettingChromeCommandHandler} from "./commandHandlers/checkHighlightSettingChromeCommandHandler";
 import {CheckCreateNoteMenuSettingChromeCommandHandler} from "./commandHandlers/checkCreateNoteMenuSettingChromeCommandHandler";
+import { OnPortalChangedChromeCommandHandler } from "./commandHandlers/onPortalChangedChromeCommandHandler";
 
 
 const backgroundScriptContainer = new ContainerModule(
@@ -18,6 +19,8 @@ const backgroundScriptContainer = new ContainerModule(
     bind<DiscussionNoFirebaseServiceService>(DiscussionNoFirebaseServiceService).toSelf();
 
     bind<ICommandHandler>(ICommandHandlerSymbol).to(LoadNotesForPageChromeCommandHandler);
+
+    bind<ICommandHandler>(ICommandHandlerSymbol).to(OnPortalChangedChromeCommandHandler);
 
     bind<ICommandHandler>(ICommandHandlerSymbol).to(CheckQuickButtonSettingChromeCommandHandler);
 

@@ -2,6 +2,7 @@ export const commandKeys = {
   checkQuickButtonSettings: "CHECK_QUICK_BUTTON_SETTINGS",
   checkCreateNoteSettings: "CHECK_CREATE_NOTE_SETTINGS",
   checkHighlightNoteSettings: "CHECK_HIGHLIGHT_NOTE_SETTINGS",
+  portalInstanceChanged: "PORTAL_INSTANCE_CHANGED",
   changeBrowserActionBadgeText: "CHANGE_BROWSER_ICON_BADGE",
   startDiscussion: "START_DISCUSSION",
   addToPortal: "ADD_TO_PORTAL",

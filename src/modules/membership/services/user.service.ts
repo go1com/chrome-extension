@@ -131,8 +131,7 @@ export class UserService {
       await this.refresh();
     }
 
-    this.currentUserObject = await this.storageService.retrieve(configuration.constants.localStorageKeys.user) || null;
-    return this.currentUserObject;
+    return await this.storageService.retrieve(configuration.constants.localStorageKeys.user) || null;
   }
 
   private async setAuth(user) {
