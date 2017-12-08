@@ -8,15 +8,16 @@ export function ensureChromeTabLoaded() {
         return;
       }
 
-      if (chrome && chrome.tabs && chrome.tabs.query) {
-        chrome.tabs.query({active: true, currentWindow: true}, (tabs) => {
-          configuration.currentChromeTab = tabs[0];
-          chrome.runtime.connect();
-          resolve(configuration.currentChromeTab);
-        });
-      }
+      //
+      // if (chrome && chrome.tabs && chrome.tabs.query) {
+      //   chrome.tabs.query({active: true, currentWindow: true}, (tabs) => {
+      //     configuration.currentChromeTab = tabs[0];
+      //     chrome.runtime.connect();
+      //     resolve(configuration.currentChromeTab);
+      //   });
+      // }
 
-      setTimeout(() => checkChromeTab(), 200);
+      setTimeout(() => checkChromeTab(), 500);
     }
 
     checkChromeTab();

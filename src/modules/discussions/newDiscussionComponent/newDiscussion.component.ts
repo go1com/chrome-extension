@@ -1,22 +1,26 @@
-import { Component, OnDestroy, OnInit } from "@angular/core";
-import { ActivatedRoute, Router } from "@angular/router";
-import { DiscussionService } from "../services/discussion.service";
-import { UserService } from "../../membership/services/user.service";
-import { StorageService } from "../../go1core/services/StorageService";
+import {Component, OnDestroy, OnInit} from "@angular/core";
+import {ActivatedRoute, Router} from "@angular/router";
+import {DiscussionService} from "../services/discussion.service";
+import {UserService} from "../../membership/services/user.service";
+import {StorageService} from "../../go1core/services/StorageService";
 import configuration from "../../../environments/configuration";
-import { commandKeys } from "../../../environments/commandKeys";
-import { ensureChromeTabLoaded } from "../../../environments/ensureChromeTabLoaded";
-import { BrowserMessagingService } from "../../go1core/services/BrowserMessagingService";
-import { EllipsisService } from "../../go1core/ellipsis-pipe/ellipsis.pipe";
+import {commandKeys} from "../../../environments/commandKeys";
+import {ensureChromeTabLoaded} from "../../../environments/ensureChromeTabLoaded";
+import {BrowserMessagingService} from "../../go1core/services/BrowserMessagingService";
+import {EllipsisService} from "../../go1core/ellipsis-pipe/ellipsis.pipe";
+import {ModalDialogService} from "../../go1core/services/ModalDialogService";
 
 @Component({
   selector: 'app-new-discussion',
-  templateUrl: './newDiscussionComponent.tpl.pug'
+  templateUrl: './newDiscussionComponent.tpl.pug',
+
 })
 export class NewDiscussionComponent implements OnInit, OnDestroy {
+
   currentPortalId: any;
   noteStatus: any = configuration.constants.noteStatuses.PUBLIC_NOTE;
   isLoading: boolean;
+  isSaving: boolean = false;
   linkPreview: any;
   data: any;
   private pageUrl: any | string;
@@ -25,12 +29,13 @@ export class NewDiscussionComponent implements OnInit, OnDestroy {
   privacySetting = 'ONLYME';
 
   constructor(private router: Router,
-    private discussionService: DiscussionService,
-    private currentActivatedRoute: ActivatedRoute,
-    private userService: UserService,
-    private browserMessagingService: BrowserMessagingService,
-    private ellipsisService: EllipsisService,
-    private storageService: StorageService) {
+              private discussionService: DiscussionService,
+              private currentActivatedRoute: ActivatedRoute,
+              private userService: UserService,
+              private modalDialogService: ModalDialogService,
+              private browserMessagingService: BrowserMessagingService,
+              private ellipsisService: EllipsisService,
+              private storageService: StorageService) {
   }
 
   async ngOnInit() {
@@ -120,7 +125,7 @@ export class NewDiscussionComponent implements OnInit, OnDestroy {
   }
 
   async goBack() {
-    await this.router.navigate(['../'], { relativeTo: this.currentActivatedRoute });
+    await this.router.navigate(['../'], {relativeTo: this.currentActivatedRoute});
   }
 
   onTextChanged() {
@@ -130,6 +135,7 @@ export class NewDiscussionComponent implements OnInit, OnDestroy {
   }
 
   async addNote() {
+    this.isSaving = true;
     if (!this.data.title) {
       this.data.title = 'Note from ' + this.linkPreview.title;
     }
@@ -142,19 +148,24 @@ export class NewDiscussionComponent implements OnInit, OnDestroy {
       this.data.body = `<blockquote>${this.data.quotation}</blockquote>` + this.data.body;
     }
 
-    this.data.uniqueName = `${this.pageUrl}__${Math.floor(new Date().getTime() / 1000)}`;
-    const noteData = await this.discussionService.createNote(this.data);
+    try {
+      this.data.uniqueName = `${this.pageUrl}__${Math.floor(new Date().getTime() / 1000)}`;
+      const noteData = await this.discussionService.createNote(this.data);
 
-    if (this.mentionedUsers.length) {
-      this.privacySetting = 'MENTIONED';
-      const mentionedUserIds = this.mentionedUsers.map((user) => user.rootId.toString());
-      await this.discussionService.mentionUsers(noteData.$uuid, mentionedUserIds);
+      if (this.mentionedUsers.length) {
+        this.privacySetting = 'MENTIONED';
+        const mentionedUserIds = this.mentionedUsers.map((user) => user.rootId.toString());
+        await this.discussionService.mentionUsers(noteData.$uuid, mentionedUserIds);
+      }
+
+      if (this.newDiscussionFromBackgroundPage) {
+        await this.browserMessagingService.requestToTab(configuration.currentChromeTab.id, commandKeys.closeExtensionPopup);
+      }
+      await this.goBack();
+    } catch (error) {
+      await this.modalDialogService.showAlert('Error while creating note: ' + error.errorMessage);
+    } finally {
+      this.isSaving = false;
     }
-
-    if (this.newDiscussionFromBackgroundPage) {
-      await this.browserMessagingService.requestToTab(configuration.currentChromeTab.id, commandKeys.closeExtensionPopup);
-    }
-
-    await this.goBack();
   }
 }

@@ -10,6 +10,8 @@ import { BrowserMessagingService } from "../../go1core/services/BrowserMessaging
 export class PortalSelectionComponent implements OnInit {
   availablePortals: any[];
   @Input() portal: any;
+  @Input() disabled: boolean;
+
   @Output() portalChange: EventEmitter<any> = new EventEmitter<any>();
 
   @Input() placeholder = "Select Portal";

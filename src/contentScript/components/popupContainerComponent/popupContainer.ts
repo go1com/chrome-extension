@@ -1,6 +1,10 @@
 import {IStorageService, IStorageServiceSymbol} from "../../../services/storageService/IStorageService";
 import {inject, injectable} from "inversify";
 import {IContentScriptComponent} from "../IContentScriptComponent";
+import {
+  IBrowserMessagingService,
+  IBrowserMessagingServiceSymbol
+} from "../../../services/browserMessagingService/IBrowserMessagingService";
 
 declare const $: any;
 
@@ -12,7 +16,8 @@ export class PopupContainer implements IContentScriptComponent {
   popupClosed = true;
   popupContentIframe: any;
 
-  constructor(@inject(IStorageServiceSymbol) private storageService: IStorageService) {
+  constructor(@inject(IStorageServiceSymbol) private storageService: IStorageService,
+              @inject(IBrowserMessagingServiceSymbol) private messagingService: IBrowserMessagingService) {
     console.log('popup container initialized');
     this.popupUrl = `chrome-extension://${chrome.runtime.id}/index.html`;
     this.view = $(require('./popupContainer.pug'));
@@ -24,8 +29,16 @@ export class PopupContainer implements IContentScriptComponent {
   initialize(parentComponent: IContentScriptComponent) {
     this.view.prependTo(parentComponent.view);
 
-    this.popupContentIframe.on('load', () => {
+    this.popupContentIframe.on('load', async () => {
       this.view.addClass('finished-loading');
+      console.log('popup finished loading');
+      const currentTab = await this.messagingService.requestToBackground('getTabId');
+
+      this.popupContentIframe[0].contentWindow.postMessage({
+        initialized: true,
+        currentTab: currentTab
+      }, '*');
+
       this.popupContentIframe.off('load');
     });
 

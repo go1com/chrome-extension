@@ -135,7 +135,7 @@ module.exports = function (options) {
                 multiple: [
                   {
                     search: '@EXTENSION_VERSION@',
-                    replace: packageJson.version
+                    replace: () => require('../package.json').version
                   }
                 ]
               }

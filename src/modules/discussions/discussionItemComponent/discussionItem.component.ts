@@ -1,11 +1,11 @@
-import { Component, Input, OnInit } from "@angular/core";
-import { ModalDialogService } from "../../go1core/services/ModalDialogService";
-import { DiscussionService } from "../services/discussion.service";
-import { Router } from "@angular/router";
+import {Component, Input, OnInit} from "@angular/core";
+import {ModalDialogService} from "../../go1core/services/ModalDialogService";
+import {DiscussionService} from "../services/discussion.service";
+import {Router} from "@angular/router";
 import configuration from "../../../environments/configuration";
-import { UserService } from "../../membership/services/user.service";
-import { commandKeys } from "../../../environments/commandKeys";
-import { BrowserMessagingService } from "../../go1core/services/BrowserMessagingService";
+import {UserService} from "../../membership/services/user.service";
+import {commandKeys} from "../../../environments/commandKeys";
+import {BrowserMessagingService} from "../../go1core/services/BrowserMessagingService";
 
 @Component({
   selector: 'app-discussion-item',
@@ -20,9 +20,9 @@ export class DiscussionItemComponent implements OnInit {
   discussionStarted = false;
 
   constructor(private modalDialogService: ModalDialogService,
-    private userService: UserService,
-    private browserMessagingService: BrowserMessagingService,
-    private discussionService: DiscussionService) {
+              private userService: UserService,
+              private browserMessagingService: BrowserMessagingService,
+              private discussionService: DiscussionService) {
   }
 
   ngOnInit() {

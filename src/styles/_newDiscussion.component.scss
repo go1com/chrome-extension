@@ -59,7 +59,7 @@
       font-size: 60px;
       font-weight: bold;
       position: absolute;
-      color:  #ffeb8e;
+      color: #ffeb8e;
       font-style: normal;
     }
 
@@ -80,12 +80,6 @@
     border-bottom: 1px solid $go1grey4;
     border-top: 1px solid $go1grey4;
 
-
-    .text-editor {
-      min-height: 105px;
-      max-height: 150px;
-    }
-
     > .form-control {
       border: none;
       -webkit-box-shadow: none;
@@ -94,12 +88,40 @@
       padding: 15px 10px;
       min-height: 150px;
     }
+  }
 
+  .text-editor-container {
+    position: relative;
+
+    .text-editor {
+      min-height: 105px;
+      max-height: 150px;
+    }
+
+    .upload-controller {
+      background: none;
+      border: none;
+      position: absolute;
+      right: 10px;
+      bottom: 0;
+    }
   }
 
   .actions-area {
     padding: 15px 15px 25px;
     flex-wrap: wrap;
+
+    button {
+      loading-indicator {
+        .loading-fading-circle {
+          width: 24px;
+          height: 24px;
+          margin: 0 0 0 15px;
+          display: inline-block;
+          vertical-align: middle;
+        }
+      }
+    }
 
     select.form-control {
       min-height: initial;

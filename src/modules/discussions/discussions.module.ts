@@ -9,13 +9,14 @@ import {discussionModuleRoutes} from "./discussion.routes";
 import {CommonModule} from "@angular/common";
 import {DiscussionItemComponent} from "./discussionItemComponent/discussionItem.component";
 import {MomentModule} from "angular2-moment";
-import {MembershipModule} from "../membership/membership.module";
+import {MembershipModule} from "../membership";
 import {Go1LinkPreviewModule} from "../../sharedComponents/go1LinkPreview/go1LinkPreview.module";
 import {PortalModule} from "../portal/portal.module";
 import {NgbModule} from "@ng-bootstrap/ng-bootstrap";
 import {DiscussionReplyComponent} from "./discussionReply/discussionReply.component";
 import {CurrentChromePageOnlyPipe} from "./services/currentChromePageOnlyPipe";
 import {MentionModule} from "../mentionModule/mention.module";
+import { NgUploaderModule } from 'ngx-uploader';
 
 @NgModule({
   declarations: [
@@ -30,6 +31,8 @@ import {MentionModule} from "../mentionModule/mention.module";
     FormsModule,
     RouterModule.forChild(discussionModuleRoutes),
     MomentModule,
+
+    NgUploaderModule,
 
     NgbModule,
 

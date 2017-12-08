@@ -1,14 +1,14 @@
 import iocContainer from "../ioc/ioc.config";
 import backgroundScriptContainer from "./ioc.background.config";
 
-import { commandKeys } from "../environments/commandKeys";
+import {commandKeys} from "../environments/commandKeys";
 import {
   ICommandHandlerService,
   ICommandHandlerServiceSymbol
 } from "../services/commandHandlerService/ICommandHandlerService";
-import { IStorageService, IStorageServiceSymbol } from "../services/storageService/IStorageService";
+import {IStorageService, IStorageServiceSymbol} from "../services/storageService/IStorageService";
 import configuration from "../environments/configuration";
-import { SharedPortalService } from "../services/portalService/PortalService";
+import {SharedPortalService} from "../services/portalService/PortalService";
 import {
   IBrowserMessagingService,
   IBrowserMessagingServiceSymbol
@@ -19,7 +19,7 @@ iocContainer.load(backgroundScriptContainer);
 const commandHandlerService = iocContainer.get<ICommandHandlerService>(ICommandHandlerServiceSymbol);
 const browserMessagingService = iocContainer.get<IBrowserMessagingService>(IBrowserMessagingServiceSymbol);
 
-const extensionVersion = '@EXTENSION_VERSION@';
+const extensionVersion = configuration.version;
 
 const menuIds = {
   AddToPortal: 'add-to-portal-menu',
@@ -28,25 +28,25 @@ const menuIds = {
 };
 
 chrome.contextMenus.create({
-                             id: menuIds.AddToPortal,
-                             title: "Add Page to Portal",
-                             contexts: ['page'],
-                             onclick: (info, tab) => browserMessagingService.requestToTab(tab.id, commandKeys.addToPortal)
-                           });
+  id: menuIds.AddToPortal,
+  title: "Add Page to Portal",
+  contexts: ['page'],
+  onclick: (info, tab) => browserMessagingService.requestToTab(tab.id, commandKeys.addToPortal)
+});
 
 chrome.contextMenus.create({
-                             id: menuIds.AddNote,
-                             "title": "Add Note",
-                             "contexts": ['page'],
-                             "onclick": (info, tab) => browserMessagingService.requestToTab(tab.id, commandKeys.startDiscussion)
-                           });
+  id: menuIds.AddNote,
+  "title": "Add Note",
+  "contexts": ['page'],
+  "onclick": (info, tab) => browserMessagingService.requestToTab(tab.id, commandKeys.startDiscussion)
+});
 
 chrome.contextMenus.create({
-                             id: menuIds.SaveQuotationToNote,
-                             "title": "Save to Note",
-                             "contexts": ['selection'],
-                             "onclick": (info, tab) => browserMessagingService.requestToTab(tab.id, commandKeys.startDiscussion)
-                           });
+  id: menuIds.SaveQuotationToNote,
+  "title": "Save to Note",
+  "contexts": ['selection'],
+  "onclick": (info, tab) => browserMessagingService.requestToTab(tab.id, commandKeys.startDiscussion)
+});
 
 chrome.webNavigation.onCompleted.addListener(async function (details) {
   console.log(details);
@@ -75,6 +75,16 @@ chrome.webNavigation.onCompleted.addListener(async function (details) {
     return;
   }
 
+  chrome.contextMenus.update(menuIds.AddNote, {
+    enabled: true
+  });
+  chrome.contextMenus.update(menuIds.AddToPortal, {
+    enabled: true
+  });
+  chrome.contextMenus.update(menuIds.SaveQuotationToNote, {
+    enabled: true
+  });
+
   const portalService = iocContainer.get<SharedPortalService>(SharedPortalService);
   const portal = await portalService.getDefaultPortalInfo();
   const user = await storageService.retrieve(configuration.constants.localStorageKeys.user);
@@ -99,7 +109,7 @@ chrome.runtime.onMessage.addListener(function (msg, sender, sendResponse) {
     commandHandlerService.handleCommand(msg.action, msg, sender, sendResponse);
     return true;
   }
-  sendResponse({ success: false, error: new Error('No command handler found for request action'), errorData: msg });
+  sendResponse({success: false, error: new Error('No command handler found for request action'), errorData: msg});
 });
 
 chrome.runtime.onInstalled.addListener((details) => {

@@ -28,23 +28,32 @@
             span.more more
             span.less less
 
-      .text-editor(rich-text-editor [(ngModel)]="data.body", (ngModelChange)="onTextChanged()", placeholder="Add your notes...", autofocus, [(mentionedUsers)]="mentionedUsers")
+      .text-editor-container
+        .text-editor(rich-text-editor [(ngModel)]="data.body", (ngModelChange)="onTextChanged()", [disabled]="isSaving", placeholder="Add your notes...", autofocus, [(mentionedUsers)]="mentionedUsers")
+        //
+        //.upload-controller.grey4.text-right
+        //  input(title="Upload file" type="file" ngFileSelect, (uploadOutput)="onUploadOutput($event)")
+        //  i.fa.fa-upload
+
 
     .actions-area(*ngIf="data")
       .row
         .col-12
           .portal-selection
-            portal-selection([(portal)]="data.portalId")
+            portal-selection([(portal)]="data.portalId", [disabled]="isSaving || isLoading")
       .row.m-t-15
         .col-12
           .select-privacy
             span Who can see this note?
-            select.form-control.col-6.m-t-10([(ngModel)]="privacySetting", (ngModelChange)="onPrivacyChange()", placeholder="Who can see this note?")
+            select.form-control.col-6.m-t-10([(ngModel)]="privacySetting", [disabled]="isSaving || isLoading", (ngModelChange)="onPrivacyChange()", placeholder="Who can see this note?")
               option(value="PUBLIC") Everyone
               // option(value="MENTIONED") Share with people I mentioned
               option(value="ONLYME") Only me
       .row.m-t-20
         .col-6.mr-auto
-          button.btn.btn-sm.btn-primary.btn-block.add-note-btn((click)="addNote()") Add Note
+          button.btn.btn-sm.btn-primary.btn-block.add-note-btn((click)="addNote()", [disabled]="isSaving").
+            #[div([hidden]="isSaving") Add Note]
+            #[loading-indicator(colorScheme="white", [hidden]="!isSaving") ]
+
         .col-6.ml-auto
-          button.btn.btn-sm.btn-default.btn-block.btn-cancel((click)="goBack()") Cancel
+          button.btn.btn-sm.btn-default.btn-block.btn-cancel((click)="goBack()", [disabled]="isSaving") Cancel

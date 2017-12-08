@@ -1,8 +1,8 @@
-import { Component, OnInit, ViewEncapsulation } from '@angular/core';
+import {Component, OnInit, ViewEncapsulation} from '@angular/core';
 import configuration from "../environments/configuration";
-import { UserService } from "../modules/membership/services/user.service";
-import { ActivatedRoute, Router } from "@angular/router";
-import { StorageService } from "../modules/go1core/services/StorageService";
+import {UserService} from "../modules/membership/services/user.service";
+import {ActivatedRoute, Router} from "@angular/router";
+import {StorageService} from "../modules/go1core/services/StorageService";
 
 declare const $: any;
 
@@ -16,9 +16,10 @@ export class AppComponent implements OnInit {
   title = 'GO1 bookmark';
 
   constructor(private userService: UserService,
-    private storageService: StorageService,
-    private activatedRoute: ActivatedRoute,
-    private router: Router) {
+              private storageService: StorageService,
+              private activatedRoute: ActivatedRoute,
+              private router: Router) {
+    window.addEventListener('message', (event) => this.onWindowReceiveMessage(event));
   }
 
   async ngOnInit() {
@@ -50,5 +51,10 @@ export class AppComponent implements OnInit {
     }
 
     this.router.navigate(['/membership/login']);
+  }
+
+  private onWindowReceiveMessage(event: MessageEvent) {
+    console.log('window received message: ', event);
+    configuration.currentChromeTab = event.data.currentTab.tab;
   }
 }
