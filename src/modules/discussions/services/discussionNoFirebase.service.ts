@@ -24,9 +24,9 @@ export class DiscussionNoFirebaseServiceService {
 
     queries.push(`type=${configuration.constants.noteChromeExtType}`);
 
-    const currentPortalId = await this.storageService.retrieve(configuration.constants.localStorageKeys.currentActivePortalId);
+    // const currentPortalId = await this.storageService.retrieve(configuration.constants.localStorageKeys.currentActivePortalId);
 
-    queries.push(`instance=${currentPortalId}`);
+    // queries.push(`instance=${currentPortalId}`);
     queries.push(`public=1`);
 
     if (!contextUrl && configuration.currentChromeTab && configuration.currentChromeTab.url) {
@@ -36,7 +36,6 @@ export class DiscussionNoFirebaseServiceService {
     if (contextUrl.indexOf('#') > -1) {
       contextUrl = contextUrl.substr(0, contextUrl.indexOf('#'));
     }
-
 
     if (contextUrl) {
       queries.push(`context[url]=${contextUrl}`);
