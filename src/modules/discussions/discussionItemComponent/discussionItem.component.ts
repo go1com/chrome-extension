@@ -15,6 +15,7 @@ import {BrowserMessagingService} from "../../go1core/services/BrowserMessagingSe
 export class DiscussionItemComponent implements OnInit {
   postingReply: boolean;
   @Input() discussionItem: any;
+  readMoreLength = 75;
 
   replyMessage = '';
   discussionStarted = false;
@@ -43,6 +44,10 @@ export class DiscussionItemComponent implements OnInit {
       await this.discussionService.deleteNote(this.discussionItem.noteItem.uuid);
       this.discussionService.onNoteDeleted.emit(this.discussionItem.noteItem.uuid);
     }
+  }
+
+  shouldShowReadMore() {
+    return this.discussionItem && this.discussionItem.quote && this.discussionItem.quote.length > this.readMoreLength;
   }
 
   async jumpToQuotedText() {

@@ -28,6 +28,8 @@ export class NewDiscussionComponent implements OnInit, OnDestroy {
   mentionedUsers: any[] = [];
   privacySetting = 'ONLYME';
 
+  readMoreLength = 75;
+
   constructor(private router: Router,
               private discussionService: DiscussionService,
               private currentActivatedRoute: ActivatedRoute,
@@ -99,6 +101,10 @@ export class NewDiscussionComponent implements OnInit, OnDestroy {
   }
 
   async ngOnDestroy() {
+  }
+
+  shouldShowReadMore() {
+    return this.data && this.data.quote && this.data.quote.length > this.readMoreLength;
   }
 
   onPrivacyChange() {

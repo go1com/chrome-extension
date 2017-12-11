@@ -5,7 +5,7 @@
       div.quotation(*ngIf="discussionItem?.quote", role="button", (click)="jumpToQuotedText()")
         blockquote
           div(id="quotation-{{discussionItem.noteItem.uuid}}", #quotation="") {{ discussionItem?.quote }}
-          a(readMore, [readMore-length]="75", [readMore-element]="quotation")
+          a([hidden]="!shouldShowReadMore()", readMore, [readMore-length]="readMoreLength", [readMore-element]="quotation")
             span.more more
             span.less less
 

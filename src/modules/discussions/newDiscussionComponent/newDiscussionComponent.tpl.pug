@@ -24,7 +24,7 @@
       .quotation(*ngIf="data && data.quote")
         blockquote
           #quotation(#quotation="") {{ data.quote }}
-          a(readMore [readMore-length]="75", [readMore-element]="quotation")
+          a([hidden]="!shouldShowReadMore()", readMore [readMore-length]="readMoreLength", [readMore-element]="quotation")
             span.more more
             span.less less
 
